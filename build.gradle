@@ -1,0 +1,79 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.RC1'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: "org.sonarqube"
+apply plugin: "jacoco"
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+jacoco {
+    toolVersion = "0.7.4+"
+}
+
+test {
+    testLogging.showStandardStreams = true
+    maxParallelForks = 1
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "sopra-fs18-group17-service"
+        property "sonar.projectKey", "sopra-fs18-group17-service"
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    runtime('com.h2database:h2')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.5.1'
+}
+
+task stage {
+  dependsOn 'build'
+}
+
+defaultTasks 'bootJar', 'build'
+
+// run all task
+task runAll {
+    runAll.dependsOn(bootRun)
+}
+
+jacocoTestReport {
+    group = "Reporting"
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "${buildDir}/reports/coverage"
+    }
+}
