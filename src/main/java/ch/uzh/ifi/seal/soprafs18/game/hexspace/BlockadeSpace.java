@@ -10,7 +10,7 @@ public class BlockadeSpace extends HexSpace{
      */
 
     @Override
-    protected List<HexSpace> getNeighbour(){
+    public List<HexSpace> getNeighbour(){
         return null;
     }
 }
