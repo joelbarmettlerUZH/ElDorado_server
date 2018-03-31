@@ -98,7 +98,7 @@ The way our pathfinding-algorithm found to access this HexSpace. The field is us
 HexSpace need to know to which Game it belongs. Primarily used for the PathFinder.
 
 **\+ public getNeighbour(previous: HexSpace): ArrayList<HexSpace>**
-Method that takes the previous HexSpace, the user came from, into consideration when calculating the neighbours. The Methods calculates the coordinates of the neighbouring fields by taking the Game’s pathMatrix into account. From all found neighbours, the method looks whether BlockadeSpaces are among them. If this is the case and the blockade Spaces belong to the same active blockade, only one of the blockadeSpaces is returned. If the blockadeSpaces are inactive, the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the previous. This way the blockade can handle the neighbours with taking the previous direction into account.
+Method that takes the previous HexSpace, the userEntity came from, into consideration when calculating the neighbours. The Methods calculates the coordinates of the neighbouring fields by taking the Game’s pathMatrix into account. From all found neighbours, the method looks whether BlockadeSpaces are among them. If this is the case and the blockade Spaces belong to the same active blockade, only one of the blockadeSpaces is returned. If the blockadeSpaces are inactive, the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the previous. This way the blockade can handle the neighbours with taking the previous direction into account.
 
 * * *
 
@@ -109,14 +109,14 @@ Method that takes the previous HexSpace, the user came from, into consideration 
 Array of all HexSpaces that the PathFinder algorithm has visited and are marked as reachable.
 
 **+public getWay(ArrayList<Cards>, PlayingPiece): ArrayList<HexSpace>**
-The PlayingPiece has a HexSpace. This hexSpace is the first entry in the reachables array, because the player can obviously reach its own location. From there on, the neighbours of all reachables are checked whether they are reachable with the given set of cards.The PathFinder differentiates between two cases:
-When the Cards-array consists of just one entry of type MovingCard, he looks what colours the selected Card supports. Then, for each of the X different colours, he looks what HexSpaces are reachables with just using this colour by always adding the reachable neighbours to an array of colourspecific reachables an, in the same time, sets the previous path of how he got to the HexSpace (the path he came from, so the path from the neighboured hexSpace + the neighbour itself, including barricadeSpaces) the cost that were needed to enter the field (the cards strengthLeft value - the fields stregth) and the depthLeft value, which is just the depth from the neighbour - 1. The PathFinder keeps track of which HexSpaces he found the best way already with a local variable currentIndex. CurrentIndex marks a position in the Array of reachable HexSpaces. To the left of the currentIndex, there are the HexSpaces that were already processed, e.g. of which the neighbours were already checked to be reachable. To the right of the currentIndex, there are the HexSpaces of which not all neighbours were yet checked. Whenever the pathFinder checks a HexSpac at currentIndex, it appends all its neighbours (if not yet in the array) to the reachables. When an array is already in the reachables, it checks whether it would now be reached with a cheaper path. If so, the corresponding HexSpace is moved from the left of the reachables to the end (because now we have to see whether one of its neighbours can be reached cheaper as well). PathFinder finishes when the currentIndex equals the length of the Array reachables. In the end, he is left with X arrays, each contining the reachable HexSpaces with using the Xth colour. The union of these arrays then is the returned value for reachables.
+The PlayingPiece has a HexSpace. This hexSpaceEntity is the first entry in the reachables array, because the player can obviously reach its own location. From there on, the neighbours of all reachables are checked whether they are reachable with the given set of cards.The PathFinder differentiates between two cases:
+When the Cards-array consists of just one entry of type MovingCard, he looks what colours the selected Card supports. Then, for each of the X different colours, he looks what HexSpaces are reachables with just using this colour by always adding the reachable neighbours to an array of colourspecific reachables an, in the same time, sets the previous path of how he got to the HexSpace (the path he came from, so the path from the neighboured hexSpaceEntity + the neighbour itself, including barricadeSpaces) the cost that were needed to enter the field (the cards strengthLeft value - the fields stregth) and the depthLeft value, which is just the depth from the neighbour - 1. The PathFinder keeps track of which HexSpaces he found the best way already with a local variable currentIndex. CurrentIndex marks a position in the Array of reachable HexSpaces. To the left of the currentIndex, there are the HexSpaces that were already processed, e.g. of which the neighbours were already checked to be reachable. To the right of the currentIndex, there are the HexSpaces of which not all neighbours were yet checked. Whenever the pathFinder checks a HexSpac at currentIndex, it appends all its neighbours (if not yet in the array) to the reachables. When an array is already in the reachables, it checks whether it would now be reached with a cheaper path. If so, the corresponding HexSpace is moved from the left of the reachables to the end (because now we have to see whether one of its neighbours can be reached cheaper as well). PathFinder finishes when the currentIndex equals the length of the Array reachables. In the end, he is left with X arrays, each contining the reachable HexSpaces with using the Xth colour. The union of these arrays then is the returned value for reachables.
 
 If multiple cards were selected or just one card of type actionCard, PathFinder checks whether one of the neighbours is of color “rubble” and only allows the move if a rubble with strenght less than the number of cards selected is in the set of neighbours.
 
 When the PathFinder finished calculating the reachables, he sets the memento by setting the mementos cards and the references to all reachables. In the next call of the PathFinder, he will loop over all the HexSpace references saved inside the Memento and resets their states like previous and minialCost, minimalDepth so that he will not have false leftover information from the previous call.
 
-Before the PathFinder returns the reachables, all HexSpaces of type Blockade are filtered out of it so that the user can not move on Hexspace. Note that the Baricades to not disapear from the previous history of the individual reachable HexSpaces.
+Before the PathFinder returns the reachables, all HexSpaces of type Blockade are filtered out of it so that the userEntity can not move on Hexspace. Note that the Baricades to not disapear from the previous history of the individual reachable HexSpaces.
 
 * * *
 
@@ -153,10 +153,10 @@ This method needs to be overwritten in order to determine the neighbours of a sp
 Defines the cards name for identification in the frontend. Multiple cards can have the same name.
 
 **-private coinValue: float**
-How many coins the user gets when selling the card
+How many coins the userEntity gets when selling the card
 
 **-private coinCost: int**
-How many coins the user needs to buy this card from the Market.
+How many coins the userEntity needs to buy this card from the Market.
 
 **+public sellAction(player: Player)**
 The cards sellAction method  handles what happens when a card is sold. In the normal cases, sell will increase call Player.discard(Card), but in some cases a special Card will overwrite the sell method and call Player.remove(Card), making the card fall out of the game when being sold (treasury).
@@ -210,7 +210,7 @@ Overwrites the sellAction method that calls Player.remove(this) instead of Playe
 ====================================
 
 **+public actions: SpecialActions**
-The Budget that is granted to the user when the ActionCards action is performed. Bugeds stores how many cards the user can draw from the draw pile, how many card she/he can remove and how many cards she/he  can steal from the market according to the cards type.
+The Budget that is granted to the userEntity when the ActionCards action is performed. Bugeds stores how many cards the userEntity can draw from the draw pile, how many card she/he can remove and how many cards she/he  can steal from the market according to the cards type.
 
 **+public performAction(): SpecialActions**
 The performAction returns a Budget of how many cards the Player can draw/remove/steal for free.
@@ -234,13 +234,13 @@ Calls the parents performAction to use Player.remove(Card) instead of Player.dis
 ===================
 
 **-private active: ArrayList<Slot>**
-Slot with the active cards. These are always purchasable by the user.
+Slot with the active cards. These are always purchasable by the userEntity.
 
 **-private passive: ArrayList<Slot>**
 Slot of passive cards. These cards are only purchasable if the active ArrayList has less than 6 Slots. Otherwise, these cards are not purchasable.
 
 **+public buy(slot: Slot): Card**
-Removes one Card from the Slot and returns it to the user. A buy order is only valid if the Slot is part of the Active Slots or the Active Slots have less than 6 Slots inside. In this case, the Slot from the Passive Slots is moved into the active Slot. If The Slot was an active Slot and only one Card was left, the Slot gets removed entirely. The player then puts the card on the discard pile using Card.discard()
+Removes one Card from the Slot and returns it to the userEntity. A buy order is only valid if the Slot is part of the Active Slots or the Active Slots have less than 6 Slots inside. In this case, the Slot from the Passive Slots is moved into the active Slot. If The Slot was an active Slot and only one Card was left, the Slot gets removed entirely. The player then puts the card on the discard pile using Card.discard()
 
 **+public getPurchasables(): ArrayList<Slot>**
 Returns either the active Slots when size of active slots is 6, active and passive slots otherwise.
@@ -252,7 +252,7 @@ Returns the active slots.
 Returns the passive slots.
 
 **+public stealCard(slot: Slot)**
-Lets the user take one card from active and passive slots. If the slot becomes empty, removes that slot from the active Slots.
+Lets the userEntity take one card from active and passive slots. If the slot becomes empty, removes that slot from the active Slots.
 
 * * *
 
@@ -266,7 +266,7 @@ Each pile consists of 1 to 3 Cards.
 Returns one contained Card instance and removes it from the Pile.
 
 **+public getCard(): Card**
-Returns one of the Card from the pile without removing it. Is used to compare card values before the user buys a card.
+Returns one of the Card from the pile without removing it. Is used to compare card values before the userEntity buys a card.
 
 * * *
 
@@ -280,7 +280,7 @@ Players  name, set by the User. Has to be unique in the Game
 Globally unique ID to recognize a Player within the Game.
 
 **-private token: String**
-Global unique token that identifies a User to its player. The token is communicated via SSL and randomized. For each game changing move, the user has to validate itself with this token in order to perform the move.
+Global unique token that identifies a User to its player. The token is communicated via SSL and randomized. For each game changing move, the userEntity has to validate itself with this token in order to perform the move.
 
 **-private coins: Float**
 Number of coins the Player has in his wallet. Is reset to 0 when he ends his round or bought one card.
@@ -295,25 +295,25 @@ Instance of PATHFINDER the player uses to find the possible paths.
 List of blockades the Player has collected so far.
 
 **-private playingPiece: ArrayList<PlayingPiece>**
-The HexSpaces the user can move with.
+The HexSpaces the userEntity can move with.
 
 **-private specialAction: SpecialAction**
-The budget the user has for the current round. Is set from the action cards and reset either at the end of the game or value-by-value each time the corresponding method (draw, remove, steal) is called.
+The budget the userEntity has for the current round. Is set from the action cards and reset either at the end of the game or value-by-value each time the corresponding method (draw, remove, steal) is called.
 
 **-private history: ArrayList<CardAction>**
-Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
+Each time the userEntity plays a Card of any type, its history is appended with the corresponding CardAction.
 
 **-private drawPile: ArrayList<Cards>**
-List of cards the user has in his drawpile.
+List of cards the userEntity has in his drawpile.
 
 **-private handPile: ArrayList<Cards>**
-List of cards the user has in his drawPile.
+List of cards the userEntity has in his drawPile.
 
 **-private discardPile: ArrayList<Cards>**
-List of cards the user has in his discardPile.
+List of cards the userEntity has in his discardPile.
 
 **-private bought: Boolean**
-Indicates whether the user has already bought a Card in the current round.
+Indicates whether the userEntity has already bought a Card in the current round.
 
 **\+ public findPath(activeCards: ArrayList<Card>, playingPiece: PlayingPiece): ArrayList<HexSpace>**
 Calls PathFinder with the cards and the selected playingPiece. Returns the same arrayList the PathFinder returns.
@@ -322,7 +322,7 @@ Calls PathFinder with the cards and the selected playingPiece. Returns the same 
 Call this.pathFinder with the first playingPiece and the list of Cards.Returns the same arrayList this.pathFinder returns.
 
 **\+ public move(playingPiece: PlayingPiece, cards: ArrayList<Cards>, moveTo: HexSpace)**
-Checks in the memento whether cards corresponds to SelectedCards, placingPiece to playingPiece and if to-HexSpace is in reachables. If so, the players PlayingPiece is moved to the to-HexSpace location. If in the history of the to-HexSpaces previous an active barricadeSpace is located, deactive is called on the corresponding blockade and the blockade is added to the users barricades-array. After a move is done, call cards.move on all cards in the Cards array. Finally, we check whether a deactivated barricade is now next to the to-HexSpaces neighbours. If this is the case, check whether the barricade is of the same type as the to-HexSpace and if the difference between the cards value and the to-HexSpaces minimalCosts allows the removal of the barricade. The user can then decide whether he wants to take that barricade or not.
+Checks in the memento whether cards corresponds to SelectedCards, placingPiece to playingPiece and if to-HexSpace is in reachables. If so, the players PlayingPiece is moved to the to-HexSpace location. If in the history of the to-HexSpaces previous an active barricadeSpace is located, deactive is called on the corresponding blockade and the blockade is added to the userEntities barricades-array. After a move is done, call cards.move on all cards in the Cards array. Finally, we check whether a deactivated barricade is now next to the to-HexSpaces neighbours. If this is the case, check whether the barricade is of the same type as the to-HexSpace and if the difference between the cards value and the to-HexSpaces minimalCosts allows the removal of the barricade. The userEntity can then decide whether he wants to take that barricade or not.
 
 When the move is done, the Player checks whether his PlayingPiece stands on a HexSpace of colour ElDoardo. If this is the case, he adds himself to the Games winning Player array.
 
@@ -333,7 +333,7 @@ Calls action on the corresponding card and sets the returned SpecialAction to it
 Moves the corresponding Card from the handPile to the discardPile. Adds instance of CardAction with dedicated name to the history array.
 
 **\+ public buy(slot: Slot)**
-Calls buy on the market and adds the returned card to the discardPile if the user has the coins to do so and not yet bought anything. Adds instance of CardAction with dedicated name to the history array.
+Calls buy on the market and adds the returned card to the discardPile if the userEntity has the coins to do so and not yet bought anything. Adds instance of CardAction with dedicated name to the history array.
 
 **\+ public draw()**
 Calls draw(amount) with the amount being 4 - length of HandPile.
@@ -404,7 +404,7 @@ Deletes all entries from reachables and selectedCards, playingPiece can be set t
 ==========================
 
 **\+ public validate(token: String): boolean**
-Compares the user token with the token from the current player and only allows the turn if they match AND the game is in running state.
+Compares the userEntity token with the token from the current player and only allows the turn if they match AND the game is in running state.
 
 **\+ public endRound(token: String)**
 Calls Endround on the player after validating token. Changes the current Player and therefore makes all further action of the old player non-accepting. Checks whether the current Player was of the highest ID (last Player in the round). If so, check whether the Game has Players in its winning Players array and set the running attribute to false if this is the case.
@@ -437,7 +437,7 @@ Calls remove on player after validating the token.
 Calls action on player after validating the token.
 
 **\+ public getActions(): ArrayList<CardAction>**
-Returns an array of CardActions that the user performed until now in his turn.
+Returns an array of CardActions that the userEntity performed until now in his turn.
 
 
 * * *

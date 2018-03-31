@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
-public enum COLORS {
+public enum COLOR {
     JUNGLE,
     RIVER,
     SAND,
@@ -9,5 +9,5 @@ public enum COLORS {
     BASECAMP,
     STARTFIELD,
     ENDFIELD,
-    EMPTY;
+    EMPTY
 }

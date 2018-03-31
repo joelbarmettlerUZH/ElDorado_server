@@ -9,7 +9,7 @@ public class Blockade {
     /*
     List of BlockadeSpaces the Blockade consists of.
      */
-    protected List<BlockadeSpace> spaces;
+    private List<BlockadeSpace> spaces;
 
     /*
     Cost to remove this blockade. The cost is the same for all
@@ -19,7 +19,7 @@ public class Blockade {
     Blockade gets assigned to the Player that removed it and its cost factor
     has to be remembered for the endgame.
      */
-    protected int cost;
+    private int cost;
 
     /*
     Deactivates a blockade by settings its BlockadeSpace stregth to 0.
@@ -33,5 +33,13 @@ public class Blockade {
      */
     public void assign(Blockade blockade){
 
+    }
+
+    public List<BlockadeSpace> getSpaces() {
+        return spaces;
+    }
+
+    public int getCost() {
+        return cost;
     }
 }

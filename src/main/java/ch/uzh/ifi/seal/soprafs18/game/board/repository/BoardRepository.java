@@ -1,4 +1,10 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.repository;
 
-public class BoardRepository {
+import ch.uzh.ifi.seal.soprafs18.game.board.entity.BoardEntity;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+public interface BoardRepository extends CrudRepository<BoardEntity, Integer> {
+    List<BoardEntity> findByBoardID(int id);
 }

@@ -1,4 +1,10 @@
 package ch.uzh.ifi.seal.soprafs18.repository;
 
-public class UserRepository {
+import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+public interface UserRepository extends CrudRepository<UserEntity, Integer> {
+    List<UserEntity> findByUserID(int ID);
 }
