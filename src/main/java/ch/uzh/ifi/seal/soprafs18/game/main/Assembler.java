@@ -4,16 +4,18 @@ import ch.uzh.ifi.seal.soprafs18.game.board.entity.Board;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.Strip;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.Tile;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import jdk.nashorn.internal.ir.Block;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class Assembler {
     /*
     Instance of Database containing all the Game
      */
-    @Autowired
-    private Board board;
-    private Strip strip;
-    private Tile tile;
+    protected Board board;
+    protected Strip strip;
+    protected Tile tile;
 
     /*
     The assembleBoard creates a Matrix consisting of all the elements from the Game
@@ -31,7 +33,7 @@ public class Assembler {
     We consider this more efficient than parsing the pathMatrix, since the assembler has
     the information abouts these positions already.
      */
-    public Blockade[] getBlockades(int boardID){
+    public List<Block> getBlockades(int boardID){
         return null;
     }
 
@@ -40,7 +42,7 @@ public class Assembler {
     The Game needs these information to place the playing Pieces. We rather request these
     informations from the assembler than parsing the matrix.
      */
-    public HexSpace[] getStartingFields(int boardID){
+    public List<HexSpace> getStartingFields(int boardID){
         return null;
     }
 
@@ -49,7 +51,7 @@ public class Assembler {
     The Game needs these information to place the playing Pieces. We rather request these
     informations from the Assembler than parsing the matrix.
      */
-    public HexSpace[] getEndingFields(int boardID){
+    public List<HexSpace> getEndingFields(int boardID){
         return null;
     }
 }

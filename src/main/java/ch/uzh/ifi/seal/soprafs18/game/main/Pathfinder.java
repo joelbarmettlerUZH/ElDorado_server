@@ -4,13 +4,10 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 
+import java.util.List;
 import java.util.Set;
 
 public class Pathfinder {
-    /*
-    Array of all HexSpaces that the PathFinder algorithm has visited and are marked as reachable.
-     */
-    private Set<HexSpace> reachables;
 
     /*
     The PlayingPiece has a HexSpace. This hexSpace is the first entry in the reachables array,
@@ -46,7 +43,7 @@ public class Pathfinder {
     can not move on Hexspace. Note that the Baricades to not disapear from the previous history of the individual reachable
     HexSpaces.
     */
-    public HexSpace[] getWay(Card[] cards, PlayingPiece playingPiece){
+    public static List<HexSpace> getWay(List<Card> cards, PlayingPiece playingPiece){
         return null;
     }
 }

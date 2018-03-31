@@ -1,12 +1,15 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+
+import java.util.List;
 
 public class Blockade {
     /*
     List of BlockadeSpaces the Blockade consists of.
      */
-    private BlockadeSpace[] spaces;
+    protected List<BlockadeSpace> spaces;
 
     /*
     Cost to remove this blockade. The cost is the same for all
@@ -16,7 +19,7 @@ public class Blockade {
     Blockade gets assigned to the Player that removed it and its cost factor
     has to be remembered for the endgame.
      */
-    private int cost;
+    protected int cost;
 
     /*
     Deactivates a blockade by settings its BlockadeSpace stregth to 0.

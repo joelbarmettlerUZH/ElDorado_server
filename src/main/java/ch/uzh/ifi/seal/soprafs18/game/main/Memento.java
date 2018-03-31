@@ -4,27 +4,29 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 
+import java.util.List;
+
 public class Memento {
 
     /*
     List of HexSpaces that the PathFinder reached.
      */
-    private HexSpace[] reachables;
+    protected List<HexSpace> reachables;
 
     /*
     List of Cards that were used to perform the pathfinding-algorithm.
      */
-    private Card[] selectedCards;
+    protected List<Card> selectedCards;
 
     /*
     PlayingPiece from which the PathFinder performed its pathfinder-algorithm.
      */
-    private PlayingPiece playingPiece;
+    protected PlayingPiece playingPiece;
 
     /*
     Refill Memento with new information from the PathFinder.
      */
-    public void reset(HexSpace[] reachables, Card[] selectedCards){
+    public void reset(List<HexSpace> reachables, List<Card> selectedCards){
 
     }
 
