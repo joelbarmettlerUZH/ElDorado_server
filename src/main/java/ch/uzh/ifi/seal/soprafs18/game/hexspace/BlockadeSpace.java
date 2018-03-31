@@ -8,8 +8,9 @@ public class BlockadeSpace extends HexSpace{
     since other BlockadeSpaces shall not count as its neighbours. The overwritten method considers where the player was
     coming from and therefore computes the neighbours ignoring inactive barricades.
      */
+
     @Override
-    private List<HexSpace> getNeighbour(){
+    protected List<HexSpace> getNeighbour(){
         return null;
     }
 }

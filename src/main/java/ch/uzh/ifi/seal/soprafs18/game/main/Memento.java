@@ -11,17 +11,17 @@ public class Memento {
     /*
     List of HexSpaces that the PathFinder reached.
      */
-    private List<HexSpace> reachables;
+    protected List<HexSpace> reachables;
 
     /*
     List of Cards that were used to perform the pathfinding-algorithm.
      */
-    private List<Card> selectedCards;
+    protected List<Card> selectedCards;
 
     /*
     PlayingPiece from which the PathFinder performed its pathfinder-algorithm.
      */
-    private PlayingPiece playingPiece;
+    protected PlayingPiece playingPiece;
 
     /*
     Refill Memento with new information from the PathFinder.

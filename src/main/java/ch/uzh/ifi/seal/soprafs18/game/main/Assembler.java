@@ -13,10 +13,9 @@ public class Assembler {
     /*
     Instance of Database containing all the Game
      */
-    @Autowired
-    private Board board;
-    private Strip strip;
-    private Tile tile;
+    protected Board board;
+    protected Strip strip;
+    protected Tile tile;
 
     /*
     The assembleBoard creates a Matrix consisting of all the elements from the Game
