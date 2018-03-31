@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
+import java.awt.*;
 import java.util.List;
 
 
@@ -69,7 +70,7 @@ public class Game {
     Gets a point with X/Y coordinates and returns a reference to the instance
     of HexSpace that is located at that position in the pathMatrix.
      */
-    public HexSpace getHexSpace(int x, int y){
+    public HexSpace getHexSpace(Point point){
         return null;
     }
 }
