@@ -4,6 +4,9 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
+
+
 public class MovingCard extends Card{
     /*
      Defines the cards moving-value: The moving cards strength defines the initial strengthLeft value for the
@@ -39,6 +42,7 @@ public class MovingCard extends Card{
     the card is removed instead of discarded.
      */
 
+    @Override
     public void moveAction(Player player, HexSpace moveTo) {
 
     }
