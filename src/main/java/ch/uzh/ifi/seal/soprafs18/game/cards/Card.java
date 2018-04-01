@@ -24,7 +24,7 @@ public abstract class Card {
      Player.discard(Card), but in some cases a special Card will overwrite the sell method and call Player.remove(Card),
      making the card fall out of the game when being sold (treasury).
      */
-    public void sellAction(){
+    public void sellAction(Player player){
 
     }
 
