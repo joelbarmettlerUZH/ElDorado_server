@@ -28,20 +28,23 @@ public class Assembler {
     compute relative positions for OuterRing
      */
     private int[] outerRingDislocX = {0,1,2,3,3,3,3,2,1,0,-1,-2,-3,-3,-3,-3,-2,-1};
-    private int[] outerRingDislocY = {3,3,2,2,1,0,-1,-2,-2,-3,-2,-2,-1,0,1,2,2,3};
+    private int[] outerRingDislocYEven = {3,3,2,2,1,0,-1,-2,-2,-3,-2,-2,-1,0,1,2,2,3};
+    private int[] outerRingDislocYOdd = {3,2,2,1,0,-1,-2,-2,-3,-3,-3,-2,-2,-1,0,1,2,2};
 
     /*
     compute relative positions for MidRing
     */
     private int[] midRingDislocX = {0,1,2,2,2,1,0,-1,-2,-2,-2,-1};
-    private int[] midRingDislocY = {2,1,1,0,-1,-1,-2,-1,-1,0,1,1};
+    private int[] midRingDislocYEven = {2,2,1,0,-1,-1,-2,-1,-1,0,1,2};
+    private int[] midRingDislocYOdd = {2,1,1,0,-1,-2,-2,-2,-1,0,1,1};
     /*
 
     /*
     compute relative positions for InnerRing
     */
     private int[] innerRingDislocX = {0,1,1,0,-1,-1};
-    private int[] innerRingDislocY = {1,1,0,-1,0,1};
+    private int[] innerRingDislocYEven = {1,1,0,-1,0,1};
+    private int[] innerRingDislocYOdd = {1,0,-1,-1,-1,0};
     /*
     The assembleBoard creates a Matrix consisting of all the elements from the GameEntity
     with ID = boardNumber and returns the matrix with the well prepared GameEntity. The assembler
@@ -51,34 +54,48 @@ public class Assembler {
     public HexSpaceEntity[][] assembleBoard(int boardID){
         HexSpaceEntity[][] boardMatrix = new HexSpaceEntity[100][100];
         board = boardRepository.findByBoardID(boardID);
+
+        //Assemble Tiles to Matrix
         List<TileEntity> Tile = board.getTiles();
         List<Integer> TilePositionX = board.getTilesPositionX();
         List<Integer> TilePositionY = board.getTilesPositionY();
         List<Integer> TileRotation = board.getStripRotation();
+
         for(int i = 0; i < Tile.size(); i++){
             int currentTileRotation = TileRotation.get(i);
             List<HexSpaceEntity> currentTileHexSpaces = Tile.get(i).getHexSpaceEntities();
-            for(int j = 0; j < currentTileHexSpaces.size();j++){
-                if (j<18) {
-                    boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) + outerRingDislocY[j]]
-                            = currentTileHexSpaces.get((j + (currentTileRotation * 3))%18);
-                }
-                else if (j>=18 && j<30){
-                    boardMatrix[TilePositionX.get(i) + midRingDislocX[j]][TilePositionY.get(i) + midRingDislocY[j]]
-                            = currentTileHexSpaces.get((j + (currentTileRotation * 2))%30);
-                }
-                else if (j>=30 && j<36){
-                    boardMatrix[TilePositionX.get(i) + innerRingDislocX[j]][TilePositionY.get(i) + innerRingDislocY[j]]
-                            = currentTileHexSpaces.get((j + (currentTileRotation))%36);
-                }
-                else {
+            for(int j = 0; j < currentTileHexSpaces.size();j++) {
+                if (j < 18) {
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
+                                outerRingDislocYEven[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
+                    } else {
+                        boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
+                                outerRingDislocYOdd[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
+                    }
+                } else if (j >= 18 && j < 30) {
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + midRingDislocX[j]][TilePositionY.get(i) + midRingDislocYEven[j]]
+                                = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 30));
+                    } else {
+                        boardMatrix[TilePositionX.get(i) + midRingDislocX[j]][TilePositionY.get(i) + midRingDislocYOdd[j]]
+                                = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 30));
+                    }
+                } else if (j >= 30 && j < 36) {
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + innerRingDislocX[j]][TilePositionY.get(i) + innerRingDislocYEven[j]]
+                                = currentTileHexSpaces.get(36 + (((j - 36) + (currentTileRotation)) % 36));
+                    } else {
+                        boardMatrix[TilePositionX.get(i) + innerRingDislocX[j]][TilePositionY.get(i) + innerRingDislocYOdd[j]]
+                                = currentTileHexSpaces.get(36 + (((j - 36) + (currentTileRotation)) % 36));
+                    }
+                } else {
                     boardMatrix[TilePositionX.get(i)][TilePositionY.get(i)]
-                            = currentTileHexSpaces.get((j + (currentTileRotation))%36);
+                            = currentTileHexSpaces.get((j + (currentTileRotation)) % 36);
                 }
             }
-
-
         }
+
         return null;
     }
 

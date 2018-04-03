@@ -10,17 +10,17 @@ import java.util.List;
 @Table(name = "STRIP")
 public class StripEntity {
     @Id
-    @Column(unique = true)
-    private int stripID;
+    @Column(name = "ID", unique = true)
+    private char stripID;
 
     @Column(name = "HEXSPACES")
     private List<HexSpaceEntity> hexSpaceEntities;
 
-    public int getStripID() {
+    public char getStripID() {
         return stripID;
     }
 
-    public void setStripID(int stripID) {
+    public void setStripID(char stripID) {
         this.stripID = stripID;
     }
 
