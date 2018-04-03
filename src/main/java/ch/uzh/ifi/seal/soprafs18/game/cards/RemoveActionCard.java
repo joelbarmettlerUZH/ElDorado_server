@@ -9,8 +9,7 @@ public class RemoveActionCard extends ActionCard {
 
     @Override
     public SpecialActions performAction(Player player){
-        super.performAction(player);
         player.remove(this);
-        return null;
+        return super.performAction(player);
     }
 }

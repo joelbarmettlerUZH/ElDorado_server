@@ -16,15 +16,17 @@ public class Slot {
     /*
     Returns one contained Card instance and removes it from the Pile.
      */
-    public Card buy(){
-        return null;
+    public Card buy() {
+        Card tmp = pile.get(0);
+        pile.remove(0);
+        return tmp;
     }
 
     /*
     Returns one of the Card from the pile without removing it. Is used to compare card values before the user buys a card.
      */
     public Card getCard(){
-        return null;
+        return pile.get(0);
     }
 
     public int getSlotID() {
