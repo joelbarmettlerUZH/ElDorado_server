@@ -4,7 +4,6 @@ package ch.uzh.ifi.seal.soprafs18.entity;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.SpecialActions;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
-import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.CardAction;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
@@ -14,19 +13,42 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "PLAYER_ENTITY")
 public class PlayerEntity {
+
+    public PlayerEntity(Player player, GameEntity gameEntity){
+        this.player = player;
+        this.game = gameEntity;
+    }
+
+    public PlayerEntity(){
+
+    }
+
+    private int playerID;
     @Id
     @GeneratedValue
-    @Column(name = "PLYERID")
-    private int plaerID;
+    @Column(name = "PLAYERID")
+    public int getPlayerID() {
+        return playerID;
+    }
 
-    @Column(name = "PLAYER")
-    private Player player;
+    public Player player;
+    @Transient
+    public Player getPlayer() {
+        return player;
+    }
 
     @Column(name = "NAME")
     public String player() {
         return player.getName();
+    }
+
+    private GameEntity game;
+    @ManyToOne
+    @JoinColumn(name = "GAMEID")
+    public GameEntity getGame() {
+        return game;
     }
 
     @JsonIgnore
@@ -57,13 +79,6 @@ public class PlayerEntity {
         return player.getBlockades();
     }
 
-    @Column(name = "GAME")
-    @ManyToOne
-    @JoinColumn(name = "GAMEID")
-    private Game game() {
-        return player.getGame();
-    }
-
     @Column(name = "HANDPILE")
     private List<Card> handPile() {
         return player.getHandPile();
@@ -89,4 +104,15 @@ public class PlayerEntity {
         return player.getHistory();
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setGame(GameEntity game) {
+        this.game = game;
+    }
+
+    public void setPlayerID(int playerID) {
+        this.playerID = playerID;
+    }
 }

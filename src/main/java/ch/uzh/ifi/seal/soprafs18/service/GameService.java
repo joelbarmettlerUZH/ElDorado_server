@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.service;
 
 import ch.uzh.ifi.seal.soprafs18.entity.GameEntity;
+import ch.uzh.ifi.seal.soprafs18.entity.PlayerEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
@@ -20,21 +21,28 @@ public class GameService {
         return gameRepository.findByGameID(gameID).get(0);
     }
 
-    public Player getCurrentPlayer(GameEntity game){
+    /*
+    public PlayerEntity getCurrentPlayer(GameEntity game){
         return game.getCurrentPlayer();
     }
+    */
 
-    public List<Player> getPlayers(GameEntity game){
+    /*
+    public List<PlayerEntity> getPlayers(GameEntity game){
         return game.getPlayers();
     }
+    */
 
     public void stop(GameEntity game){
         game.getGame().setRunning(false);
     }
 
-    public Player getWinner(GameEntity game){
+    /*
+
+    public PlayerEntity getWinner(GameEntity game){
         return game.getWinner().get(0);
     }
+    */
 
     public HexSpace[][] getBoard(GameEntity game){
         return game.getBoard();

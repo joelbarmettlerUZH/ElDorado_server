@@ -4,71 +4,122 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import ch.uzh.ifi.seal.soprafs18.repository.PlayerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "GAME")
+@Table(name = "GAME_ENTITY")
 public class GameEntity {
+    @Autowired
+    PlayerRepository playerRepository;
+
+    public GameEntity(Game game){
+        this.game = game;
+    }
+
+    public GameEntity(){
+
+    }
+
+    private int gameID;
+
     @Id
     @GeneratedValue
     @Column(name = "GAMEID")
-    private int gameID;
-
-    @Column(name = "GAME")
-    protected Game game;
-
-    @Column(name = "CURRENTPLAYER")
-    public Player getCurrentPlayer(){
-        return game.getCurrent();
+    public int getGameID(){
+        return gameID;
     }
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
+    }
+
+    protected Game game;
+    @Transient
+    public Game getGame() {
+        return game;
+    }
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+
+    @OneToOne
+    public PlayerEntity getCurrentPlayer(){
+        return playerRepository.findByPlayerID(game.getCurrent().getPlayerID()).get(0);
+    }
+    public void setCurrentPlayer(PlayerEntity playerEntity){
+
+    }
+
+
 
     @Column(name = "PLAYERS")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
-    public List<Player> getPlayers(){
-        return game.getPlayers();
+    public List<PlayerEntity> getPlayers(){
+        List<PlayerEntity> players = new ArrayList<>();
+        for(Player p:game.getPlayers()){
+            players.add(playerRepository.findByPlayerID(p.getPlayerID()).get(0));
+        }
+        return players;
     }
+    public void setPlayers(List<Player> players){
+
+    }
+
 
     @Column(name = "RUNNING")
     public boolean getRunning(){
         return game.isRunning();
     }
+    public void setRunning(boolean running){
+        game.setRunning(running);
+    }
+
 
     @Column(name = "WINNER")
-    public List<Player> getWinner(){
-        return game.getWinners();
+    @ElementCollection
+    public List<PlayerEntity> getWinner(){
+        List<PlayerEntity> players = new ArrayList<>();
+        for(Player p:game.getWinners()){
+            players.add(playerRepository.findByPlayerID(p.getPlayerID()).get(0));
+        }
+        return players;
+    }
+    public void setWinner(List<PlayerEntity> winners){
+
     }
 
+    private int boardID;
     @Column(name = "BOARDID")
     public int getBoardID(){
-        return game.getGameID();
+        return boardID;
+    }
+    public void setBoardID(int boardID){
+        this.boardID = boardID;
     }
 
-    @Column(name = "BOARD")
+
+    @Transient
     public HexSpace[][] getBoard(){
         return game.getPathMatrix();
     }
+    public void setBoard(HexSpace[][] board){
 
+    }
+
+    @Transient
     @Column(name = "BLOCKADE")
+    @ElementCollection
     public List<Blockade> getBlockade(){
         return game.getBlockades();
     }
+    public void setBlockade(List<Blockade> blockade){
 
-    public int getGameID() {
-        return gameID;
     }
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
-
-    public ch.uzh.ifi.seal.soprafs18.game.main.Game getGame() {
-        return game;
-    }
-
-    public void setGame(ch.uzh.ifi.seal.soprafs18.game.main.Game game) {
-        this.game = game;
-    }
 
 }

@@ -9,9 +9,17 @@ import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 import jdk.nashorn.internal.ir.Block;
 
+import javax.persistence.*;
 import java.util.List;
 
+
+
 public class Player {
+
+    /*
+    Globally unique ID
+     */
+    private int playerID;
 
     /*
     Players  name, set by the User. Has to be unique in the Game
@@ -21,10 +29,11 @@ public class Player {
     /*
     The game the player is currently in.
      */
+
     private Game game;
 
     /*
-    Globally unique ID to recognize a Player within the Game.
+    Locally unique ID to recognize a Player within the Game.
      */
     private Integer id;
 
@@ -294,4 +303,9 @@ public class Player {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
 }

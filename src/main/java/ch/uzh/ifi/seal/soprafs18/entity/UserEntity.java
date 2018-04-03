@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -7,6 +8,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USER")
 public class UserEntity {
+
+    public UserEntity(String name, int character, RoomEntity roomEntity){
+        this.name = name;
+        this.character = character;
+        this.roomEntity = roomEntity;
+        this.ready = false;
+    }
+
+    public UserEntity(){
+
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "USERID")
@@ -16,7 +29,7 @@ public class UserEntity {
     @Column(name = "TOKEN")
     private String token;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
 
     @Column(name = "CHARACTER")
@@ -25,10 +38,10 @@ public class UserEntity {
     @Column(name = "READY")
     private boolean ready = false;
 
-    @Column(name = "GAME")
     @ManyToOne
-    @JoinColumn(name="ROOMID")
-    protected GameEntity game;
+    @JoinColumn(name="roomID")
+    @JsonBackReference
+    private RoomEntity roomEntity;
 
     public int getUserID() {
         return userID;
@@ -70,11 +83,11 @@ public class UserEntity {
         this.ready = ready;
     }
 
-    public GameEntity getGame() {
-        return game;
+    public RoomEntity getRoomEntity() {
+        return roomEntity;
     }
 
-    public void setGame(GameEntity game) {
-        this.game = game;
+    public void setRoomEntity(RoomEntity roomEntity) {
+        this.roomEntity = roomEntity;
     }
 }

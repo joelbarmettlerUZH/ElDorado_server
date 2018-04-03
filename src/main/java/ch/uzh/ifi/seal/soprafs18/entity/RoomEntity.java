@@ -1,22 +1,35 @@
 package ch.uzh.ifi.seal.soprafs18.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "ROOM")
 public class RoomEntity {
+
+    public RoomEntity(String name, UserEntity userEntity){
+        this.name = name;
+        this.users.add(userEntity);
+    }
+
+    public RoomEntity(){
+
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "ROOMID")
     private int roomID;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name = "Unknown";
 
     @Column(name = "USERS")
-    @OneToMany(mappedBy = "room")
-    private List<UserEntity> userEntities;
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "roomEntity")
+    @JsonManagedReference
+    private List<UserEntity> users;
 
     public int getRoomID() {
         return roomID;
@@ -34,15 +47,17 @@ public class RoomEntity {
         this.name = name;
     }
 
-    public List<UserEntity> getUserEntities() {
-        return userEntities;
+    public List<UserEntity> getUsers() {
+        return users;
     }
 
-    public void setUserEntities(List<UserEntity> userEntities) {
-        this.userEntities = userEntities;
+    public void setUsers(List<UserEntity> userEntities) {
+        this.users = userEntities;
     }
 
     public void addUser(UserEntity userEntity){
-        this.userEntities.add(userEntity);
+        System.out.println("adding user "+userEntity.getName());
+        this.users.add(userEntity);
+        System.out.println(users.get(0).getName());
     }
 }
