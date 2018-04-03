@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
@@ -15,12 +16,18 @@ public class ActionCard extends Card {
     /*
     The performAction returns a Budget of how many cards the Player can draw/remove/steal for free.
      */
-    public SpecialActions performAction(){return null;}
+    public SpecialActions performAction(Player player){return null;}
 
     /*
     Calls Player.discard(this) in the standard case. If the to-HexSpace happens to be of color BaseCamp,
     then call Player.remove(this) instead.
      */
     @Override
-    public void moveAction(Player player, HexSpace moveTo){}
+    public void moveAction(Player player, HexSpace moveTo){
+        if (moveTo.getColor() == COLOR.BASECAMP) {
+            player.remove(this);
+        } else {
+            player.discard(this);
+        }
+    }
 }

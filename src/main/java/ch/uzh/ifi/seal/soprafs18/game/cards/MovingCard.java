@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import ch.uzh.ifi.seal.soprafs18.game.board.repository.TileRepository;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
@@ -8,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 
 
 public class MovingCard extends Card{
+
     /*
      Defines the cards moving-value: The moving cards strength defines the initial strengthLeft value for the
      path finding algorithm.
@@ -38,12 +40,17 @@ public class MovingCard extends Card{
     Does NOT move the Player directly, that is his job. This method lets the card decide of what action is to be taken
     after a move is fullfilled: Player.discard(this) or Player.remove(this). Implementation here is Player.discard(this),
     all special cards that want to be removed after moving overwrite this method with Player.remove(this).
-    Before Player.dicard(this) is called, we check for one special case: if the to-HexSpaceEntity is of type basecamp,
+    Before Player.discard(this) is called, we check for one special case: if the to-HexSpaceEntity is of type basecamp,
     the card is removed instead of discarded.
      */
 
     @Override
     public void moveAction(Player player, HexSpace moveTo) {
 
+        if (moveTo.getColor() == COLOR.BASECAMP){
+            player.remove(this);
+        } else {
+            player.discard(this);
+        }
     }
 }

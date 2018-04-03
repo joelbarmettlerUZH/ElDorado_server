@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
@@ -10,6 +11,11 @@ public class RemoveMoveCard extends MovingCard {
      */
     @Override
     public void moveAction(Player player, HexSpace moveTo) {
-        super.moveAction(player, moveTo);
+
+        if (this.colors == COLOR.RUBBLE){
+            player.discard(this);
+        } else {
+            player.remove(this);
+        }
     }
 }

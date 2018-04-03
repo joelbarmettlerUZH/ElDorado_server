@@ -31,6 +31,7 @@ public abstract class Card {
     /*
     Abstract method to define action on move
      */
+
     public abstract void moveAction(Player player, HexSpace moveTo);
 
     public String getName() {
