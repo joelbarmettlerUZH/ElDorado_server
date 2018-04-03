@@ -15,7 +15,10 @@ public class BoardEntity {
     private List<TileEntity> tiles;
 
     @Column(name = "TILESROTATION")
-    private List<Integer> tilesRotatoin;
+    private List<Integer> tilesRotation;
+
+    @Column(name = "TILESPOSITION")
+    private List<Integer> tilesPosition;
 
     @Column(name = "STRIP")
     private List<StripEntity> strip;
@@ -33,7 +36,10 @@ public class BoardEntity {
     private List<Point> startingSpaces;
 
     @Column(name = "ENDINGSPACES")
-    private List<Point> endingSpaces;
+    private List<HexSpaceEntity> endingSpaces;
+
+    @Column(name = "ENDINGSPACEPOSITION")
+    private List<Point> endingSpacePosition;
 
     public int getBoardID() {
         return boardID;
@@ -51,12 +57,20 @@ public class BoardEntity {
         this.tiles = tiles;
     }
 
-    public List<Integer> getTilesRotatoin() {
-        return tilesRotatoin;
+    public List<Integer> getTilesRotation() {
+        return tilesRotation;
     }
 
-    public void setTilesRotatoin(List<Integer> tilesRotatoin) {
-        this.tilesRotatoin = tilesRotatoin;
+    public void setTilesRotation(List<Integer> tilesRotation) {
+        this.tilesRotation = tilesRotation;
+    }
+
+    public List<Integer> getTilesPosition() {
+        return tilesPosition;
+    }
+
+    public void setTilesPosition(List<Integer> tilesPosition) {
+        this.tilesPosition = tilesPosition;
     }
 
     public List<StripEntity> getStrip() {
@@ -99,11 +113,19 @@ public class BoardEntity {
         this.startingSpaces = startingSpaces;
     }
 
-    public List<Point> getEndingSpaces() {
+    public List<HexSpaceEntity> getEndingSpaces() {
         return endingSpaces;
     }
 
-    public void setEndingSpaces(List<Point> endingSpaces) {
+    public void setEndingSpaces(List<HexSpaceEntity> endingSpaces) {
         this.endingSpaces = endingSpaces;
+    }
+
+    public List<Point> getEndingSpacePosition() {
+        return endingSpacePosition;
+    }
+
+    public void setEndingSpacePosition(List<Point> endingSpacePosition) {
+        this.endingSpacePosition = endingSpacePosition;
     }
 }

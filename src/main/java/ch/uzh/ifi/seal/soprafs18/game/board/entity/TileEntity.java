@@ -10,17 +10,22 @@ import java.util.List;
 @Table(name = "TILE")
 public class TileEntity {
     @Id
-    @Column(unique = true)
-    private int tileID;
+    @Column(name = "ID",unique = true)
+    private char tileID;
 
     @Column(name = "HEXSPACES")
     private List<HexSpaceEntity> hexSpaceEntities;
+
+    public TileEntity(char tileID, List<HexSpaceEntity> hexSpaceEntities){
+        this.tileID = tileID;
+        this.hexSpaceEntities=hexSpaceEntities;
+    }
 
     public int getTileID() {
         return tileID;
     }
 
-    public void setTileID(int tileID) {
+    public void setTileID(char tileID) {
         this.tileID = tileID;
     }
 

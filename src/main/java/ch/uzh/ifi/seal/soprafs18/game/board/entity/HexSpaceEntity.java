@@ -9,9 +9,8 @@ import javax.persistence.*;
 @Table(name = "HEXSPACE")
 public class HexSpaceEntity {
     @Id
-    @Column(name = "ID")
-    @GeneratedValue
-    private int id;
+    @Column(name = "ID", unique = true)
+    private String id;
 
     @Column(name = "COLOR")
     @Enumerated(EnumType.STRING)
@@ -20,25 +19,25 @@ public class HexSpaceEntity {
     @Column(name = "STRENGTH")
     private int strength;
 
-    public HexSpaceEntity(COLOR color, int strength){
+    public HexSpaceEntity(String id,COLOR color, int strength){
+        this.id = id;
         this.color = color;
         this.strength = strength;
     }
 
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public COLOR getCOLOR() {
+    public COLOR getColor() {
         return color;
     }
 
-    public void setCOLOR(COLOR color) {
+    public void setColor(COLOR color) {
         this.color = color;
     }
 
