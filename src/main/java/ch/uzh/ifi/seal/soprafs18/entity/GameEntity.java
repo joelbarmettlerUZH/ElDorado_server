@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs18.entity;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
+import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ public class GameEntity {
     private int gameID;
 
     @Column(name = "GAME")
-    protected ch.uzh.ifi.seal.soprafs18.game.main.Game game;
+    protected Game game;
 
     @Column(name = "CURRENTPLAYER")
     public Player getCurrentPlayer(){
@@ -24,6 +25,7 @@ public class GameEntity {
     }
 
     @Column(name = "PLAYERS")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
     public List<Player> getPlayers(){
         return game.getPlayers();
     }
