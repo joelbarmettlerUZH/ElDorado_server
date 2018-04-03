@@ -6,6 +6,12 @@ import java.awt.*;
 import java.util.List;
 
 public class HexSpace {
+
+
+    /*
+    CONSTRUCTOR
+     */
+
     /*
     The strength of a field indicates how high the card-value has to be to make it accessible. The strength of
     non-playing fields such as Mountains, Empty-Fields is set to 1000, all the other field strength correspond to

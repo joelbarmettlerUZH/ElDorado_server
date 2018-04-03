@@ -1,0 +1,25 @@
+INSERT INTO HEXSPACE (COLOR, STRENGTH) VALUES
+  ('JUNGLE',1),
+  ('JUNGLE',2),
+  ('JUNGLE',3),
+  ('RIVER',1),
+  ('RIVER',2),
+  ('RIVER',3),
+  ('SAND',1),
+  ('SAND',2),
+  ('SAND',3),
+  ('SAND',4),
+  ('RUBBLE',1),
+  ('RUBBLE',2),
+  ('RUBBLE',3),
+  ('MOUNTAIN',1000),
+  ('BASECAMP',1),
+  ('BASECAMP',2),
+  ('BASECAMP',3),
+  ('STARTFIELD',1000),
+  ('EMPTY',1000),
+  ('ENDFIELDJUNGLE',1),
+  ('ENDFIELDRIVER',1),
+  ('ELDORADO',1000);
+
+

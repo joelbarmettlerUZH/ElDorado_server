@@ -13,8 +13,18 @@ public class HexSpaceEntity {
     @GeneratedValue
     private int id;
 
-    @Column(name = "HEXSPACE")
-    private HexSpace hexSpace;
+    @Column(name = "COLOR")
+    @Enumerated(EnumType.STRING)
+    private COLOR color;
+
+    @Column(name = "STRENGTH")
+    private int strength;
+
+    public HexSpaceEntity(COLOR color, int strength){
+        this.color = color;
+        this.strength = strength;
+    }
+
 
     public int getId() {
         return id;
@@ -24,11 +34,15 @@ public class HexSpaceEntity {
         this.id = id;
     }
 
-    public HexSpace getHexSpace() {
-        return hexSpace;
+    public COLOR getCOLOR() {
+        return color;
     }
 
-    public void setHexSpaceEntity(HexSpace hexSpace) {
-        this.hexSpace = hexSpace;
+    public void setCOLOR(COLOR color) {
+        this.color = color;
     }
+
+    public int getStrength() { return  strength; }
+
+    public void setStrength(int strength) { this.strength = strength; }
 }

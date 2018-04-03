@@ -8,6 +8,8 @@ public enum COLOR {
     MOUNTAIN,
     BASECAMP,
     STARTFIELD,
-    ENDFIELD,
+    ENDFIELDJUNGLE,
+    ENDFIELDRIVER,
+    ELDORADO,
     EMPTY
 }
