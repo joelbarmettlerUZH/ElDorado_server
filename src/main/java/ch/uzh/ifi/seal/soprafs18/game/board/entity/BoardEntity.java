@@ -17,8 +17,12 @@ public class BoardEntity {
     @Column(name = "TILESROTATION")
     private List<Integer> tilesRotation;
 
-    @Column(name = "TILESPOSITION")
-    private List<Integer> tilesPosition;
+    @Column(name = "TILESPOSITIONX")
+
+    private List<Integer> tilesPositionX;
+
+    @Column(name = "TILESPOSITIONY")
+    private List<Integer> tilesPositionY;
 
     @Column(name = "STRIP")
     private List<StripEntity> strip;
@@ -26,20 +30,29 @@ public class BoardEntity {
     @Column(name = "STRIPROTATION")
     private List<Integer> stripRotation;
 
-    @Column(name = "STRIPPOSITION")
-    private List<Point> stripPosition;
+    @Column(name = "STRIPPOSITIONX")
+    private List<Integer> stripPositionX;
+
+    @Column(name = "STRIPPOSITIONY")
+    private List<Integer> stripPositionY;
 
     @Column(name = "BLOCKADE")
-    private Point[][] blockade;
+    private Integer[][] blockade;
 
-    @Column(name = "STARTINGSPACES")
-    private List<Point> startingSpaces;
+    @Column(name = "STARTINGSPACESX")
+    private List<Integer> startingSpacesX;
+
+    @Column(name = "STARTINGSPACESY")
+    private List<Integer> startingSpacesY;
 
     @Column(name = "ENDINGSPACES")
     private List<HexSpaceEntity> endingSpaces;
 
-    @Column(name = "ENDINGSPACEPOSITION")
-    private List<Point> endingSpacePosition;
+    @Column(name = "ENDINGSPACEPOSITIONX")
+    private List<Integer> endingSpacePositionX;
+
+    @Column(name = "ENDINGSPACEPOSITIONY")
+    private List<Integer> endingSpacePositionY;
 
     public int getBoardID() {
         return boardID;
@@ -65,12 +78,20 @@ public class BoardEntity {
         this.tilesRotation = tilesRotation;
     }
 
-    public List<Integer> getTilesPosition() {
-        return tilesPosition;
+    public List<Integer> getTilesPositionX() {
+        return tilesPositionX;
     }
 
-    public void setTilesPosition(List<Integer> tilesPosition) {
-        this.tilesPosition = tilesPosition;
+    public void setTilesPositionX(List<Integer> tilesPositionX) {
+        this.tilesPositionX = tilesPositionX;
+    }
+
+    public List<Integer> getTilesPositionY() {
+        return tilesPositionY;
+    }
+
+    public void setTilesPositionY(List<Integer> tilesPositionY) {
+        this.tilesPositionY = tilesPositionY;
     }
 
     public List<StripEntity> getStrip() {
@@ -89,28 +110,44 @@ public class BoardEntity {
         this.stripRotation = stripRotation;
     }
 
-    public List<Point> getStripPosition() {
-        return stripPosition;
+    public List<Integer> getStripPositionX() {
+        return stripPositionX;
     }
 
-    public void setStripPosition(List<Point> stripPosition) {
-        this.stripPosition = stripPosition;
+    public void setStripPositionX(List<Integer> stripPositionX) {
+        this.stripPositionX = stripPositionX;
     }
 
-    public Point[][] getBlockade() {
+    public List<Integer> getStripPositionY() {
+        return stripPositionY;
+    }
+
+    public void setStripPositionY(List<Integer> stripPositionY) {
+        this.stripPositionY = stripPositionY;
+    }
+
+    public Integer[][] getBlockade() {
         return blockade;
     }
 
-    public void setBlockade(Point[][] blockade) {
+    public void setBlockade(Integer[][] blockade) {
         this.blockade = blockade;
     }
 
-    public List<Point> getStartingSpaces() {
-        return startingSpaces;
+    public List<Integer> getStartingSpacesX() {
+        return startingSpacesX;
     }
 
-    public void setStartingSpaces(List<Point> startingSpaces) {
-        this.startingSpaces = startingSpaces;
+    public void setStartingSpacesX(List<Integer> startingSpacesX) {
+        this.startingSpacesX = startingSpacesX;
+    }
+
+    public List<Integer> getStartingSpacesY() {
+        return startingSpacesY;
+    }
+
+    public void setStartingSpacesY(List<Integer> startingSpacesY) {
+        this.startingSpacesY = startingSpacesY;
     }
 
     public List<HexSpaceEntity> getEndingSpaces() {
@@ -121,11 +158,19 @@ public class BoardEntity {
         this.endingSpaces = endingSpaces;
     }
 
-    public List<Point> getEndingSpacePosition() {
-        return endingSpacePosition;
+    public List<Integer> getEndingSpacePositionX() {
+        return endingSpacePositionX;
     }
 
-    public void setEndingSpacePosition(List<Point> endingSpacePosition) {
-        this.endingSpacePosition = endingSpacePosition;
+    public void setEndingSpacePositionX(List<Integer> endingSpacePositionX) {
+        this.endingSpacePositionX = endingSpacePositionX;
+    }
+
+    public List<Integer> getEndingSpacePositionY() {
+        return endingSpacePositionY;
+    }
+
+    public void setEndingSpacePositionY(List<Integer> endingSpacePositionY) {
+        this.endingSpacePositionY = endingSpacePositionY;
     }
 }
