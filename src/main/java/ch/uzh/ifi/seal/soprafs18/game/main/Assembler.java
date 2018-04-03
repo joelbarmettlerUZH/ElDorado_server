@@ -45,6 +45,35 @@ public class Assembler {
     private int[] innerRingDislocX = {0,1,1,0,-1,-1};
     private int[] innerRingDislocYEven = {1,1,0,-1,0,1};
     private int[] innerRingDislocYOdd = {1,0,-1,-1,-1,0};
+
+
+    /*
+    Terrain-Strips Dislocation
+     */
+    private int[] Rot0DislocX = {0,1,2,3,4,5,5,4,3,2,1,0,1,2,3,4};
+    private int[] Rot0EvenDislocY = {0,1,0,0,-1,-1,-2,-3,-2,-2,-1,-1,0,-1,-1,-2};
+    private int[] Rot0OddDislocY = {0,0,0,-1,-1,-2,-3,-3,-3,-2,-2,-1,-1,-1,-2,-2};
+
+    private int[] Rot1DislocX = {0,1,1,1,1,1,0,-1,-1,-1,-1,-1,0,0,0,0};
+    private int[] Rot1EvenDislocY = {0,-1,-2,-3,-4,-5,-5,-5,-4,-3,-2,-1,-1,-2,-3,-4};
+    private int[] Rot1OddDislocY = {0,0,-1,-2,-3,-4,-5,-4,-3,-2,-1,0,-1,-2,-3,-4};
+
+    private int[] Rot2DislocX = {0,0,-1,-2,-3,-4,-5,-5,-4,-3,-2,-1,-1,-2,-3,-4};
+    private int[] Rot2EvenDislocY = {0,-1,-2,-2,-3,-3,-3,-2,-1,-1,0,0,-1,-1,-2,-2};
+    private int[] Rot2OddDislocY = {0,-1,-1,-2,-2,-3,-2,-1,-1,0,0,1,0,-1,-1,-2};
+
+    private int[] Rot3DislocX = {0,-1,-1,-1,-1,-1,0,1,1,1,1,1,0,0,0,0};
+    private int[] Rot3EvenDislocY = {0,0,1,2,3,4,5,4,3,2,1,0,1,2,3,4};
+    private int[] Rot3OddDislocY = {0,1,2,3,4,5,5,5,4,3,2,1,1,2,3,4};
+
+    private int[] Rot4DislocX = {0,-1,-2,-3,-4,-5,-5,-4,-3,-2,-1,0,-1,-2,-3,-4};
+    private int[] Rot4EvenDislocY = {0,0,0,1,1,2,3,3,3,2,2,1,1,1,2,2};
+    private int[] Rot4OddDislocY = {0,-1,0,0,1,1,2,3,2,2,1,1,0,1,1,2};
+
+    private int[] Rot5DislocX = {0,0,1,2,3,4,5,5,4,3,2,1,1,2,3,4};
+    private int[] Rot5EvenDislocY = {0,1,1,2,2,3,2,1,1,0,0,-1,0,1,1,2};
+    private int[] Rot5OddDislocY = {0,1,2,2,3,3,3,2,1,1,0,0,1,1,2,2};
+
     /*
     The assembleBoard creates a Matrix consisting of all the elements from the GameEntity
     with ID = boardNumber and returns the matrix with the well prepared GameEntity. The assembler
@@ -96,6 +125,16 @@ public class Assembler {
             }
         }
 
+        //Assemble Strips
+        List<StripEntity> Strip = board.getStrip();
+        List<Integer> StripPositionX = board.getStripPositionX();
+        List<Integer> StripPositionY = board.getStripPositionY();
+        List<Integer> StripRotation = board.getStripRotation();
+
+        for(int i = 0; i < Tile.size(); i++) {
+            int currentStripRotation = TileRotation.get(i);
+            List<HexSpaceEntity> currentStripHexSpaces = Strip.get(i).getHexSpaceEntities();
+        }
         return null;
     }
 
