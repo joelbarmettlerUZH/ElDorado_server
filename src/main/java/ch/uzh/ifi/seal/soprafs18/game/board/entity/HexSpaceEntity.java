@@ -3,27 +3,25 @@ package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "HEXSPACE")
 public class HexSpaceEntity {
     @Id
-    @Column(name = "COLOR")
-    private COLOR color;
+    @Column(name = "ID")
+    @GeneratedValue
+    private int id;
 
-    @Column(name = "Hexspace")
+    @Column(name = "HEXSPACE")
     private HexSpace hexSpace;
 
-    public COLOR getColor() {
-        return color;
+    public int getId() {
+        return id;
     }
 
-    public void setColor(COLOR color) {
-        this.color = color;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public HexSpace getHexSpace() {
