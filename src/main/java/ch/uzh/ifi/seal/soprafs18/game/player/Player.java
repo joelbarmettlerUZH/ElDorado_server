@@ -124,20 +124,11 @@ public class Player {
         specialAction = card.actions;
         card.performAction(this);
 
-        /*
-        while (card.actions.getDraw() > 0) {
-            card.actions.reduceDraw();
-        }
-        while (card.actions.getRemove() > 0) {
-            //this.remove();
-            card.actions.reduceRemove();
-        }
-        while (card.actions.getSteal() > 0) {
-            //this.draw(1);
-            card.actions.reduceSteal();
-        }
-        return specialAction;
-        */
+        CardAction cardAct = new CardAction();
+        cardAct.addCard(card);
+        cardAct.setActionName("Play: " + card.getName());
+
+        history.add(cardAct);
     }
 
     /*
@@ -145,6 +136,11 @@ public class Player {
     Adds instance of CardAction with dedicated name to the history array.
      */
     public void discard(Card card) {
+
+        CardAction cardAct = new CardAction();
+        cardAct.addCard(card);
+        cardAct.setActionName("Discard: " + card.getName());
+
         if (handPile.contains(card)) {
             discardPile.add(card);
             handPile.remove(card);
@@ -157,6 +153,11 @@ public class Player {
     calls Card.sell(self: Player)
      */
     public void sell(Card card) {
+
+        CardAction cardAct = new CardAction();
+        cardAct.addCard(card);
+        cardAct.setActionName("Sell: " + card.getName());
+
         card.sellAction(this);
     }
 
@@ -165,8 +166,13 @@ public class Player {
     not yet bought anything. Adds instance of CardAction with dedicated name to the history array.
      */
     public void buy(Slot slot) {
+
+        CardAction cardAct = new CardAction();
+        cardAct.addCard(slot.getCard());
+        cardAct.setActionName("Sell: " + slot.getCard().getName());
+
         if (slot.getCard().getCoinCost() <= coins && !bought) {
-            this.discard(slot.getCard());
+            this.discard(slot.buy());
         }
     }
 
@@ -183,10 +189,20 @@ public class Player {
     moved from the discardPile to the drawPile.
      */
     public void draw(Integer amount) {
+        int amountTmp = amount;
+        CardAction cardAct = new CardAction();
         while (drawPile.size() > 0 && amount > 0) {
+            cardAct.addCard(drawPile.get(0));
             handPile.add(drawPile.remove(0));
             amount--;
         }
+        cardAct.setActionName("Draw " + amountTmp + " cards.");
+
+       /* while (drawPile.size() > 0 && specialAction.getDraw() > 0) {
+            handPile.add(drawPile.remove(0));
+            amount--;
+        }*/
+
         if (drawPile.size() < 1) {
             for (int i = discardPile.size(); i == 0; i--) {
                 int rnd = new Random().nextInt(discardPile.size());
@@ -201,12 +217,20 @@ public class Player {
     coins nor the bought-boolean into consideration.
      */
     public void steal(Slot slot) {
+        CardAction cardAct = new CardAction();
+        cardAct.addCard(slot.getCard());
+        cardAct.setActionName("Take: " + slot.getCard().getName());
+
+        discardPile.add(slot.buy());
     }
 
     /*
     Moves the card from the handPile to the removePile.
      */
     public void remove(Card card) {
+        CardAction cardAct = new CardAction();
+        cardAct.addCard(card);
+        cardAct.setActionName("Remove: " + card.getName());
         handPile.remove(card);
     }
 
@@ -214,6 +238,9 @@ public class Player {
     Calls draw() and resets the coins to 0 and the bought-boolean to False.
      */
     public void endRound() {
+        draw();
+        coins = (float) 0;
+        bought = false;
     }
 
     public void addCoins(Float amount) {

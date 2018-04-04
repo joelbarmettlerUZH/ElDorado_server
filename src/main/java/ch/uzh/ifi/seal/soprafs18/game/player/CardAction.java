@@ -10,8 +10,17 @@ public class CardAction {
      */
     private List<Card> cards;
 
+    public void addCard(Card card){
+        cards.add(card);
+    }
+
     /*
     Name of the corresponding Action that is then displayed in the FrontEnd
      */
     private String actionName;
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
+
 }
