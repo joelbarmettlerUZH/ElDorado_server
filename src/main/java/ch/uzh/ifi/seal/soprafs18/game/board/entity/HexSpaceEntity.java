@@ -7,7 +7,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "HEXSPACE")
+@Inheritance (strategy = InheritanceType.JOINED)
 public class HexSpaceEntity {
+
+    public HexSpaceEntity(String id, COLOR color, int strength){
+        this.id = id;
+        this.color = color;
+        this.strength = strength;
+    }
+
+    public HexSpaceEntity(){
+
+    }
+
     @Id
     @Column(name = "ID", unique = true)
     private String id;
@@ -19,11 +31,6 @@ public class HexSpaceEntity {
     @Column(name = "STRENGTH")
     private int strength;
 
-    public HexSpaceEntity(String id,COLOR color, int strength){
-        this.id = id;
-        this.color = color;
-        this.strength = strength;
-    }
 
     public String getId() {
         return id;

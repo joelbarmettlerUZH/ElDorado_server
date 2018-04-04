@@ -53,9 +53,16 @@ INSERT INTO BOARD(BOARDID,TILES,TILESROTATION,TILESPOSITIONX, TILESPOSITIONY,
   (1,
     ('B','C'),(2,5),(4,8),(4,10),
     (),(),(),(),
-    (((4,8),(5,8),(6,7),(7,7),(8,6))),
+    (((4,5,6,7,8),(8,8,7,7,6))),
     ((1,3),(1,4),(1,5),(1,6)),
     ('EJ','EJ','EJ'),((11,13),(12,12),(12,11)));
 
+INSERT INTO BLOCKADE (ID, COLOR, STRENGTH, BLOCKADEID) VALUES
+  ('BJ1','JUNGLE',1,1),
+  ('BJ3','JUNGLE',3,2),
+  ('BW1','RIVER',1,3),
+  ('BS1','SAND',1,4),
+  ('RB1', 'RUBBLE',1,5),
+  ('BR2','RUBBLE',2,6);
 
 

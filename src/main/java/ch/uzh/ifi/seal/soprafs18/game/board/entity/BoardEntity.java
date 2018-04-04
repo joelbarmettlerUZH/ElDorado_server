@@ -37,7 +37,7 @@ public class BoardEntity {
     private List<Integer> stripPositionY;
 
     @Column(name = "BLOCKADE")
-    private Integer[][] blockade;
+    private List<List<List<Integer>>> blockade;
 
     @Column(name = "STARTINGSPACESX")
     private List<Integer> startingSpacesX;
@@ -126,11 +126,11 @@ public class BoardEntity {
         this.stripPositionY = stripPositionY;
     }
 
-    public Integer[][] getBlockade() {
+    public List<List<List<Integer>>> getBlockade() {
         return blockade;
     }
 
-    public void setBlockade(Integer[][] blockade) {
+    public void setBlockade(List<List<List<Integer>>> blockade) {
         this.blockade = blockade;
     }
 
