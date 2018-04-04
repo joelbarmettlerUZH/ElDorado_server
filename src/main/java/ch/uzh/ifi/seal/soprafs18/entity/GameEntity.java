@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.repository.PlayerRepository;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
@@ -17,8 +18,9 @@ public class GameEntity {
     @Autowired
     PlayerRepository playerRepository;
 
-    public GameEntity(Game game){
+    public GameEntity(Game game, String name){
         this.game = game;
+        this.name = name;
     }
 
     public GameEntity(){
@@ -58,28 +60,29 @@ public class GameEntity {
 
     @OneToOne
     public PlayerEntity getCurrentPlayer(){
-        return playerRepository.findByPlayerID(game.getCurrent().getPlayerID()).get(0);
+        Player current = game.getCurrent();
+        if(current == null){
+            return null;
+        }
+        return playerRepository.findByPlayerID(current.getPlayerID()).get(0);
     }
     public void setCurrentPlayer(PlayerEntity playerEntity){
 
     }
 
 
-
+    private List<PlayerEntity> players;
     @Column(name = "PLAYERS")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "game")
+    @JsonManagedReference
     public List<PlayerEntity> getPlayers(){
-        List<PlayerEntity> players = new ArrayList<>();
-        for(Player p:game.getPlayers()){
-            players.add(playerRepository.findByPlayerID(p.getPlayerID()).get(0));
-        }
         return players;
     }
-    public void setPlayers(List<Player> players){
-
+    public void setPlayers(List<PlayerEntity> players){
+        this.players = players;
     }
 
-
+    /*
     @Column(name = "RUNNING")
     public boolean getRunning(){
         return game.isRunning();
@@ -87,12 +90,17 @@ public class GameEntity {
     public void setRunning(boolean running){
         game.setRunning(running);
     }
+    */
 
 
     @Column(name = "WINNER")
     @ElementCollection
     public List<PlayerEntity> getWinner(){
         List<PlayerEntity> players = new ArrayList<>();
+        List<Player> winners = game.getWinners();
+        if(winners == null){
+            return null;
+        }
         for(Player p:game.getWinners()){
             players.add(playerRepository.findByPlayerID(p.getPlayerID()).get(0));
         }

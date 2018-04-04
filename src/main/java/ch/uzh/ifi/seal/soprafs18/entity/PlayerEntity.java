@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.player.CardAction;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -16,9 +17,11 @@ import java.util.List;
 @Table(name = "PLAYER_ENTITY")
 public class PlayerEntity {
 
-    public PlayerEntity(Player player, GameEntity gameEntity){
+    public PlayerEntity(int id, Player player, GameEntity gameEntity, String token){
+        this.playerID = id;
         this.player = player;
         this.game = gameEntity;
+        this.token = token;
     }
 
     public PlayerEntity(){
@@ -27,10 +30,19 @@ public class PlayerEntity {
 
     private int playerID;
     @Id
-    @GeneratedValue
     @Column(name = "PLAYERID")
     public int getPlayerID() {
         return playerID;
+    }
+
+    private String token;
+    @JsonIgnore
+    @Column(name = "TOKEN")
+    public String getToken(){
+        return token;
+    }
+    public void setToken(String token){
+        this.token = token;
     }
 
     public Player player;
@@ -47,14 +59,9 @@ public class PlayerEntity {
     private GameEntity game;
     @ManyToOne
     @JoinColumn(name = "GAMEID")
+    @JsonBackReference
     public GameEntity getGame() {
         return game;
-    }
-
-    @JsonIgnore
-    @Column(name = "TOKEN")
-    protected String token() {
-        return player.getToken();
     }
 
     @Column(name = "COINS")

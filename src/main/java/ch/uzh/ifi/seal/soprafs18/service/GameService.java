@@ -40,7 +40,7 @@ public class GameService {
             LOGGER.addHandler(filehandler);
             SimpleFormatter formatter = new SimpleFormatter();
             filehandler.setFormatter(formatter);
-            LOGGER.setLevel(Level.FINE);
+            LOGGER.setLevel(Level.FINEST);
             filehandler.setLevel(Level.INFO);
         } catch (IOException io) {
             System.out.println("ERROR: Could not set logging handler to file");
@@ -54,66 +54,78 @@ public class GameService {
         return games;
     }
 
-    public GameEntity newGame(RoomEntity room) {
+    public void newGame(RoomEntity room) {
         List<UserEntity> users = room.getUsers();
+        LOGGER.fine("Shuffling users");
         Collections.shuffle(users);
         String gameName = room.getName();
         int board = room.getBoardnumber();
+        LOGGER.fine("Creating empty list of players and player entities");
         List<Player> players = new ArrayList<>();
         List<PlayerEntity> playerEntities = new ArrayList<>();
-        Game game = new Game(board, null, gameName);
+        LOGGER.fine("Create game with board " + board + " with no players.");
+        Game game = new Game(board, null);
+        LOGGER.fine("Creating gameEntity " + gameName + " corresponding to board");
+        GameEntity gameEntity = new GameEntity(game, gameName);
+        gameRepository.save(gameEntity);
+        LOGGER.fine("Saved gameEntity to database");
         int i = 0;
         for (UserEntity user : users) {
-            players.add(new Player(user.getUserID(), user.getName(), game, i, user.getToken()));
-            playerEntities.add(new PlayerEntity(players.get(i), null));
+            LOGGER.fine("Creating new player "+user.getUserID()+" with name "+user.getName()+" and position "+i);
+            Player player = new Player(user.getUserID(), user.getName(), game, i);
+            LOGGER.fine("Added player to players");
+            players.add(player);
+            LOGGER.fine("Create new playerEntity "+user.getUserID()+" with player "+player.getId()+" and gameentity "+gameEntity.getName()+" and token "+user.getToken());
+            PlayerEntity playerEntity = new PlayerEntity(user.getUserID(), player, gameEntity, user.getToken());
+            LOGGER.fine("Adding player entity to list of playerEntities");
+            playerEntities.add(playerEntity);
+            LOGGER.fine("Save playerEntity to database");
+            playerRepository.save(playerEntity);
             i++;
             LOGGER.info("Converted " + user.getUserID() + " to playerEntity and created new Player");
         }
+        LOGGER.fine("Setting players of game");
         game.setPlayers(players);
-        LOGGER.info("Set Players of game " + game.getID());
-        GameEntity gameEntity = new GameEntity(game);
-        for (PlayerEntity p : playerEntities) {
-            p.setGame(gameEntity);
-            playerRepository.save(p);
-            LOGGER.info("Setting game of " + p.getPlayerID() + " to " + gameEntity.getGameID() + " and saving to database");
-        }
+        game.setID(gameEntity.getGameID());
+        LOGGER.fine("Set game ID to "+game.getID());
+        gameEntity.setPlayers(playerEntities);
+        LOGGER.fine("Setting playerEntities to gameEntity and saving it to database");
         gameRepository.save(gameEntity);
         LOGGER.info("Save game " + gameEntity.getGameID() + "to the database");
-        return gameEntity;
     }
 
     public GameEntity getGame(int gameID) {
-        LOGGER.info("Returning game with ID "+gameID);
+        LOGGER.info("Returning game with ID " + gameID);
         return gameRepository.findByGameID(gameID).get(0);
     }
 
 
     public PlayerEntity getCurrentPlayer(GameEntity game) {
-        LOGGER.info("Returning current player "+game.getCurrentPlayer().getPlayerID()+" of game "+game.getGameID());
+        LOGGER.info("Returning current player " + game.getCurrentPlayer().getPlayerID() + " of game " + game.getGameID());
         return game.getCurrentPlayer();
     }
 
 
     public List<PlayerEntity> getPlayers(GameEntity game) {
-        LOGGER.info("Returning Players of game "+game.getGameID());
+        LOGGER.info("Returning Players of game " + game.getGameID());
         return game.getPlayers();
     }
 
 
     public void stop(GameEntity game) {
-        LOGGER.info("Stoppping game "+game.getGameID());
+        LOGGER.info("Stoppping game " + game.getGameID());
         game.getGame().setRunning(false);
     }
 
 
     public PlayerEntity getWinner(GameEntity game) {
-        LOGGER.info("Returning winners of game "+game.getGameID());
+        LOGGER.info("Returning winners of game " + game.getGameID());
         return game.getWinner().get(0);
     }
 
 
     public HexSpace[][] getBoard(GameEntity game) {
-        LOGGER.info("Returning Board of game "+game.getGameID());
+        LOGGER.info("Returning Board of game " + game.getGameID());
         return game.getBoard();
     }
 

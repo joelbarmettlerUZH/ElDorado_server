@@ -12,21 +12,15 @@ import java.util.List;
 public class Game {
 
     //Constructor
-    public Game(int boardNumber, List<Player> players, String name){
+    public Game(int boardNumber, List<Player> players){
         //assembler uses boardNumber
         this.players = players;
-        this.name = name;
     }
 
     /*
     Globally unique Identifier to identify a running game
      */
     private int ID;
-
-    /*
-    Name of the game
-     */
-    private String name;
 
     /*
     Player that can currently play the round. When one player calls endRound,
@@ -131,5 +125,9 @@ public class Game {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

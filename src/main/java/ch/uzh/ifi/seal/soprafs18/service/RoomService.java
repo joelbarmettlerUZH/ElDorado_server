@@ -63,7 +63,8 @@ public class RoomService {
         room.addUser(user);
         roomRepository.save(room);
         userRepository.save(user);
-        LOGGER.info("User " + user.getUserID() + "joined room " + roomID + " successfully");
+        LOGGER.info("User " + user.getUserID() + " joined room " + roomID + " successfully. Updating room now");
+        updateRoom(room);
     }
 
     public void leaveUser(int roomID, UserEntity userEntity, String token) {
@@ -129,9 +130,9 @@ public class RoomService {
         return rooms.subList(fromIndex, toIndex);
     }
 
-    public GameEntity startGame(RoomEntity roomEntity) {
+    public void startGame(RoomEntity roomEntity) {
         LOGGER.info("Starting a new Game with room " + roomEntity.getRoomID());
-        return gameService.newGame(roomEntity);
+        gameService.newGame(roomEntity);
     }
 
     public void updateRoom(RoomEntity roomEntity) {

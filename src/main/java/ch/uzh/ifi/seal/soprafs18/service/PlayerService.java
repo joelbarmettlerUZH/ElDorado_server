@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -48,11 +49,17 @@ public class PlayerService {
     }
 
     private boolean validate(int playerID, String token) {
-        Player player = playerRepository.findByPlayerID(playerID).get(0).getPlayer();
+        PlayerEntity player = playerRepository.findByPlayerID(playerID).get(0);
         LOGGER.info("Validating user");
-        return player.getToken().equals(token) && player.getGame().getCurrent().equals(player);
+        return player.getToken().equals(token) && playerRepository.findByPlayerID(player.getGame().getCurrentPlayer().getPlayerID()).equals(player);
     }
 
+    public List<PlayerEntity> getPlayers(){
+        List<PlayerEntity> players = new ArrayList<>();
+        playerRepository.findAll().forEach(players::add);
+        LOGGER.info("Returning all Players");
+        return players;
+    }
 
     public PlayerEntity getPlayer(int playerID, String token) {
         if (validate(playerID, token)) {

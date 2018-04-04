@@ -39,13 +39,13 @@ public class UserService {
     }
 
     public boolean valid(String token, UserEntity user) {
-        UserEntity u = userRepository.findByName(user.getName()).get(0);
+        UserEntity u = userRepository.findByUserID(user.getUserID()).get(0);
         LOGGER.info("Validating token of user " + user.getUserID());
         return token.equals(u.getToken());
     }
 
     public static boolean valid(String token, UserEntity user, UserRepository userRepository) {
-        UserEntity u = userRepository.findByName(user.getName()).get(0);
+        UserEntity u = userRepository.findByUserID(user.getUserID()).get(0);
         System.out.println("***Validating user (no logger available)!***");
         return token.equals(u.getToken());
     }
@@ -65,7 +65,7 @@ public class UserService {
     public void deleteUser(UserEntity user, String token) {
         if (valid(token, user)) {
             LOGGER.warning("Deleting user " + user.getUserID());
-            userRepository.delete(userRepository.findByName(user.getName()).get(0));
+            userRepository.delete(userRepository.findByUserID(user.getUserID()).get(0));
         }
         LOGGER.warning("User " + user.getUserID() + " provided wrong token " + token);
     }
@@ -91,11 +91,10 @@ public class UserService {
         u.setCharacter(user.getCharacter());
         u.setName(user.getName());
         u.setReady(user.isReady());
-        u.setRoomEntity(user.getRoomEntity());
         userRepository.save(u);
         LOGGER.info("Updating user " + user.getUserID());
         if (u.getRoomEntity() != null) {
-            LOGGER.info("Updating room " + u.getRoomEntity().getRoomID() + " since user " + user.getUserID() + " left. ");
+            LOGGER.info("Updating room " + u.getRoomEntity().getRoomID() + " since user " + user.getUserID() + " was modified. ");
             roomService.updateRoom(u.getRoomEntity());
         }
         return u;

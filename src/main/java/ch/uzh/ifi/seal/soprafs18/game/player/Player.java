@@ -17,12 +17,11 @@ import java.util.List;
 public class Player {
 
     //Constructor
-    public Player(int playerID, String name, Game game, int id, String token){
+    public Player(int playerID, String name, Game game, int id){
         this.playerID = playerID;
         this.name = name;
         this.game = game;
         this.id = id;
-        this.token = token;
     }
 
     /*
@@ -51,7 +50,8 @@ public class Player {
     The token is communicated via SSL and randomized. For each game changing move,
     the user has to validate itself with this token in order to perform the move.
      */
-    private String token;
+    //Propably not needed since already in database
+    //private String token;
 
     /*
     Number of coins the Player has in his wallet. Is reset to 0 when he ends his round or bought one card.
@@ -209,6 +209,7 @@ public class Player {
         this.id = id;
     }
 
+    /*
     public String getToken() {
         return token;
     }
@@ -216,6 +217,7 @@ public class Player {
     public void setToken(String token) {
         this.token = token;
     }
+    */
 
     public Float getCoins() {
         return coins;

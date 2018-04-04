@@ -9,9 +9,8 @@ import java.util.List;
 @Table(name = "ROOM")
 public class RoomEntity {
 
-    public RoomEntity(String name, UserEntity userEntity){
+    public RoomEntity(String name){
         this.name = name;
-        this.users.add(userEntity);
     }
 
     public RoomEntity(){
@@ -27,7 +26,7 @@ public class RoomEntity {
     private String name = "Unknown";
 
     @Column(name = "USERS")
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "roomEntity")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "roomEntity", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<UserEntity> users;
 
@@ -59,9 +58,7 @@ public class RoomEntity {
     }
 
     public void addUser(UserEntity userEntity){
-        System.out.println("adding user "+userEntity.getName());
         this.users.add(userEntity);
-        System.out.println(users.get(0).getName());
     }
 
     public int getBoardnumber() {

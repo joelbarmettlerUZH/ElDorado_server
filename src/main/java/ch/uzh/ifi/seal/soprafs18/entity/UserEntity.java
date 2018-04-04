@@ -14,6 +14,7 @@ public class UserEntity {
         this.character = character;
         this.roomEntity = roomEntity;
         this.ready = false;
+        this.token = "TESTTOKEN";
     }
 
     public UserEntity(){

@@ -31,6 +31,4 @@ public class GameController {
         return gameService.getAll();
     }
 
-
-
 }
