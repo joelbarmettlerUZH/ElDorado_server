@@ -11,7 +11,7 @@ public class ActionCard extends Card {
      cards the user can draw from the draw pile, how many card she/he can remove and how many cards she/he  
      can steal from the market according to the cards type.
      */
-    public SpecialActions actions;
+    protected SpecialActions actions;
 
     /*
    The performAction returns a Budget of how many cards the Player can draw/remove/steal for free.

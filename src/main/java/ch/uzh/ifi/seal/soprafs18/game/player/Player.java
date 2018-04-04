@@ -9,10 +9,29 @@ import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static java.lang.Boolean.FALSE;
+
 public class Player {
+
+    public Player(String name, Game game, int id, String token){
+        this.name = name;
+        this.id = id;
+        this.token = token;
+        coins = (float) 0;
+        board = game;
+        pathFinder = new Pathfinder();
+        playingPieces = new ArrayList<PlayingPiece>();
+        specialAction = new SpecialActions();
+        history = new ArrayList<CardAction>();
+        drawPile  = new ArrayList<Card>();
+        handPile = new ArrayList<Card>();
+        discardPile = new ArrayList<Card>();
+        bought = FALSE;
+    }
 
     /*
     Players  name, set by the User. Has to be unique in the Game
@@ -49,7 +68,7 @@ public class Player {
     /*
     List of blockades the Player has collected so far.
      */
-    private List<PlayingPiece> playingPieces;
+    private ArrayList<PlayingPiece> playingPieces;
 
     /*
         The budget the user has for the current round.
@@ -61,22 +80,22 @@ public class Player {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    private List<CardAction> history;
+    private ArrayList<CardAction> history;
 
     /*
     List of cards the user has in his drawPile.
      */
-    private List<Card> drawPile;
+    private ArrayList<Card> drawPile;
 
     /*
     List of cards the user has in his handPile.
      */
-    private List<Card> handPile;
+    private ArrayList<Card> handPile;
 
     /*
     List of cards the user has in his discardPile.
      */
-    private List<Card> discardPile;
+    private ArrayList<Card> discardPile;
 
     /*
     Indicates whether the user has already bought a Card in the current round.
@@ -86,7 +105,7 @@ public class Player {
     /*
     Calls PathFinder with the cards and the selected playingPiece. Returns the same arrayList the PathFinder returns.
      */
-    public List<HexSpace> findPath(List<Card> activeCards, PlayingPiece playingPiece) {
+    public ArrayList<HexSpace> findPath(List<Card> activeCards, PlayingPiece playingPiece) {
         return null;
     }
 
@@ -94,7 +113,7 @@ public class Player {
     Call this.pathFinder with the first playingPiece and the list of Cards.
     Returns the same arrayList this.pathFinder returns.
      */
-    public List<HexSpace> findPath(List<Card> activeCards) {
+    public ArrayList<HexSpace> findPath(List<Card> activeCards) {
         return null;
     }
 
@@ -121,13 +140,9 @@ public class Player {
      */
 
     public void action(ActionCard card) {
-        specialAction = card.actions;
-        card.performAction(this);
+        specialAction = card.performAction(this);
 
-        CardAction cardAct = new CardAction();
-        cardAct.addCard(card);
-        cardAct.setActionName("Play: " + card.getName());
-
+        CardAction cardAct = new CardAction(card, "Play: " + card.getName());
         history.add(cardAct);
     }
 
@@ -137,9 +152,8 @@ public class Player {
      */
     public void discard(Card card) {
 
-        CardAction cardAct = new CardAction();
-        cardAct.addCard(card);
-        cardAct.setActionName("Discard: " + card.getName());
+        CardAction cardAct = new CardAction(card,"Discard: " + card.getName());
+        history.add(cardAct);
 
         if (handPile.contains(card)) {
             discardPile.add(card);
@@ -154,10 +168,7 @@ public class Player {
      */
     public void sell(Card card) {
 
-        CardAction cardAct = new CardAction();
-        cardAct.addCard(card);
-        cardAct.setActionName("Sell: " + card.getName());
-
+        history.add(new CardAction(card,"Sell: " + card.getName()));
         card.sellAction(this);
     }
 
@@ -167,9 +178,7 @@ public class Player {
      */
     public void buy(Slot slot) {
 
-        CardAction cardAct = new CardAction();
-        cardAct.addCard(slot.getCard());
-        cardAct.setActionName("Sell: " + slot.getCard().getName());
+        history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
 
         if (slot.getCard().getCoinCost() <= coins && !bought) {
             this.discard(slot.buy());
@@ -184,19 +193,19 @@ public class Player {
     }
 
     /*
-    Takes amount-cards from the drawpile, regardles of how many cards there are in the Handpile.
+    Takes amount-cards from the drawpile, regardless of how many cards there are in the Handpile.
     If the drawPile is empty, the discardPiles order is randomized and all cards are
     moved from the discardPile to the drawPile.
      */
     public void draw(Integer amount) {
         int amountTmp = amount;
-        CardAction cardAct = new CardAction();
+        CardAction cardAct = new CardAction("Draw " + amountTmp + " cards.");
         while (drawPile.size() > 0 && amount > 0) {
             cardAct.addCard(drawPile.get(0));
             handPile.add(drawPile.remove(0));
             amount--;
         }
-        cardAct.setActionName("Draw " + amountTmp + " cards.");
+        history.add(cardAct);
 
        /* while (drawPile.size() > 0 && specialAction.getDraw() > 0) {
             handPile.add(drawPile.remove(0));
@@ -217,10 +226,7 @@ public class Player {
     coins nor the bought-boolean into consideration.
      */
     public void steal(Slot slot) {
-        CardAction cardAct = new CardAction();
-        cardAct.addCard(slot.getCard());
-        cardAct.setActionName("Take: " + slot.getCard().getName());
-
+        history.add(new CardAction(slot.getCard(), "Take: " + slot.getCard().getName()));
         discardPile.add(slot.buy());
     }
 
@@ -228,9 +234,7 @@ public class Player {
     Moves the card from the handPile to the removePile.
      */
     public void remove(Card card) {
-        CardAction cardAct = new CardAction();
-        cardAct.addCard(card);
-        cardAct.setActionName("Remove: " + card.getName());
+        history.add(new CardAction(card,"Remove: " + card.getName()));
         handPile.remove(card);
     }
 

@@ -5,6 +5,15 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 
 public class CardAction {
 
+    public CardAction(Card card, String actionName){
+        addCard(card);
+        this.actionName = actionName;
+    }
+
+    public CardAction(String actionName){
+        this.actionName = actionName;
+    }
+
     /*
     List of Cards that were used to perform a certain action.
      */
@@ -18,9 +27,4 @@ public class CardAction {
     Name of the corresponding Action that is then displayed in the FrontEnd
      */
     private String actionName;
-
-    public void setActionName(String actionName) {
-        this.actionName = actionName;
-    }
-
 }
