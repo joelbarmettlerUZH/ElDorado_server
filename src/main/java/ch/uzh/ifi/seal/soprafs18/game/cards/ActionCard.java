@@ -16,7 +16,9 @@ public class ActionCard extends Card {
     /*
    The performAction returns a Budget of how many cards the Player can draw/remove/steal for free.
      */
-    public SpecialActions performAction(Player player){return null;}
+    public SpecialActions performAction(Player player){
+        return actions;
+    }
 
     /*
     Calls Player.discard(this) in the standard case. If the to-HexSpace happens to be of color BaseCamp,

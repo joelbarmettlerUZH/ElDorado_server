@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.player;
 
+import ch.uzh.ifi.seal.soprafs18.game.cards.ActionCard;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
 import ch.uzh.ifi.seal.soprafs18.game.cards.SpecialActions;
@@ -7,7 +8,9 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 
+import javax.swing.*;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
 
@@ -49,10 +52,10 @@ public class Player {
     private List<PlayingPiece> playingPieces;
 
     /*
-    The budget the user has for the current round.
-    Is set from the action cards and reset either at the end of the game or
-    value-by-value each time the corresponding method (draw, remove, steal) is called.
-     */
+        The budget the user has for the current round.
+        Is set from the action cards and reset either at the end of the game or
+        value-by-value each time the corresponding method (draw, remove, steal) is called.
+         */
     private SpecialActions specialAction;
 
     /*
@@ -73,7 +76,7 @@ public class Player {
     /*
     List of cards the user has in his discardPile.
      */
-    private  List<Card> discardPile;
+    private List<Card> discardPile;
 
     /*
     Indicates whether the user has already bought a Card in the current round.
@@ -109,58 +112,111 @@ public class Player {
     When the move is done, the Player checks whether his PlayingPiece stands on a HexSpace of colour ElDoardo.
     If this is the case, he adds himself to the Games winning Player array.
      */
-    public void move(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo) {}
+    public void move(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo) {
+    }
 
     /*
     Calls action on the corresponding card and sets the returned SpecialAction to its own budget.
     Adds instance of CardAction with dedicated name to the history array. It returns the budget back to the Frontend.
      */
-    public SpecialActions action(Card card){return null;}
+
+    public void action(ActionCard card) {
+        specialAction = card.actions;
+        card.performAction(this);
+
+        /*
+        while (card.actions.getDraw() > 0) {
+            card.actions.reduceDraw();
+        }
+        while (card.actions.getRemove() > 0) {
+            //this.remove();
+            card.actions.reduceRemove();
+        }
+        while (card.actions.getSteal() > 0) {
+            //this.draw(1);
+            card.actions.reduceSteal();
+        }
+        return specialAction;
+        */
+    }
 
     /*
     Moves the corresponding Card from the handPile to the discardPile.
     Adds instance of CardAction with dedicated name to the history array.
      */
-    public void discard(Card card){}
+    public void discard(Card card) {
+        if (handPile.contains(card)) {
+            discardPile.add(card);
+            handPile.remove(card);
+        } else {
+            discardPile.add(card);
+        }
+    }
 
     /*
     calls Card.sell(self: Player)
      */
-    public void sell(Card card){}
+    public void sell(Card card) {
+        card.sellAction(this);
+    }
 
     /*
     Calls buy on the market and adds the returned card to the discardPile if the user has the coins to do so and
     not yet bought anything. Adds instance of CardAction with dedicated name to the history array.
      */
-    public void buy(Slot slot){}
+    public void buy(Slot slot) {
+        if (slot.getCard().getCoinCost() <= coins && !bought) {
+            this.discard(slot.getCard());
+        }
+    }
 
     /*
     Calls draw(amount) with the amount being 4 - length of HandPile.
      */
-    public void draw(){}
+    public void draw() {
+        draw(4 - handPile.size());
+    }
 
     /*
     Takes amount-cards from the drawpile, regardles of how many cards there are in the Handpile.
     If the drawPile is empty, the discardPiles order is randomized and all cards are
     moved from the discardPile to the drawPile.
      */
-    public void draw(Integer amount){}
+    public void draw(Integer amount) {
+        while (drawPile.size() > 0 && amount > 0) {
+            handPile.add(drawPile.remove(0));
+            amount--;
+        }
+        if (drawPile.size() < 1) {
+            for (int i = discardPile.size(); i == 0; i--) {
+                int rnd = new Random().nextInt(discardPile.size());
+                drawPile.add(discardPile.remove(rnd));
+            }
+            draw(amount);
+        }
+    }
 
     /*
     Calls market.steal and adds the returned card to the discardpile. Does neither take the amount of
     coins nor the bought-boolean into consideration.
      */
-    public void steal(Slot slot){}
+    public void steal(Slot slot) {
+    }
 
     /*
     Moves the card from the handPile to the removePile.
      */
-    public void remove(Card card){}
+    public void remove(Card card) {
+        handPile.remove(card);
+    }
 
     /*
     Calls draw() and resets the coins to 0 and the bought-boolean to False.
      */
-    public void endRound(){}
+    public void endRound() {
+    }
 
-
+    public void addCoins(Float amount) {
+        coins = coins + amount;
+    }
 }

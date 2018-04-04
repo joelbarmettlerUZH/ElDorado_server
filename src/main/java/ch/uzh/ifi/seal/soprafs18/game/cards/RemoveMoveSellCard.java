@@ -9,7 +9,6 @@ public class RemoveMoveSellCard extends RemoveMoveCard {
     @Override
     public void sellAction(Player player){
         super.sellAction(player);
+        player.remove(this);
     }
-
-
 }

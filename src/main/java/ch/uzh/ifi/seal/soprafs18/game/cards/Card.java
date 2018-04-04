@@ -25,7 +25,8 @@ public abstract class Card {
      making the card fall out of the game when being sold (treasury).
      */
     public void sellAction(Player player){
-
+        player.addCoins(coinValue);
+        player.discard(this);
     }
 
     /*
