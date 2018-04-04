@@ -7,6 +7,15 @@ import java.util.List;
 @Entity
 @Table(name = "BOARD")
 public class BoardEntity {
+
+    public BoardEntity(int boardID, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,
+                       List<Integer> tilesPositionY){
+        this.boardID = boardID;
+        this.tiles = tiles;
+        this.tilesRotation = tilesRotation;
+        this.tilesPositionX = tilesPositionX;
+        this.tilesPositionY = tilesPositionY;
+    }
     @Id
     @Column(unique = true, name = "BOARDID")
     private int boardID;
@@ -18,7 +27,6 @@ public class BoardEntity {
     private List<Integer> tilesRotation;
 
     @Column(name = "TILESPOSITIONX")
-
     private List<Integer> tilesPositionX;
 
     @Column(name = "TILESPOSITIONY")

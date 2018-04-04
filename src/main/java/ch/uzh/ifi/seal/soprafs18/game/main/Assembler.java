@@ -7,7 +7,15 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import jdk.nashorn.internal.ir.Block;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.awt.*;
 import java.sql.Array;
 import java.util.ArrayList;
@@ -18,12 +26,14 @@ public class Assembler {
     /*
     Instance of Database containing all the GameEntity
      */
-    protected BoardEntity board;
+    @Autowired
+    private BoardEntity board;
     //private StripEntity strip;
     //private TileEntity tile;
 
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
     private BlockadeSpaceRepository blockadeSpaceRepository;
 
     /*
@@ -90,12 +100,135 @@ public class Assembler {
         }
     }
 
+    public HexSpaceEntity[][] createEmptyMatrix(){
+        HexSpaceEntity[][] boardMatrix = new HexSpaceEntity[100][100];
+        return boardMatrix;
+    }
+
+
+    public List<TileEntity> getTiles(){
+        List<TileEntity> Tiles = board.getTiles();
+        return Tiles;
+    }
+
+    public List<Integer> getTilePositionX(){
+        List<Integer> TilePositionX = board.getTilesPositionX();
+        return TilePositionX;
+    }
+
+    public List<Integer> getTilePositionY(){
+        List<Integer> TilePositionY = board.getTilesPositionY();
+        return TilePositionY;
+    }
+
+    public List<Integer> getTilesRotation(){
+        List<Integer> TileRotation = board.getTilesRotation();
+        return TileRotation;
+    }
+
+    public HexSpaceEntity[][] assembleTiles(HexSpaceEntity[][] boardMatrix, List<TileEntity> Tile,
+                                             List<Integer> TilePositionX, List<Integer> TilePositionY,
+                                             List<Integer> TileRotation) {
+        for (int i = 0; i < Tile.size(); i++) {
+            int currentTileRotation = TileRotation.get(i);
+            List<HexSpaceEntity> currentTileHexSpaces = Tile.get(i).getHexSpaceEntities();
+            for (int j = 0; j < currentTileHexSpaces.size(); j++) {
+                if (j < 18) {
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
+                                outerRingDislocYEven[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
+                    } else {
+                        boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
+                                outerRingDislocYOdd[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
+                    }
+                } else if (j >= 18 && j < 30) {
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + midRingDislocX[j]][TilePositionY.get(i) + midRingDislocYEven[j]]
+                                = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 30));
+                    } else {
+                        boardMatrix[TilePositionX.get(i) + midRingDislocX[j]][TilePositionY.get(i) + midRingDislocYOdd[j]]
+                                = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 30));
+                    }
+                } else if (j >= 30 && j < 36) {
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + innerRingDislocX[j]][TilePositionY.get(i) + innerRingDislocYEven[j]]
+                                = currentTileHexSpaces.get(36 + (((j - 36) + (currentTileRotation)) % 36));
+                    } else {
+                        boardMatrix[TilePositionX.get(i) + innerRingDislocX[j]][TilePositionY.get(i) + innerRingDislocYOdd[j]]
+                                = currentTileHexSpaces.get(36 + (((j - 36) + (currentTileRotation)) % 36));
+                    }
+                } else {
+                    boardMatrix[TilePositionX.get(i)][TilePositionY.get(i)]
+                            = currentTileHexSpaces.get((j + (currentTileRotation)) % 36);
+                }
+            }
+        }
+        return boardMatrix;
+    }
+
+    public List<StripEntity> getStrips(){
+        List<StripEntity> Strips = board.getStrip();
+        return Strips;
+    }
+
+    public List<Integer> getStripPositionX(){
+        List<Integer> StripPositionX = board.getStripPositionX();
+        return StripPositionX;
+    }
+
+    public List<Integer> getStripPositionY(){
+        List<Integer> StripPositionY = board.getStripPositionY();
+        return StripPositionY;
+    }
+
+    public List<Integer> getStripRotation(){
+        List<Integer> StripRotation = board.getStripRotation();
+        return StripRotation;
+    }
+
+    public HexSpaceEntity[][] assembleStrips(HexSpaceEntity[][] boardMatrix, List<StripEntity> Strips,
+                                            List<Integer> StripPositionX, List<Integer> StripPositionY,
+                                            List<Integer> StripRotation) {
+        for (int i = 0; i < Strips.size(); i++) {
+            int currentStripRotation = StripRotation.get(i);
+            List<HexSpaceEntity> currentStripHexSpaces = Strips.get(i).getHexSpaceEntities();
+            for (int j = 0; j < currentStripHexSpaces.size(); j++) {
+                switch (currentStripRotation) {
+                    case 0:
+                        fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
+                                Rot0DislocX, Rot0EvenDislocY, Rot0OddDislocY, j, currentStripHexSpaces.get(j));
+                        break;
+                    case 1:
+                        fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
+                                Rot1DislocX, Rot1EvenDislocY, Rot1OddDislocY, j, currentStripHexSpaces.get(j));
+                        break;
+                    case 2:
+                        fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
+                                Rot2DislocX, Rot2EvenDislocY, Rot2OddDislocY, j, currentStripHexSpaces.get(j));
+                        break;
+                    case 3:
+                        fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
+                                Rot3DislocX, Rot3EvenDislocY, Rot3OddDislocY, j, currentStripHexSpaces.get(j));
+                        break;
+                    case 4:
+                        fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
+                                Rot4DislocX, Rot4EvenDislocY, Rot4OddDislocY, j, currentStripHexSpaces.get(j));
+                        break;
+                    case 5:
+                        fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
+                                Rot5DislocX, Rot5EvenDislocY, Rot5OddDislocY, j, currentStripHexSpaces.get(j));
+                        break;
+                }
+            }
+        }
+        return boardMatrix;
+    }
     /*
     The assembleBoard creates a Matrix consisting of all the elements from the GameEntity
     with ID = boardNumber and returns the matrix with the well prepared GameEntity. The assembler
     starts with a matrix consisting of only HexSpaces with infinite cost and colour EMPTY
     and replace them with the right HexSpaces according to the values he reads out of the Database.
-     */
+
     public HexSpaceEntity[][] assembleBoard(int boardID) {
         //create empty matrix
         HexSpaceEntity[][] boardMatrix = new HexSpaceEntity[100][100];
@@ -209,9 +342,9 @@ public class Assembler {
         for (int i = 0; i< endingSpaces.size(); i++){
             boardMatrix[endingSpacesPositionX.get(i)][endingSpacesPositionY.get(i)]=endingSpaces.get(i);
         }
-        return null;
+    return boardMatrix;
     }
-
+    */
     /*
     Used by the GameBoard and returns an ArrayList of Arrays with the coordinates of the blockades
     in the pathMatrix. This is needed so that the GameEntity can assign blockade instances to them.

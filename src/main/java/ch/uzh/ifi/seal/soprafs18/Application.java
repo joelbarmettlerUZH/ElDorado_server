@@ -1,5 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18;
 
+import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
+import ch.uzh.ifi.seal.soprafs18.game.main.Assembler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +15,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class Application {
 
     public static void main(String[] args) {
+
         SpringApplication.run(Application.class, args);
+
     }
 
     @Bean
