@@ -4,6 +4,12 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
 public abstract class Card {
+
+    public Card(String name, float value, int cost){
+        this.name = name;
+        coinValue = value;
+        coinCost = cost;
+    }
     /*
     Defines the cards name for identification in the frontend. Multiple cards can have the same name.
      */

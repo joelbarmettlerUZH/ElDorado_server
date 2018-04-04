@@ -17,7 +17,7 @@ import static java.lang.Boolean.FALSE;
 
 public class Player {
 
-    public Player(String name, Game game, int id, String token){
+    public Player(String name, Game game, int id, SpecialActions specialAction, String token){
         this.name = name;
         this.id = id;
         this.token = token;
@@ -25,7 +25,7 @@ public class Player {
         board = game;
         pathFinder = new Pathfinder();
         playingPieces = new ArrayList<PlayingPiece>();
-        specialAction = new SpecialActions();
+        this.specialAction = specialAction;
         history = new ArrayList<CardAction>();
         drawPile  = new ArrayList<Card>();
         handPile = new ArrayList<Card>();

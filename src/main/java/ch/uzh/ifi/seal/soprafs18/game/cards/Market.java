@@ -5,16 +5,21 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class Market {
+
+    public Market(ArrayList<Slot> active, ArrayList<Slot> passive){
+        this.active = active;
+        this.passive = passive;
+    }
     /*
     Slot with the active cards. These are always purchasable by the user.
      */
-    private List<Slot> active;
+    private ArrayList<Slot> active;
 
     /*
     Slot of passive cards. These cards are only purchasable if the active ArrayList has less than 6 Slots.
     Otherwise, these cards are not purchasable.
      */
-    private List<Slot> passive;
+    private ArrayList<Slot> passive;
 
     /*
     Removes one Card from the Slot and returns it to the user. A buy order is only valid if the Slot is part of the Active

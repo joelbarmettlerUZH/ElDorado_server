@@ -6,6 +6,11 @@ import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
 public class ActionCard extends Card {
 
+    public ActionCard(String name, float value, int cost, SpecialActions actions) {
+        super(name, value, cost);
+        this.actions = actions;
+    }
+
     /*
     The Budget that is granted to the user when the ActionCards action is performed. Bugeds stores how many
      cards the user can draw from the draw pile, how many card she/he can remove and how many cards she/he  

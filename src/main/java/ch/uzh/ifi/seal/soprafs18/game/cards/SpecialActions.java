@@ -1,6 +1,18 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
 public class SpecialActions {
+
+    public SpecialActions(){
+        draw = 0;
+        remove = 0;
+        steal = 0;
+    }
+
+    public SpecialActions(int draw, int remove, int steal){
+        this.draw = draw;
+        this.remove = remove;
+        this.steal = steal;
+    }
     /*
     Amount of cards that can be drawn
      */

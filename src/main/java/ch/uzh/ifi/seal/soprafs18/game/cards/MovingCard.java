@@ -10,6 +10,13 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 
 public class MovingCard extends Card{
 
+    public MovingCard(String name, float value, int cost, int strenght, int depth, COLOR color) {
+        super(name, value, cost);
+        this.strength = strenght;
+        this.depth = depth;
+        colors = color;
+    }
+
     /*
      Defines the cards moving-value: The moving cards strength defines the initial strengthLeft value for the
      path finding algorithm.

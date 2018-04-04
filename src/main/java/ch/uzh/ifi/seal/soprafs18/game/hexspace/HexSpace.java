@@ -3,9 +3,21 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HexSpace {
+
+    public HexSpace(int strenght, int minimalCost, int minimalDepht, COLOR color, Point point, ArrayList<HexSpace> previous
+            , Game game) {
+        this.strength = strenght;
+        this.minimalCost = minimalCost;
+        this.minimalDepth = minimalDepht;
+        this.color = color;
+        this.previous = previous;
+        this.game = game;
+    }
+
     /*
     The strength of a field indicates how high the card-value has to be to make it accessible. The strength of
     non-playing fields such as Mountains, Empty-Fields is set to 1000, all the other field strength correspond to
@@ -40,7 +52,7 @@ public class HexSpace {
     the pathfinding-algorithm. The length of the HexSpaces array corresponds to the depth / amount of steps it took the
     pathfinding-algorithm to reach the HexSpaceEntity. BlockadeSpaces are included in the Previous history.
      */
-    private List<HexSpace> previous;
+    private ArrayList<HexSpace> previous;
 
     /*
     HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
@@ -55,10 +67,11 @@ public class HexSpace {
     the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the
     previous. This way the blockade can handle the neighbours with taking the previous direction into account.
      */
-    public List<HexSpace> getNeighbour(){
+    public List<HexSpace> getNeighbour() {
         return null;
     }
-    public List<HexSpace> getNeighbour(HexSpace previous){
+
+    public List<HexSpace> getNeighbour(HexSpace previous) {
         return null;
     }
 

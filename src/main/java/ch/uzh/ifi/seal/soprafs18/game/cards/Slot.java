@@ -1,8 +1,17 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Slot {
+
+    public Slot(int id, Card card1, Card card2, Card card3){
+        pile = new ArrayList<Card>();
+        pile.add(card1);
+        pile.add(card2);
+        pile.add(card3);
+        SlotID = id;
+    }
     /*
     Unique identifier for a slot
      */
@@ -11,7 +20,7 @@ public class Slot {
     /*
     Each pile consists of 1 to 3 Cards.
      */
-    private List<Card> pile;
+    private ArrayList<Card> pile;
 
     /*
     Returns one contained Card instance and removes it from the Pile.
