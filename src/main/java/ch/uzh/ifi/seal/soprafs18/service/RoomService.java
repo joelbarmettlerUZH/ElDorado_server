@@ -53,7 +53,7 @@ public class RoomService {
             LOGGER.warning("User " + userEntity.getUserID() + " was trying to join with wrong or missing token");
             return;
         }
-        UserEntity user = userRepository.findByName(userEntity.getName()).get(0);
+        UserEntity user = userRepository.findByUserID(userEntity.getUserID()).get(0);
         RoomEntity room = roomRepository.findByRoomID(roomID).get(0);
         if (room.getUsers().size() == 4) {
             LOGGER.info("Unable to join room " + roomID + " due to a usernumber of 4");
@@ -68,7 +68,7 @@ public class RoomService {
     }
 
     public void leaveUser(int roomID, UserEntity userEntity, String token) {
-        UserEntity user = userRepository.findByName(userEntity.getName()).get(0);
+        UserEntity user = userRepository.findByUserID(userEntity.getUserID()).get(0);
         if (!UserService.valid(token, user, userRepository)) {
             LOGGER.warning("User " + userEntity.getUserID() + " was trying to leave room with wrong or missing token");
             return;

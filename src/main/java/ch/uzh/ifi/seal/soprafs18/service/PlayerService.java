@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs18.service;
 import ch.uzh.ifi.seal.soprafs18.entity.GameEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.PlayerEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
+import ch.uzh.ifi.seal.soprafs18.game.cards.ActionCard;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
@@ -130,7 +131,7 @@ public class PlayerService {
         return false;
     }
 
-    public boolean performAction(PlayerEntity player, Card card, String token) {
+    public boolean performAction(PlayerEntity player, ActionCard card, String token) {
         if (validate(player.getPlayerID(), token)) {
             player.getPlayer().action(card);
             LOGGER.info("Player "+player.getPlayerID()+" performs action with "+card.getName());

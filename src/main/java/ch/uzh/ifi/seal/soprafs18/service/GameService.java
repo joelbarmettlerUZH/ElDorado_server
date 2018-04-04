@@ -40,8 +40,8 @@ public class GameService {
             LOGGER.addHandler(filehandler);
             SimpleFormatter formatter = new SimpleFormatter();
             filehandler.setFormatter(formatter);
-            LOGGER.setLevel(Level.FINEST);
-            filehandler.setLevel(Level.INFO);
+            LOGGER.setLevel(Level.ALL);
+            filehandler.setLevel(Level.ALL);
         } catch (IOException io) {
             System.out.println("ERROR: Could not set logging handler to file");
         }
@@ -56,42 +56,47 @@ public class GameService {
 
     public void newGame(RoomEntity room) {
         List<UserEntity> users = room.getUsers();
-        LOGGER.fine("Shuffling users");
+        LOGGER.info("Shuffling users");
         Collections.shuffle(users);
         String gameName = room.getName();
         int board = room.getBoardnumber();
-        LOGGER.fine("Creating empty list of players and player entities");
+        LOGGER.info("Creating empty list of players and player entities");
         List<Player> players = new ArrayList<>();
         List<PlayerEntity> playerEntities = new ArrayList<>();
-        LOGGER.fine("Create game with board " + board + " with no players.");
-        Game game = new Game(board, null);
-        LOGGER.fine("Creating gameEntity " + gameName + " corresponding to board");
-        GameEntity gameEntity = new GameEntity(game, gameName);
-        gameRepository.save(gameEntity);
-        LOGGER.fine("Saved gameEntity to database");
+        LOGGER.info("Create game with board " + board + " with no players.");
+        Game game = new Game(board, null, room.getRoomID());
+        LOGGER.info("Creating gameEntity " + gameName + " corresponding to board");
+        GameEntity gameEntity = new GameEntity();
+
+        LOGGER.info("Saved gameEntity to database");
         int i = 0;
         for (UserEntity user : users) {
-            LOGGER.fine("Creating new player "+user.getUserID()+" with name "+user.getName()+" and position "+i);
+            LOGGER.info("Creating new player "+user.getUserID()+" with name "+user.getName()+" and position "+i);
             Player player = new Player(user.getUserID(), user.getName(), game, i);
-            LOGGER.fine("Added player to players");
+            LOGGER.info("Added player to players");
             players.add(player);
-            LOGGER.fine("Create new playerEntity "+user.getUserID()+" with player "+player.getId()+" and gameentity "+gameEntity.getName()+" and token "+user.getToken());
+            LOGGER.info("Create new playerEntity "+user.getUserID()+" with player "+player.getId()+" and gameentity "+gameName+" and token "+user.getToken());
             PlayerEntity playerEntity = new PlayerEntity(user.getUserID(), player, gameEntity, user.getToken());
-            LOGGER.fine("Adding player entity to list of playerEntities");
+            LOGGER.info("Adding player entity to list of playerEntities");
             playerEntities.add(playerEntity);
-            LOGGER.fine("Save playerEntity to database");
+            LOGGER.info("Save playerEntity to database");
             playerRepository.save(playerEntity);
             i++;
             LOGGER.info("Converted " + user.getUserID() + " to playerEntity and created new Player");
         }
-        LOGGER.fine("Setting players of game");
+
+        LOGGER.info("Setting players of game");
         game.setPlayers(players);
         game.setID(gameEntity.getGameID());
-        LOGGER.fine("Set game ID to "+game.getID());
+        LOGGER.info("Set game ID to "+game.getID());
+        gameEntity.setGame(game);
+        gameEntity.setName(gameName);
         gameEntity.setPlayers(playerEntities);
-        LOGGER.fine("Setting playerEntities to gameEntity and saving it to database");
+        LOGGER.info("Setting playerEntities to gameEntity and saving it to database");
+        System.out.println("***PLAYER ID IS: "+playerRepository.findAll().iterator().next().getPlayerID());
         gameRepository.save(gameEntity);
-        LOGGER.info("Save game " + gameEntity.getGameID() + "to the database");
+        LOGGER.info("Save game " + gameEntity.getGameID() + " to the database");
+
     }
 
     public GameEntity getGame(int gameID) {

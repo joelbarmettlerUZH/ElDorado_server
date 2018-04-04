@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.repository.PlayerRepository;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "GAME_ENTITY")
 public class GameEntity {
+
     @Autowired
     PlayerRepository playerRepository;
 
@@ -61,19 +63,16 @@ public class GameEntity {
     @OneToOne
     public PlayerEntity getCurrentPlayer(){
         Player current = game.getCurrent();
-        if(current == null){
-            return null;
-        }
+        System.out.println(playerRepository.findAll().iterator().next().getPlayerID());
         return playerRepository.findByPlayerID(current.getPlayerID()).get(0);
     }
     public void setCurrentPlayer(PlayerEntity playerEntity){
-
     }
 
 
     private List<PlayerEntity> players;
     @Column(name = "PLAYERS")
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "game")
+    @OneToMany(mappedBy = "game")
     @JsonManagedReference
     public List<PlayerEntity> getPlayers(){
         return players;
@@ -82,15 +81,15 @@ public class GameEntity {
         this.players = players;
     }
 
-    /*
+
     @Column(name = "RUNNING")
     public boolean getRunning(){
         return game.isRunning();
     }
     public void setRunning(boolean running){
-        game.setRunning(running);
+        //game.setRunning(running);
     }
-    */
+
 
 
     @Column(name = "WINNER")

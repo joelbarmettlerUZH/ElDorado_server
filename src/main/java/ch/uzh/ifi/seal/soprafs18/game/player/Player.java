@@ -20,9 +20,10 @@ import static java.lang.Boolean.FALSE;
 
 public class Player {
 
-    public Player(String name, Game game, int id){
+    public Player(int PlayerID, String name, Game game, int id){
         this.name = name;
-        this.playerID = id;
+        this.playerID = PlayerID;
+        this.id = id;
         coins = (float) 0;
         board = game;
         pathFinder = new Pathfinder();
@@ -319,7 +320,7 @@ public class Player {
         return playingPieces;
     }
 
-    public void setPlayingPieces(List<PlayingPiece> playingPieces) {
+    public void setPlayingPieces(ArrayList<PlayingPiece> playingPieces) {
         this.playingPieces = playingPieces;
     }
 
@@ -335,7 +336,7 @@ public class Player {
         return history;
     }
 
-    public void setHistory(List<CardAction> history) {
+    public void setHistory(ArrayList<CardAction> history) {
         this.history = history;
     }
 
@@ -343,7 +344,7 @@ public class Player {
         return drawPile;
     }
 
-    public void setDrawPile(List<Card> drawPile) {
+    public void setDrawPile(ArrayList<Card> drawPile) {
         this.drawPile = drawPile;
     }
 
@@ -351,7 +352,7 @@ public class Player {
         return handPile;
     }
 
-    public void setHandPile(List<Card> handPile) {
+    public void setHandPile(ArrayList<Card> handPile) {
         this.handPile = handPile;
     }
 
@@ -359,7 +360,7 @@ public class Player {
         return discardPile;
     }
 
-    public void setDiscardPile(List<Card> discardPile) {
+    public void setDiscardPile(ArrayList<Card> discardPile) {
         this.discardPile = discardPile;
     }
 
@@ -377,14 +378,6 @@ public class Player {
 
     public void setBlockades(List<Blockade> blockades) {
         this.blockades = blockades;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     public int getPlayerID() {

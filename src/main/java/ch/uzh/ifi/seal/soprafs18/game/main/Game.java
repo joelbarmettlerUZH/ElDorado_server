@@ -6,15 +6,27 @@ import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class Game {
 
     //Constructor
-    public Game(int boardNumber, List<Player> players){
+    public Game(int boardNumber, List<Player> players, int gameID){
         //assembler uses boardNumber
         this.players = players;
+        this.running = true;
+        this.ID = gameID;
+        this.pathMatrix = new HexSpace[2][2];
+        for (int row = 0; row < 2; row ++)
+            for (int col = 0; col < 2; col++)
+                this.pathMatrix[row][col] = new HexSpace();
+        this.winners = new ArrayList<>();
+        this.blockades = new ArrayList<>();
+        this.marketPlace = new Market();
+        this.memento = new Memento();
+        System.out.println("****created game*******");
     }
 
     /*
@@ -35,7 +47,7 @@ public class Game {
     Indicates whether the game is still in a running state or whether it has finished.
     Only allow manipulations when the running boolean is True.
      */
-    private boolean running = true;
+    private boolean running;
 
     /*
     Matrix of HexSpaces representing the whole playable field, also containing
@@ -61,7 +73,6 @@ public class Game {
     List of all blockades that are in the game so that we can set the strength
     of all blockades belonging together to 0 when one blockade is removed.
      */
-    @ElementCollection
     private List<Blockade> blockades;
 
     /*
@@ -124,7 +135,9 @@ public class Game {
     }
 
     public void setPlayers(List<Player> players) {
+        this.current = players.get(0);
         this.players = players;
+        System.out.println("***set current***");
     }
 
     public void setID(int ID) {
