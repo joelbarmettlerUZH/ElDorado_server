@@ -5,9 +5,12 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
 import ch.uzh.ifi.seal.soprafs18.game.cards.SpecialActions;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
+import jdk.nashorn.internal.ir.Block;
 
+import javax.persistence.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +20,9 @@ import static java.lang.Boolean.FALSE;
 
 public class Player {
 
-    public Player(String name, Game game, int id, String token){
+    public Player(String name, Game game, int id){
         this.name = name;
-        this.id = id;
-        this.token = token;
+        this.playerID = id;
         coins = (float) 0;
         board = game;
         pathFinder = new Pathfinder();
@@ -32,6 +34,11 @@ public class Player {
         discardPile = new ArrayList<Card>();
         bought = FALSE;
     }
+
+    /*
+    Globally unique ID
+     */
+    private int playerID;
 
     /*
     Players  name, set by the User. Has to be unique in the Game
@@ -48,7 +55,8 @@ public class Player {
     The token is communicated via SSL and randomized. For each game changing move,
     the user has to validate itself with this token in order to perform the move.
      */
-    private String token;
+    //Propably not needed since already in database
+    //private String token;
 
     /*
     Number of coins the Player has in his wallet. Is reset to 0 when he ends his round or bought one card.
@@ -66,15 +74,20 @@ public class Player {
     private Pathfinder pathFinder;
 
     /*
-    List of blockades the Player has collected so far.
+    List of playing pieces the player controls.
      */
     private ArrayList<PlayingPiece> playingPieces;
 
     /*
-        The budget the user has for the current round.
-        Is set from the action cards and reset either at the end of the game or
-        value-by-value each time the corresponding method (draw, remove, steal) is called.
-         */
+    List of blockades the Player has collected so far.
+     */
+    private List<Blockade> blockades;
+
+    /*
+    The budget the user has for the current round.
+    Is set from the action cards and reset either at the end of the game or
+    value-by-value each time the corresponding method (draw, remove, steal) is called.
+     */
     private SpecialActions specialAction;
 
     /*
@@ -250,4 +263,132 @@ public class Player {
     public void addCoins(Float amount) {
         coins = coins + amount;
     }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /*
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    */
+
+    public Float getCoins() {
+        return coins;
+    }
+
+    public void setCoins(Float coins) {
+        this.coins = coins;
+    }
+
+    public Game getBoard() {
+        return board;
+    }
+
+    public void setBoard(Game board) {
+        this.board = board;
+    }
+
+    public Pathfinder getPathFinder() {
+        return pathFinder;
+    }
+
+    public void setPathFinder(Pathfinder pathFinder) {
+        this.pathFinder = pathFinder;
+    }
+
+    public List<PlayingPiece> getPlayingPieces() {
+        return playingPieces;
+    }
+
+    public void setPlayingPieces(List<PlayingPiece> playingPieces) {
+        this.playingPieces = playingPieces;
+    }
+
+    public SpecialActions getSpecialAction() {
+        return specialAction;
+    }
+
+    public void setSpecialAction(SpecialActions specialAction) {
+        this.specialAction = specialAction;
+    }
+
+    public List<CardAction> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<CardAction> history) {
+        this.history = history;
+    }
+
+    public List<Card> getDrawPile() {
+        return drawPile;
+    }
+
+    public void setDrawPile(List<Card> drawPile) {
+        this.drawPile = drawPile;
+    }
+
+    public List<Card> getHandPile() {
+        return handPile;
+    }
+
+    public void setHandPile(List<Card> handPile) {
+        this.handPile = handPile;
+    }
+
+    public List<Card> getDiscardPile() {
+        return discardPile;
+    }
+
+    public void setDiscardPile(List<Card> discardPile) {
+        this.discardPile = discardPile;
+    }
+
+    public Boolean getBought() {
+        return bought;
+    }
+
+    public void setBought(Boolean bought) {
+        this.bought = bought;
+    }
+
+    public List<Blockade> getBlockades() {
+        return blockades;
+    }
+
+    public void setBlockades(List<Blockade> blockades) {
+        this.blockades = blockades;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
 }

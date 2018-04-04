@@ -4,16 +4,23 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
+import javax.persistence.*;
 import java.awt.*;
 import java.util.List;
 
 
 public class Game {
 
+    //Constructor
+    public Game(int boardNumber, List<Player> players){
+        //assembler uses boardNumber
+        this.players = players;
+    }
+
     /*
     Globally unique Identifier to identify a running game
      */
-    private int gameID;
+    private int ID;
 
     /*
     Player that can currently play the round. When one player calls endRound,
@@ -21,6 +28,7 @@ public class Game {
     the next bigger ID or, there is none, the one with ID 0.
     With N players: current = (current + 1) % N.
      */
+
     private Player current; //
 
     /*
@@ -53,6 +61,7 @@ public class Game {
     List of all blockades that are in the game so that we can set the strength
     of all blockades belonging together to 0 when one blockade is removed.
      */
+    @ElementCollection
     private List<Blockade> blockades;
 
     /*
@@ -74,8 +83,8 @@ public class Game {
         return null;
     }
 
-    public int getGameID() {
-        return gameID;
+    public int getID() {
+        return ID;
     }
 
     public Player getCurrent() {
@@ -112,5 +121,13 @@ public class Game {
 
     public Memento getMemento() {
         return memento;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

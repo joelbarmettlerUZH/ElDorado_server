@@ -12,27 +12,36 @@ public class BoardEntity {
     private int boardID;
 
     @Column(name = "TILES")
+    @ElementCollection
     private List<TileEntity> tiles;
 
     @Column(name = "TILESROTATION")
+    @ElementCollection
     private List<Integer> tilesRotatoin;
 
     @Column(name = "STRIP")
+    @ElementCollection
     private List<StripEntity> strip;
 
     @Column(name = "STRIPROTATION")
+    @ElementCollection
     private List<Integer> stripRotation;
 
     @Column(name = "STRIPPOSITION")
+    @ElementCollection
     private List<Point> stripPosition;
 
+    /*
     @Column(name = "BLOCKADE")
     private Point[][] blockade;
+    */
 
     @Column(name = "STARTINGSPACES")
+    @ElementCollection
     private List<Point> startingSpaces;
 
     @Column(name = "ENDINGSPACES")
+    @ElementCollection
     private List<Point> endingSpaces;
 
     public int getBoardID() {
@@ -83,6 +92,7 @@ public class BoardEntity {
         this.stripPosition = stripPosition;
     }
 
+    /*
     public Point[][] getBlockade() {
         return blockade;
     }
@@ -90,6 +100,7 @@ public class BoardEntity {
     public void setBlockade(Point[][] blockade) {
         this.blockade = blockade;
     }
+    */
 
     public List<Point> getStartingSpaces() {
         return startingSpaces;
