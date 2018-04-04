@@ -31,6 +31,9 @@ public class RoomEntity {
     @JsonManagedReference
     private List<UserEntity> users;
 
+    @Column(name = "BOARDNUMBER")
+    private int boardnumber;
+
     public int getRoomID() {
         return roomID;
     }
@@ -59,5 +62,13 @@ public class RoomEntity {
         System.out.println("adding user "+userEntity.getName());
         this.users.add(userEntity);
         System.out.println(users.get(0).getName());
+    }
+
+    public int getBoardnumber() {
+        return boardnumber;
+    }
+
+    public void setBoardnumber(int boardnumber) {
+        this.boardnumber = boardnumber;
     }
 }

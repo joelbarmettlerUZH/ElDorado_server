@@ -12,8 +12,13 @@ import org.hibernate.boot.jaxb.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 @Service
 public class RoomService {
@@ -24,21 +29,47 @@ public class RoomService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private GameService gameService;
+
+    private final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
+    private FileHandler filehandler;
+
+    public RoomService() {
+        try {
+            filehandler = new FileHandler("Serverlog.log", 1024 * 8, 1, true);
+            LOGGER.addHandler(filehandler);
+            SimpleFormatter formatter = new SimpleFormatter();
+            filehandler.setFormatter(formatter);
+            LOGGER.setLevel(Level.FINE);
+            filehandler.setLevel(Level.INFO);
+        } catch (IOException io) {
+            System.out.println("ERROR: Could not set logging handler to file");
+        }
+    }
+
     public void joinUser(int roomID, UserEntity userEntity, String token) {
-        if(!UserService.valid(token, userEntity, userRepository)){
+        if (!UserService.valid(token, userEntity, userRepository)) {
+            LOGGER.warning("User " + userEntity.getUserID() + " was trying to join with wrong or missing token");
             return;
         }
         UserEntity user = userRepository.findByName(userEntity.getName()).get(0);
         RoomEntity room = roomRepository.findByRoomID(roomID).get(0);
+        if (room.getUsers().size() == 4) {
+            LOGGER.info("Unable to join room " + roomID + " due to a usernumber of 4");
+            return;
+        }
         user.setRoomEntity(room);
         room.addUser(user);
         roomRepository.save(room);
         userRepository.save(user);
+        LOGGER.info("User " + user.getUserID() + "joined room " + roomID + " successfully");
     }
 
-    public void leaveUser(int roomID, UserEntity userEntity, String token){
+    public void leaveUser(int roomID, UserEntity userEntity, String token) {
         UserEntity user = userRepository.findByName(userEntity.getName()).get(0);
-        if(!UserService.valid(token, user, userRepository)){
+        if (!UserService.valid(token, user, userRepository)) {
+            LOGGER.warning("User " + userEntity.getUserID() + " was trying to leave room with wrong or missing token");
             return;
         }
         RoomEntity room = roomRepository.findByRoomID(roomID).get(0);
@@ -47,51 +78,71 @@ public class RoomService {
         room.setUsers(currentUsers);
         roomRepository.save(room);
         userRepository.delete(user);
-        if(room.getUsers().size() == 0){
+        LOGGER.info("User " + user.getUserID() + " left room and got deleted");
+        if (room.getUsers().size() == 0) {
             roomRepository.delete(room);
+            LOGGER.info("Deleted room since no users are left");
         }
     }
 
-    public List<UserEntity> getUsers(RoomEntity roomEntity){
+    public List<UserEntity> getUsers(RoomEntity roomEntity) {
+        LOGGER.info("Requested users of room " + roomEntity.getRoomID());
         return roomEntity.getUsers();
     }
 
-    public int newRoom(RoomEntity roomEntity){
+    public int newRoom(RoomEntity roomEntity) {
         roomRepository.save(roomEntity);
+        LOGGER.info("Created new room " + roomEntity.getRoomID());
         return roomEntity.getRoomID();
 
     }
 
-    public void removeRoom(RoomEntity roomEntity){
+    public void removeRoom(RoomEntity roomEntity) {
         roomRepository.delete(roomEntity);
+        LOGGER.info("Deleted room " + roomEntity.getRoomID());
     }
 
-    public RoomEntity getRoom(int RoomID){
+    public RoomEntity getRoom(int RoomID) {
+        LOGGER.info("Returning requested room " + RoomID);
         return roomRepository.findByRoomID(RoomID).get(0);
     }
 
-    public List<RoomEntity> getRooms(){
+    public List<RoomEntity> getRooms() {
         List<RoomEntity> roomEntities = new ArrayList<>();
         roomRepository.findAll().forEach(roomEntities::add);
-        System.out.println("WTF is going oon");
+        LOGGER.info("Returning all rooms");
         return roomEntities;
     }
 
-    public List<RoomEntity> getRooms(int fromIndex, int toIndex){
+    public List<RoomEntity> getRooms(int fromIndex, int toIndex) {
         toIndex = toIndex + 1;
         List<RoomEntity> rooms = getRooms();
-        if(fromIndex> toIndex){
+        if (fromIndex > toIndex) {
+            LOGGER.warning("Requested fromIndex is smaller than given toIndex");
             return new ArrayList<>();
         }
-        if(toIndex > rooms.size()){
+        if (toIndex > rooms.size()) {
+            LOGGER.warning("Setting toIndex to max index");
             toIndex = rooms.size();
         }
+        LOGGER.info("Returning rooms from " + fromIndex + " to " + toIndex);
         return rooms.subList(fromIndex, toIndex);
     }
 
-    public GameEntity startGame(RoomEntity roomEntity){
-        //TODO: Create a new game from roomEntity data with running main/game
-        return new GameEntity();
+    public GameEntity startGame(RoomEntity roomEntity) {
+        LOGGER.info("Starting a new Game with room " + roomEntity.getRoomID());
+        return gameService.newGame(roomEntity);
+    }
+
+    public void updateRoom(RoomEntity roomEntity) {
+        boolean ready = true;
+        for (UserEntity user : roomEntity.getUsers()) {
+            ready = ready && user.isReady();
+        }
+        if (ready && (roomEntity.getUsers().size() >= 2)) {
+            LOGGER.info("Room " + roomEntity.getRoomID() + " is starting.");
+            startGame(roomEntity);
+        }
     }
 
 }

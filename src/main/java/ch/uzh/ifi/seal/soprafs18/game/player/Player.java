@@ -16,6 +16,15 @@ import java.util.List;
 
 public class Player {
 
+    //Constructor
+    public Player(int playerID, String name, Game game, int id, String token){
+        this.playerID = playerID;
+        this.name = name;
+        this.game = game;
+        this.id = id;
+        this.token = token;
+    }
+
     /*
     Globally unique ID
      */

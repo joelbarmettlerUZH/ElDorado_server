@@ -37,6 +37,15 @@ public class GameEntity {
         this.gameID = gameID;
     }
 
+    private String name;
+    @Column(name = "NAME")
+    public String getName(){
+        return this.name;
+    }
+    public void setName(String name){
+
+    }
+
     protected Game game;
     @Transient
     public Game getGame() {
