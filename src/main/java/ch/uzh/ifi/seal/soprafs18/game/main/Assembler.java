@@ -182,21 +182,32 @@ public class Assembler {
             }
         }
 
-        //Assemble Blockades
+        //Assemble Blockades into matrix
+            //create random order of blockadeId
         List<Integer> blockadeIds = new ArrayList<>();
         for (int i = 1; i <= blockadeSpaceRepository.count(); i++){
             blockadeIds.add(i);
         }
         Collections.shuffle(blockadeIds);
+
+        //iterate though blockade of the DB representation of the Board.
         List<List<List<Integer>>> blockades = board.getBlockade();
         for (int i = 0; i < blockades.size(); i++){
             List<Integer> positionsX = blockades.get(i).get(0);
             List<Integer> positionsY = blockades.get(i).get(1);
             for (int j = 0; i < positionsX.size(); j++){
+                //assign blockadeSpaceEntities according to the random order of blockades.
                 boardMatrix[positionsX.get(j)][positionsY.get(j)] =
-                        blockadeSpaceRepository.findByBlockadeID(blockadeIds.get(j));
+                        blockadeSpaceRepository.findByBlockadeID(blockadeIds.get(i));
             }
+        }
 
+        //Assemble EndingSpaces into matrix
+        List<HexSpaceEntity> endingSpaces = board.getEndingSpaces();
+        List<Integer> endingSpacesPositionX = board.getEndingSpacePositionX();
+        List<Integer> endingSpacesPositionY = board.getEndingSpacePositionY();
+        for (int i = 0; i< endingSpaces.size(); i++){
+            boardMatrix[endingSpacesPositionX.get(i)][endingSpacesPositionY.get(i)]=endingSpaces.get(i);
         }
         return null;
     }
