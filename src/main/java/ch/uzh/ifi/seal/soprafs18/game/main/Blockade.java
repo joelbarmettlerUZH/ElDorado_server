@@ -1,11 +1,13 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
+import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 
 import java.util.List;
 
 public class Blockade {
+
     /*
     List of BlockadeSpaces the Blockade consists of.
      */

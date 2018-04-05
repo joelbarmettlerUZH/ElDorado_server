@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
+import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 
 import java.awt.*;
@@ -11,7 +12,18 @@ public class HexSpace {
     /*
     CONSTRUCTOR
      */
+    public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY){
+        this.color = COLOR.valueOf(hexSpaceEntity.getColor());
+        this.strength = hexSpaceEntity.getStrength();
+        this.minimalCost = 1000;
+        this.minimalDepth = 0;
+        this.previous = null;
+        this.point = new Point(posX,posY);
+        //how to assing the gameentity?? TODO
+        this.game = null;
 
+
+    }
     /*
     The strength of a field indicates how high the card-value has to be to make it accessible. The strength of
     non-playing fields such as Mountains, Empty-Fields is set to 1000, all the other field strength correspond to
