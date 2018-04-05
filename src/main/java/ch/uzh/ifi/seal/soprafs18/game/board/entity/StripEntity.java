@@ -16,6 +16,11 @@ public class StripEntity {
     @Column(name = "HEXSPACES")
     private List<HexSpaceEntity> hexSpaceEntities;
 
+    public StripEntity(char stripID, List<HexSpaceEntity> hexSpaceEntities){
+        this.stripID = stripID;
+        this.hexSpaceEntities=hexSpaceEntities;
+    }
+
     public char getStripID() {
         return stripID;
     }

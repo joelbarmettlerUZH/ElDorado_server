@@ -10,8 +10,9 @@ import javax.persistence.Table;
 @Table(name = "BLOCKADE")
 public class BlockadeSpaceEntity extends HexSpaceEntity {
 
-    public BlockadeSpaceEntity(){
-
+    public BlockadeSpaceEntity(String id, String color, int strength, int blockadeId){
+        super(id,color,strength);
+        this.blockadeId = blockadeId;
     }
 
 
