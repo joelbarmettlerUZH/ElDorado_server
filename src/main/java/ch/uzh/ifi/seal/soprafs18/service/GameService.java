@@ -62,13 +62,10 @@ public class GameService {
         int board = room.getBoardnumber();
         LOGGER.info("Creating empty list of players and player entities");
         List<Player> players = new ArrayList<>();
-        List<PlayerEntity> playerEntities = new ArrayList<>();
+        List<Integer> playerEntityIDs = new ArrayList<>();
         LOGGER.info("Create game with board " + board + " with no players.");
         Game game = new Game(board, null, room.getRoomID());
-        LOGGER.info("Creating gameEntity " + gameName + " corresponding to board");
-        GameEntity gameEntity = new GameEntity();
 
-        LOGGER.info("Saved gameEntity to database");
         int i = 0;
         for (UserEntity user : users) {
             LOGGER.info("Creating new player "+user.getUserID()+" with name "+user.getName()+" and position "+i);
@@ -76,9 +73,9 @@ public class GameService {
             LOGGER.info("Added player to players");
             players.add(player);
             LOGGER.info("Create new playerEntity "+user.getUserID()+" with player "+player.getId()+" and gameentity "+gameName+" and token "+user.getToken());
-            PlayerEntity playerEntity = new PlayerEntity(user.getUserID(), player, gameEntity, user.getToken());
+            PlayerEntity playerEntity = new PlayerEntity(user.getUserID(), player, user.getToken(), user.getRoomEntity().getRoomID());
             LOGGER.info("Adding player entity to list of playerEntities");
-            playerEntities.add(playerEntity);
+            playerEntityIDs.add(user.getUserID());
             LOGGER.info("Save playerEntity to database");
             playerRepository.save(playerEntity);
             i++;
@@ -87,11 +84,8 @@ public class GameService {
 
         LOGGER.info("Setting players of game");
         game.setPlayers(players);
-        game.setID(gameEntity.getGameID());
-        LOGGER.info("Set game ID to "+game.getID());
-        gameEntity.setGame(game);
-        gameEntity.setName(gameName);
-        gameEntity.setPlayers(playerEntities);
+        LOGGER.info("Creating gameEntity");
+        GameEntity gameEntity = new GameEntity(game, room.getRoomID(), playerEntityIDs.stream().mapToInt(in -> in).toArray());
         LOGGER.info("Setting playerEntities to gameEntity and saving it to database");
         System.out.println("***PLAYER ID IS: "+playerRepository.findAll().iterator().next().getPlayerID());
         gameRepository.save(gameEntity);
@@ -106,14 +100,19 @@ public class GameService {
 
 
     public PlayerEntity getCurrentPlayer(GameEntity game) {
-        LOGGER.info("Returning current player " + game.getCurrentPlayer().getPlayerID() + " of game " + game.getGameID());
-        return game.getCurrentPlayer();
+        LOGGER.info("Returning current player of game " + game.getGameID());
+        return playerRepository.findByPlayerID(game.getGame().getCurrent().getPlayerID()).get(0);
     }
 
 
     public List<PlayerEntity> getPlayers(GameEntity game) {
         LOGGER.info("Returning Players of game " + game.getGameID());
-        return game.getPlayers();
+        int[] playerIDs = game.getPlayers();
+        List<PlayerEntity> players = new ArrayList<>();
+        for(int id:playerIDs){
+            players.add(playerRepository.findByPlayerID(id).get(0));
+        }
+        return players;
     }
 
 
@@ -123,16 +122,19 @@ public class GameService {
     }
 
 
-    public PlayerEntity getWinner(GameEntity game) {
+    public List<PlayerEntity> getWinners(GameEntity game) {
         LOGGER.info("Returning winners of game " + game.getGameID());
-        return game.getWinner().get(0);
+        List<Player> winners = game.getGame().getWinners();
+        List<PlayerEntity> players = new ArrayList<>();
+        for(Player winner:winners){
+            players.add(playerRepository.findByPlayerID(winner.getPlayerID()).get(0));
+        }
+        return players;
     }
-
 
     public HexSpace[][] getBoard(GameEntity game) {
         LOGGER.info("Returning Board of game " + game.getGameID());
-        return game.getBoard();
+        return game.getGame().getPathMatrix();
     }
-
 
 }

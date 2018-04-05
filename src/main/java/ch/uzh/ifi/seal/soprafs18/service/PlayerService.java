@@ -49,10 +49,17 @@ public class PlayerService {
         }
     }
 
-    private boolean validate(int playerID, String token) {
-        PlayerEntity player = playerRepository.findByPlayerID(playerID).get(0);
+    private boolean validate(PlayerEntity pE, GameEntity gE, String token) {
+        PlayerEntity playerEntity = playerRepository.findByPlayerID(pE.getPlayerID()).get(0);
+        Player player = playerEntity.getPlayer();
+        LOGGER.info("Validating user with game");
+        return playerEntity.getToken().equals(token) && gameRepository.findByGameID(gE.getGameID()).get(0).getGame().getPlayers().contains(player);
+    }
+
+    private boolean validate(PlayerEntity pE, String token) {
+        PlayerEntity playerEntity = playerRepository.findByPlayerID(pE.getPlayerID()).get(0);
         LOGGER.info("Validating user");
-        return player.getToken().equals(token) && playerRepository.findByPlayerID(player.getGame().getCurrentPlayer().getPlayerID()).equals(player);
+        return playerEntity.getToken().equals(token);
     }
 
     public List<PlayerEntity> getPlayers(){
@@ -62,18 +69,20 @@ public class PlayerService {
         return players;
     }
 
-    public PlayerEntity getPlayer(int playerID, String token) {
-        if (validate(playerID, token)) {
-            LOGGER.info("Returning player " + playerID);
-            return playerRepository.findByPlayerID(playerID).get(0);
-        }
-        LOGGER.warning("Player "+playerID+" provided wrong token "+token);
-        return null;
+    public PlayerEntity getPlayer(int playerID) {
+        return playerRepository.findByPlayerID(playerID).get(0);
     }
 
-    public GameEntity getGame(PlayerEntity player) {
-        LOGGER.info("Returning game of player " + player.getPlayer());
-        return player.getGame();
+    public Game getGame(int playerID, String token) {
+        PlayerEntity player = playerRepository.findByPlayerID(playerID).get(0);
+        if(!validate(player, token)){
+            LOGGER.warning("Player "+player.getPlayerID()+" provided wrong token "+token);
+            return null;
+        }
+        LOGGER.info("Returning game of player " + player.getPlayerID());
+        Game game = gameRepository.findByGameID(player.getGameID()).get(0).getGame();
+        System.out.println("*************"+game.getID());
+        return game;
     }
 
     public List<PlayingPiece> getPlayingPieces(PlayerEntity player) {
@@ -82,7 +91,7 @@ public class PlayerService {
     }
 
     public boolean buyCard(PlayerEntity player, Slot slot, String token) {
-        if (validate(player.getPlayerID(), token)) {
+        if (validate(player, token)) {
             player.getPlayer().buy(slot);
             LOGGER.info("Player " + player.getPlayerID() + " buys" + slot.getCard().getName());
             return true;
@@ -92,7 +101,7 @@ public class PlayerService {
     }
 
     public boolean discardCard(PlayerEntity player, Card card, String token) {
-        if (validate(player.getPlayerID(), token)) {
+        if (validate(player, token)) {
             player.getPlayer().discard(card);
             LOGGER.info("Player " + player.getPlayerID() + " Discards card " + card.getName());
             return true;
@@ -102,7 +111,7 @@ public class PlayerService {
     }
 
     public boolean removeCard(PlayerEntity player, Card card, String token) {
-        if (validate(player.getPlayerID(), token)) {
+        if (validate(player, token)) {
             player.getPlayer().remove(card);
             LOGGER.info("Player " + player.getPlayerID() + " removes card " + card.getName());
             return true;
@@ -112,7 +121,7 @@ public class PlayerService {
     }
 
     public boolean sellCard(PlayerEntity player, Card card, String token) {
-        if (validate(player.getPlayerID(), token)) {
+        if (validate(player, token)) {
             player.getPlayer().sell(card);
             LOGGER.info("Player " + player.getPlayerID() + " sells card " + card.getName());
             return true;
@@ -122,7 +131,7 @@ public class PlayerService {
     }
 
     public boolean stealCard(PlayerEntity player, Slot slot, String token) {
-        if (validate(player.getPlayerID(), token)) {
+        if (validate(player, token)) {
             player.getPlayer().steal(slot);
             LOGGER.info("Player " + player.getPlayerID() + " steals " + slot.getCard().getName());
             return true;
@@ -132,7 +141,7 @@ public class PlayerService {
     }
 
     public boolean performAction(PlayerEntity player, ActionCard card, String token) {
-        if (validate(player.getPlayerID(), token)) {
+        if (validate(player, token)) {
             player.getPlayer().action(card);
             LOGGER.info("Player "+player.getPlayerID()+" performs action with "+card.getName());
             return true;
@@ -142,7 +151,7 @@ public class PlayerService {
     }
 
     public List<HexSpace> findPath(PlayerEntity player, String token, List<Card> cards, PlayingPiece playingPiece) {
-        if (!validate(player.getPlayerID(), token)) {
+        if (!validate(player, token)) {
             LOGGER.warning("Player "+player.getPlayerID()+" provided wrong token "+token);
             return null;
         }
@@ -151,7 +160,7 @@ public class PlayerService {
     }
 
     public boolean endRound(PlayerEntity player, String token) {
-        if (validate(player.getPlayerID(), token)) {
+        if (validate(player, token)) {
             player.getPlayer().endRound();
             LOGGER.info("Player "+player.getPlayerID()+" ends his round.");
             return true;

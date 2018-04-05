@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jdk.nashorn.internal.ir.Block;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.Random;
 
 import static java.lang.Boolean.FALSE;
 
+@Embeddable
 public class Player {
 
     public Player(int PlayerID, String name, Game game, int id){
@@ -67,21 +69,26 @@ public class Player {
     /*
     Instance of Game on which the Player is performing his action.
      */
+    @Transient
+    @JsonIgnore
     private Game board;
 
     /*
     Instance of PATHFINDER the player uses to find the possible paths.
      */
+    @Transient
     private Pathfinder pathFinder;
 
     /*
     List of playing pieces the player controls.
      */
+    @ElementCollection
     private ArrayList<PlayingPiece> playingPieces;
 
     /*
     List of blockades the Player has collected so far.
      */
+    @ElementCollection
     private List<Blockade> blockades;
 
     /*
@@ -94,21 +101,25 @@ public class Player {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
+    @ElementCollection
     private ArrayList<CardAction> history;
 
     /*
     List of cards the user has in his drawPile.
      */
+    @ElementCollection
     private ArrayList<Card> drawPile;
 
     /*
     List of cards the user has in his handPile.
      */
+    @ElementCollection
     private ArrayList<Card> handPile;
 
     /*
     List of cards the user has in his discardPile.
      */
+    @ElementCollection
     private ArrayList<Card> discardPile;
 
     /*

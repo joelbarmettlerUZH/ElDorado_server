@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Embeddable
 public class Game {
 
     //Constructor
@@ -32,6 +32,8 @@ public class Game {
     /*
     Globally unique Identifier to identify a running game
      */
+    @Id
+    @GeneratedValue
     private int ID;
 
     /*
@@ -40,7 +42,7 @@ public class Game {
     the next bigger ID or, there is none, the one with ID 0.
     With N players: current = (current + 1) % N.
      */
-
+    @Transient
     private Player current; //
 
     /*
@@ -61,18 +63,22 @@ public class Game {
     /*
     List of all players participating in the GameEntity.
      */
+    @Transient
+    @ElementCollection
     private List<Player> players;
 
     /*
     List containing all players that have reached ElDorado.
     Is used to calculate the final winner and to determine when the game is ended.
      */
+    @ElementCollection
     private List<Player> winners;
 
     /*
     List of all blockades that are in the game so that we can set the strength
     of all blockades belonging together to 0 when one blockade is removed.
      */
+    @ElementCollection
     private List<Blockade> blockades;
 
     /*

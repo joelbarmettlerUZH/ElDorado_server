@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface GameRepository extends CrudRepository<GameEntity, Integer> {
     List<GameEntity> findByGameID(int ID);
-    //List<GameEntity> findByRunningIsTrue();
 }

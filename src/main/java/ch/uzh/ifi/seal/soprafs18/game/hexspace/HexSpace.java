@@ -2,10 +2,18 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 
+import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.awt.*;
 import java.util.List;
 
+@Embeddable
 public class HexSpace {
+    @Id
+    @GeneratedValue
+    private int id;
     /*
     The strength of a field indicates how high the card-value has to be to make it accessible. The strength of
     non-playing fields such as Mountains, Empty-Fields is set to 1000, all the other field strength correspond to
@@ -45,6 +53,7 @@ public class HexSpace {
     /*
     HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
      */
+    @Transient
     protected Game game;
 
     /*
