@@ -1,153 +1,200 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
-import ch.uzh.ifi.seal.soprafs18.game.board.entity.BoardEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.TileEntity;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.BoardRepository;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceRepository;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceService;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.TileRepository;
-
-
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-/*
-@TestPropertySource(locations = "classpath:data.sql")
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
-@SpringBootApplication
-@TestExecutionListeners(
-        mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
-        listeners = {TransactionalTestExecutionListener.class}
-)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("test")
-*/
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@SpringBootTest(classes = {TileRepository.class,HexSpaceRepository.class,BoardRepository.class,TestTest.class})
-//SpringBootApplication
-//@AutoConfigureTestDatabase
-//@EnableAutoConfiguration
-//@Configuration
-//@ComponentScan
-//@EntityScan("com.delivery.domain")
-//@EnableTransactionManagement
-//@EnableJpaRepositories
-//@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:data.sql")
-//@Repository
-//@Component
 @RunWith(SpringRunner.class)
 public class AssemblerTest {
 
-    @TestConfiguration
-    static class AssemblerConf{
-        @Bean
-        public HexSpaceService hexSpaceService(){
-            return new HexSpaceService();
-        }
-    }
-
-    private HexSpaceService hexSpaceService;
+    private Assembler assembler = new Assembler();
+    private List<TileEntity> tileEntitylist;
+    private List<Integer> posX;
+    private List<Integer> posY;
+    private List<Integer> Rotation;
+    private List<Integer> Rotation2;
 
     @MockBean
-    private HexSpaceRepository hexSpaceRepository;
-
-    private String[] hexSpaceArray = {"J1","S1","J1","J1","J1","J1","ST","ST","ST","ST","J1","J1","J1","J1","W1","J1","B1","J1",
-            "J1","J1","S1","W1","J1","J1","J1","J1","J1","S1","M","M",
-            "J1","J1","J1","S1","J1","S1",
-            "W1"};
-
-
-
-
-    @MockBean(name="tileRepository")
     private TileRepository tileRepository;
-    //@MockBean(name="hexSpaceRepository")
-    //@Autowired
-    //private HexSpaceRepository hexSpaceRepository;
-    @MockBean(name="boardRepository")
-    private BoardRepository boardRepository;
-    @MockBean(name="hexSpace")
-    private List<HexSpaceEntity> hexSpaces;
-    @MockBean(name="tileRotation")
-    private List<Integer> tileRotation;
-    @Autowired
-    private List<Integer> tilePosX;
-    @Autowired
-    private List<Integer> tilePosY;
-
-
-    @Autowired
-    //private TestTest test;
 
     @Before
-    public void init(){
+    public void setUp(){
+        List<HexSpaceEntity> HexSpaceList = new ArrayList<>();
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("S1","SAND",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("ST","STARTFIELD",1000));
+        HexSpaceList.add(new HexSpaceEntity("ST","STARTFIELD",1000));
+        HexSpaceList.add(new HexSpaceEntity("ST","STARTFIELD",1000));
+        HexSpaceList.add(new HexSpaceEntity("ST","STARTFIELD",1000));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("W1","RIVER",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("B1","BASECAMP",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("S1","SAND",1));
+        HexSpaceList.add(new HexSpaceEntity("W1","RIVER",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("S1","SAND",1));
+        HexSpaceList.add(new HexSpaceEntity("M","MOUNTAIN",1000));
+        HexSpaceList.add(new HexSpaceEntity("M","MOUNTAIN",1000));
+
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("S1","SAND",1));
+        HexSpaceList.add(new HexSpaceEntity("J1","JUNGLE",1));
+        HexSpaceList.add(new HexSpaceEntity("S1","SAND",1));
+
+        HexSpaceList.add(new HexSpaceEntity("W1","RIVER",1));
+
+        TileEntity tileEntity = new TileEntity('Z',HexSpaceList);
+
+        this.tileEntitylist = new ArrayList<>();
+        this.tileEntitylist.add(tileEntity);
+
+        this.posX = new ArrayList<>();
+        this.posX.add(4);
+        this.posY = new ArrayList<>();
+        this.posY.add(4);
+        this.Rotation = new ArrayList<>();
+        this.Rotation.add(0);
+        this.Rotation2 = new ArrayList<>();
+        this.Rotation2.add(3);
 
 
 
-        System.out.print("hgh");
-        //test.assembleBoard();
-        System.out.print("hgh");
-        hexSpaceRepository.save(new HexSpaceEntity("J1","JUNGLE",1));
-        hexSpaceRepository.save(new HexSpaceEntity("S1","SAND",1));
-        hexSpaceRepository.save(new HexSpaceEntity("W1","RIVER",1));
-        hexSpaceRepository.save(new HexSpaceEntity("ST","STARTFIELD",1000));
-        hexSpaceRepository.save(new HexSpaceEntity("B1","BASECAMP",1));
-        hexSpaceRepository.save(new HexSpaceEntity("M","MOUNTAIN",1000));
 
-        System.out.print(hexSpaceRepository.findByHexid("J1").getColor());
-
-        for (int i = 0; i<hexSpaceArray.length;i++){
-            hexSpaces.add(hexSpaceRepository.findByHexid(hexSpaceArray[i]));
-        }
-        tileRotation.add(0);
-
-
-        tilePosX.add(4);
-        tilePosY.add(4);
-        tileRepository.save(new TileEntity('Z', hexSpaces));
-        boardRepository.save((new BoardEntity(111,tileRepository.findByTileID('Z'),
-                tileRotation,tilePosX,tilePosY)));
+        /*
+          ('A',('J1','S1','J1','J1','J1','J1','ST','ST','ST','ST','J1','J1','J1','J1','W1','J1','B1','J1',
+        'J1','J1','S1','W1','J1','J1','J1','J1','J1','S1','M','M',
+        'J1','J1','J1','S1','J1','S1',
+        'W1')),
+         */
     }
 
     @Test
-    //@SqlFileLocation("classpath:sql/myfil.sql")
-    //@Sql(scripts = "classpath:data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public void assembleBoard() {
+    public void createEmptyMatrix() {
+        HexSpaceEntity[][] emptyMatrix = assembler.createEmptyMatrix();
+        assertEquals("Dimension One is 100",100, emptyMatrix.length);
+        assertEquals("Dimension Two is 100",100, emptyMatrix[0].length);
+    }
 
+    @Test
+    public void getTiles() {
+    }
 
-        //System.out.print(boardRepository.findAll());
+    @Test
+    public void getTilePositionX() {
+    }
 
-        //Assembler assemly = new Assembler();
-        //HexSpaceEntity[][] mat =  assemly.assembleBoard(111);
-        //System.out.print(mat);
+    @Test
+    public void getTilePositionY() {
+    }
 
-        assertEquals(12, 12);
+    @Test
+    public void getTilesRotation() {
+    }
+
+    @Test
+    public void assembleTiles() {
+        HexSpaceEntity[][] boardMatrix = assembler.createEmptyMatrix();
+        //List<Integer> TilePositionX = assembler.getTilePositionX();
+        //List<Integer> TilePositionY = assembler.getStripPositionY();
+        //List<Integer> TileRotation = assembler.getTilesRotation();
+        HexSpaceEntity[][] newMatrix = assembler.assembleTiles(boardMatrix, this.tileEntitylist,
+                                                                this.posX, this.posY, this.Rotation);
+        assertEquals("Dimension One is 100",100, newMatrix.length);
+        assertEquals("Dimension Two is 100",100, newMatrix[0].length);
+        assertEquals("Centerpiece correct","RIVER", newMatrix[4][4].getColor());
+        assertEquals("Dimension Two is 100","JUNGLE", newMatrix[4][5].getColor());
+
+        HexSpaceEntity[][] newMatrix2 = assembler.assembleTiles(boardMatrix, this.tileEntitylist,
+                this.posX, this.posY, this.Rotation2);
+        assertEquals("Dimension Two is 100","SAND", newMatrix2[4][5].getColor());
+    }
+
+    @Test
+    public void getStrips() {
+    }
+
+    @Test
+    public void getStripPositionX() {
+    }
+
+    @Test
+    public void getStripPositionY() {
+    }
+
+    @Test
+    public void getStripRotation() {
+    }
+
+    @Test
+    public void assembleStrips() {
+    }
+
+    @Test
+    public void blockades() {
+    }
+
+    @Test
+    public void getBlockadesCount() {
+    }
+
+    @Test
+    public void getBlockadeSpace() {
+    }
+
+    @Test
+    public void assembleBlockades() {
+    }
+
+    @Test
+    public void getEndingSpaces() {
+    }
+
+    @Test
+    public void getEndingSpacesPositionX() {
+    }
+
+    @Test
+    public void getEndingSpacesPositionY() {
+    }
+
+    @Test
+    public void assembleEndingSpaces() {
     }
 
     @Test
     public void getBlockades() {
-        assertEquals(12, 12);
     }
 
     @Test
@@ -156,5 +203,9 @@ public class AssemblerTest {
 
     @Test
     public void getEndingFields() {
+    }
+
+    @Test
+    public void getBoard() {
     }
 }
