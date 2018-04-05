@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs18.game.board.repository.BlockadeSpaceRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.BoardRepository;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jdk.nashorn.internal.ir.Block;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -331,7 +332,7 @@ public class Assembler {
     We consider this more efficient than parsing the pathMatrix, since the assembler has
     the information abouts these positions already.
      */
-    public List<Blockade> getBlockades(int boardID) {
+    public List<Blockade> getBlockades(char boardId) {
         return null;
     }
 
@@ -340,8 +341,31 @@ public class Assembler {
     The GameEntity needs these information to place the playing Pieces. We rather request these
     informations from the assembler than parsing the matrix.
      */
-    public List<HexSpace> getStartingFields(int boardID) {
-        return null;
+    public List<HexSpace> getStartingFields(char boardId, Game game) {
+        List<HexSpace> StartingSpaces = new ArrayList<>();
+        List<TileEntity> containedTiles = boardRepository.findByBoardID(boardId).getTiles();
+        List<Integer> containedTilesPosX = boardRepository.findByBoardID(boardId).getTilesPositionX();
+        List<Integer> containedTilesPosY = boardRepository.findByBoardID(boardId).getTilesPositionY();
+        List<Integer> containedTilesRot = boardRepository.findByBoardID(boardId).getTilesRotation();
+        for (int i = 0; i < containedTiles.size(); i++) {
+            if (containedTiles.get(i).getTileID() == 'A' || containedTiles.get(i).getTileID() == 'B') {
+                int rotation = containedTilesRot.get(i);
+                int posX = containedTilesPosX.get(i);
+                int posY = containedTilesPosY.get(i);
+                for (int j = 9; j>=6; j--) {
+                    if (rotation % 2 == 0) {
+                        StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
+                                posX + outerRingDislocX[(i + (3 * rotation)) % 18],
+                                posY + outerRingDislocYEven[(i + (3 * rotation)) % 18], game));
+                    } else {
+                        StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
+                                posX + outerRingDislocX[(i + 3 * rotation) % 18],
+                                posY + outerRingDislocYOdd[(i + 3 * rotation) % 18], game));
+                    }
+                }
+            }
+        }
+        return StartingSpaces;
     }
 
     /*
@@ -349,8 +373,14 @@ public class Assembler {
     The GameEntity needs these information to place the playing Pieces. We rather request these
     informations from the Assembler than parsing the matrix.
      */
-    public List<HexSpace> getEndingFields(int boardID) {
-        return null;
+    public List<HexSpace> getEndingFields(char boardId, Game game) {
+        List<HexSpace> EndingSpaces = new ArrayList<>();
+        for (int i = 0; i <Assembler.getEndingSpaces(boardId).size(); i++)
+            EndingSpaces.add(new HexSpace(Assembler.getEndingSpaces(boardId).get(i),
+                                            Assembler.getEndingSpacesPositionX(boardId).get(i),
+                                            Assembler.getEndingSpacesPositionY(boardId).get(i),
+                                            game));
+        return EndingSpaces;
     }
 
     public BoardEntity getBoard(char boardId) {
