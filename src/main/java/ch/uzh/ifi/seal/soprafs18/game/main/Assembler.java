@@ -104,7 +104,7 @@ public class Assembler {
         HexSpaceEntity[][] boardMatrix = this.createEmptyMatrix();
         this.board = boardRepository.findByBoardID(boardId);
         boardMatrix = this.assembleTiles(boardMatrix,this.getTiles(),this.getTilePositionX(),
-                                        this.getStripPositionY(),this.getTilesRotation());
+                                        this.getTilePositionY(),this.getTilesRotation());
         boardMatrix = this.assembleStrips(boardMatrix,this.getStrips(),this.getStripPositionX(),
                                         this.getStripPositionY(),this.getStripRotation());
         boardMatrix = this.assembleAllBlockades(boardMatrix,this.blockades(),
