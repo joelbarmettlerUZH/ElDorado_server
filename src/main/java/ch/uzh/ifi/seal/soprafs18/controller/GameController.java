@@ -31,4 +31,14 @@ public class GameController {
         return gameService.getAll();
     }
 
+    //gets game id
+    @GetMapping(value = context+"/id")
+    @ResponseStatus(HttpStatus.OK)
+    private int id(){
+        return gameService.getAll().get(0).getGame().getID();
+    }
+
+
+
+
 }

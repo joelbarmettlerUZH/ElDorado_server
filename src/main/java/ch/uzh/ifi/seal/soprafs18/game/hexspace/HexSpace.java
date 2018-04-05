@@ -9,10 +9,9 @@ import javax.persistence.Transient;
 import java.awt.*;
 import java.util.List;
 
-@Embeddable
+
 public class HexSpace {
-    @Id
-    @GeneratedValue
+
     private int id;
     /*
     The strength of a field indicates how high the card-value has to be to make it accessible. The strength of
@@ -53,7 +52,6 @@ public class HexSpace {
     /*
     HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
      */
-    @Transient
     protected Game game;
 
     /*

@@ -12,60 +12,67 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "PLAYER_ENTITY")
-public class PlayerEntity {
+public class PlayerEntity implements Serializable {
 
-    public PlayerEntity(int id, Player player, String token, int gameID){
+    public PlayerEntity(int id, Player player, String token, GameEntity game){
         this.playerID = id;
         this.player = player;
         this.token = token;
-        this.gameID = gameID;
+        this.game = game;
     }
 
-    public PlayerEntity(){
+    public PlayerEntity(){}
 
-    }
-
-    private int playerID;
     @Id
-    @Column(name = "PLAYERID")
-    public int getPlayerID() {
-        return playerID;
-    }
+    @Column(name = "GLOBAL_PLAYERID")
+    private int playerID;
 
-    private String token;
     @JsonIgnore
     @Column(name = "TOKEN")
-    public String getToken(){
-        return token;
-    }
-    public void setToken(String token){
-        this.token = token;
-    }
+    private String token;
 
+    @Embedded
     private Player player;
-    @JsonIgnore
-    public Player getPlayer() {
-        return player;
-    }
 
-    private int gameID;
-    @Column(name = "GAMEID")
-    public int getGameID(){
-        return gameID;
-    }
-    public void setGameID(int gameID){
-        this.gameID = gameID;
+    @ManyToOne
+    @JoinColumn(name="GAMEENTITY")
+    @JsonBackReference
+    private GameEntity game;
+
+    public int getPlayerID() {
+        return playerID;
     }
 
     public void setPlayerID(int playerID) {
         this.playerID = playerID;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public GameEntity getGame() {
+        return game;
+    }
+
+    public void setGame(GameEntity game) {
+        this.game = game;
     }
 }

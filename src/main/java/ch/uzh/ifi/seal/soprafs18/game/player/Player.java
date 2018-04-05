@@ -23,19 +23,28 @@ import static java.lang.Boolean.FALSE;
 public class Player {
 
     public Player(int PlayerID, String name, Game game, int id){
+        this();
         this.name = name;
         this.playerID = PlayerID;
         this.id = id;
-        coins = (float) 0;
-        board = game;
-        pathFinder = new Pathfinder();
-        playingPieces = new ArrayList<PlayingPiece>();
-        specialAction = new SpecialActions();
-        history = new ArrayList<CardAction>();
-        drawPile  = new ArrayList<Card>();
-        handPile = new ArrayList<Card>();
-        discardPile = new ArrayList<Card>();
-        bought = FALSE;
+        this.board = game;
+
+    }
+
+    public Player(){
+        this.name = "Unknown";
+        this.playerID = -1;
+        this.id = -1;
+        this.board = new Game();
+        this.coins = (float) 0;
+        this.pathFinder = new Pathfinder();
+        this.playingPieces = new ArrayList<PlayingPiece>();
+        this.specialAction = new SpecialActions();
+        this.history = new ArrayList<CardAction>();
+        this.drawPile  = new ArrayList<Card>();
+        this.handPile = new ArrayList<Card>();
+        this.discardPile = new ArrayList<Card>();
+        this.bought = FALSE;
     }
 
     /*
@@ -64,6 +73,8 @@ public class Player {
     /*
     Number of coins the Player has in his wallet. Is reset to 0 when he ends his round or bought one card.
      */
+    @Transient
+    @JsonIgnore
     private Float coins;
 
     /*
@@ -77,18 +88,21 @@ public class Player {
     Instance of PATHFINDER the player uses to find the possible paths.
      */
     @Transient
+    @JsonIgnore
     private Pathfinder pathFinder;
 
     /*
     List of playing pieces the player controls.
      */
-    @ElementCollection
+    @Transient
+    @JsonIgnore
     private ArrayList<PlayingPiece> playingPieces;
 
     /*
     List of blockades the Player has collected so far.
      */
-    @ElementCollection
+    @Transient
+    @JsonIgnore
     private List<Blockade> blockades;
 
     /*
@@ -96,35 +110,43 @@ public class Player {
     Is set from the action cards and reset either at the end of the game or
     value-by-value each time the corresponding method (draw, remove, steal) is called.
      */
+    @Transient
+    @JsonIgnore
     private SpecialActions specialAction;
 
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    @ElementCollection
+    @Transient
+    @JsonIgnore
     private ArrayList<CardAction> history;
 
     /*
     List of cards the user has in his drawPile.
      */
-    @ElementCollection
+    @Transient
+    @JsonIgnore
     private ArrayList<Card> drawPile;
 
     /*
     List of cards the user has in his handPile.
      */
-    @ElementCollection
+    @Transient
+    @JsonIgnore
     private ArrayList<Card> handPile;
 
     /*
     List of cards the user has in his discardPile.
      */
-    @ElementCollection
+    @Transient
+    @JsonIgnore
     private ArrayList<Card> discardPile;
 
     /*
     Indicates whether the user has already bought a Card in the current round.
      */
+    @Transient
+    @JsonIgnore
     private Boolean bought;
 
     /*

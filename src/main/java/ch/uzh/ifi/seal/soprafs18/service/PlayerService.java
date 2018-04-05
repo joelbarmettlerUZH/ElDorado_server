@@ -80,7 +80,7 @@ public class PlayerService {
             return null;
         }
         LOGGER.info("Returning game of player " + player.getPlayerID());
-        Game game = gameRepository.findByGameID(player.getGameID()).get(0).getGame();
+        Game game = player.getGame().getGame();
         System.out.println("*************"+game.getID());
         return game;
     }

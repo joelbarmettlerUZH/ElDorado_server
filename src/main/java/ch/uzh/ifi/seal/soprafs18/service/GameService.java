@@ -62,7 +62,7 @@ public class GameService {
         int board = room.getBoardnumber();
         LOGGER.info("Creating empty list of players and player entities");
         List<Player> players = new ArrayList<>();
-        List<Integer> playerEntityIDs = new ArrayList<>();
+        List<PlayerEntity> playerEntities = new ArrayList<>();
         LOGGER.info("Create game with board " + board + " with no players.");
         Game game = new Game(board, null, room.getRoomID());
 
@@ -73,11 +73,12 @@ public class GameService {
             LOGGER.info("Added player to players");
             players.add(player);
             LOGGER.info("Create new playerEntity "+user.getUserID()+" with player "+player.getId()+" and gameentity "+gameName+" and token "+user.getToken());
-            PlayerEntity playerEntity = new PlayerEntity(user.getUserID(), player, user.getToken(), user.getRoomEntity().getRoomID());
+            PlayerEntity playerEntity = new PlayerEntity(user.getUserID(), player, user.getToken(), null);
             LOGGER.info("Adding player entity to list of playerEntities");
-            playerEntityIDs.add(user.getUserID());
+            playerEntities.add(playerEntity);
             LOGGER.info("Save playerEntity to database");
             playerRepository.save(playerEntity);
+            playerRepository.findByPlayerID(user.getUserID()).get(0).setPlayer(player);
             i++;
             LOGGER.info("Converted " + user.getUserID() + " to playerEntity and created new Player");
         }
@@ -85,12 +86,18 @@ public class GameService {
         LOGGER.info("Setting players of game");
         game.setPlayers(players);
         LOGGER.info("Creating gameEntity");
-        GameEntity gameEntity = new GameEntity(game, room.getRoomID(), playerEntityIDs.stream().mapToInt(in -> in).toArray());
+        GameEntity gameEntity = new GameEntity(game, room.getRoomID(), playerEntities);
         LOGGER.info("Setting playerEntities to gameEntity and saving it to database");
         System.out.println("***PLAYER ID IS: "+playerRepository.findAll().iterator().next().getPlayerID());
         gameRepository.save(gameEntity);
+        gameEntity.setGame(game);
+        gameRepository.save(gameEntity);
         LOGGER.info("Save game " + gameEntity.getGameID() + " to the database");
-
+        for(int n = 0; n<playerEntities.size(); n++){
+            playerEntities.get(n).setGame(gameEntity);
+            playerEntities.get(n).setPlayer((players.get(n)));
+            playerRepository.save(playerEntities.get(n));
+        }
     }
 
     public GameEntity getGame(int gameID) {
@@ -107,12 +114,7 @@ public class GameService {
 
     public List<PlayerEntity> getPlayers(GameEntity game) {
         LOGGER.info("Returning Players of game " + game.getGameID());
-        int[] playerIDs = game.getPlayers();
-        List<PlayerEntity> players = new ArrayList<>();
-        for(int id:playerIDs){
-            players.add(playerRepository.findByPlayerID(id).get(0));
-        }
-        return players;
+        return gameRepository.findByGameID(game.getGameID()).get(0).getPlayers();
     }
 
 

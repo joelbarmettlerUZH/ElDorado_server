@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -15,9 +16,16 @@ public class Game {
     //Constructor
     public Game(int boardNumber, List<Player> players, int gameID){
         //assembler uses boardNumber
+        this();
         this.players = players;
-        this.running = true;
         this.ID = gameID;
+        System.out.println("****created game*******");
+    }
+
+    public Game(){
+        this.players = new ArrayList<>();
+        this.running = true;
+        this.ID = -1;
         this.pathMatrix = new HexSpace[2][2];
         for (int row = 0; row < 2; row ++)
             for (int col = 0; col < 2; col++)
@@ -26,14 +34,11 @@ public class Game {
         this.blockades = new ArrayList<>();
         this.marketPlace = new Market();
         this.memento = new Memento();
-        System.out.println("****created game*******");
     }
 
     /*
     Globally unique Identifier to identify a running game
      */
-    @Id
-    @GeneratedValue
     private int ID;
 
     /*
@@ -43,6 +48,7 @@ public class Game {
     With N players: current = (current + 1) % N.
      */
     @Transient
+    @JsonIgnore
     private Player current; //
 
     /*
@@ -57,6 +63,8 @@ public class Game {
     instances of HexSpaces with infinite costs and a specific colour wherever
     no HexSpaceEntity is in located on the GameEntity.
      */
+    @Transient
+    @JsonIgnore
     private HexSpace[][] pathMatrix;
 
 
@@ -64,32 +72,38 @@ public class Game {
     List of all players participating in the GameEntity.
      */
     @Transient
-    @ElementCollection
+    @JsonIgnore
     private List<Player> players;
 
     /*
     List containing all players that have reached ElDorado.
     Is used to calculate the final winner and to determine when the game is ended.
      */
-    @ElementCollection
+    @Transient
+    @JsonIgnore
     private List<Player> winners;
 
     /*
     List of all blockades that are in the game so that we can set the strength
     of all blockades belonging together to 0 when one blockade is removed.
      */
-    @ElementCollection
+    @Transient
+    @JsonIgnore
     private List<Blockade> blockades;
 
     /*
     Instance of the current Marketplace that contains active and passive cards.
      */
+    @Transient
+    @JsonIgnore
     private Market marketPlace;
 
     /*
     Instance of the memento which save the state of the HexSpaces while the
     PathFinder modifies them, so that the HexSpaces can be reset.
      */
+    @Transient
+    @JsonIgnore
     private Memento memento;
 
     /*

@@ -14,52 +14,57 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "GAME_ENTITY")
-public class GameEntity {
+public class GameEntity implements Serializable {
 
-    public GameEntity(Game game, int gameID, int[] players){
+    public GameEntity(Game game, int gameID, List<PlayerEntity> players){
         this.game = game;
         this.gameID = gameID;
         this.players = players;
     }
 
-    public GameEntity(){
+    public GameEntity(){ }
 
-    }
-
-    private int gameID;
     @Id
-    @Column(name = "GAMEID")
-    public int getGameID(){
+    @Column(name = "GLOBAL_GAMEID")
+    private int gameID;
+
+    @Embedded
+    private Game game;
+
+    @Column(name = "PLAYER_ENTITIES")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "game", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<PlayerEntity> players;
+
+    public int getGameID() {
         return gameID;
     }
+
     public void setGameID(int gameID) {
         this.gameID = gameID;
     }
 
-    private Game game;
-    @JsonIgnore
-    @Embedded
     public Game getGame() {
         return game;
     }
+
     public void setGame(Game game) {
+        System.out.println("++++"+game.getID());
         this.game = game;
+        System.out.println("Game set (in theory)");
     }
 
-    private int[] players;
-    @Column(name = "PLAYER")
-    @Transient
-    public int[] getPlayers(){
+    public List<PlayerEntity> getPlayers() {
         return players;
     }
-    public void setPlayers(int[] players){
+
+    public void setPlayers(List<PlayerEntity> players) {
         this.players = players;
     }
-
-
 }
