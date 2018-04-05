@@ -2,16 +2,18 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
-public class Game {
+public class Game  implements Serializable {
 
     //Constructor
     public Game(int boardNumber, List<Player> players, int gameID){
@@ -26,10 +28,11 @@ public class Game {
         this.players = new ArrayList<>();
         this.running = true;
         this.ID = -1;
-        this.pathMatrix = new HexSpace[2][2];
+        HexSpace[][] temp = new HexSpace[2][2];
         for (int row = 0; row < 2; row ++)
             for (int col = 0; col < 2; col++)
-                this.pathMatrix[row][col] = new HexSpace();
+                temp[row][col] = new HexSpace();
+        this.pathMatrix = new Matrix(temp);
         this.winners = new ArrayList<>();
         this.blockades = new ArrayList<>();
         this.marketPlace = new Market();
@@ -63,10 +66,8 @@ public class Game {
     instances of HexSpaces with infinite costs and a specific colour wherever
     no HexSpaceEntity is in located on the GameEntity.
      */
-    @Transient
-    @JsonIgnore
-    private HexSpace[][] pathMatrix;
-
+    @Embedded
+    private Matrix pathMatrix;
 
     /*
     List of all players participating in the GameEntity.
@@ -130,7 +131,7 @@ public class Game {
         this.running = running;
     }
 
-    public HexSpace[][] getPathMatrix() {
+    public Matrix getPathMatrix() {
         return pathMatrix;
     }
 
@@ -158,6 +159,30 @@ public class Game {
         this.current = players.get(0);
         this.players = players;
         System.out.println("***set current***");
+    }
+
+    public void setCurrent(Player current) {
+        this.current = current;
+    }
+
+    public void setPathMatrix(HexSpace[][] pathMatrix) {
+        this.pathMatrix = new Matrix(pathMatrix);
+    }
+
+    public void setWinners(List<Player> winners) {
+        this.winners = winners;
+    }
+
+    public void setBlockades(List<Blockade> blockades) {
+        this.blockades = blockades;
+    }
+
+    public void setMarketPlace(Market marketPlace) {
+        this.marketPlace = marketPlace;
+    }
+
+    public void setMemento(Memento memento) {
+        this.memento = memento;
     }
 
     public void setID(int ID) {

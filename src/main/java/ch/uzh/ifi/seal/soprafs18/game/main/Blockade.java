@@ -4,10 +4,11 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 
-public class Blockade {
+public class Blockade  implements Serializable {
     /*
     List of BlockadeSpaces the Blockade consists of.
      */

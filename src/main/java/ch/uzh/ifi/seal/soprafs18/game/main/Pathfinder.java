@@ -4,10 +4,11 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-public class Pathfinder {
+public class Pathfinder  implements Serializable {
 
     /*
     The PlayingPiece has a HexSpaceEntity. This hexSpace is the first entry in the reachables array,

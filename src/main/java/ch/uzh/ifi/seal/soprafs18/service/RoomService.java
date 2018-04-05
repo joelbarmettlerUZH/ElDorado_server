@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.FileHandler;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 @Service
-public class RoomService {
+public class RoomService  implements Serializable {
 
     @Autowired
     private RoomRepository roomRepository;

@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "USER")
-public class UserEntity {
+public class UserEntity  implements Serializable {
 
     public UserEntity(String name, int character, RoomEntity roomEntity){
         this.name = name;

@@ -1,8 +1,9 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BlockadeSpace extends HexSpace{
+public class BlockadeSpace extends HexSpace  implements Serializable {
     /*
     This method needs to be overwritten in order to determine the neighbours of a special HexSpaceEntity of type BlockadeSpace,
     since other BlockadeSpaces shall not count as its neighbours. The overwritten method considers where the player was

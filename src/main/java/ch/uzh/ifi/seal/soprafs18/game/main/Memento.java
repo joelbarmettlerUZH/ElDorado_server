@@ -4,9 +4,10 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Memento {
+public class Memento  implements Serializable {
 
     /*
     List of HexSpaces that the PathFinder reached.

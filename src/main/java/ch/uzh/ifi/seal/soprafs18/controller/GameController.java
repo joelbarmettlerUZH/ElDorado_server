@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
 import java.util.List;
 
 @RestController
-public class GameController {
+public class GameController  implements Serializable {
     private final String context = CONSTANTS.APICONTEXT + "/Games";
 
     @Autowired
@@ -37,8 +38,6 @@ public class GameController {
     private int id(){
         return gameService.getAll().get(0).getGame().getID();
     }
-
-
 
 
 }

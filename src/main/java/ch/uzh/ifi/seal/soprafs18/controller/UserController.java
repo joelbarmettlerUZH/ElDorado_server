@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @RestController
-public class UserController {
+public class UserController  implements Serializable {
     private final String context = CONSTANTS.APICONTEXT + "/User";
 
     @Autowired

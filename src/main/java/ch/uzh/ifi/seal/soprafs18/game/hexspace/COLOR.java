@@ -1,6 +1,10 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
-public enum COLOR {
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+
+
+public enum COLOR implements Serializable{
     JUNGLE,
     RIVER,
     SAND,

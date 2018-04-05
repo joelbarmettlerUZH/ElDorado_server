@@ -1,9 +1,10 @@
 package ch.uzh.ifi.seal.soprafs18.game.player;
 
+import java.io.Serializable;
 import java.util.List;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 
-public class CardAction {
+public class CardAction  implements Serializable {
 
     public CardAction(Card card, String actionName){
         addCard(card);

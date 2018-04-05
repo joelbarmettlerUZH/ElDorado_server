@@ -3,8 +3,9 @@ package ch.uzh.ifi.seal.soprafs18.game.player;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
-public class PlayingPiece {
+public class PlayingPiece  implements Serializable {
     /*
     unique id for the playing piece
      */

@@ -3,11 +3,12 @@ package ch.uzh.ifi.seal.soprafs18.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "ROOM")
-public class RoomEntity {
+public class RoomEntity  implements Serializable {
 
     public RoomEntity(String name){
         this.name = name;

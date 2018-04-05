@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class RoomController {
+public class RoomController  implements Serializable {
     private final String context = CONSTANTS.APICONTEXT + "/Room";
 
     @Autowired

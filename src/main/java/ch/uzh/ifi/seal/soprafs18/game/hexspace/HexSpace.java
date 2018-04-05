@@ -1,18 +1,27 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.awt.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+@Embeddable
+public class HexSpace implements Serializable{
 
-public class HexSpace {
+    public HexSpace(){
+        this.strength = 1000;
+        this.minimalCost = 1000;
+        this.minimalDepth = 0;
+        this.color = COLOR.EMPTY;
+        this.point = new Point(-1, -1);
+        this.previous = new ArrayList<>();
+        this.game = null;
+    }
 
-    private int id;
     /*
     The strength of a field indicates how high the card-value has to be to make it accessible. The strength of
     non-playing fields such as Mountains, Empty-Fields is set to 1000, all the other field strength correspond to
@@ -35,11 +44,14 @@ public class HexSpace {
     /*
     Enum of all possible colours a HexSpaceEntity can have. Each HexSpaceEntity has exactly one colour.
      */
+    @Enumerated
     private COLOR color;
 
     /*
     The X/Y coordinates of the HexSpaceEntity in the GameEntity Matrix.
      */
+    @Transient
+    @JsonIgnore
     private Point point;
 
     /*
@@ -47,11 +59,15 @@ public class HexSpace {
     the pathfinding-algorithm. The length of the HexSpaces array corresponds to the depth / amount of steps it took the
     pathfinding-algorithm to reach the HexSpaceEntity. BlockadeSpaces are included in the Previous history.
      */
+    @Transient
+    @JsonIgnore
     private List<HexSpace> previous;
 
     /*
     HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
      */
+    @Transient
+    @JsonIgnore
     protected Game game;
 
     /*

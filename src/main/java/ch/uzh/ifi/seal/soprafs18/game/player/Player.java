@@ -13,6 +13,7 @@ import jdk.nashorn.internal.ir.Block;
 
 import javax.persistence.*;
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +21,7 @@ import java.util.Random;
 import static java.lang.Boolean.FALSE;
 
 @Embeddable
-public class Player {
+public class Player  implements Serializable {
 
     public Player(int PlayerID, String name, Game game, int id){
         this();

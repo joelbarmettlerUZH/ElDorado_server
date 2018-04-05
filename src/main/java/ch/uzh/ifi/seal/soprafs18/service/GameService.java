@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +25,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 @Service
-public class GameService {
+public class GameService implements Serializable{
 
     @Autowired
     private GameRepository gameRepository;
@@ -134,7 +136,7 @@ public class GameService {
         return players;
     }
 
-    public HexSpace[][] getBoard(GameEntity game) {
+    public Matrix getBoard(GameEntity game) {
         LOGGER.info("Returning Board of game " + game.getGameID());
         return game.getGame().getPathMatrix();
     }
