@@ -12,14 +12,14 @@ public class HexSpace {
     /*
     CONSTRUCTOR
      */
-    public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY){
+    public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY, Game game){
         this.color = COLOR.valueOf(hexSpaceEntity.getColor());
         this.strength = hexSpaceEntity.getStrength();
         this.minimalCost = 1000;
         this.minimalDepth = 0;
         this.previous = null;
         this.point = new Point(posX,posY);
-        //how to assing the gameentity?? TODO
+        this.game = game;
         this.game = null;
 
 

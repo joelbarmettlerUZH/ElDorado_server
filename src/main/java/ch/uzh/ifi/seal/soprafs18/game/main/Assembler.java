@@ -26,72 +26,72 @@ public class Assembler {
     /*
     Instance of Database containing all the GameEntity
      */
-    @Autowired
-    private BoardEntity board;
+
+
     //private StripEntity strip;
     //private TileEntity tile;
 
     @Autowired
-    private BoardRepository boardRepository;
+    private static BoardRepository boardRepository;
     @Autowired
-    private BlockadeSpaceRepository blockadeSpaceRepository;
+    private static BlockadeSpaceRepository blockadeSpaceRepository;
 
     /*
     compute relative positions for OuterRing
      */
-    private int[] outerRingDislocX = {0, 1, 2, 3, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -3, -2, -1};
-    private int[] outerRingDislocYEven = {3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -2, -2, -1, 0, 1, 2, 2, 3};
-    private int[] outerRingDislocYOdd = {3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -2, -2, -1, 0, 1, 2, 2};
+    private static int[] outerRingDislocX = {0, 1, 2, 3, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -3, -2, -1};
+    private static int[] outerRingDislocYEven = {3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -2, -2, -1, 0, 1, 2, 2, 3};
+    private static int[] outerRingDislocYOdd = {3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -2, -2, -1, 0, 1, 2, 2};
 
     /*
     compute relative positions for MidRing
     */
-    private int[] midRingDislocX = {0, 1, 2, 2, 2, 1, 0, -1, -2, -2, -2, -1};
-    private int[] midRingDislocYEven = {2, 2, 1, 0, -1, -1, -2, -1, -1, 0, 1, 2};
-    private int[] midRingDislocYOdd = {2, 1, 1, 0, -1, -2, -2, -2, -1, 0, 1, 1};
+    private static int[] midRingDislocX = {0, 1, 2, 2, 2, 1, 0, -1, -2, -2, -2, -1};
+    private static int[] midRingDislocYEven = {2, 2, 1, 0, -1, -1, -2, -1, -1, 0, 1, 2};
+    private static int[] midRingDislocYOdd = {2, 1, 1, 0, -1, -2, -2, -2, -1, 0, 1, 1};
     /*
 
     /*
     compute relative positions for InnerRing
     */
-    private int[] innerRingDislocX = {0, 1, 1, 0, -1, -1};
-    private int[] innerRingDislocYEven = {1, 1, 0, -1, 0, 1};
-    private int[] innerRingDislocYOdd = {1, 0, -1, -1, -1, 0};
+    private static int[] innerRingDislocX = {0, 1, 1, 0, -1, -1};
+    private static int[] innerRingDislocYEven = {1, 1, 0, -1, 0, 1};
+    private static int[] innerRingDislocYOdd = {1, 0, -1, -1, -1, 0};
 
 
     /*
     Terrain-Strips Dislocation
      */
-    private int[] Rot0DislocX = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
-    private int[] Rot0EvenDislocY = {0, 1, 0, 0, -1, -1, -2, -3, -2, -2, -1, -1, 0, -1, -1, -2};
-    private int[] Rot0OddDislocY = {0, 0, 0, -1, -1, -2, -3, -3, -3, -2, -2, -1, -1, -1, -2, -2};
+    private static int[] Rot0DislocX = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
+    private static int[] Rot0EvenDislocY = {0, 1, 0, 0, -1, -1, -2, -3, -2, -2, -1, -1, 0, -1, -1, -2};
+    private static int[] Rot0OddDislocY = {0, 0, 0, -1, -1, -2, -3, -3, -3, -2, -2, -1, -1, -1, -2, -2};
 
-    private int[] Rot1DislocX = {0, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0};
-    private int[] Rot1EvenDislocY = {0, -1, -2, -3, -4, -5, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
-    private int[] Rot1OddDislocY = {0, 0, -1, -2, -3, -4, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
+    private static int[] Rot1DislocX = {0, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0};
+    private static int[] Rot1EvenDislocY = {0, -1, -2, -3, -4, -5, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
+    private static int[] Rot1OddDislocY = {0, 0, -1, -2, -3, -4, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
 
-    private int[] Rot2DislocX = {0, 0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
-    private int[] Rot2EvenDislocY = {0, -1, -2, -2, -3, -3, -3, -2, -1, -1, 0, 0, -1, -1, -2, -2};
-    private int[] Rot2OddDislocY = {0, -1, -1, -2, -2, -3, -2, -1, -1, 0, 0, 1, 0, -1, -1, -2};
+    private static int[] Rot2DislocX = {0, 0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
+    private static int[] Rot2EvenDislocY = {0, -1, -2, -2, -3, -3, -3, -2, -1, -1, 0, 0, -1, -1, -2, -2};
+    private static int[] Rot2OddDislocY = {0, -1, -1, -2, -2, -3, -2, -1, -1, 0, 0, 1, 0, -1, -1, -2};
 
-    private int[] Rot3DislocX = {0, -1, -1, -1, -1, -1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0};
-    private int[] Rot3EvenDislocY = {0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
-    private int[] Rot3OddDislocY = {0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
+    private static int[] Rot3DislocX = {0, -1, -1, -1, -1, -1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0};
+    private static int[] Rot3EvenDislocY = {0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
+    private static int[] Rot3OddDislocY = {0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
 
-    private int[] Rot4DislocX = {0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
-    private int[] Rot4EvenDislocY = {0, 0, 0, 1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2};
-    private int[] Rot4OddDislocY = {0, -1, 0, 0, 1, 1, 2, 3, 2, 2, 1, 1, 0, 1, 1, 2};
+    private static int[] Rot4DislocX = {0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
+    private static int[] Rot4EvenDislocY = {0, 0, 0, 1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2};
+    private static int[] Rot4OddDislocY = {0, -1, 0, 0, 1, 1, 2, 3, 2, 2, 1, 1, 0, 1, 1, 2};
 
-    private int[] Rot5DislocX = {0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
-    private int[] Rot5EvenDislocY = {0, 1, 1, 2, 2, 3, 2, 1, 1, 0, 0, -1, 0, 1, 1, 2};
-    private int[] Rot5OddDislocY = {0, 1, 2, 2, 3, 3, 3, 2, 1, 1, 0, 0, 1, 1, 2, 2};
+    private static int[] Rot5DislocX = {0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
+    private static int[] Rot5EvenDislocY = {0, 1, 1, 2, 2, 3, 2, 1, 1, 0, 0, -1, 0, 1, 1, 2};
+    private static int[] Rot5OddDislocY = {0, 1, 2, 2, 3, 3, 3, 2, 1, 1, 0, 0, 1, 1, 2, 2};
 
     /*
     Function used to assemble the strips into the matrix. We have 12 cases, 6  rotation-dependent each, even and odd
     position of the "center Hexspace" (it's actually not in the center. it's the Hexspace which is at the first
     position of the HexSpaceEntity list
      */
-    private void fillStripEntryInMatrix(HexSpaceEntity[][] boardMatrix, int posX, int posY, int[] disLocX,
+    private static void fillStripEntryInMatrix(HexSpaceEntity[][] boardMatrix, int posX, int posY, int[] disLocX,
                                         int[] disLocEvenY, int[] disLocOddY, int j, HexSpaceEntity hexSpaceEntity) {
         if (posX % 2 == 0) {
             boardMatrix[posX + disLocX[j]][posY + disLocEvenY[j]] = hexSpaceEntity;
@@ -100,49 +100,61 @@ public class Assembler {
         }
     }
 
-    public HexSpaceEntity[][] assembleBoard (int boardId){
-        HexSpaceEntity[][] boardMatrix = this.createEmptyMatrix();
-        this.board = boardRepository.findByBoardID(boardId);
-        boardMatrix = this.assembleTiles(boardMatrix,this.getTiles(),this.getTilePositionX(),
-                                        this.getTilePositionY(),this.getTilesRotation());
-        boardMatrix = this.assembleStrips(boardMatrix,this.getStrips(),this.getStripPositionX(),
-                                        this.getStripPositionY(),this.getStripRotation());
-        boardMatrix = this.assembleAllBlockades(boardMatrix,this.blockades(),
-                                                this.getRandomBlockades(this.getBlockadesCount()));
-        boardMatrix = this.assembleEndingSpaces(boardMatrix,this.getEndingSpaces(),this.getEndingSpacesPositionX(),
-                                                this.getEndingSpacesPositionY());
-        return boardMatrix;
+    //Converts the temporary Matrix of entities to matrix of HexSpaces
+    private static HexSpace[][] convertMatrix(HexSpaceEntity[][] entityMarix, Game game){
+        HexSpace[][] hexSpaceMatrix = new HexSpace[100][100];
+        for (int i = 0; i<entityMarix.length;i++){
+            for (int j = 0; j<entityMarix[0].length;j++){
+                hexSpaceMatrix[i][j]=new HexSpace(entityMarix[i][j], i, j, game);
+            }
+        }
+        return hexSpaceMatrix;
     }
 
-    protected HexSpaceEntity[][] createEmptyMatrix() {
+    public static HexSpace[][] assembleBoard (char boardId,Game game){
+        HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
+        BoardEntity board = boardRepository.findByBoardID(boardId);
+        boardMatrix = Assembler.assembleTiles(boardMatrix,Assembler.getTiles(boardId),Assembler.getTilePositionX(boardId),
+                                                Assembler.getTilePositionY(boardId),Assembler.getTilesRotation(boardId));
+        boardMatrix = Assembler.assembleStrips(boardMatrix,Assembler.getStrips(boardId),Assembler.getStripPositionX(boardId),
+                                                Assembler.getStripPositionY(boardId),Assembler.getStripRotation(boardId));
+        boardMatrix = Assembler.assembleAllBlockades(boardMatrix,Assembler.blockades(boardId),
+                                                Assembler.getRandomBlockades(Assembler.getBlockadesCount()));
+        boardMatrix = Assembler.assembleEndingSpaces(boardMatrix,Assembler.getEndingSpaces(boardId),
+                                                    Assembler.getEndingSpacesPositionX(boardId),
+                                                    Assembler.getEndingSpacesPositionY(boardId));
+        return convertMatrix(boardMatrix, game);
+    }
+
+    protected static HexSpaceEntity[][] createEmptyMatrix() {
         HexSpaceEntity[][] boardMatrix = new HexSpaceEntity[100][100];
         return boardMatrix;
     }
 
 
-    private List<TileEntity> getTiles() {
-        List<TileEntity> Tiles = this.board.getTiles();
+    private static List<TileEntity> getTiles(char boardId) {
+        List<TileEntity> Tiles = boardRepository.findByBoardID(boardId).getTiles();
         return Tiles;
     }
 
-    private List<Integer> getTilePositionX() {
-        List<Integer> TilePositionX = this.board.getTilesPositionX();
+    private static List<Integer> getTilePositionX(char boardId) {
+        List<Integer> TilePositionX = boardRepository.findByBoardID(boardId).getTilesPositionX();
         return TilePositionX;
     }
 
-    private List<Integer> getTilePositionY() {
-        List<Integer> TilePositionY = this.board.getTilesPositionY();
+    private static List<Integer> getTilePositionY(char boardId) {
+        List<Integer> TilePositionY = boardRepository.findByBoardID(boardId).getTilesPositionY();
         return TilePositionY;
     }
 
-    private List<Integer> getTilesRotation() {
-        List<Integer> TileRotation = this.board.getTilesRotation();
+    private static List<Integer> getTilesRotation(char boardId) {
+        List<Integer> TileRotation = boardRepository.findByBoardID(boardId).getTilesRotation();
         return TileRotation;
     }
 
 
 
-    protected HexSpaceEntity[][] assembleTiles(HexSpaceEntity[][] boardMatrix, List<TileEntity> Tile,
+    protected static HexSpaceEntity[][] assembleTiles(HexSpaceEntity[][] boardMatrix, List<TileEntity> Tile,
                                             List<Integer> TilePositionX, List<Integer> TilePositionY,
                                             List<Integer> TileRotation) {
         for (int i = 0; i < Tile.size(); i++) {
@@ -183,27 +195,27 @@ public class Assembler {
         return boardMatrix;
     }
 
-    private List<StripEntity> getStrips() {
-        List<StripEntity> Strips = this.board.getStrip();
+    private static List<StripEntity> getStrips(char boardId) {
+        List<StripEntity> Strips = boardRepository.findByBoardID(boardId).getStrip();
         return Strips;
     }
 
-    private List<Integer> getStripPositionX() {
-        List<Integer> StripPositionX = this.board.getStripPositionX();
+    private static List<Integer> getStripPositionX(char boardId) {
+        List<Integer> StripPositionX = boardRepository.findByBoardID(boardId).getStripPositionX();
         return StripPositionX;
     }
 
-    private List<Integer> getStripPositionY() {
-        List<Integer> StripPositionY = this.board.getStripPositionY();
+    private static List<Integer> getStripPositionY(char boardId) {
+        List<Integer> StripPositionY = boardRepository.findByBoardID(boardId).getStripPositionY();
         return StripPositionY;
     }
 
-    private List<Integer> getStripRotation() {
-        List<Integer> StripRotation = this.board.getStripRotation();
+    private static List<Integer> getStripRotation(char boardId) {
+        List<Integer> StripRotation = boardRepository.findByBoardID(boardId).getStripRotation();
         return StripRotation;
     }
 
-    protected HexSpaceEntity[][] assembleStrips(HexSpaceEntity[][] boardMatrix, List<StripEntity> Strips,
+    protected static HexSpaceEntity[][] assembleStrips(HexSpaceEntity[][] boardMatrix, List<StripEntity> Strips,
                                              List<Integer> StripPositionX, List<Integer> StripPositionY,
                                              List<Integer> StripRotation) {
         for (int i = 0; i < Strips.size(); i++) {
@@ -241,21 +253,21 @@ public class Assembler {
         return boardMatrix;
     }
 
-    private List<List<List<Integer>>> blockades(){
-        List<List<List<Integer>>> blockades = this.board.getBlockade();
+    private static List<List<List<Integer>>> blockades(char boardId){
+        List<List<List<Integer>>> blockades = boardRepository.findByBoardID(boardId).getBlockade();
         return blockades;
     }
 
-    protected int getBlockadesCount(){
+    protected static int getBlockadesCount(){
         return (int) blockadeSpaceRepository.count();
     }
 
-    protected BlockadeSpaceEntity getBlockadeSpace(int id){
+    protected static BlockadeSpaceEntity getBlockadeSpace(int id){
         BlockadeSpaceEntity blockadeSpace = blockadeSpaceRepository.findByBlockadeID(id);
         return blockadeSpace;
     }
 
-    protected List<Integer>getRandomBlockades(int blockadesCount){
+    protected static List<Integer>getRandomBlockades(int blockadesCount){
         List<Integer> blockadeIds = new ArrayList<>();
         for(int i = 1; i <= blockadesCount; i++) {
             blockadeIds.add(i);
@@ -264,7 +276,7 @@ public class Assembler {
         return blockadeIds;
     }
 
-    protected HexSpaceEntity[][] assembleOneBlockade(HexSpaceEntity[][] boardMatrix, List<Integer> positionsX,
+    protected static HexSpaceEntity[][] assembleOneBlockade(HexSpaceEntity[][] boardMatrix, List<Integer> positionsX,
                                                      List<Integer> positionsY, BlockadeSpaceEntity blockadeSpace) {
             for (int j = 0; j < positionsX.size(); j++) {
             //assign blockadeSpaceEntities according to the random order of blockades.
@@ -273,7 +285,7 @@ public class Assembler {
         return boardMatrix;
     }
 
-    private HexSpaceEntity[][] assembleAllBlockades(HexSpaceEntity[][] boardMatrix,List<List<List<Integer>>> blockades,
+    private static HexSpaceEntity[][] assembleAllBlockades(HexSpaceEntity[][] boardMatrix,List<List<List<Integer>>> blockades,
                                                    List<Integer>blockadeIds) {
         for(int i = 0; i<blockades.size();i++) {
             List<Integer> positionsX = blockades.get(i).get(0);
@@ -283,22 +295,22 @@ public class Assembler {
         return boardMatrix;
     }
 
-    public List<HexSpaceEntity> getEndingSpaces(){
-        List<HexSpaceEntity> endingSpaces = this.board.getEndingSpaces();
+    public static List<HexSpaceEntity> getEndingSpaces(char boardId){
+        List<HexSpaceEntity> endingSpaces = boardRepository.findByBoardID(boardId).getEndingSpaces();
         return endingSpaces;
     }
 
-    public List<Integer> getEndingSpacesPositionX(){
-        List<Integer> endingSpacesPositionX = this.board.getEndingSpacePositionX();
+    public static List<Integer> getEndingSpacesPositionX(char boardId){
+        List<Integer> endingSpacesPositionX = boardRepository.findByBoardID(boardId).getEndingSpacePositionX();
         return endingSpacesPositionX;
     }
 
-    public List<Integer> getEndingSpacesPositionY(){
-        List<Integer> endingSpacesPositionY = this.board.getEndingSpacePositionY();
+    public static List<Integer> getEndingSpacesPositionY(char boardId){
+        List<Integer> endingSpacesPositionY = boardRepository.findByBoardID(boardId).getEndingSpacePositionY();
         return endingSpacesPositionY;
     }
 
-    public HexSpaceEntity[][] assembleEndingSpaces(HexSpaceEntity[][] boardMatrix, List<HexSpaceEntity> endingSpaces,
+    public static HexSpaceEntity[][] assembleEndingSpaces(HexSpaceEntity[][] boardMatrix, List<HexSpaceEntity> endingSpaces,
                                                    List<Integer> endingSpacesPositionX,List<Integer> endingSpacesPositionY){
         for (int i = 0; i< endingSpaces.size(); i++) {
             boardMatrix[endingSpacesPositionX.get(i)][endingSpacesPositionY.get(i)] = endingSpaces.get(i);
@@ -341,8 +353,8 @@ public class Assembler {
         return null;
     }
 
-    public BoardEntity getBoard() {
-        return board;
+    public BoardEntity getBoard(char boardId) {
+        return boardRepository.findByBoardID(boardId);
     }
     /*
     public StripEntity getStrip() {

@@ -8,14 +8,6 @@ import java.util.List;
 @Table(name = "BOARD")
 public class BoardEntity {
 
-    public BoardEntity(int boardID, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,
-                       List<Integer> tilesPositionY){
-        this.boardID = boardID;
-        this.tiles = tiles;
-        this.tilesRotation = tilesRotation;
-        this.tilesPositionX = tilesPositionX;
-        this.tilesPositionY = tilesPositionY;
-    }
     @Id
     @Column(unique = true, name = "BOARDID")
     private int boardID;
