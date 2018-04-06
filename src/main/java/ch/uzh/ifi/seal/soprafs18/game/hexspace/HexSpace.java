@@ -1,25 +1,31 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
+import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import com.sun.xml.internal.bind.v2.TODO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
 public class HexSpace implements Serializable{
+    /*
+    CONSTRUCTOR
+     */
 
-    public HexSpace(){
-        this.strength = 1000;
+    public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY, Game game){
+        this.color = COLOR.valueOf(hexSpaceEntity.getColor());
+        this.strength = hexSpaceEntity.getStrength();
         this.minimalCost = 1000;
         this.minimalDepth = 0;
-        this.color = COLOR.EMPTY;
-        this.point = new Point(-1, -1);
         this.previous = new ArrayList<>();
-        this.game = null;
+        this.point = new Point(posX,posY);
+        this.game = game;
     }
 
     /*
@@ -80,7 +86,7 @@ public class HexSpace implements Serializable{
      */
     public List<HexSpace> getNeighbour(){
         return null;
-    }
+    } //Todo
     public List<HexSpace> getNeighbour(HexSpace previous){
         return null;
     }

@@ -12,6 +12,8 @@ public enum COLOR implements Serializable{
     MOUNTAIN,
     BASECAMP,
     STARTFIELD,
-    ENDFIELD,
+    ENDFIELDJUNGLE,
+    ENDFIELDRIVER,
+    ELDORADO,
     EMPTY
 }
