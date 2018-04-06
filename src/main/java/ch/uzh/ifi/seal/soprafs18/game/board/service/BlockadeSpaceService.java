@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BlockadeSpaceService {
+public class BlockadeSpaceService extends HexSpaceService{
 
     @Autowired
     public BlockadeSpaceRepository blockadeSpaceRepository;
 
-    public BlockadeSpaceEntity getBlockadeSpaceEntity(String id) {
+    public BlockadeSpaceEntity getBlockadeSpaceEntity(int id) {
         return blockadeSpaceRepository.findByBlockadeID(id);
+    }
+
+    public int getBlockadeCount(){
+        return (int) blockadeSpaceRepository.count();
     }
 }

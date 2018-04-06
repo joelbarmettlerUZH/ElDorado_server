@@ -3,6 +3,8 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.*;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.BlockadeSpaceRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.BoardRepository;
+import ch.uzh.ifi.seal.soprafs18.game.board.service.BlockadeSpaceService;
+import ch.uzh.ifi.seal.soprafs18.game.board.service.BoardService;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -24,18 +26,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class Assembler {
-    /*
-    Instance of Database containing all the GameEntity
-     */
 
-
-    //private StripEntity strip;
-    //private TileEntity tile;
 
     @Autowired
-    private static BoardRepository boardRepository;
+    //private static BoardRepository boardRepository;
+    private static BoardService boardService;
+
     @Autowired
-    private static BlockadeSpaceRepository blockadeSpaceRepository;
+    //private static BoardRepository boardRepository;
+    private static BlockadeSpaceService blockadeSpaceService;
+
+    //private static BlockadeSpaceRepository blockadeSpaceRepository;
 
     /*
     compute relative positions for OuterRing
@@ -114,16 +115,16 @@ public class Assembler {
 
     public static HexSpace[][] assembleBoard (char boardId,Game game){
         HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
-        BoardEntity board = boardRepository.findByBoardID(boardId);
-        boardMatrix = Assembler.assembleTiles(boardMatrix,Assembler.getTiles(boardId),Assembler.getTilePositionX(boardId),
-                                                Assembler.getTilePositionY(boardId),Assembler.getTilesRotation(boardId));
-        boardMatrix = Assembler.assembleStrips(boardMatrix,Assembler.getStrips(boardId),Assembler.getStripPositionX(boardId),
-                                                Assembler.getStripPositionY(boardId),Assembler.getStripRotation(boardId));
-        boardMatrix = Assembler.assembleAllBlockades(boardMatrix,Assembler.blockades(boardId),
+        BoardEntity board = boardService.getBoard(boardId);
+        boardMatrix = Assembler.assembleTiles(boardMatrix,board.getTiles(),board.getTilesPositionX(),
+                                                board.getTilesPositionY(),board.getTilesRotation());
+        boardMatrix = Assembler.assembleStrips(boardMatrix,board.getStrip(),board.getStripPositionX(),
+                                                board.getStripPositionY(),board.getStripRotation());
+        boardMatrix = Assembler.assembleAllBlockades(boardMatrix,board.getBlockade(),
                                                 Assembler.getRandomBlockades(Assembler.getBlockadesCount()));
-        boardMatrix = Assembler.assembleEndingSpaces(boardMatrix,Assembler.getEndingSpaces(boardId),
-                                                    Assembler.getEndingSpacesPositionX(boardId),
-                                                    Assembler.getEndingSpacesPositionY(boardId));
+        boardMatrix = Assembler.assembleEndingSpaces(boardMatrix,board.getEndingSpaces(),
+                                                    board.getEndingSpacePositionX(),
+                                                    board.getEndingSpacePositionY());
         return convertMatrix(boardMatrix, game);
     }
 
@@ -131,29 +132,6 @@ public class Assembler {
         HexSpaceEntity[][] boardMatrix = new HexSpaceEntity[100][100];
         return boardMatrix;
     }
-
-
-    private static List<TileEntity> getTiles(char boardId) {
-        List<TileEntity> Tiles = boardRepository.findByBoardID(boardId).getTiles();
-        return Tiles;
-    }
-
-    private static List<Integer> getTilePositionX(char boardId) {
-        List<Integer> TilePositionX = boardRepository.findByBoardID(boardId).getTilesPositionX();
-        return TilePositionX;
-    }
-
-    private static List<Integer> getTilePositionY(char boardId) {
-        List<Integer> TilePositionY = boardRepository.findByBoardID(boardId).getTilesPositionY();
-        return TilePositionY;
-    }
-
-    private static List<Integer> getTilesRotation(char boardId) {
-        List<Integer> TileRotation = boardRepository.findByBoardID(boardId).getTilesRotation();
-        return TileRotation;
-    }
-
-
 
     protected static HexSpaceEntity[][] assembleTiles(HexSpaceEntity[][] boardMatrix, List<TileEntity> Tile,
                                             List<Integer> TilePositionX, List<Integer> TilePositionY,
@@ -196,25 +174,6 @@ public class Assembler {
         return boardMatrix;
     }
 
-    private static List<StripEntity> getStrips(char boardId) {
-        List<StripEntity> Strips = boardRepository.findByBoardID(boardId).getStrip();
-        return Strips;
-    }
-
-    private static List<Integer> getStripPositionX(char boardId) {
-        List<Integer> StripPositionX = boardRepository.findByBoardID(boardId).getStripPositionX();
-        return StripPositionX;
-    }
-
-    private static List<Integer> getStripPositionY(char boardId) {
-        List<Integer> StripPositionY = boardRepository.findByBoardID(boardId).getStripPositionY();
-        return StripPositionY;
-    }
-
-    private static List<Integer> getStripRotation(char boardId) {
-        List<Integer> StripRotation = boardRepository.findByBoardID(boardId).getStripRotation();
-        return StripRotation;
-    }
 
     protected static HexSpaceEntity[][] assembleStrips(HexSpaceEntity[][] boardMatrix, List<StripEntity> Strips,
                                              List<Integer> StripPositionX, List<Integer> StripPositionY,
@@ -254,18 +213,8 @@ public class Assembler {
         return boardMatrix;
     }
 
-    private static List<List<List<Integer>>> blockades(char boardId){
-        List<List<List<Integer>>> blockades = boardRepository.findByBoardID(boardId).getBlockade();
-        return blockades;
-    }
-
     protected static int getBlockadesCount(){
-        return (int) blockadeSpaceRepository.count();
-    }
-
-    protected static BlockadeSpaceEntity getBlockadeSpace(int id){
-        BlockadeSpaceEntity blockadeSpace = blockadeSpaceRepository.findByBlockadeID(id);
-        return blockadeSpace;
+        return blockadeSpaceService.getBlockadeCount();
     }
 
     protected static List<Integer>getRandomBlockades(int blockadesCount){
@@ -291,24 +240,10 @@ public class Assembler {
         for(int i = 0; i<blockades.size();i++) {
             List<Integer> positionsX = blockades.get(i).get(0);
             List<Integer> positionsY = blockades.get(i).get(1);
-            assembleOneBlockade(boardMatrix, positionsX, positionsY, getBlockadeSpace(blockadeIds.get(i)));
+            assembleOneBlockade(boardMatrix, positionsX, positionsY,
+                                blockadeSpaceService.getBlockadeSpaceEntity(blockadeIds.get(i)));
         }
         return boardMatrix;
-    }
-
-    public static List<HexSpaceEntity> getEndingSpaces(char boardId){
-        List<HexSpaceEntity> endingSpaces = boardRepository.findByBoardID(boardId).getEndingSpaces();
-        return endingSpaces;
-    }
-
-    public static List<Integer> getEndingSpacesPositionX(char boardId){
-        List<Integer> endingSpacesPositionX = boardRepository.findByBoardID(boardId).getEndingSpacePositionX();
-        return endingSpacesPositionX;
-    }
-
-    public static List<Integer> getEndingSpacesPositionY(char boardId){
-        List<Integer> endingSpacesPositionY = boardRepository.findByBoardID(boardId).getEndingSpacePositionY();
-        return endingSpacesPositionY;
     }
 
     public static HexSpaceEntity[][] assembleEndingSpaces(HexSpaceEntity[][] boardMatrix, List<HexSpaceEntity> endingSpaces,
@@ -343,10 +278,11 @@ public class Assembler {
      */
     public List<HexSpace> getStartingFields(char boardId, Game game) {
         List<HexSpace> StartingSpaces = new ArrayList<>();
-        List<TileEntity> containedTiles = boardRepository.findByBoardID(boardId).getTiles();
-        List<Integer> containedTilesPosX = boardRepository.findByBoardID(boardId).getTilesPositionX();
-        List<Integer> containedTilesPosY = boardRepository.findByBoardID(boardId).getTilesPositionY();
-        List<Integer> containedTilesRot = boardRepository.findByBoardID(boardId).getTilesRotation();
+        BoardEntity board = boardService.getBoard(boardId);
+        List<TileEntity> containedTiles = board.getTiles();
+        List<Integer> containedTilesPosX = board.getTilesPositionX();
+        List<Integer> containedTilesPosY = board.getTilesPositionY();
+        List<Integer> containedTilesRot = board.getTilesRotation();
         for (int i = 0; i < containedTiles.size(); i++) {
             if (containedTiles.get(i).getTileID() == 'A' || containedTiles.get(i).getTileID() == 'B') {
                 int rotation = containedTilesRot.get(i);
@@ -374,17 +310,16 @@ public class Assembler {
     informations from the Assembler than parsing the matrix.
      */
     public List<HexSpace> getEndingFields(char boardId, Game game) {
+        BoardEntity board = boardService.getBoard(boardId);
         List<HexSpace> EndingSpaces = new ArrayList<>();
-        for (int i = 0; i <Assembler.getEndingSpaces(boardId).size(); i++)
-            EndingSpaces.add(new HexSpace(Assembler.getEndingSpaces(boardId).get(i),
-                                            Assembler.getEndingSpacesPositionX(boardId).get(i),
-                                            Assembler.getEndingSpacesPositionY(boardId).get(i),
-                                            game));
+        for (int i = 0; i <board.getEndingSpaces().size(); i++)
+            EndingSpaces.add(new HexSpace(board.getEndingSpaces().get(i), board.getEndingSpacePositionX().get(i),
+                            board.getEndingSpacePositionX().get(i), game));
         return EndingSpaces;
     }
 
     public BoardEntity getBoard(char boardId) {
-        return boardRepository.findByBoardID(boardId);
+        return boardService.getBoard(boardId);
     }
     /*
     public StripEntity getStrip() {
