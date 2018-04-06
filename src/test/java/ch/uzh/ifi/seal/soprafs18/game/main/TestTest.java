@@ -1,13 +1,10 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceRepository;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceService;
+import ch.uzh.ifi.seal.soprafs18.game.board.service.HexSpaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 @EnableAutoConfiguration

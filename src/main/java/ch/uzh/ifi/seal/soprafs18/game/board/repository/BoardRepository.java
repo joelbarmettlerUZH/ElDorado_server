@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface BoardRepository extends CrudRepository<BoardEntity, Integer> {
-    BoardEntity findByBoardID(char boardID);
+    BoardEntity findByBoardID(int boardID);
 }

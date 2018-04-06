@@ -1,4 +1,4 @@
-package ch.uzh.ifi.seal.soprafs18.game.board.repository;
+package ch.uzh.ifi.seal.soprafs18.game.board.service;
 
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceRepository;
@@ -15,12 +15,16 @@ public class HexSpaceService {
     @Autowired
     private HexSpaceRepository hexSpaceRepository;
 
-    public List<HexSpaceEntity> getHexSpaceEntity(){
+    public List<HexSpaceEntity> getAllHexSpaceEntity(){
         List<HexSpaceEntity> hexSpaceEntities = new ArrayList<>();
         hexSpaceRepository.findAll().forEach(hexSpaceEntities::add);
         return hexSpaceEntities;
     }
-    @Transactional
+
+    public HexSpaceEntity getHexSpaceEntity(String id){
+        return hexSpaceRepository.findByHexid(id);
+    }
+
     public void addHexSpaceEntity(HexSpaceEntity hexSpaceEntity){
         hexSpaceRepository.save(hexSpaceEntity);
     }

@@ -2,8 +2,10 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HexSpace {
@@ -17,13 +19,11 @@ public class HexSpace {
         this.strength = hexSpaceEntity.getStrength();
         this.minimalCost = 1000;
         this.minimalDepth = 0;
-        this.previous = null;
+        this.previous = new ArrayList<HexSpace>();
         this.point = new Point(posX,posY);
         this.game = game;
-        this.game = null;
-
-
     }
+
     /*
     The strength of a field indicates how high the card-value has to be to make it accessible. The strength of
     non-playing fields such as Mountains, Empty-Fields is set to 1000, all the other field strength correspond to
@@ -75,7 +75,7 @@ public class HexSpace {
      */
     public List<HexSpace> getNeighbour(){
         return null;
-    }
+    } //Todo
     public List<HexSpace> getNeighbour(HexSpace previous){
         return null;
     }
