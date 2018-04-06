@@ -25,18 +25,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Component
 public class Assembler {
 
-
     @Autowired
-    //private static BoardRepository boardRepository;
     private static BoardService boardService;
-
     @Autowired
-    //private static BoardRepository boardRepository;
     private static BlockadeSpaceService blockadeSpaceService;
 
-    //private static BlockadeSpaceRepository blockadeSpaceRepository;
 
     /*
     compute relative positions for OuterRing
@@ -120,8 +116,9 @@ public class Assembler {
                                                 board.getTilesPositionY(),board.getTilesRotation());
         boardMatrix = Assembler.assembleStrips(boardMatrix,board.getStrip(),board.getStripPositionX(),
                                                 board.getStripPositionY(),board.getStripRotation());
-        boardMatrix = Assembler.assembleAllBlockades(boardMatrix,board.getBlockade(),
-                                                Assembler.getRandomBlockades(Assembler.getBlockadesCount()));
+        boardMatrix = Assembler.assembleBlockades(boardMatrix,board.getBlockadeId(),board.getBlockandePositionX(),
+                                                board.getBlockandePositionY(),
+                                                getRandomBlockades(Assembler.getBlockadesCount()));
         boardMatrix = Assembler.assembleEndingSpaces(boardMatrix,board.getEndingSpaces(),
                                                     board.getEndingSpacePositionX(),
                                                     board.getEndingSpacePositionY());
@@ -129,8 +126,7 @@ public class Assembler {
     }
 
     protected static HexSpaceEntity[][] createEmptyMatrix() {
-        HexSpaceEntity[][] boardMatrix = new HexSpaceEntity[100][100];
-        return boardMatrix;
+        return new HexSpaceEntity[100][100];
     }
 
     protected static HexSpaceEntity[][] assembleTiles(HexSpaceEntity[][] boardMatrix, List<TileEntity> Tile,
@@ -148,7 +144,7 @@ public class Assembler {
                         boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
                                 outerRingDislocYOdd[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
                     }
-                } else if (j >= 18 && j < 30) {
+                } else if (j < 30) {
                     if (TilePositionX.get(i) % 2 == 0) {
                         boardMatrix[TilePositionX.get(i) + midRingDislocX[j-18]][TilePositionY.get(i) + midRingDislocYEven[j-18]]
                                 = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 12));
@@ -156,7 +152,7 @@ public class Assembler {
                         boardMatrix[TilePositionX.get(i) + midRingDislocX[j-18]][TilePositionY.get(i) + midRingDislocYOdd[j-18]]
                                 = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 12));
                     }
-                } else if (j >= 30 && j < 36) {
+                } else if (j < 36) {
                     if (TilePositionX.get(i) % 2 == 0) {
                         boardMatrix[TilePositionX.get(i) + innerRingDislocX[j-30]][TilePositionY.get(i) + innerRingDislocYEven[j-30]]
                                 = currentTileHexSpaces.get(30 + (((j - 30) + (currentTileRotation)) % 6));
@@ -213,7 +209,7 @@ public class Assembler {
         return boardMatrix;
     }
 
-    protected static int getBlockadesCount(){
+    private static int getBlockadesCount(){
         return blockadeSpaceService.getBlockadeCount();
     }
 
@@ -226,22 +222,16 @@ public class Assembler {
         return blockadeIds;
     }
 
-    protected static HexSpaceEntity[][] assembleOneBlockade(HexSpaceEntity[][] boardMatrix, List<Integer> positionsX,
-                                                     List<Integer> positionsY, BlockadeSpaceEntity blockadeSpace) {
-            for (int j = 0; j < positionsX.size(); j++) {
-            //assign blockadeSpaceEntities according to the random order of blockades.
-            boardMatrix[positionsX.get(j)][positionsY.get(j)] = blockadeSpace;
-            }
-        return boardMatrix;
-    }
-
-    private static HexSpaceEntity[][] assembleAllBlockades(HexSpaceEntity[][] boardMatrix,List<List<List<Integer>>> blockades,
-                                                   List<Integer>blockadeIds) {
-        for(int i = 0; i<blockades.size();i++) {
-            List<Integer> positionsX = blockades.get(i).get(0);
-            List<Integer> positionsY = blockades.get(i).get(1);
-            assembleOneBlockade(boardMatrix, positionsX, positionsY,
-                                blockadeSpaceService.getBlockadeSpaceEntity(blockadeIds.get(i)));
+    private static HexSpaceEntity[][] assembleBlockades(HexSpaceEntity[][] boardMatrix, List<Integer> blockadeId,
+                                                        List<Integer> blockadePositionX, List<Integer> blockadePositionY,
+                                                        List<Integer> randomBlockadeIds) {
+        for(int i = 0; i<blockadeId.size();i++) {
+            int j = blockadeId.get(i)%Assembler.getBlockadesCount();
+            //j defines which position of the random ordered blockade directory
+            // use % to make sure that we do not encounter a problem if the board has more blockades than in our DB
+            // in ths case we just use the same blockades multiple times
+            boardMatrix[blockadePositionX.get(i)][blockadePositionY.get(i)] =
+                    blockadeSpaceService.getBlockadeSpaceEntity(randomBlockadeIds.get(j));
         }
         return boardMatrix;
     }

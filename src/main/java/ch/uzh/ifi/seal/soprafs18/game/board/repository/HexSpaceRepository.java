@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Inheritance;
+
 @Repository
+@Inheritance
 public interface HexSpaceRepository extends CrudRepository<HexSpaceEntity, String> {
-        HexSpaceEntity findByHexid(String Hexid);
+        HexSpaceEntity findByHexID(String hexid);
 }

@@ -43,21 +43,17 @@ public class BoardEntity {
     @ElementCollection
     private List<Integer> stripPositionY;
 
-    @Column(name = "BLOCKADE")
+    @Column(name = "BLOCKADEID")
     @ElementCollection
-    private List<List<List<Integer>>> blockade;
+    private List<Integer> blockadeId;
 
-    @Column(name = "STARTINGSPACES")
+    @Column(name = "BLOCKADEPOSITIONX")
     @ElementCollection
-    private List<Point> startingSpaces;
+    private List<Integer> blockadePositionX;
 
-    @Column(name = "STARTINGSPACESX")
+    @Column(name = "BLOCKADEPOSITIONY")
     @ElementCollection
-    private List<Integer> startingSpacesX;
-
-    @Column(name = "STARTINGSPACESY")
-    @ElementCollection
-    private List<Integer> startingSpacesY;
+    private List<Integer> blockadePositionY;
 
     @Column(name = "ENDINGSPACES")
     @ElementCollection
@@ -143,28 +139,28 @@ public class BoardEntity {
         this.stripPositionY = stripPositionY;
     }
 
-    public List<List<List<Integer>>> getBlockade() {
-        return blockade;
+    public  List<Integer> getBlockadeId(){
+        return blockadeId;
     }
 
-    public void setBlockade(List<List<List<Integer>>> blockade) {
-        this.blockade = blockade;
+    public void setBlockadeId(List<Integer> blockadeId){
+        this.blockadeId = blockadeId;
     }
 
-    public List<Integer> getStartingSpacesX() {
-        return startingSpacesX;
+    public List<Integer> getBlockandePositionX(){
+        return blockadePositionX;
     }
 
-    public void setStartingSpacesX(List<Integer> startingSpacesX) {
-        this.startingSpacesX = startingSpacesX;
+    public void setBlockadePositionX(List<Integer> blockadePositionX){
+        this.blockadePositionX = blockadePositionX;
     }
 
-    public List<Integer> getStartingSpacesY() {
-        return startingSpacesY;
+    public List<Integer> getBlockandePositionY(){
+        return blockadePositionY;
     }
 
-    public void setStartingSpacesY(List<Integer> startingSpacesY) {
-        this.startingSpacesY = startingSpacesY;
+    public void setBlockadePositionY(List<Integer> blockadePositionY){
+        this.blockadePositionY = blockadePositionY;
     }
 
     public List<HexSpaceEntity> getEndingSpaces() {

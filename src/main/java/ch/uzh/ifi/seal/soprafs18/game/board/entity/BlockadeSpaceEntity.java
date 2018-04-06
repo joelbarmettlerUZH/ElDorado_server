@@ -12,18 +12,18 @@ public class BlockadeSpaceEntity extends HexSpaceEntity {
 
     public BlockadeSpaceEntity(String id, String color, int strength, int blockadeId){
         super(id,color,strength);
-        this.blockadeId = blockadeId;
+        this.blockadeID = blockadeId;
     }
 
 
     @Column(name="BLOCKADEID")
-    private int blockadeId;
+    private int blockadeID;
 
     public int getBlockadeId() {
-        return blockadeId;
+        return blockadeID;
     }
 
     public void setBlockadeId(int id) {
-        this.blockadeId = blockadeId;
+        this.blockadeID = id;
     }
 }

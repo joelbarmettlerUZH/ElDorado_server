@@ -6,6 +6,7 @@ import com.sun.xml.internal.bind.v2.TODO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+//import java.awt.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,6 +27,16 @@ public class HexSpace implements Serializable{
         this.previous = new ArrayList<>();
         this.point = new Point(posX,posY);
         this.game = game;
+    }
+
+    public HexSpace(){
+        this.color = COLOR.EMPTY;
+        this.strength = 1000;
+        this.minimalCost = 1000;
+        this.minimalDepth = 0;
+        this.previous = new ArrayList<>();
+        this.point = new Point(-1,-1);
+        this.game = null;
     }
 
     /*

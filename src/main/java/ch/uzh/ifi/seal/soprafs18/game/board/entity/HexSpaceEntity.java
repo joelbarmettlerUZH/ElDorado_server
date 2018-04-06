@@ -8,19 +8,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "HEXSPACE")
-//@Inheritance (strategy = InheritanceType.JOINED)
+@Inheritance (strategy = InheritanceType.JOINED)
 public class HexSpaceEntity {
 
     public HexSpaceEntity(String id, String color, int strength){
         //System.out.println("constr");
-        this.Hexid = id;
+        this.hexID = id;
         this.color = color;
         this.strength = strength;
     }
 
     @Id
     @Column(name = "ID")
-    private String Hexid;
+    private String hexID;
 
     @Column(name = "COLOR")
     //@Enumerated(EnumType.STRING)
@@ -30,19 +30,11 @@ public class HexSpaceEntity {
     private int strength;
 
     public String getId() {
-        return Hexid;
+        return hexID;
     }
 
     public void setId(String id) {
-        this.Hexid = id;
-    }
-
-    public String getId() {
-        return Hexid;
-    }
-
-    public void setId(String id) {
-        this.Hexid = id;
+        this.hexID = id;
     }
 
     public String getColor() {

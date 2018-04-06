@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 public class AssemblerTest {
 
-    private Assembler assembler = new Assembler();
+    //private Assembler assembler = new Assembler();
     private List<TileEntity> tileEntitylist;
     private List<Integer> posX;
     private List<Integer> posY;
@@ -141,7 +141,7 @@ public class AssemblerTest {
 
     @Test
     public void createEmptyMatrix() {
-        HexSpaceEntity[][] emptyMatrix = assembler.createEmptyMatrix();
+        HexSpaceEntity[][] emptyMatrix = Assembler.createEmptyMatrix();
         assertEquals("Dimension One is 100",100, emptyMatrix.length);
         assertEquals("Dimension Two is 100",100, emptyMatrix[0].length);
     }
@@ -164,58 +164,39 @@ public class AssemblerTest {
 
     @Test
     public void assembleTiles() {
-        HexSpaceEntity[][] boardMatrix = assembler.createEmptyMatrix();
-        HexSpaceEntity[][] newMatrix = assembler.assembleTiles(boardMatrix, this.tileEntitylist,
+        HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
+        HexSpaceEntity[][] newMatrix = Assembler.assembleTiles(boardMatrix, this.tileEntitylist,
                                                                 this.posX, this.posY, this.Rotation);
         assertEquals("Dimension One is 100",100, newMatrix.length);
         assertEquals("Dimension Two is 100",100, newMatrix[0].length);
         assertEquals("Centerpiece correct","RIVER", newMatrix[10][10].getColor());
         assertEquals("offcenter piece correct","JUNGLE", newMatrix[10][11].getColor());
 
-        HexSpaceEntity[][] newMatrix2 = assembler.assembleTiles(boardMatrix, this.tileEntitylist,
+        HexSpaceEntity[][] newMatrix2 = Assembler.assembleTiles(boardMatrix, this.tileEntitylist,
                 this.posX, this.posY, this.Rotation2);
         assertEquals("offcenter piece correct with rotation","SAND", newMatrix2[10][11].getColor());
 
     }
 
     @Test
-    public void getStrips() {
-    }
-
-    @Test
-    public void getStripPositionX() {
-    }
-
-    @Test
-    public void getStripPositionY() {
-    }
-
-    @Test
-    public void getStripRotation() {
-    }
-
-    @Test
     public void assembleStrips() {
-        HexSpaceEntity[][] boardMatrix = assembler.createEmptyMatrix();
-        HexSpaceEntity[][] newMatrix = assembler.assembleStrips(boardMatrix, this.stripEntitylist,
+        HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
+        HexSpaceEntity[][] newMatrix = Assembler.assembleStrips(boardMatrix, this.stripEntitylist,
                 this.posX, this.posY, this.Rotation);
         assertEquals("Dimension One is 100",100, newMatrix.length);
         assertEquals("Dimension Two is 100",100, newMatrix[0].length);
         assertEquals("Centerpiece Color correct","JUNGLE", newMatrix[10][10].getColor());
         assertEquals("Centerpiece Strength correct",2, newMatrix[10][10].getStrength());
         assertEquals("offcenter piece correct","RUBBLE", newMatrix[11][10].getColor());
-        HexSpaceEntity[][] newMatrix2 = assembler.assembleStrips(boardMatrix, this.stripEntitylist,
+        HexSpaceEntity[][] newMatrix2 = Assembler.assembleStrips(boardMatrix, this.stripEntitylist,
                 this.posX, this.posY, this.Rotation2);
         assertEquals("offcenter piece correct with rotation","JUNGLE", newMatrix[11][10].getColor());
     }
 
-    @Test
-    public void blockades() {
-    }
 
     @Test
     public void getRandomBlockades(){
-        List<Integer>randomList=assembler.getRandomBlockades(5);
+        List<Integer>randomList = Assembler.getRandomBlockades(5);
         int min = Collections.min(randomList);
         int max = Collections.max(randomList);
         assertEquals("min correct",1, min);
@@ -224,49 +205,6 @@ public class AssemblerTest {
 
     @Test
     public void getBlockadesCount() {
-    }
-
-    @Test
-    public void getBlockadeSpace() {
-    }
-
-    @Test
-    public void assembleOneBlockade() {
-        HexSpaceEntity[][] boardMatrix = assembler.createEmptyMatrix();
-        List<Integer> blockadePosX = new ArrayList<>();
-        blockadePosX.add(5);
-        blockadePosX.add(5);
-        blockadePosX.add(6);
-        blockadePosX.add(6);
-        List<Integer> blockadePosY = new ArrayList<>();
-        blockadePosY.add(5);
-        blockadePosY.add(6);
-        blockadePosY.add(6);
-        blockadePosY.add(7);
-        HexSpaceEntity[][] newMatrix = assembler.assembleOneBlockade(boardMatrix,blockadePosX,blockadePosY,this.BlockadeSpaceList.get(0));
-        assertEquals("correct blockade in first space","BJ1", newMatrix[5][5].getId());
-        assertEquals("correct blockade in second space","BJ1", newMatrix[5][6].getId());
-        assertEquals("correct blockade in third space","BJ1", newMatrix[6][6].getId());
-        assertEquals("correct blockade in fourth space","BJ1", newMatrix[6][7].getId());
-        //overwrite with second blockade
-        assembler.assembleOneBlockade(boardMatrix,blockadePosX,blockadePosY,this.BlockadeSpaceList.get(1));
-        assertEquals("correct blockade in first space","BR1", newMatrix[5][5].getId());
-        assertEquals("correct blockade in second space","BR1", newMatrix[5][6].getId());
-        assertEquals("correct blockade in third space","BR1", newMatrix[6][6].getId());
-        assertEquals("correct blockade in fourth space","BR1", newMatrix[6][7].getId());
-
-    }
-
-    @Test
-    public void getEndingSpaces() {
-    }
-
-    @Test
-    public void getEndingSpacesPositionX() {
-    }
-
-    @Test
-    public void getEndingSpacesPositionY() {
     }
 
     @Test
@@ -279,8 +217,8 @@ public class AssemblerTest {
         EndingPosY.add(5);
         EndingPosY.add(6);
         EndingPosY.add(6);
-        HexSpaceEntity[][] boardMatrix = assembler.createEmptyMatrix();
-        HexSpaceEntity[][] newMatrix = assembler.assembleEndingSpaces(boardMatrix,this.endingSpaces,EndingPosX,EndingPosY);
+        HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
+        HexSpaceEntity[][] newMatrix = Assembler.assembleEndingSpaces(boardMatrix,this.endingSpaces,EndingPosX,EndingPosY);
         assertEquals("correct Ending space 1","EJ", newMatrix[5][5].getId());
         assertEquals("correct Ending space 2","EJ", newMatrix[5][6].getId());
         assertEquals("correct Ending space 3","EW", newMatrix[6][6].getId());
