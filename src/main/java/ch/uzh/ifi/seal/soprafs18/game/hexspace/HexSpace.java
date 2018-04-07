@@ -110,6 +110,20 @@ public class HexSpace implements Serializable{
             neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
             neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
         }
+        //now handle blockades
+        for (HexSpace current:neighbours){
+            if (HexSpace.class.isAssignableFrom(current.getClass())){
+                //current is BlockadeSpace
+                BlockadeSpace currentBlockadeSpace = (BlockadeSpace) current;
+                int blockade = currentBlockadeSpace.getBlockadeId();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)
+                if (currentBlockadeSpace.getStrength()==0){
+                    //blockade is inactive
+                    neighbours.addAll(currentBlockadeSpace.getNeighbour(this));
+                }
+
+            }
+
+        }
         return neighbours;
     }
     public List<HexSpace> getNeighbour(HexSpace previous){

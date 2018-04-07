@@ -31,4 +31,17 @@ public class BlockadeSpace extends HexSpace implements Serializable {
     public List<HexSpace> getNeighbour(){
         return null;
     }
+
+    @Override
+    public List<HexSpace> getNeighbour(HexSpace previous){
+        return null;
+    }
+
+    public int getBlockadeId() {
+        return blockadeId;
+    }
+
+    public void setBlockadeId(int blockadeId) {
+        this.blockadeId = blockadeId;
+    }
 }
