@@ -15,7 +15,7 @@
   ('M','MOUNTAIN',1000),
   ('B1','BASECAMP',1),
   ('B2','BASECAMP',2),
-  ('B4','BASECAMP',3),
+  ('B3','BASECAMP',3),
   ('ST','STARTFIELD',1000),
   ('N','EMPTY',1000),
   ('EJ','ENDFIELDJUNGLE',1),
@@ -38,7 +38,19 @@ INSERT INTO TILE VALUES
   ('D',('W3','M','J1','J2','J1','J1','J2','J1','J1','J1','J1','J1','J2','J1','J1','J2','J1','M',
         'S1','S3','J1','W1','W1','W1','W1','W1','W1','W1','J1','S3',
         'M','J1','W2','W1','W2','J1',
-        'M'));
+        'M')),
+  ('N',('J1','W1','W1','S1','S1','J1','J1','J1','J1','J1','J1','W1','W1','S1','S1','J1','J1','J1',
+        'J1','W1','S2','S2','J1','J2','J1','W1','W1','S2','J1','J2',
+        'W1','S3','J1','W1','S3','J1',
+        'S4')),
+  ('I',('J1','J1','J1','M','J1','J1','J1','W1','W2','W2','W2','S2','S1','S1','S1','J1','J1','J1',
+        'J1','J2','M','J2','J1','W1','W1','R3','S2','S2','J1','M',
+        'M','B3','M','M','J1','J1',
+        'J2')),
+  ('K',('J1','J2','J2','J2','J1','J1','B1','J2','J2','J1','J2','J2','J2','J1','J1','B1','J2','J2',
+        'J1','J1','J1','J2','J1','S4','J1','J1','J1','J2','J1','W3',
+        'J3','J3','J1','J3','J3','J1',
+        'J1'));
 
 
 INSERT INTO STRIP VALUES
@@ -47,13 +59,13 @@ INSERT INTO STRIP VALUES
 
 INSERT INTO BOARD(BOARDID,TILES,TILESROTATION,TILESPOSITIONX, TILESPOSITIONY,
                   STRIP,STRIPROTATION,STRIPPOSITIONX,STRIPPOSITIONY,
-                  BLOCKADE,STARTINGSPACES,ENDINGSPACES,ENDINGSPACEPOSITION) VALUES
+                  BLOCKADEID,BLOCKADEPOSITIONX,BLOCKADEPOSITIONY,
+                  ENDINGSPACES,ENDINGSPACEPOSITIONX,ENDINGSPACEPOSITIONY) VALUES
   (1,
-    ('B','C'),(2,5),(4,8),(4,10),
+    ('B','C'),(3,0,3,3,5),(4,5,11,17,16),(4,5,16,19,27),
     (),(),(),(),
-    (((4,5,6,7,8),(8,8,7,7,6))),
-    ((1,3),(1,4),(1,5),(1,6)),
-    ('EJ','EJ','EJ'),((11,13),(12,12),(12,11)));
+    (1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4),(3,4,5,6,8,8,7,7,15,14,14,13,15,16,17,18),(8,8,8,8,13,14,15,16,16,17,18,19,23,23,23,23),
+    ("EW","EW","EW"),(14,14,15),(30,31,31);
 
 INSERT INTO BLOCKADE (ID, COLOR, STRENGTH, BLOCKADEID) VALUES
   ('BJ1','JUNGLE',1,1),
