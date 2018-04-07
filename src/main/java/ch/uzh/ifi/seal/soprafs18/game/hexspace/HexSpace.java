@@ -96,8 +96,22 @@ public class HexSpace implements Serializable{
     previous. This way the blockade can handle the neighbours with taking the previous direction into account.
      */
     public List<HexSpace> getNeighbour(){
-        return null;
-    } //Todo
+        List<HexSpace> neighbours = new ArrayList<>();
+        neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y)));
+        neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y)));
+        neighbours.add(this.game.getHexSpace(new Point(this.point.x,this.point.y+1)));
+        neighbours.add(this.game.getHexSpace(new Point(this.point.x,this.point.y-1)));
+        if(this.point.x%2==0){
+            //even Column
+            neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
+            neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y-1)));
+        } else {
+            //odd Column
+            neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
+            neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
+        }
+        return neighbours;
+    }
     public List<HexSpace> getNeighbour(HexSpace previous){
         return null;
     }

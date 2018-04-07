@@ -37,64 +37,64 @@ public class Assembler {
     /*
     compute relative positions for OuterRing
      */
-    private static int[] outerRingDislocX = {0, 1, 2, 3, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -3, -2, -1};
-    private static int[] outerRingDislocYEven = {3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -2, -2, -1, 0, 1, 2, 2, 3};
-    private static int[] outerRingDislocYOdd = {3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -2, -2, -1, 0, 1, 2, 2};
+    private static int[] outerRingDislocY = {0, 1, 2, 3, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -3, -2, -1};
+    private static int[] outerRingDislocXEven = {-3, -3, -2, -2, -1, 0, 1, 2, 2, 3, 2, 2, 1, 0, -1, -2, -2, -3};
+    private static int[] outerRingDislocXOdd = {-3, -2, -2, -1, 0, 1, 2, 2, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2};
 
     /*
     compute relative positions for MidRing
     */
-    private static int[] midRingDislocX = {0, 1, 2, 2, 2, 1, 0, -1, -2, -2, -2, -1};
-    private static int[] midRingDislocYEven = {2, 2, 1, 0, -1, -1, -2, -1, -1, 0, 1, 2};
-    private static int[] midRingDislocYOdd = {2, 1, 1, 0, -1, -2, -2, -2, -1, 0, 1, 1};
+    private static int[] midRingDislocY = {0, 1, 2, 2, 2, 1, 0, -1, -2, -2, -2, -1};
+    private static int[] midRingDislocXEven = {-2, -2, -1, -0, 1, 1, 2, 1, 1, 0, -1, -2};
+    private static int[] midRingDislocXOdd = {-2, -1, -1, 0, 1, 2, 2, 2, 1, 0, -1, -1};
     /*
 
     /*
     compute relative positions for InnerRing
     */
-    private static int[] innerRingDislocX = {0, 1, 1, 0, -1, -1};
-    private static int[] innerRingDislocYEven = {1, 1, 0, -1, 0, 1};
-    private static int[] innerRingDislocYOdd = {1, 0, -1, -1, -1, 0};
+    private static int[] innerRingDislocY = {0, 1, 1, 0, -1, -1};
+    private static int[] innerRingDislocXEven = {-1, -1, 0, 1, 0, 1};
+    private static int[] innerRingDislocXOdd = {-1, 0, 1, 1, 1, 0};
 
 
     /*
     Terrain-Strips Dislocation
      */
-    private static int[] Rot0DislocX = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
-    private static int[] Rot0EvenDislocY = {0, 1, 0, 0, -1, -1, -2, -3, -2, -2, -1, -1, 0, -1, -1, -2};
-    private static int[] Rot0OddDislocY = {0, 0, 0, -1, -1, -2, -3, -3, -3, -2, -2, -1, -1, -1, -2, -2};
+    private static int[] Rot0DislocY = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
+    private static int[] Rot0EvenDislocX = {0, -1, 0, 0, 1, 1, 2, 3, 2, 2, 1, 1, 0, 1, 1, 2};
+    private static int[] Rot0OddDislocX = {0, 0, 0, 1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2};
 
-    private static int[] Rot1DislocX = {0, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0};
-    private static int[] Rot1EvenDislocY = {0, -1, -2, -3, -4, -5, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
-    private static int[] Rot1OddDislocY = {0, 0, -1, -2, -3, -4, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
+    private static int[] Rot1DislocY = {0, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0};
+    private static int[] Rot1EvenDislocX = {0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
+    private static int[] Rot1OddDislocX = {0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
 
-    private static int[] Rot2DislocX = {0, 0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
-    private static int[] Rot2EvenDislocY = {0, -1, -2, -2, -3, -3, -3, -2, -1, -1, 0, 0, -1, -1, -2, -2};
-    private static int[] Rot2OddDislocY = {0, -1, -1, -2, -2, -3, -2, -1, -1, 0, 0, 1, 0, -1, -1, -2};
+    private static int[] Rot2DislocY = {0, 0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
+    private static int[] Rot2EvenDislocX = {0, 1, 2, 2, 3, 3, 3, 2, 1, 1, 0, 0, 1, 1, 2, 2};
+    private static int[] Rot2OddDislocX = {0, 1, 1, 2, 2, 3, 2, 1, 1, 0, 0, -1, 0, 1, 1, 2};
 
-    private static int[] Rot3DislocX = {0, -1, -1, -1, -1, -1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0};
-    private static int[] Rot3EvenDislocY = {0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
-    private static int[] Rot3OddDislocY = {0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
+    private static int[] Rot3DislocY = {0, -1, -1, -1, -1, -1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0};
+    private static int[] Rot3EvenDislocX = {0, 0, -1, -2, -3, -4, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
+    private static int[] Rot3OddDislocX = {0, -1, -2, -3, -4, -5, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
 
-    private static int[] Rot4DislocX = {0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
-    private static int[] Rot4EvenDislocY = {0, 0, 0, 1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2};
-    private static int[] Rot4OddDislocY = {0, -1, 0, 0, 1, 1, 2, 3, 2, 2, 1, 1, 0, 1, 1, 2};
+    private static int[] Rot4DislocY = {0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
+    private static int[] Rot4EvenDislocX = {0, 0, 0, -1, -1, -2, -3, -3, -3, -2, -2, -1, -1, -1, -2, -2};
+    private static int[] Rot4OddDislocX = {0, 1, 0, 0, -1, -1, -2, -3, -2, -2, -1, -1, 0, -1, -1, -2};
 
-    private static int[] Rot5DislocX = {0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
-    private static int[] Rot5EvenDislocY = {0, 1, 1, 2, 2, 3, 2, 1, 1, 0, 0, -1, 0, 1, 1, 2};
-    private static int[] Rot5OddDislocY = {0, 1, 2, 2, 3, 3, 3, 2, 1, 1, 0, 0, 1, 1, 2, 2};
+    private static int[] Rot5DislocY = {0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
+    private static int[] Rot5EvenDislocX = {0, -1, -1, -2, -2, -3, -2, -1, -1, 0, 0, 1, 0, -1, -1, -2};
+    private static int[] Rot5OddDislocX = {0, -1, -2, -2, -3, -3, -3, -2, -1, -1, 0, 0, -1, -1, -2, -2};
 
     /*
     Function used to assemble the strips into the matrix. We have 12 cases, 6  rotation-dependent each, even and odd
     position of the "center Hexspace" (it's actually not in the center. it's the Hexspace which is at the first
     position of the HexSpaceEntity list
      */
-    private static void fillStripEntryInMatrix(HexSpaceEntity[][] boardMatrix, int posX, int posY, int[] disLocX,
-                                        int[] disLocEvenY, int[] disLocOddY, int j, HexSpaceEntity hexSpaceEntity) {
-        if (posX % 2 == 0) {
-            boardMatrix[posX + disLocX[j]][posY + disLocEvenY[j]] = hexSpaceEntity;
+    private static void fillStripEntryInMatrix(HexSpaceEntity[][] boardMatrix, int posX, int posY, int[] disLocY,
+                                        int[] disLocEvenX, int[] disLocOddX, int j, HexSpaceEntity hexSpaceEntity) {
+        if (posY % 2 == 0) {
+            boardMatrix[posX + disLocEvenX[j]][posY + disLocY[j]] = hexSpaceEntity;
         } else {
-            boardMatrix[posX + disLocX[j]][posY + disLocOddY[j]] = hexSpaceEntity;
+            boardMatrix[posX + disLocOddX[j]][posY + disLocY[j]] = hexSpaceEntity;
         }
     }
 
@@ -138,26 +138,26 @@ public class Assembler {
             for (int j = 0; j < currentTileHexSpaces.size(); j++) {
                 if (j < 18) {
                     if (TilePositionX.get(i) % 2 == 0) {
-                        boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
-                                outerRingDislocYEven[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
+                        boardMatrix[TilePositionX.get(i) + outerRingDislocXEven[j]][TilePositionY.get(i) +
+                                outerRingDislocY[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
                     } else {
-                        boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
-                                outerRingDislocYOdd[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
+                        boardMatrix[TilePositionX.get(i) + outerRingDislocXOdd[j]][TilePositionY.get(i) +
+                                outerRingDislocY[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
                     }
                 } else if (j < 30) {
                     if (TilePositionX.get(i) % 2 == 0) {
-                        boardMatrix[TilePositionX.get(i) + midRingDislocX[j-18]][TilePositionY.get(i) + midRingDislocYEven[j-18]]
+                        boardMatrix[TilePositionX.get(i) + midRingDislocXEven[j-18]][TilePositionY.get(i) + midRingDislocY[j-18]]
                                 = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 12));
                     } else {
-                        boardMatrix[TilePositionX.get(i) + midRingDislocX[j-18]][TilePositionY.get(i) + midRingDislocYOdd[j-18]]
+                        boardMatrix[TilePositionX.get(i) + midRingDislocXOdd[j-18]][TilePositionY.get(i) + midRingDislocY[j-18]]
                                 = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 12));
                     }
                 } else if (j < 36) {
                     if (TilePositionX.get(i) % 2 == 0) {
-                        boardMatrix[TilePositionX.get(i) + innerRingDislocX[j-30]][TilePositionY.get(i) + innerRingDislocYEven[j-30]]
+                        boardMatrix[TilePositionX.get(i) + innerRingDislocXEven[j-30]][TilePositionY.get(i) + innerRingDislocY[j-30]]
                                 = currentTileHexSpaces.get(30 + (((j - 30) + (currentTileRotation)) % 6));
                     } else {
-                        boardMatrix[TilePositionX.get(i) + innerRingDislocX[j-30]][TilePositionY.get(i) + innerRingDislocYOdd[j-30]]
+                        boardMatrix[TilePositionX.get(i) + innerRingDislocXOdd[j-30]][TilePositionY.get(i) + innerRingDislocY[j-30]]
                                 = currentTileHexSpaces.get(30 + (((j - 30) + (currentTileRotation)) % 6));
                     }
                 } else {
@@ -181,27 +181,27 @@ public class Assembler {
                 switch (currentStripRotation) {
                     case 0:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot0DislocX, Rot0EvenDislocY, Rot0OddDislocY, j, currentStripHexSpaces.get(j));
+                                Rot0DislocY, Rot0EvenDislocX, Rot0OddDislocX, j, currentStripHexSpaces.get(j));
                         break;
                     case 1:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot1DislocX, Rot1EvenDislocY, Rot1OddDislocY, j, currentStripHexSpaces.get(j));
+                                Rot1DislocY, Rot1EvenDislocX, Rot1OddDislocX, j, currentStripHexSpaces.get(j));
                         break;
                     case 2:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot2DislocX, Rot2EvenDislocY, Rot2OddDislocY, j, currentStripHexSpaces.get(j));
+                                Rot2DislocY, Rot2EvenDislocX, Rot2OddDislocX, j, currentStripHexSpaces.get(j));
                         break;
                     case 3:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot3DislocX, Rot3EvenDislocY, Rot3OddDislocY, j, currentStripHexSpaces.get(j));
+                                Rot3DislocY, Rot3EvenDislocX, Rot3OddDislocX, j, currentStripHexSpaces.get(j));
                         break;
                     case 4:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot4DislocX, Rot4EvenDislocY, Rot4OddDislocY, j, currentStripHexSpaces.get(j));
+                                Rot4DislocY, Rot4EvenDislocX, Rot4OddDislocX, j, currentStripHexSpaces.get(j));
                         break;
                     case 5:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot5DislocX, Rot5EvenDislocY, Rot5OddDislocY, j, currentStripHexSpaces.get(j));
+                                Rot5DislocY, Rot5EvenDislocX, Rot5OddDislocX, j, currentStripHexSpaces.get(j));
                         break;
                 }
             }
@@ -281,12 +281,12 @@ public class Assembler {
                 for (int j = 9; j>=6; j--) {
                     if (rotation % 2 == 0) {
                         StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
-                                posX + outerRingDislocX[(i + (3 * rotation)) % 18],
-                                posY + outerRingDislocYEven[(i + (3 * rotation)) % 18], game));
+                                posX + outerRingDislocXEven[(i + (3 * rotation)) % 18],
+                                posY + outerRingDislocY[(i + (3 * rotation)) % 18], game));
                     } else {
                         StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
-                                posX + outerRingDislocX[(i + 3 * rotation) % 18],
-                                posY + outerRingDislocYOdd[(i + 3 * rotation) % 18], game));
+                                posX + outerRingDislocXOdd[(i + 3 * rotation) % 18],
+                                posY + outerRingDislocY[(i + 3 * rotation) % 18], game));
                     }
                 }
             }
