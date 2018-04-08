@@ -1,19 +1,25 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class Market {
+@Embeddable
+public class Market implements Serializable {
     /*
     Slot with the active cards. These are always purchasable by the user.
      */
+    @ElementCollection
     private List<Slot> active;
 
     /*
     Slot of passive cards. These cards are only purchasable if the active ArrayList has less than 6 Slots.
     Otherwise, these cards are not purchasable.
      */
+    @ElementCollection
     private List<Slot> passive;
 
     /*

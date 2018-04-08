@@ -9,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "PLAYER_ENTITY")
 public class PlayerEntity implements Serializable {
 
@@ -44,35 +46,4 @@ public class PlayerEntity implements Serializable {
     @JsonBackReference
     private GameEntity game;
 
-    public int getPlayerID() {
-        return playerID;
-    }
-
-    public void setPlayerID(int playerID) {
-        this.playerID = playerID;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public GameEntity getGame() {
-        return game;
-    }
-
-    public void setGame(GameEntity game) {
-        this.game = game;
-    }
 }

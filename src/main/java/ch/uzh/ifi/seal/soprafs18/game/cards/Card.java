@@ -2,21 +2,36 @@ package ch.uzh.ifi.seal.soprafs18.game.cards;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import lombok.Data;
 
-public abstract class Card {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.io.Serializable;
+
+@Entity
+@Data
+public abstract class Card  implements Serializable {
+    @Id
+    @GeneratedValue
+    private int id;
     /*
     Defines the cards name for identification in the frontend. Multiple cards can have the same name.
      */
+    @Column(name = "CARDNAME")
     private String name;
 
     /*
     How many coins the user gets when selling the card
      */
+    @Column(name = "COINVALUE")
     private float coinValue;
 
     /*
     How many coins the user needs to buy this card from the Market.
      */
+    @Column(name = "COINCOST")
     private int coinCost;
 
     /*
@@ -36,15 +51,4 @@ public abstract class Card {
 
     public abstract void moveAction(Player player, HexSpace moveTo);
 
-    public String getName() {
-        return name;
-    }
-
-    public float getCoinValue() {
-        return coinValue;
-    }
-
-    public int getCoinCost() {
-        return coinCost;
-    }
 }

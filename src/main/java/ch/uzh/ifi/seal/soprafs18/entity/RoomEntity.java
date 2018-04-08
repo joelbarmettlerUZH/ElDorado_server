@@ -1,12 +1,14 @@
 package ch.uzh.ifi.seal.soprafs18.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "ROOM")
 public class RoomEntity  implements Serializable {
 
@@ -34,39 +36,8 @@ public class RoomEntity  implements Serializable {
     @Column(name = "BOARDNUMBER")
     private int boardnumber;
 
-    public int getRoomID() {
-        return roomID;
-    }
-
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<UserEntity> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserEntity> userEntities) {
-        this.users = userEntities;
-    }
-
     public void addUser(UserEntity userEntity){
         this.users.add(userEntity);
     }
 
-    public int getBoardnumber() {
-        return boardnumber;
-    }
-
-    public void setBoardnumber(int boardnumber) {
-        this.boardnumber = boardnumber;
-    }
 }

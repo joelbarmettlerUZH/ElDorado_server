@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
+@Data
 public class HexSpace implements Serializable{
 
     public HexSpace(){
@@ -50,8 +52,6 @@ public class HexSpace implements Serializable{
     /*
     The X/Y coordinates of the HexSpaceEntity in the GameEntity Matrix.
      */
-    @Transient
-    @JsonIgnore
     private Point point;
 
     /*
@@ -78,6 +78,8 @@ public class HexSpace implements Serializable{
     the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the
     previous. This way the blockade can handle the neighbours with taking the previous direction into account.
      */
+    @JsonIgnore
+    @Transient
     public List<HexSpace> getNeighbour(){
         return null;
     }
@@ -85,31 +87,4 @@ public class HexSpace implements Serializable{
         return null;
     }
 
-    public int getStrength() {
-        return strength;
-    }
-
-    public int getMinimalCost() {
-        return minimalCost;
-    }
-
-    public int getMinimalDepth() {
-        return minimalDepth;
-    }
-
-    public COLOR getColor() {
-        return color;
-    }
-
-    public Point getPoint() {
-        return point;
-    }
-
-    public List<HexSpace> getPrevious() {
-        return previous;
-    }
-
-    public Game getGame() {
-        return game;
-    }
 }

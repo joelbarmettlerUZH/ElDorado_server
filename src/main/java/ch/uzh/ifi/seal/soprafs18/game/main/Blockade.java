@@ -2,16 +2,22 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-
+@Entity
+@Data
 public class Blockade  implements Serializable {
+    @Id
+    @GeneratedValue
+    private int BlockadeID;
     /*
     List of BlockadeSpaces the Blockade consists of.
      */
+    @ElementCollection
     private List<BlockadeSpace> spaces;
 
     /*
@@ -22,6 +28,7 @@ public class Blockade  implements Serializable {
     Blockade gets assigned to the Player that removed it and its cost factor
     has to be remembered for the endgame.
      */
+    @Column(name = "BLOCKADECOST")
     private int cost;
 
     /*
@@ -38,11 +45,4 @@ public class Blockade  implements Serializable {
 
     }
 
-    public List<BlockadeSpace> getSpaces() {
-        return spaces;
-    }
-
-    public int getCost() {
-        return cost;
-    }
 }

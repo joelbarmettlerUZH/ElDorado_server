@@ -8,6 +8,7 @@ import ch.uzh.ifi.seal.soprafs18.repository.PlayerRepository;
 import ch.uzh.ifi.seal.soprafs18.service.PlayerService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "GAME_ENTITY")
 public class GameEntity implements Serializable {
 
@@ -42,17 +44,6 @@ public class GameEntity implements Serializable {
     @JsonManagedReference
     private List<PlayerEntity> players;
 
-    public int getGameID() {
-        return gameID;
-    }
-
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
-
-    public Game getGame() {
-        return game;
-    }
 
     public void setGame(Game game) {
         System.out.println("++++"+game.getID());
@@ -60,11 +51,4 @@ public class GameEntity implements Serializable {
         System.out.println("Game set (in theory)");
     }
 
-    public List<PlayerEntity> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<PlayerEntity> players) {
-        this.players = players;
-    }
 }

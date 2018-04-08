@@ -24,6 +24,10 @@ public class HexSpaceEntity {
         this.strength = strength;
     }
 
+    public HexSpaceEntity(){
+
+    }
+
     public String getId() {
         return id;
     }

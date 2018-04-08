@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
-public class Game  implements Serializable {
+@Data
+public class Game implements Serializable {
 
     //Constructor
     public Game(int boardNumber, List<Player> players, int gameID){
@@ -88,15 +90,13 @@ public class Game  implements Serializable {
     List of all blockades that are in the game so that we can set the strength
     of all blockades belonging together to 0 when one blockade is removed.
      */
-    @Transient
-    @JsonIgnore
+    @ElementCollection
     private List<Blockade> blockades;
 
     /*
     Instance of the current Marketplace that contains active and passive cards.
      */
-    @Transient
-    @JsonIgnore
+    @Embedded
     private Market marketPlace;
 
     /*
@@ -115,77 +115,10 @@ public class Game  implements Serializable {
         return null;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public Player getCurrent() {
-        return current;
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running){
-        this.running = running;
-    }
-
-    public Matrix getPathMatrix() {
-        return pathMatrix;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public List<Player> getWinners() {
-        return winners;
-    }
-
-    public List<Blockade> getBlockades() {
-        return blockades;
-    }
-
-    public Market getMarketPlace() {
-        return marketPlace;
-    }
-
-    public Memento getMemento() {
-        return memento;
-    }
-
     public void setPlayers(List<Player> players) {
         this.current = players.get(0);
         this.players = players;
         System.out.println("***set current***");
     }
 
-    public void setCurrent(Player current) {
-        this.current = current;
-    }
-
-    public void setPathMatrix(HexSpace[][] pathMatrix) {
-        this.pathMatrix = new Matrix(pathMatrix);
-    }
-
-    public void setWinners(List<Player> winners) {
-        this.winners = winners;
-    }
-
-    public void setBlockades(List<Blockade> blockades) {
-        this.blockades = blockades;
-    }
-
-    public void setMarketPlace(Market marketPlace) {
-        this.marketPlace = marketPlace;
-    }
-
-    public void setMemento(Memento memento) {
-        this.memento = memento;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
 }

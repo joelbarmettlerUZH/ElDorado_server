@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.List;
 

@@ -1,16 +1,25 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import lombok.Data;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
-public class Slot {
+@Entity
+@Data
+public class Slot implements Serializable{
     /*
     Unique identifier for a slot
      */
+    @Id
+    @GeneratedValue
     private int SlotID;
 
     /*
     Each pile consists of 1 to 3 Cards.
      */
+    @ElementCollection
     private List<Card> pile;
 
     /*
@@ -29,11 +38,4 @@ public class Slot {
         return pile.get(0);
     }
 
-    public int getSlotID() {
-        return SlotID;
-    }
-
-    public List<Card> getPile() {
-        return pile;
-    }
 }

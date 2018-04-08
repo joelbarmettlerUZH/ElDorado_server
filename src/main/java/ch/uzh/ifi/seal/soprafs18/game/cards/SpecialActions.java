@@ -1,6 +1,13 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
-public class SpecialActions {
+import lombok.Data;
+
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+
+@Embeddable
+@Data
+public class SpecialActions implements Serializable{
     /*
     Amount of cards that can be drawn
      */
@@ -28,15 +35,4 @@ public class SpecialActions {
         steal = steal - 1;
     }
 
-    public int getDraw() {
-        return draw;
-    }
-
-    public int getRemove() {
-        return remove;
-    }
-
-    public int getSteal() {
-        return steal;
-    }
 }

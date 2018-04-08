@@ -1,20 +1,20 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Embeddable
+@Data
 public class Matrix implements Serializable{
 
-    @JsonIgnore
-    @Transient
-    private ArrayList<HexSpace> matrixArray;
-
     @Embedded
-    private HexSpace first;
+    @ElementCollection
+    private List<HexSpace> matrixArray;
 
     private int xDim, yDim;
 
@@ -35,22 +35,10 @@ public class Matrix implements Serializable{
         xDim = 0;
         matrixArray = new ArrayList<>();
         matrixArray.add(new HexSpace());
-        this.first = new HexSpace();
     }
 
     public HexSpace get(int x, int y){
         return matrixArray.get(x*yDim+y);
     }
 
-    public ArrayList<HexSpace> getMatrixArray() {
-        return matrixArray;
-    }
-
-    public int getxDim() {
-        return xDim;
-    }
-
-    public int getyDim() {
-        return yDim;
-    }
 }
