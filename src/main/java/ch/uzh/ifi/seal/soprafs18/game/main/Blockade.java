@@ -51,6 +51,7 @@ public class Blockade  implements Serializable {
     /*
     Assings a new BlockadeSpace to the Blockade by appending it to the spaces array.
     NOT NEEDED I THINK (MARIUS)
+    */
 
     public void assign(Blockade blockade){
 
