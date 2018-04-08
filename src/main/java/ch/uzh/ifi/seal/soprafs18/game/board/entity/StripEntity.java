@@ -7,18 +7,23 @@ import java.util.List;
 @Table(name = "STRIP")
 public class StripEntity {
     @Id
-    @Column(unique = true)
-    private int stripID;
+    @Column(name = "ID", unique = true)
+    private char stripID;
 
     @Column(name = "HEXSPACES")
     @ElementCollection
     private List<HexSpaceEntity> hexSpaceEntities;
 
-    public int getStripID() {
+    public StripEntity(char stripID, List<HexSpaceEntity> hexSpaceEntities){
+        this.stripID = stripID;
+        this.hexSpaceEntities=hexSpaceEntities;
+    }
+
+    public char getStripID() {
         return stripID;
     }
 
-    public void setStripID(int stripID) {
+    public void setStripID(char stripID) {
         this.stripID = stripID;
     }
 

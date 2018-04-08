@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,15 @@ public class Blockade  implements Serializable {
     @Id
     @GeneratedValue
     private int BlockadeID;
+
+    public Blockade(){
+
+    }
+
+    public Blockade(List<BlockadeSpace> blockadeSpaces){
+        this.spaces = blockadeSpaces;
+        this.cost = blockadeSpaces.get(0).getStrength();
+    }
     /*
     List of BlockadeSpaces the Blockade consists of.
      */
@@ -32,15 +42,16 @@ public class Blockade  implements Serializable {
     private int cost;
 
     /*
-    Deactivates a blockade by settings its BlockadeSpace stregth to 0.
+    Deactivates a blockade by settings its BlockadeSpace strength to 0.
      */
     public void deactivate(){
-
+        this.cost = 0;
     }
 
     /*
     Assings a new BlockadeSpace to the Blockade by appending it to the spaces array.
-     */
+    NOT NEEDED I THINK (MARIUS)
+
     public void assign(Blockade blockade){
 
     }
