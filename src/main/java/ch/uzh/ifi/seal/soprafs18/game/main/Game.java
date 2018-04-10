@@ -32,7 +32,8 @@ public class Game  implements Serializable {
         for (int row = 0; row < 2; row ++)
             for (int col = 0; col < 2; col++)
                 temp[row][col] = new HexSpace();
-        this.pathMatrix = new Matrix(temp);
+        //this.pathMatrix = new Matrix(temp);
+        this.pathMatrix = new Matrix(Assembler.assembleBoard(1,this));
         this.winners = new ArrayList<>();
         this.blockades = new ArrayList<>();
         this.marketPlace = new Market();

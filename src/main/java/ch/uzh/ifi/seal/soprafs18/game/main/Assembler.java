@@ -109,7 +109,7 @@ public class Assembler {
         return hexSpaceMatrix;
     }
 
-    public static HexSpace[][] assembleBoard (char boardId,Game game){
+    public static HexSpace[][] assembleBoard (int boardId,Game game){
         HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
         BoardEntity board = boardService.getBoard(boardId);
         boardMatrix = Assembler.assembleTiles(boardMatrix,board.getTiles(),board.getTilesPositionX(),

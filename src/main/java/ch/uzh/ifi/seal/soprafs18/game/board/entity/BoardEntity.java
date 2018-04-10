@@ -2,17 +2,49 @@ package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "BOARD")
-public class BoardEntity {
+public class BoardEntity implements Serializable {
+
+    public BoardEntity(int boardID, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,
+                       List<Integer> tilesPositionY,List<StripEntity> strip, List<Integer> stripRotation,
+                       List<Integer> stripPositionX,List<Integer> stripPositionY,List<Integer> blockadeId,
+                       List<Integer> blockadePositionX, List<Integer> blockadePositionY,List<HexSpaceEntity> endingSpaces,
+                       List<Integer> endingSpacePositionX, List<Integer> endingSpacePositionY) {
+        //System.out.println("constr");
+        this.boardID = boardID;
+        this.tiles = tiles;
+        this.tilesRotation = tilesRotation;
+        this.tilesPositionX = tilesPositionX;
+        this.tilesPositionY = tilesPositionY;
+        this.strip = strip;
+        this.stripRotation = stripRotation;
+        this.stripPositionX = stripPositionX;
+        this.stripPositionY = stripPositionY;
+        this.blockadeId = blockadeId;
+        this.blockadePositionX = blockadePositionX;
+        this.blockadePositionY = blockadePositionY;
+        this.endingSpaces = endingSpaces;
+        this.endingSpacePositionX = endingSpacePositionX;
+        this.endingSpacePositionY = endingSpacePositionY;
+    }
+
+    public BoardEntity(){
+
+    }
+
     @Id
     @Column(unique = true, name = "BOARDID")
     private int boardID;
 
     @Column(name = "TILES")
+    @Embedded
     @ElementCollection
+    //@OneToMany(targetEntity = TileEntity.class, fetch = FetchType.EAGER)
+    //@JoinTable(name="TILES",joinColumns = @JoinColumn(name="BOARD_BOARDID"),inverseJoinColumns = @JoinColumn(name="TILE_ID"))
     private List<TileEntity> tiles;
 
     @Column(name = "TILESROTATION")
