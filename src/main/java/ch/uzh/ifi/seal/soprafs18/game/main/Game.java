@@ -1,11 +1,14 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -18,16 +21,15 @@ import java.util.List;
 public class Game implements Serializable {
 
     //Constructor
-    public Game(int boardNumber, List<Player> players, int gameID){
+    public Game(int boardNumber, int gameID){
         //assembler uses boardNumber
         this();
-        this.players = players;
         this.ID = gameID;
         System.out.println("****created game*******");
     }
 
     public Game(){
-        this.players = new ArrayList<>();
+        this.players = new ArrayList<>();;
         this.running = true;
         this.ID = -1;
         HexSpace[][] temp = new HexSpace[2][2];
@@ -37,6 +39,11 @@ public class Game implements Serializable {
         this.pathMatrix = new Matrix(temp);
         this.winners = new ArrayList<>();
         this.blockades = new ArrayList<>();
+        List<BlockadeSpace> blockadeSpaces = new ArrayList<>();
+        blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 3, 30, 300, new ArrayList<>(), new Point(-3, -3), null, 1));
+        blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 4, 40, 400, new ArrayList<>(), new Point(-4, -3), null, 1));
+        Blockade blockade = new Blockade(blockadeSpaces);
+        this.blockades.add(blockade);
         this.marketPlace = new Market();
         this.memento = new Memento();
     }
@@ -44,6 +51,7 @@ public class Game implements Serializable {
     /*
     Globally unique Identifier to identify a running game
      */
+    @JsonIgnore
     private int ID;
 
     /*
@@ -55,6 +63,11 @@ public class Game implements Serializable {
     @Transient
     @JsonIgnore
     private Player current; //
+
+    /*
+    Serves as an identifier for the current player for hibernate
+     */
+    private int currentPlayerID;
 
     /*
     Indicates whether the game is still in a running state or whether it has finished.
@@ -81,6 +94,7 @@ public class Game implements Serializable {
     /*
     List containing all players that have reached ElDorado.
     Is used to calculate the final winner and to determine when the game is ended.
+    Winners are not directly returned in the gameEntity but only on request via the GameService.
      */
     @Transient
     @JsonIgnore
@@ -90,7 +104,8 @@ public class Game implements Serializable {
     List of all blockades that are in the game so that we can set the strength
     of all blockades belonging together to 0 when one blockade is removed.
      */
-    @ElementCollection
+    @JsonIgnore
+    @Transient
     private List<Blockade> blockades;
 
     /*
@@ -102,6 +117,7 @@ public class Game implements Serializable {
     /*
     Instance of the memento which save the state of the HexSpaces while the
     PathFinder modifies them, so that the HexSpaces can be reset.
+    Json does not need to be in the gameEntity
      */
     @Transient
     @JsonIgnore
@@ -117,6 +133,7 @@ public class Game implements Serializable {
 
     public void setPlayers(List<Player> players) {
         this.current = players.get(0);
+        this.currentPlayerID = current.getPlayerID();
         this.players = players;
         System.out.println("***set current***");
     }

@@ -30,9 +30,11 @@ public class Application {
     @Bean
     public CommandLineRunner loadDUsers(UserRepository userRepository) {
         return (args) -> {
+            int i = 0;
             for(String name:new String[] {"Joel", "Marius"}){
-                UserEntity user = new UserEntity(name, 1, null);
+                UserEntity user = new UserEntity(name, i, null);
                 userRepository.save(user);
+                i++;
             }
         }; //userRepository.findAll().iterator().next().setReady(true);
 

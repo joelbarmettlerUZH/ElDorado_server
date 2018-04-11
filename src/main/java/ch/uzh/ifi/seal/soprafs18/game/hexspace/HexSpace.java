@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
-import com.sun.xml.internal.bind.v2.TODO;
+//import com.sun.xml.internal.bind.v2.TODO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -32,13 +32,18 @@ public class HexSpace implements Serializable{
     }
 
     public HexSpace(){
-        this.color = COLOR.EMPTY;
-        this.strength = 1000;
-        this.minimalCost = 1000;
-        this.minimalDepth = 0;
-        this.previous = new ArrayList<>();
-        this.point = new Point(-1,-1);
-        this.game = null;
+        this(COLOR.EMPTY, 10, 100, 1000, new ArrayList<>(), new Point(-1, -1), null);
+        System.out.println("Calling empty constructor of hexspace");
+    }
+
+    public HexSpace(COLOR color, int strength, int minimalCost, int minimalDepth, List<HexSpace> previous, Point point, Game game){
+        this.color = color;
+        this.strength = strength;
+        this.minimalCost = minimalCost;
+        this.minimalDepth = minimalDepth;
+        this.previous = previous;
+        this.point = point;
+        this.game = game;
     }
 
     /*

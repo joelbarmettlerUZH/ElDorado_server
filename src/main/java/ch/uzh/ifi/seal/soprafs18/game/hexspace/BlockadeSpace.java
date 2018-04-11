@@ -1,26 +1,34 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import javax.persistence.Embeddable;
+import java.awt.*;
 import java.io.Serializable;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.BlockadeSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class BlockadeSpace extends HexSpace implements Serializable {
     /*
     CONSTRUCTOR
     */
     public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY, Game game){
         super(blockadeSpaceEntity,posX,posY,game);
-        this.blockadeId = blockadeSpaceEntity.getBlockadeId();
+        this.parentBlockade = blockadeSpaceEntity.getBlockadeId();
+    }
+
+    public BlockadeSpace(COLOR color, int strength, int minimalCost, int minimalDepth, List<HexSpace> previous, Point point, Game game, int parentBlockade){
+        super(color, strength, minimalCost, minimalDepth, previous, point, game);
+        this.parentBlockade = parentBlockade;
     }
 
     /*
     stores to which blockade it belongs to
      */
-    private int blockadeId;
+    private int parentBlockade;
 
     /*
     This method needs to be overwritten in order to determine the neighbours of a special HexSpaceEntity of type BlockadeSpace,

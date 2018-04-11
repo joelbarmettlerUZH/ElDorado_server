@@ -5,8 +5,10 @@ import ch.uzh.ifi.seal.soprafs18.entity.PlayerEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
+import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
+import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
@@ -66,7 +68,7 @@ public class GameService implements Serializable{
         List<Player> players = new ArrayList<>();
         List<PlayerEntity> playerEntities = new ArrayList<>();
         LOGGER.info("Create game with board " + board + " with no players.");
-        Game game = new Game(board, null, room.getRoomID());
+        Game game = new Game(board, room.getRoomID());
 
         int i = 0;
         for (UserEntity user : users) {
@@ -107,38 +109,53 @@ public class GameService implements Serializable{
         return gameRepository.findByGameID(gameID).get(0);
     }
 
-
-    public PlayerEntity getCurrentPlayer(GameEntity game) {
-        LOGGER.info("Returning current player of game " + game.getGameID());
-        return playerRepository.findByPlayerID(game.getGame().getCurrent().getPlayerID()).get(0);
+    public List<PlayerEntity> getPlayers(int id) {
+        LOGGER.info("Returning Players of game " + id);
+        GameEntity g = gameRepository.findByGameID(id).get(0);
+        return gameRepository.findByGameID(g.getGameID()).get(0).getPlayers();
     }
 
-
-    public List<PlayerEntity> getPlayers(GameEntity game) {
-        LOGGER.info("Returning Players of game " + game.getGameID());
-        return gameRepository.findByGameID(game.getGameID()).get(0).getPlayers();
+    public List<PlayerEntity> getWinners(int id){
+        LOGGER.info("Returning possible winners of Game " + id);
+        GameEntity g = gameRepository.findByGameID(id).get(0);
+        GameEntity game =  gameRepository.findByGameID(g.getGameID()).get(0);
+        List<PlayerEntity> playerEntities = new ArrayList<>();
+        for(Player p: game.getGame().getWinners()){
+            playerEntities.add(playerRepository.findByPlayerID(p.getPlayerID()).get(0));
+        }
+        return playerEntities;
     }
 
+    public PlayerEntity getCurrentPlayer(int id) {
+        LOGGER.info("Returning current player of game " + id);
+        GameEntity g = gameRepository.findByGameID(id).get(0);
+        return playerRepository.findByPlayerID(g.getGame().getCurrentPlayerID()).get(0);
+    }
+
+    public Matrix getBoard(int id){
+        LOGGER.info("Returning board of game " + id);
+        GameEntity g = gameRepository.findByGameID(id).get(0);
+        GameEntity game =  gameRepository.findByGameID(g.getGameID()).get(0);
+        return game.getGame().getPathMatrix();
+    }
+
+    public List<Blockade> getBlockades(int id){
+        LOGGER.info("Returning board of game " + id);
+        GameEntity g = gameRepository.findByGameID(id).get(0);
+        GameEntity game =  gameRepository.findByGameID(g.getGameID()).get(0);
+        return game.getGame().getBlockades();
+    }
+
+    public Market getMarket(int id){
+        LOGGER.info("Returning board of game " + id);
+        GameEntity g = gameRepository.findByGameID(id).get(0);
+        GameEntity game =  gameRepository.findByGameID(g.getGameID()).get(0);
+        return game.getGame().getMarketPlace();
+    }
 
     public void stop(GameEntity game) {
         LOGGER.info("Stoppping game " + game.getGameID());
         game.getGame().setRunning(false);
-    }
-
-
-    public List<PlayerEntity> getWinners(GameEntity game) {
-        LOGGER.info("Returning winners of game " + game.getGameID());
-        List<Player> winners = game.getGame().getWinners();
-        List<PlayerEntity> players = new ArrayList<>();
-        for(Player winner:winners){
-            players.add(playerRepository.findByPlayerID(winner.getPlayerID()).get(0));
-        }
-        return players;
-    }
-
-    public Matrix getBoard(GameEntity game) {
-        LOGGER.info("Returning Board of game " + game.getGameID());
-        return game.getGame().getPathMatrix();
     }
 
 }

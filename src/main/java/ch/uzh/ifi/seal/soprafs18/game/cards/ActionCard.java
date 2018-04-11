@@ -5,14 +5,26 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import lombok.Data;
 
-@Data
-public class ActionCard extends Card {
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
 
+@Data
+@Entity
+public class ActionCard extends Card {
+    public ActionCard(String name, int coinValue, int coinCost){
+        super(name, coinValue, coinCost);
+    }
+
+    public ActionCard(){
+        super();
+        this.actions = new SpecialActions(3, 3, 3);
+    }
     /*
     The Budget that is granted to the user when the ActionCards action is performed. Bugeds stores how many
      cards the user can draw from the draw pile, how many card she/he can remove and how many cards she/he  
      can steal from the market according to the cards type.
      */
+    @Embedded
     protected SpecialActions actions;
 
     /*

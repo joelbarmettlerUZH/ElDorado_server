@@ -42,7 +42,7 @@ public class Player  implements Serializable {
         this.coins = (float) 0;
         this.pathFinder = new Pathfinder();
         this.playingPieces = new ArrayList<PlayingPiece>();
-        this.specialAction = new SpecialActions();
+        this.specialAction = new SpecialActions(0,0,0);
         this.history = new ArrayList<CardAction>();
         this.drawPile  = new ArrayList<Card>();
         this.handPile = new ArrayList<Card>();
@@ -101,7 +101,8 @@ public class Player  implements Serializable {
     /*
     List of blockades the Player has collected so far.
      */
-    @ElementCollection
+    @JsonIgnore
+    @Transient
     private List<Blockade> blockades;
 
     /*

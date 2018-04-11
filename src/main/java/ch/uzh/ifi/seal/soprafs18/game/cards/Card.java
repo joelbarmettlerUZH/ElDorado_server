@@ -4,15 +4,21 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @Data
-public abstract class Card  implements Serializable {
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Card  implements Serializable, Cloneable {
+    public Card(){}
+
+    public Card(String name, int coinValue, int coinCost){
+        this.name = name;
+        this.coinValue = coinValue;
+        this.coinCost = coinCost;
+    }
+
     @Id
     @GeneratedValue
     private int id;
@@ -51,4 +57,11 @@ public abstract class Card  implements Serializable {
 
     public abstract void moveAction(Player player, HexSpace moveTo);
 
+    public Object clone(){
+        try{
+            return super.clone();
+        } catch(CloneNotSupportedException cns){
+            return null;
+        }
+    }
 }

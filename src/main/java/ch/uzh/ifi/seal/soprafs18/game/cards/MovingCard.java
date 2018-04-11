@@ -6,9 +6,21 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
+import lombok.Data;
 
+import javax.persistence.Entity;
 
+@Entity
+@Data
 public class MovingCard extends Card{
+
+    public MovingCard(String name, int coinValue, int coinCost){
+        super(name, coinValue, coinCost);
+    }
+
+    public MovingCard(){
+        super();
+    }
 
     /*
      Defines the cards moving-value: The moving cards strength defines the initial strengthLeft value for the

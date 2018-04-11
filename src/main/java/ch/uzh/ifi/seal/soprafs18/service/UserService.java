@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.service;
 
+import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.repository.RoomRepository;
 import ch.uzh.ifi.seal.soprafs18.repository.UserRepository;
@@ -85,21 +86,40 @@ public class UserService  implements Serializable {
         return userRepository.findByUserID(id).get(0);
     }
 
-    public UserEntity updateUser(UserEntity user, String token) {
-        if (!valid(token, user)) {
-            LOGGER.warning("User " + user.getUserID() + " provided wrong token " + token);
+    public UserEntity updateUser(UserEntity userEntity, String token) {
+        if (!valid(token, userEntity)) {
+            LOGGER.warning("User " + userEntity.getUserID() + " provided wrong token " + token);
             return null;
         }
-        UserEntity u = userRepository.findByUserID(user.getUserID()).get(0);
-        u.setCharacter(user.getCharacter());
-        u.setName(user.getName());
-        u.setReady(user.isReady());
-        userRepository.save(u);
-        LOGGER.info("Updating user " + user.getUserID());
-        if (u.getRoomEntity() != null) {
-            LOGGER.info("Updating room " + u.getRoomEntity().getRoomID() + " since user " + user.getUserID() + " was modified. ");
-            roomService.updateRoom(u.getRoomEntity());
+        UserEntity user = userRepository.findByUserID(userEntity.getUserID()).get(0);
+        RoomEntity room = user.getRoomEntity();
+        for(UserEntity u: room.getUsers()){
+            if(u.getUserID() != userEntity.getUserID()){
+                if(u.getCharacter() == userEntity.getCharacter()){
+                    LOGGER.warning("Modification not possible since there is an interference with another Player in Room " + room.getRoomID()
+                    + " that has the same character chosen.");
+                    return user;
+                }
+                if(u.getName().toLowerCase().equals(userEntity.getName().toLowerCase())){
+                    LOGGER.warning("Modification not possible since there is an interference with another Player in Room " + room.getRoomID()
+                            + " that has the same Username.");
+                    return user;
+                }
+            }
         }
-        return u;
+        if(userEntity.getCharacter() < 0 || userEntity.getCharacter()>3){
+            LOGGER.warning("Invalid character number "+userEntity.getCharacter()+" for user "+user.getUserID());
+            return user;
+        }
+        user.setCharacter(userEntity.getCharacter());
+        user.setName(userEntity.getName());
+        user.setReady(userEntity.isReady());
+        userRepository.save(user);
+        LOGGER.info("Updating user " + user.getUserID());
+        if (user.getRoomEntity() != null) {
+            LOGGER.info("Updating room " + user.getRoomEntity().getRoomID() + " since user " + user.getUserID() + " was modified. ");
+            roomService.updateRoom(user.getRoomEntity());
+        }
+        return user;
     }
 }

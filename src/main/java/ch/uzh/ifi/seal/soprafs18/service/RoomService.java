@@ -60,6 +60,14 @@ public class RoomService  implements Serializable {
             LOGGER.info("Unable to join room " + roomID + " due to a usernumber of 4");
             return;
         }
+        int character = user.getCharacter();
+        for(UserEntity u: room.getUsers()){
+            if(u.getCharacter() == user.getCharacter() || u.getName().toLowerCase().equals(user.getName().toLowerCase())){
+                LOGGER.info("Unable to join room " + roomID + " Since chosen character "+user.getCharacter()
+                        +"or chosen Name " + user.getName() + " is already existent:");
+                return;
+            }
+        }
         user.setRoomEntity(room);
         room.addUser(user);
         roomRepository.save(room);
