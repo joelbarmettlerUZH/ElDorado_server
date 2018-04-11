@@ -5,9 +5,13 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
 import ch.uzh.ifi.seal.soprafs18.game.cards.SpecialActions;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jdk.nashorn.internal.ir.Block;
 
+import javax.persistence.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,23 +19,37 @@ import java.util.Random;
 
 import static java.lang.Boolean.FALSE;
 
+@Embeddable
 public class Player {
 
-    public Player(String name, Game game, int id, SpecialActions specialAction, String token){
+    public Player(int PlayerID, String name, Game game, int id){
+        this();
         this.name = name;
+        this.playerID = PlayerID;
         this.id = id;
-        this.token = token;
-        coins = (float) 0;
-        board = game;
-        pathFinder = new Pathfinder();
-        playingPieces = new ArrayList<PlayingPiece>();
-        this.specialAction = specialAction;
-        history = new ArrayList<CardAction>();
-        drawPile  = new ArrayList<Card>();
-        handPile = new ArrayList<Card>();
-        discardPile = new ArrayList<Card>();
-        bought = FALSE;
+        this.board = game;
     }
+
+    public Player(){
+        this.name = "Unknown";
+        this.playerID = -1;
+        this.id = -1;
+        this.board = new Game();
+        this.coins = (float) 0;
+        this.pathFinder = new Pathfinder();
+        this.playingPieces = new ArrayList<PlayingPiece>();
+        this.specialAction = new SpecialActions();
+        this.history = new ArrayList<CardAction>();
+        this.drawPile  = new ArrayList<Card>();
+        this.handPile = new ArrayList<Card>();
+        this.discardPile = new ArrayList<Card>();
+        this.bought = FALSE;
+    }
+
+    /*
+    Globally unique ID
+     */
+    private int playerID;
 
     /*
     Players  name, set by the User. Has to be unique in the Game
@@ -53,53 +71,80 @@ public class Player {
     /*
     Number of coins the Player has in his wallet. Is reset to 0 when he ends his round or bought one card.
      */
+    @Transient
+    @JsonIgnore
     private Float coins;
 
     /*
     Instance of Game on which the Player is performing his action.
      */
+    @Transient
+    @JsonIgnore
     private Game board;
 
     /*
     Instance of PATHFINDER the player uses to find the possible paths.
      */
+    @Transient
+    @JsonIgnore
     private Pathfinder pathFinder;
 
     /*
     List of blockades the Player has collected so far.
      */
+    @Transient
+    @JsonIgnore
     private ArrayList<PlayingPiece> playingPieces;
 
     /*
-        The budget the user has for the current round.
-        Is set from the action cards and reset either at the end of the game or
-        value-by-value each time the corresponding method (draw, remove, steal) is called.
-         */
+    List of blockades the Player has collected so far.
+     */
+    @Transient
+    @JsonIgnore
+    private List<Blockade> blockades;
+
+    /*
+    The budget the user has for the current round.
+    Is set from the action cards and reset either at the end of the game or
+    value-by-value each time the corresponding method (draw, remove, steal) is called.
+     */
+    @Transient
+    @JsonIgnore
     private SpecialActions specialAction;
 
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
+    @Transient
+    @JsonIgnore
     private ArrayList<CardAction> history;
 
     /*
     List of cards the user has in his drawPile.
      */
+    @Transient
+    @JsonIgnore
     private ArrayList<Card> drawPile;
 
     /*
     List of cards the user has in his handPile.
      */
+    @Transient
+    @JsonIgnore
     private ArrayList<Card> handPile;
 
     /*
     List of cards the user has in his discardPile.
      */
+    @Transient
+    @JsonIgnore
     private ArrayList<Card> discardPile;
 
     /*
     Indicates whether the user has already bought a Card in the current round.
      */
+    @Transient
+    @JsonIgnore
     private Boolean bought;
 
     /*
@@ -250,4 +295,124 @@ public class Player {
     public void addCoins(Float amount) {
         coins = coins + amount;
     }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /*
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    */
+
+    public Float getCoins() {
+        return coins;
+    }
+
+    public void setCoins(Float coins) {
+        this.coins = coins;
+    }
+
+    public Game getBoard() {
+        return board;
+    }
+
+    public void setBoard(Game board) {
+        this.board = board;
+    }
+
+    public Pathfinder getPathFinder() {
+        return pathFinder;
+    }
+
+    public void setPathFinder(Pathfinder pathFinder) {
+        this.pathFinder = pathFinder;
+    }
+
+    public List<PlayingPiece> getPlayingPieces() {
+        return playingPieces;
+    }
+
+    public void setPlayingPieces(ArrayList<PlayingPiece> playingPieces) {
+        this.playingPieces = playingPieces;
+    }
+
+    public SpecialActions getSpecialAction() {
+        return specialAction;
+    }
+
+    public void setSpecialAction(SpecialActions specialAction) {
+        this.specialAction = specialAction;
+    }
+
+    public List<CardAction> getHistory() {
+        return history;
+    }
+
+    public void setHistory(ArrayList<CardAction> history) {
+        this.history = history;
+    }
+
+    public List<Card> getDrawPile() {
+        return drawPile;
+    }
+
+    public void setDrawPile(ArrayList<Card> drawPile) {
+        this.drawPile = drawPile;
+    }
+
+    public List<Card> getHandPile() {
+        return handPile;
+    }
+
+    public void setHandPile(ArrayList<Card> handPile) {
+        this.handPile = handPile;
+    }
+
+    public List<Card> getDiscardPile() {
+        return discardPile;
+    }
+
+    public void setDiscardPile(ArrayList<Card> discardPile) {
+        this.discardPile = discardPile;
+    }
+
+    public Boolean getBought() {
+        return bought;
+    }
+
+    public void setBought(Boolean bought) {
+        this.bought = bought;
+    }
+
+    public List<Blockade> getBlockades() {
+        return blockades;
+    }
+
+    public void setBlockades(List<Blockade> blockades) {
+        this.blockades = blockades;
+    }
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
 }

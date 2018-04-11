@@ -2,56 +2,45 @@ package ch.uzh.ifi.seal.soprafs18.entity;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
+import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import ch.uzh.ifi.seal.soprafs18.repository.PlayerRepository;
+import ch.uzh.ifi.seal.soprafs18.service.PlayerService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "GAME")
-public class GameEntity {
+@Table(name = "GAME_ENTITY")
+public class GameEntity implements Serializable {
+
+    public GameEntity(Game game, int gameID, List<PlayerEntity> players){
+        this.game = game;
+        this.gameID = gameID;
+        this.players = players;
+    }
+
+    public GameEntity(){ }
+
     @Id
-    @GeneratedValue
-    @Column(name = "GAMEID")
+    @Column(name = "GLOBAL_GAMEID")
     private int gameID;
 
-    @Column(name = "GAME")
-    protected ch.uzh.ifi.seal.soprafs18.game.main.Game game;
+    @Embedded
+    private Game game;
 
-    @Column(name = "CURRENTPLAYER")
-    public Player getCurrentPlayer(){
-        return game.getCurrent();
-    }
-
-    @Column(name = "PLAYERS")
-    public List<Player> getPlayers(){
-        return game.getPlayers();
-    }
-
-    @Column(name = "RUNNING")
-    public boolean getRunning(){
-        return game.isRunning();
-    }
-
-    @Column(name = "WINNER")
-    public List<Player> getWinner(){
-        return game.getWinners();
-    }
-
-    @Column(name = "BOARDID")
-    public int getBoardID(){
-        return game.getGameID();
-    }
-
-    @Column(name = "BOARD")
-    public HexSpace[][] getBoard(){
-        return game.getPathMatrix();
-    }
-
-    @Column(name = "BLOCKADE")
-    public List<Blockade> getBlockade(){
-        return game.getBlockades();
-    }
+    @Column(name = "PLAYER_ENTITIES")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "game", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<PlayerEntity> players;
 
     public int getGameID() {
         return gameID;
@@ -61,12 +50,21 @@ public class GameEntity {
         this.gameID = gameID;
     }
 
-    public ch.uzh.ifi.seal.soprafs18.game.main.Game getGame() {
+    public Game getGame() {
         return game;
     }
 
-    public void setGame(ch.uzh.ifi.seal.soprafs18.game.main.Game game) {
+    public void setGame(Game game) {
+        System.out.println("++++"+game.getID());
         this.game = game;
+        System.out.println("Game set (in theory)");
     }
 
+    public List<PlayerEntity> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<PlayerEntity> players) {
+        this.players = players;
+    }
 }

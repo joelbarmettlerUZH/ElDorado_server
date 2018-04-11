@@ -1,9 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -14,6 +11,7 @@ public class TileEntity {
     private int tileID;
 
     @Column(name = "HEXSPACES")
+    @ElementCollection
     private List<HexSpaceEntity> hexSpaceEntities;
 
     public int getTileID() {

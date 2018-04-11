@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RoomRepository extends CrudRepository<RoomEntity, Integer> {
     List<RoomEntity> findByRoomID(int ID);
+    List<RoomEntity> findByName(String name);
 }

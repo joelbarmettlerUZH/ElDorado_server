@@ -3,7 +3,9 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 
+import javax.persistence.*;
 import java.util.List;
+
 
 public class Blockade {
     /*

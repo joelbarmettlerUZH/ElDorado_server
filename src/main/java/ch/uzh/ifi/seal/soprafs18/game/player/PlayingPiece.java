@@ -2,6 +2,8 @@ package ch.uzh.ifi.seal.soprafs18.game.player;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 
+import javax.persistence.Embeddable;
+
 public class PlayingPiece {
     /*
     unique id for the playing piece
