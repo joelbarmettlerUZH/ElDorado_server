@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.Inheritance;
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.lang.annotation.Inherited;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Inheritance
-public class HexSpaceService {
+public class HexSpaceService implements Serializable {
 
     @Autowired
     private HexSpaceRepository hexSpaceRepository;

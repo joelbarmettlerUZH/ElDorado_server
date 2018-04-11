@@ -5,6 +5,11 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.service.spi.InjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -19,6 +24,7 @@ public class Game  implements Serializable {
     public Game(int boardNumber, List<Player> players, int gameID){
         //assembler uses boardNumber
         this();
+        this.boardId = boardNumber;
         this.players = players;
         this.ID = gameID;
         System.out.println("****created game*******");
@@ -32,13 +38,17 @@ public class Game  implements Serializable {
         for (int row = 0; row < 2; row ++)
             for (int col = 0; col < 2; col++)
                 temp[row][col] = new HexSpace();
-        //this.pathMatrix = new Matrix(temp);
-        this.pathMatrix = new Matrix(Assembler.assembleBoard(1,this));
+        this.pathMatrix = new Matrix(temp);
         this.winners = new ArrayList<>();
         this.blockades = new ArrayList<>();
         this.marketPlace = new Market();
         this.memento = new Memento();
     }
+
+
+    //private Assembler assembler;
+
+    private int boardId;
 
     /*
     Globally unique Identifier to identify a running game
@@ -156,6 +166,10 @@ public class Game  implements Serializable {
         return memento;
     }
 
+    public int getBoardId() {
+        return boardId;
+    }
+
     public void setPlayers(List<Player> players) {
         this.current = players.get(0);
         this.players = players;
@@ -166,8 +180,15 @@ public class Game  implements Serializable {
         this.current = current;
     }
 
-    public void setPathMatrix(HexSpace[][] pathMatrix) {
-        this.pathMatrix = new Matrix(pathMatrix);
+    public void setPathMatrix() {
+
+    }
+
+    public void assemble(){
+        System.out.println("hskajdhlkj");
+        Assembler assembler = new Assembler();
+        System.out.println(assembler.assembleBoard(boardId, this).length);
+        this.pathMatrix = new Matrix(assembler.assembleBoard(boardId, this));
     }
 
     public void setWinners(List<Player> winners) {

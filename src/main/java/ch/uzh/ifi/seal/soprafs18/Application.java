@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -29,6 +30,7 @@ import java.util.List;
 
 @ComponentScan
 @EnableAutoConfiguration
+//@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
@@ -101,7 +103,10 @@ public class Application {
                                     BoardRepository boardRepository) {
 
         List<HexSpaceEntity> HexSpaces_TileA = new ArrayList<>();
-        String[] HexSpaceIds_TileA = {"J1", "S1", "J1", "J1", "J1", "J1", "ST", "ST", "ST", "ST", "J1", "J1", "J1", "J1", "W1", "J1", "B1", "J1", "J1", "J1", "S1", "W1", "J1", "J1", "J1", "J1", "J1", "S1", "M", "M", "J1", "J1", "J1", "S1", "J1", "S1", "W1"};
+        String[] HexSpaceIds_TileA = {"J1", "S1", "J1", "J1", "J1", "J1", "ST", "ST", "ST", "ST", "J1", "J1", "J1", "J1", "W1", "J1", "B1", "J1",
+                                    "J1", "J1", "S1", "W1", "J1", "J1", "J1", "J1", "J1", "S1", "M", "M",
+                                    "J1", "J1", "J1", "S1", "J1", "S1",
+                                    "W1"};
         for (String id : HexSpaceIds_TileA) {
             HexSpaces_TileA.add(hexSpaceRepository.findByHexID(id));
         }
@@ -120,12 +125,15 @@ public class Application {
             List<Integer> tilePositionsX_defaultPath = new ArrayList<>();
             tilePositionsX_defaultPath.add(4);
             return (args) -> {
-            boardRepository.save(new BoardEntity(1, tiles_defaultPath, tilePositionsX_defaultPath, tilePositionsX_defaultPath,
+            boardRepository.save(new BoardEntity(0, tiles_defaultPath, tilePositionsX_defaultPath, tilePositionsX_defaultPath,
                     tilePositionsX_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+
         };
     }
-        /*(1,
+
+
+    /*(1,
                 ('B','C'),(3,0,3,3,5),(4,5,11,17,16),(4,5,16,19,27),
         (),(),(),(),
                 (1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4),(3,4,5,6,8,8,7,7,15,14,14,13,15,16,17,18),(8,8,8,8,13,14,15,16,16,17,18,19,23,23,23,23),

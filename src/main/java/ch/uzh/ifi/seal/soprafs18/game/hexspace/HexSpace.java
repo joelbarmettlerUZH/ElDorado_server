@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
-import com.sun.xml.internal.bind.v2.TODO;
+//import com.sun.xml.internal.bind.v2.TODO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -127,7 +127,7 @@ public class HexSpace implements Serializable{
         return neighbours;
     }
     public List<HexSpace> getNeighbour(HexSpace previous){
-        return null;
+        return getNeighbour();
     }
 
     public int getStrength() {

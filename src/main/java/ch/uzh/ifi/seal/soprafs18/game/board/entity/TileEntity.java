@@ -43,7 +43,7 @@ public class TileEntity implements Serializable {
     //
     //@ManyToMany(targetEntity = HexSpaceEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     //@JoinTable(name="HEXSPACES",joinColumns = @JoinColumn(name="TILE_ID"),inverseJoinColumns = @JoinColumn(name="HEXSPACE_ID"))
-    //@Column(name="HEXSPACES")
+    @Column(name="HEXSPACES")
     private List<HexSpaceEntity> hexSpaceEntities;
 
     public TileEntity(char tileID, List<HexSpaceEntity> hexSpaceEntities){

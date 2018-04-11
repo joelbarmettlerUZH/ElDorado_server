@@ -59,43 +59,43 @@ public class BoardEntity implements Serializable {
     @ElementCollection
     private List<Integer> tilesPositionY;
 
-    @Column(name = "STRIP")
+    @Column(name = "STRIP",nullable = true)
     @ElementCollection
     private List<StripEntity> strip;
 
-    @Column(name = "STRIPROTATION")
+    @Column(name = "STRIPROTATION",nullable = true)
     @ElementCollection
     private List<Integer> stripRotation;
 
-    @Column(name = "STRIPPOSITIONX")
+    @Column(name = "STRIPPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> stripPositionX;
 
-    @Column(name = "STRIPPOSITIONY")
+    @Column(name = "STRIPPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> stripPositionY;
 
-    @Column(name = "BLOCKADEID")
+    @Column(name = "BLOCKADEID",nullable = true)
     @ElementCollection
     private List<Integer> blockadeId;
 
-    @Column(name = "BLOCKADEPOSITIONX")
+    @Column(name = "BLOCKADEPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> blockadePositionX;
 
-    @Column(name = "BLOCKADEPOSITIONY")
+    @Column(name = "BLOCKADEPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> blockadePositionY;
 
-    @Column(name = "ENDINGSPACES")
+    @Column(name = "ENDINGSPACES",nullable = true)
     @ElementCollection
     private List<HexSpaceEntity> endingSpaces;
 
-    @Column(name = "ENDINGSPACEPOSITIONX")
+    @Column(name = "ENDINGSPACEPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> endingSpacePositionX;
 
-    @Column(name = "ENDINGSPACEPOSITIONY")
+    @Column(name = "ENDINGSPACEPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> endingSpacePositionY;
 

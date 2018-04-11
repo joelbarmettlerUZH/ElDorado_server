@@ -5,8 +5,10 @@ import ch.uzh.ifi.seal.soprafs18.game.board.repository.StripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+
 @Service
-public class StripService {
+public class StripService implements Serializable {
 
         @Autowired
         public StripRepository stripRepository;
