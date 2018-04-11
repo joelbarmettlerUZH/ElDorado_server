@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import java.lang.annotation.Inherited;
 
 @Repository
-@Transactional
+//@Transactional
 public interface BlockadeSpaceRepository extends CrudRepository<BlockadeSpaceEntity, Integer> {
     BlockadeSpaceEntity findByBlockadeID(int blockadeId);
 }

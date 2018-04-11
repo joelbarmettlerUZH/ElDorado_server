@@ -139,9 +139,6 @@ public class Assembler implements Serializable {
 
     public HexSpace[][] assembleBoard (int boardId, Game game){
         HexSpaceEntity[][] boardMatrix = this.createEmptyMatrix();
-        System.out.println(boardId);
-        //System.out.println(boardService.getBoard(0).getTiles().iterator().next().getTileID());
-        System.out.println(boardService.getFirst().getBoardID());
         BoardEntity board = boardService.getBoard(boardId);
         boardMatrix = this.assembleTiles(boardMatrix,board.getTiles(),board.getTilesPositionX(),
                                                 board.getTilesPositionY(),board.getTilesRotation());
@@ -177,7 +174,7 @@ public class Assembler implements Serializable {
         //Get Column-Dimension
         int maxCol = 100;
         for (int col = boardMatrix[0].length-1; col>1; col--){
-            for (int row = maxRow; row > 1; row--){
+            for (int row = maxRow-1; row > 1; row--){
                 if (boardMatrix[row][col] != null){
                     maxCol = col+1; //one empty row/col around path
                     break;
@@ -187,8 +184,8 @@ public class Assembler implements Serializable {
                 break;
             }
         }
-        //create cropped matrix
-        HexSpaceEntity[][] newBoardMatrix = new HexSpaceEntity[maxRow][maxCol];
+        //Copy data to new smaller matrix
+        HexSpaceEntity[][] newBoardMatrix = new HexSpaceEntity[maxRow+1][maxCol+1]; //+1 since dimension does start at 1
         for (int row = 0; row < maxRow; row++){
             for (int col = 0; col < maxCol; col++){
                 newBoardMatrix[row][col]=boardMatrix[row][col];
@@ -197,12 +194,22 @@ public class Assembler implements Serializable {
         return newBoardMatrix;
     }
 
+    /*
+    function that takes the matrix and enters the given tiles at the given position with the give rotation
+     */
     protected HexSpaceEntity[][] assembleTiles(HexSpaceEntity[][] boardMatrix, List<TileEntity> Tile,
                                             List<Integer> TilePositionX, List<Integer> TilePositionY,
                                             List<Integer> TileRotation) {
+        System.out.println("assembleTiles");
+        System.out.println(Tile.size());
         for (int i = 0; i < Tile.size(); i++) {
+            System.out.println(i);
             int currentTileRotation = TileRotation.get(i);
             List<HexSpaceEntity> currentTileHexSpaces = Tile.get(i).getHexSpaceEntities();
+            System.out.println(currentTileHexSpaces.size());
+            System.out.println(currentTileHexSpaces.size());
+            System.out.println(currentTileHexSpaces.size());
+            System.out.println(currentTileHexSpaces.size());
             for (int j = 0; j < currentTileHexSpaces.size(); j++) {
                 if (j < 18) {
                     if (TilePositionX.get(i) % 2 == 0) {
@@ -238,7 +245,9 @@ public class Assembler implements Serializable {
         return boardMatrix;
     }
 
-
+    /*
+    function that takes the matrix and enters the given stripes at the given position with the give rotation
+     */
     protected HexSpaceEntity[][] assembleStrips(HexSpaceEntity[][] boardMatrix, List<StripEntity> Strips,
                                              List<Integer> StripPositionX, List<Integer> StripPositionY,
                                              List<Integer> StripRotation) {

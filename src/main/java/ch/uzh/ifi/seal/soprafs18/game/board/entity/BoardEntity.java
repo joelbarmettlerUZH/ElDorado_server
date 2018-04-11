@@ -40,9 +40,12 @@ public class BoardEntity implements Serializable {
     @Column(unique = true, name = "BOARDID")
     private int boardID;
 
-    @Column(name = "TILES")
+
     @Embedded
-    @ElementCollection
+    //@ElementCollection
+    @ManyToMany
+    @JoinColumn(name = "tileID")
+    @Column(name = "TILES")
     //@OneToMany(targetEntity = TileEntity.class, fetch = FetchType.EAGER)
     //@JoinTable(name="TILES",joinColumns = @JoinColumn(name="BOARD_BOARDID"),inverseJoinColumns = @JoinColumn(name="TILE_ID"))
     private List<TileEntity> tiles;
@@ -59,8 +62,11 @@ public class BoardEntity implements Serializable {
     @ElementCollection
     private List<Integer> tilesPositionY;
 
+    @Embedded
+    @ManyToMany
+    @JoinColumn(name = "stripID")
     @Column(name = "STRIP",nullable = true)
-    @ElementCollection
+    //@ElementCollection
     private List<StripEntity> strip;
 
     @Column(name = "STRIPROTATION",nullable = true)
@@ -88,7 +94,10 @@ public class BoardEntity implements Serializable {
     private List<Integer> blockadePositionY;
 
     @Column(name = "ENDINGSPACES",nullable = true)
-    @ElementCollection
+    @Embedded
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hexid")
+    //@ElementCollection
     private List<HexSpaceEntity> endingSpaces;
 
     @Column(name = "ENDINGSPACEPOSITIONX",nullable = true)

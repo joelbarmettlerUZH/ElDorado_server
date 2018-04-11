@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Repository("boardRepository")
+
 public interface BoardRepository extends CrudRepository<BoardEntity, Integer> {
     BoardEntity findByBoardID(int boardID);
 }

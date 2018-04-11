@@ -5,8 +5,9 @@ import ch.uzh.ifi.seal.soprafs18.game.board.entity.BlockadeSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 
+import javax.persistence.Embeddable;
 import java.util.List;
-
+@Embeddable
 public class BlockadeSpace extends HexSpace implements Serializable {
     /*
     CONSTRUCTOR

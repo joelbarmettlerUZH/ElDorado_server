@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "TILE")
 public class TileEntity implements Serializable {
     @Id
-    @Column(name = "ID",unique = true)
+    @Column(name = "ID",columnDefinition="CHAR",nullable = false)
     private char tileID;
 
     //@Column(name = "HEXSPACES")
@@ -39,11 +39,16 @@ public class TileEntity implements Serializable {
 
     //@OneToMany(mappedBy = "hexID",fetch=FetchType.LAZY)
     @Embedded
-    @ElementCollection
+    //@ElementCollection
+    //@OneToMany
     //
-    //@ManyToMany(targetEntity = HexSpaceEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //@ManyToOne(targetEntity = HexSpaceEntity.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     //@JoinTable(name="HEXSPACES",joinColumns = @JoinColumn(name="TILE_ID"),inverseJoinColumns = @JoinColumn(name="HEXSPACE_ID"))
+    //@CollectionTable(name="HEXSPACES", joinColumns=@JoinColumn(name="tileID"))
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hexid")
     @Column(name="HEXSPACES")
+    //@OrderColumn
     private List<HexSpaceEntity> hexSpaceEntities;
 
     public TileEntity(char tileID, List<HexSpaceEntity> hexSpaceEntities){

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.service;
 
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
+import ch.uzh.ifi.seal.soprafs18.game.board.entity.TileEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.BlockadeSpaceRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.BoardRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceRepository;
@@ -34,7 +35,7 @@ public class HexSpaceService implements Serializable {
         return hexSpaceRepository.findByHexID(id);
     }
 
-    public void addHexSpaceEntity(HexSpaceEntity hexSpaceEntity){
+    public void saveHexspace(HexSpaceEntity hexSpaceEntity){
         hexSpaceRepository.save(hexSpaceEntity);
     }
 

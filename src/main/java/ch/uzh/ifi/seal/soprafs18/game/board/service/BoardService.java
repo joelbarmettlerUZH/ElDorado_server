@@ -16,6 +16,7 @@ import java.io.Serializable;
 @Service
 public class BoardService implements Serializable {
 
+
     @Autowired
     private final BoardRepository boardRepository;
 
@@ -36,6 +37,10 @@ public class BoardService implements Serializable {
         BoardEntity boardEntity = boardRepository.findAll().iterator().next();
         System.out.println(boardEntity.getBoardID());
         return boardEntity;
+    }
+
+    public void saveBoard(BoardEntity boardEntity){
+        boardRepository.save(boardEntity);
     }
 
 }
