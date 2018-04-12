@@ -11,7 +11,8 @@ import java.io.Serializable;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Card  implements Serializable, Cloneable {
-    public Card(){}
+    public Card(){
+    }
 
     public Card(String name, int coinValue, int coinCost){
         this.name = name;

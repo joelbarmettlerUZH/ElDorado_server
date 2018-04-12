@@ -1,19 +1,19 @@
 package ch.uzh.ifi.seal.soprafs18.game.player;
 
-import ch.uzh.ifi.seal.soprafs18.game.cards.ActionCard;
-import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
-import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
-import ch.uzh.ifi.seal.soprafs18.game.cards.SpecialActions;
+import ch.uzh.ifi.seal.soprafs18.game.cards.*;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jdk.nashorn.internal.ir.Block;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.swing.*;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,13 @@ import java.util.Random;
 
 import static java.lang.Boolean.FALSE;
 
-@Embeddable
+@Entity
 @Data
 public class Player  implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private int randomPlayerId;
 
     public Player(int PlayerID, String name, Game game, int id){
         this();
@@ -31,7 +35,10 @@ public class Player  implements Serializable {
         this.playerID = PlayerID;
         this.id = id;
         this.board = game;
-
+        this.playingPieces.add(new PlayingPiece(5, new HexSpace(COLOR.BASECAMP, 5, 55, 555, new Point(-5, -5), game)));
+        this.history = new ArrayList<>();
+        history.add(new CardAction("Testaction"));
+        System.out.println("***********"+playingPieces.get(0).getStandsOn().getColor().toString());
     }
 
     public Player(){
@@ -44,9 +51,12 @@ public class Player  implements Serializable {
         this.playingPieces = new ArrayList<PlayingPiece>();
         this.specialAction = new SpecialActions(0,0,0);
         this.history = new ArrayList<CardAction>();
+        history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11), "Testaction"));
         this.drawPile  = new ArrayList<Card>();
         this.handPile = new ArrayList<Card>();
+        handPile.add(new MovingCard("MovingCard", -5, -5));
         this.discardPile = new ArrayList<Card>();
+        discardPile.add(new ActionCard("ActionCard", -12, -12));
         this.bought = FALSE;
     }
 
@@ -81,14 +91,14 @@ public class Player  implements Serializable {
     /*
     Instance of Game on which the Player is performing his action.
      */
-    @Transient
-    @JsonIgnore
+    @ManyToOne
+    @JsonBackReference
     private Game board;
 
     /*
     Instance of PATHFINDER the player uses to find the possible paths.
      */
-    @Transient
+
     @JsonIgnore
     private Pathfinder pathFinder;
 
@@ -96,13 +106,14 @@ public class Player  implements Serializable {
     List of playing pieces the player controls.
      */
     @Embedded
+    @JsonIgnore
     private ArrayList<PlayingPiece> playingPieces;
 
     /*
     List of blockades the Player has collected so far.
      */
+    @Embedded
     @JsonIgnore
-    @Transient
     private List<Blockade> blockades;
 
     /*
@@ -116,30 +127,29 @@ public class Player  implements Serializable {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    @Transient
-    @JsonIgnore
+    @Embedded
+    @ElementCollection
     private List<CardAction> history;
 
     /*
     List of cards the user has in his drawPile.
      */
-    @Transient
-    @JsonIgnore
-    private ArrayList<Card> drawPile;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Card> drawPile;
 
     /*
     List of cards the user has in his handPile.
      */
-    @Transient
     @JsonIgnore
-    private ArrayList<Card> handPile;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Card> handPile;
 
     /*
     List of cards the user has in his discardPile.
      */
-    @Transient
     @JsonIgnore
-    private ArrayList<Card> discardPile;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Card> discardPile;
 
     /*
     Indicates whether the user has already bought a Card in the current round.

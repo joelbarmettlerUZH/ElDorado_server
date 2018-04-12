@@ -1,5 +1,8 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,6 +10,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Embeddable
+@Data
 public class Market implements Serializable {
 
     public Market(){
@@ -19,7 +23,7 @@ public class Market implements Serializable {
         passive = new ArrayList<>();
         passive.add(
                 new Slot(
-                        new ActionCard("PassiveAction", 1, 2)
+                        new ActionCard("PassiveAction", 3, 4)
                 )
         );
     }
@@ -71,7 +75,7 @@ public class Market implements Serializable {
     Returns either the active Slots when size of active slots is 6, active and passive slots otherwise.
      */
     public List<Slot> getPurchasable() {
-        if (active.size() == 6) {
+        if (active.size() <= 6) {
             return active;
         } else {
             List<Slot> both = new ArrayList<Slot>();

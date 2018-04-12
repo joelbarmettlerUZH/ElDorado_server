@@ -40,5 +40,4 @@ public class Matrix implements Serializable{
     public HexSpace get(int x, int y){
         return matrixArray.get(x*yDim+y);
     }
-
 }

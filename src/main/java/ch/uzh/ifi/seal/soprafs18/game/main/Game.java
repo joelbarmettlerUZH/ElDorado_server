@@ -7,6 +7,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,32 +17,39 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Embeddable
+@Entity
 @Data
 public class Game implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private int randomGameId;
 
     //Constructor
     public Game(int boardNumber, int gameID){
         //assembler uses boardNumber
         this();
-        this.ID = gameID;
+        this.gameId = gameID;
         System.out.println("****created game*******");
     }
 
     public Game(){
         this.players = new ArrayList<>();;
         this.running = true;
-        this.ID = -1;
+        this.gameId = -1;
         HexSpace[][] temp = new HexSpace[2][2];
         for (int row = 0; row < 2; row ++)
             for (int col = 0; col < 2; col++)
                 temp[row][col] = new HexSpace();
         this.pathMatrix = new Matrix(temp);
+        this.startingSpaces = new ArrayList<>();
+        //Temporary
+        this.startingSpaces.add(new HexSpace());
         this.winners = new ArrayList<>();
         this.blockades = new ArrayList<>();
         List<BlockadeSpace> blockadeSpaces = new ArrayList<>();
-        blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 3, 30, 300, new ArrayList<>(), new Point(-3, -3), null, 1));
-        blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 4, 40, 400, new ArrayList<>(), new Point(-4, -3), null, 1));
+        blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 3, 30, 300, new Point(-3, -3), null, 1));
+        blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 4, 40, 400, new Point(-4, -3), null, 1));
         Blockade blockade = new Blockade(blockadeSpaces);
         this.blockades.add(blockade);
         this.marketPlace = new Market();
@@ -52,7 +60,7 @@ public class Game implements Serializable {
     Globally unique Identifier to identify a running game
      */
     @JsonIgnore
-    private int ID;
+    private int gameId;
 
     /*
     Player that can currently play the round. When one player calls endRound,
@@ -63,6 +71,10 @@ public class Game implements Serializable {
     @Transient
     @JsonIgnore
     private Player current; //
+
+    @Embedded
+    @ElementCollection
+    private List<HexSpace> startingSpaces;
 
     /*
     Serves as an identifier for the current player for hibernate
@@ -87,8 +99,8 @@ public class Game implements Serializable {
     /*
     List of all players participating in the GameEntity.
      */
-    @Transient
-    @JsonIgnore
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "board", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Player> players;
 
     /*

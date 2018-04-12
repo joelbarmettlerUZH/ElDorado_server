@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs18.game.cards;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Cascade;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class Slot implements Serializable{
      */
     @Id
     @GeneratedValue
-    private int SlotID;
+    private int slotId;
 
     /*
     Each pile consists of 1 to 3 Cards.

@@ -38,7 +38,7 @@ public class PlayerEntity implements Serializable {
     @Column(name = "TOKEN")
     private String token;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
     private Player player;
 
     @ManyToOne

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
+@Embeddable
 public class Blockade  implements Serializable {
 
     private int blockadeID;

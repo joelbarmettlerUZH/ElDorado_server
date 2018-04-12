@@ -36,7 +36,7 @@ public class GameEntity implements Serializable {
     @Column(name = "GLOBAL_GAMEID")
     private int gameID;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL)
     private Game game;
 
     @Column(name = "PLAYER_ENTITIES")
@@ -46,7 +46,7 @@ public class GameEntity implements Serializable {
 
 
     public void setGame(Game game) {
-        System.out.println("++++"+game.getID());
+        System.out.println("++++"+game.getGameId());
         this.game = game;
         System.out.println("Game set (in theory)");
     }

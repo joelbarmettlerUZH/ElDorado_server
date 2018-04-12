@@ -32,16 +32,15 @@ public class HexSpace implements Serializable{
     }
 
     public HexSpace(){
-        this(COLOR.EMPTY, 10, 100, 1000, new ArrayList<>(), new Point(-1, -1), null);
-        System.out.println("Calling empty constructor of hexspace");
+        this(COLOR.EMPTY, 10, 100, 1000, new Point(-1, -2), null);
     }
 
-    public HexSpace(COLOR color, int strength, int minimalCost, int minimalDepth, List<HexSpace> previous, Point point, Game game){
+    public HexSpace(COLOR color, int strength, int minimalCost, int minimalDepth, Point point, Game game){
         this.color = color;
         this.strength = strength;
         this.minimalCost = minimalCost;
         this.minimalDepth = minimalDepth;
-        this.previous = previous;
+        this.previous = new ArrayList<>();
         this.point = point;
         this.game = game;
     }

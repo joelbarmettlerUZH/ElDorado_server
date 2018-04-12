@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.player;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +14,17 @@ import javax.persistence.Transient;
 @Embeddable
 @Data
 public class CardAction  implements Serializable {
+    public CardAction(Card card, String actionName){
+        this.cards = new ArrayList<>();
+        addCard(card);
+        this.actionName = actionName;
+    }
+
+    public CardAction(String actionName){
+        this.actionName = actionName;
+    }
+
+    public CardAction(){ }
 
     /*
     Name of the corresponding Action that is then displayed in the FrontEnd
@@ -25,20 +37,6 @@ public class CardAction  implements Serializable {
     @JsonIgnore
     @Transient
     private List<Card> cards;
-
-
-    public CardAction(Card card, String actionName){
-        addCard(card);
-        this.actionName = actionName;
-    }
-
-    public CardAction(String actionName){
-        this.actionName = actionName;
-    }
-
-    public CardAction(){
-
-    }
 
     public void addCard(Card card){
         cards.add(card);
