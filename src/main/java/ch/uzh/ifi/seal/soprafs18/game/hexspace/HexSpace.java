@@ -44,32 +44,32 @@ public class HexSpace implements Serializable{
     non-playing fields such as Mountains, Empty-Fields is set to 1000, all the other field strength correspond to
     the card strength needed to enter the field.
      */
-    private int strength;
+    protected int strength;
 
     /*
     Costfactor assigned by the Pathfinding algorithm indicating how expensive it is to reach this field. This cost
     factor should by default be 1000 and be overwritten by the pathfinding whenever a way to the HexSpaceEntity is found.
     The value is reset to 1000 once the path algorithm finished.
      */
-    private int minimalCost;
+    protected int minimalCost;
 
     /*
     Keeps track of how many moving-steps were needed by the player to move to this current field with the minimal costs.
      */
-    private int minimalDepth;
+    protected int minimalDepth;
 
     /*
     Enum of all possible colours a HexSpaceEntity can have. Each HexSpaceEntity has exactly one colour.
      */
     @Enumerated
-    private COLOR color;
+    protected COLOR color;
 
     /*
     The X/Y coordinates of the HexSpaceEntity in the GameEntity Matrix.
      */
     @Transient
     @JsonIgnore
-    private Point point;
+    protected Point point;
 
     /*
     The way our pathfinding-algorithm found to access this HexSpaceEntity. The field is usually an empty ArrayList and set by
@@ -78,7 +78,7 @@ public class HexSpace implements Serializable{
      */
     @Transient
     @JsonIgnore
-    private List<HexSpace> previous;
+    protected List<HexSpace> previous;
 
     /*
     HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
@@ -87,15 +87,10 @@ public class HexSpace implements Serializable{
     @JsonIgnore
     protected Game game;
 
-    /*
-    Method that takes the previous HexSpaceEntity, the user came from, into consideration when calculating the neighbours.
-    The Methods calculates the coordinates of the neighbouring fields by taking the GameEntity’s pathMatrix into account.
-    From all found neighbours, the method looks whether BlockadeSpaces are among them. If this is the case and the blockade
-    Spaces belong to the same active blockade, only one of the blockadeSpaces is returned. If the blockadeSpaces are inactive,
-    the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the
-    previous. This way the blockade can handle the neighbours with taking the previous direction into account.
+    /**
+     Function to calculata all six neighbors of a hexspace without any postprocessing
      */
-    public List<HexSpace> getNeighbour(){
+    protected List<HexSpace> getAllNeighbour(){
         List<HexSpace> neighbours = new ArrayList<>();
         neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y)));
         neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y)));
@@ -110,6 +105,19 @@ public class HexSpace implements Serializable{
             neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
             neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
         }
+        return neighbours;
+    }
+
+    /*
+    Method that takes the previous HexSpaceEntity, the user came from, into consideration when calculating the neighbours.
+    The Methods calculates the coordinates of the neighbouring fields by taking the GameEntity’s pathMatrix into account.
+    From all found neighbours, the method looks whether BlockadeSpaces are among them. If this is the case and the blockade
+    Spaces belong to the same active blockade, only one of the blockadeSpaces is returned. If the blockadeSpaces are inactive,
+    the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the
+    previous. This way the blockade can handle the neighbours with taking the previous direction into account.
+     */
+    public List<HexSpace> getNeighbour(){
+        List<HexSpace> neighbours = getAllNeighbour();
         //now handle blockades
         for (HexSpace current:neighbours){
             if (HexSpace.class.isAssignableFrom(current.getClass())){
@@ -126,6 +134,8 @@ public class HexSpace implements Serializable{
         }
         return neighbours;
     }
+    //I don't know anymore why it plays a role from where we call the functions
+    //I think it does not really matter, even for blockade (Marius)
     public List<HexSpace> getNeighbour(HexSpace previous){
         return getNeighbour();
     }

@@ -222,7 +222,7 @@ public class Application {
             tilePositionsY_defaultPath.add(27);
 
             List<Integer> blockadeIDs_defaultPath = new ArrayList<>();
-            int [] blockadeIds = {1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4};
+            int [] blockadeIds = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3};
             for (int id : blockadeIds) {
                 blockadeIDs_defaultPath.add(id);
             }

@@ -188,7 +188,7 @@ public class BoardEntity implements Serializable {
         this.blockadeId = blockadeId;
     }
 
-    public List<Integer> getBlockandePositionX(){
+    public List<Integer> getBlockadePositionX(){
         return blockadePositionX;
     }
 
@@ -196,7 +196,7 @@ public class BoardEntity implements Serializable {
         this.blockadePositionX = blockadePositionX;
     }
 
-    public List<Integer> getBlockandePositionY(){
+    public List<Integer> getBlockadePositionY(){
         return blockadePositionY;
     }
 

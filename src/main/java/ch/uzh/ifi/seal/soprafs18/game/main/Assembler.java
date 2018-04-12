@@ -1,39 +1,22 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
+import antlr.collections.impl.LList;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.*;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.BlockadeSpaceRepository;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.BoardRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.service.BlockadeSpaceService;
 import ch.uzh.ifi.seal.soprafs18.game.board.service.BoardService;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.utils.SpringUtils;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jdk.nashorn.internal.ir.Block;
-import org.hibernate.service.spi.InjectService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import java.awt.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class Assembler implements Serializable {
@@ -61,32 +44,32 @@ public class Assembler implements Serializable {
 
     //private int boardId;
 
-    /*
-        compute relative positions for OuterRing
-         */
+    /**
+    compute relative positions for OuterRing
+    */
     private int[] outerRingDislocY = {0, 1, 2, 3, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -3, -2, -1};
     private int[] outerRingDislocXEven = {-3, -3, -2, -2, -1, 0, 1, 2, 2, 3, 2, 2, 1, 0, -1, -2, -2, -3};
     private int[] outerRingDislocXOdd = {-3, -2, -2, -1, 0, 1, 2, 2, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2};
 
-    /*
+    /**
     compute relative positions for MidRing
-    */
+    **/
     private int[] midRingDislocY = {0, 1, 2, 2, 2, 1, 0, -1, -2, -2, -2, -1};
     private int[] midRingDislocXEven = {-2, -2, -1, -0, 1, 1, 2, 1, 1, 0, -1, -2};
     private int[] midRingDislocXOdd = {-2, -1, -1, 0, 1, 2, 2, 2, 1, 0, -1, -1};
-    /*
 
-    /*
+
+    /**
     compute relative positions for InnerRing
-    */
+    **/
     private int[] innerRingDislocY = {0, 1, 1, 0, -1, -1};
     private int[] innerRingDislocXEven = {-1, -1, 0, 1, 0, 1};
     private int[] innerRingDislocXOdd = {-1, 0, 1, 1, 1, 0};
 
 
-    /*
-    Terrain-Strips Dislocation
-     */
+    /**
+    Terrain-Strips Dislocation for the six different rotations
+     **/
     private int[] Rot0DislocY = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
     private int[] Rot0EvenDislocX = {0, -1, 0, 0, 1, 1, 2, 3, 2, 2, 1, 1, 0, 1, 1, 2};
     private int[] Rot0OddDislocX = {0, 0, 0, 1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2};
@@ -111,11 +94,11 @@ public class Assembler implements Serializable {
     private int[] Rot5EvenDislocX = {0, -1, -1, -2, -2, -3, -2, -1, -1, 0, 0, 1, 0, -1, -1, -2};
     private int[] Rot5OddDislocX = {0, -1, -2, -2, -3, -3, -3, -2, -1, -1, 0, 0, -1, -1, -2, -2};
 
-    /*
+    /**
     Function used to assemble the strips into the matrix. We have 12 cases, 6  rotation-dependent each, even and odd
     position of the "center Hexspace" (it's actually not in the center. it's the Hexspace which is at the first
     position of the HexSpaceEntity list
-     */
+     **/
     private void fillStripEntryInMatrix(HexSpaceEntity[][] boardMatrix, int posX, int posY, int[] disLocY,
                                         int[] disLocEvenX, int[] disLocOddX, int j, HexSpaceEntity hexSpaceEntity) {
         if (posY % 2 == 0) {
@@ -125,7 +108,9 @@ public class Assembler implements Serializable {
         }
     }
 
-    //Converts the temporary Matrix of entities to matrix of HexSpaces
+    /**
+    Converts the temporary Matrix of entities to matrix of HexSpaces
+     **/
     protected HexSpace[][] convertMatrix(HexSpaceEntity[][] entityMarix, Game game){
         HexSpace[][] hexSpaceMatrix = new HexSpace[entityMarix.length][entityMarix[0].length];
         for (int i = 0; i<entityMarix.length;i++){
@@ -137,6 +122,10 @@ public class Assembler implements Serializable {
         return hexSpaceMatrix;
     }
 
+    /**
+    Assembles to board by calling different functions which fill in tiles, stripes blockades etc.
+    This it broken into different functions to be able to test all these functions separately.
+     **/
     public HexSpace[][] assembleBoard (int boardId, Game game){
         HexSpaceEntity[][] boardMatrix = this.createEmptyMatrix();
         BoardEntity board = boardService.getBoard(boardId);
@@ -144,8 +133,8 @@ public class Assembler implements Serializable {
                                                 board.getTilesPositionY(),board.getTilesRotation());
         boardMatrix = this.assembleStrips(boardMatrix,board.getStrip(),board.getStripPositionX(),
                                                 board.getStripPositionY(),board.getStripRotation());
-        boardMatrix = this.assembleBlockades(boardMatrix,board.getBlockadeId(),board.getBlockandePositionX(),
-                                                board.getBlockandePositionY(),
+        boardMatrix = this.assembleBlockades(boardMatrix,board.getBlockadeId(),board.getBlockadePositionX(),
+                                                board.getBlockadePositionY(),
                                                 getRandomBlockades(this.getBlockadesCount()));
         boardMatrix = this.assembleEndingSpaces(boardMatrix,board.getEndingSpaces(),
                                                     board.getEndingSpacePositionX(),
@@ -153,10 +142,21 @@ public class Assembler implements Serializable {
         return convertMatrix(cropMatrix(boardMatrix), game);
     }
 
+    /**
+     * function to create an empty HexSpaceMatrix to start with
+     * default Size can be edited here.
+     * @return empty 100x100 HexSpaceEntity-Matrix
+     */
     protected HexSpaceEntity[][] createEmptyMatrix() {
         return new HexSpaceEntity[100][100];
     }
 
+
+    /**
+    Function to resize the HexSpaceEntity-Matrix to a smaller one. reducing the size to a minimal size.
+    Still some access empty spaces, since the matrix is rectangular, the path is not. And there is a border
+    with width of one hexspace around the path to make sure all "real" hexspaces have six neighbours.
+     **/
     protected HexSpaceEntity[][] cropMatrix(HexSpaceEntity[][] boardMatrix){
         //Get Row-Domension
         int maxRow = 100;
@@ -194,9 +194,9 @@ public class Assembler implements Serializable {
         return newBoardMatrix;
     }
 
-    /*
+    /**
     function that takes the matrix and enters the given tiles at the given position with the give rotation
-     */
+     **/
     protected HexSpaceEntity[][] assembleTiles(HexSpaceEntity[][] boardMatrix, List<TileEntity> Tile,
                                             List<Integer> TilePositionX, List<Integer> TilePositionY,
                                             List<Integer> TileRotation) {
@@ -245,9 +245,9 @@ public class Assembler implements Serializable {
         return boardMatrix;
     }
 
-    /*
+    /**
     function that takes the matrix and enters the given stripes at the given position with the give rotation
-     */
+     **/
     protected HexSpaceEntity[][] assembleStrips(HexSpaceEntity[][] boardMatrix, List<StripEntity> Strips,
                                              List<Integer> StripPositionX, List<Integer> StripPositionY,
                                              List<Integer> StripRotation) {
@@ -286,10 +286,20 @@ public class Assembler implements Serializable {
         return boardMatrix;
     }
 
+    /**
+     * function to count how many differen blockade types are stored in the DB
+     * COMMENT: rather query this than hardcode for better extendability. Just add new blockade types
+     * @return int of how many blockadetypes are stored in the DB
+     */
     private int getBlockadesCount(){
         return blockadeSpaceService.getBlockadeCount();
     }
 
+    /**
+     *
+     * @param blockadesCount: number of different blockadetypes in the DB
+     * @return a random ordered list of integers from 0 to BlockadesCount
+     */
     protected List<Integer>getRandomBlockades(int blockadesCount){
         List<Integer> blockadeIds = new ArrayList<>();
         for(int i = 1; i <= blockadesCount; i++) {
@@ -299,6 +309,17 @@ public class Assembler implements Serializable {
         return blockadeIds;
     }
 
+    /**
+     * Fills in all blockadeSpaces into the matrix. Chack which blockadeSpaces belon together and fill the with the same
+     * Blockade parameters.
+     * @param boardMatrix: the current boardMatrix of HexSpaceEntities the blockades should be filled in
+     * @param blockadeId: List of all blockade ids stored in the DB for the path, used to match which blockades spaces
+     *                  belong together
+     * @param blockadePositionX: list of X positions of the blockadeSpaces
+     * @param blockadePositionY: list of Y positions of the blockadeSpaces
+     * @param randomBlockadeIds: rondom ordered blockadeIds, used to assign blockades from the DB randomly.
+     * @return: boradMatrix with filled in BlockadeSpaceEntities.
+     */
     private HexSpaceEntity[][] assembleBlockades(HexSpaceEntity[][] boardMatrix, List<Integer> blockadeId,
                                                         List<Integer> blockadePositionX, List<Integer> blockadePositionY,
                                                         List<Integer> randomBlockadeIds) {
@@ -313,6 +334,14 @@ public class Assembler implements Serializable {
         return boardMatrix;
     }
 
+    /**
+     *
+     * @param boardMatrix: the current boardMatrix of EndingSpaces the blockades should be filled in
+     * @param endingSpaces: HexSpaceEntites for the endingspaces, either with River or with Jungle
+     * @param endingSpacesPositionX: list of X positions of the endingSpaces
+     * @param endingSpacesPositionY: list of Y positions of the endingSpaces
+     * @return: boradMatrix with filled in EndingSpaces as HesSpaceEntities.
+     */
     public HexSpaceEntity[][] assembleEndingSpaces(HexSpaceEntity[][] boardMatrix, List<HexSpaceEntity> endingSpaces,
                                                    List<Integer> endingSpacesPositionX,List<Integer> endingSpacesPositionY){
         for (int i = 0; i< endingSpaces.size(); i++) {
@@ -328,21 +357,40 @@ public class Assembler implements Serializable {
     and replace them with the right HexSpaces according to the values he reads out of the Database.
     */
 
-    /*
+    /**
     Used by the GameBoard and returns an ArrayList of Arrays with the coordinates of the blockades
     in the pathMatrix. This is needed so that the GameEntity can assign blockade instances to them.
     We consider this more efficient than parsing the pathMatrix, since the assembler has
     the information abouts these positions already.
-     */
-    public List<Blockade> getBlockades(int boardId) {
-        return null;
+     **/
+    public List<Blockade> getBlockades(Game game) {
+        BoardEntity board = boardService.getBoard(game.getBoardId());
+        Matrix hexSpaceMatrix = game.getPathMatrix();
+        List<Integer> blockadeX = board.getBlockadePositionX(); //all x Positions of the blockadeSpaces
+        List<Integer> blockadeY = board.getBlockadePositionY(); //all y Positions of the blockadeSpaces
+        List<Integer> blockadeIds = board.getBlockadeId(); //all blockade ids to match with the positions to groups for each blockade
+        List<Blockade> allBlockades = new ArrayList<>();
+        List<Integer> alreadyDone = new ArrayList<>(); //stores which blockade id has been put together already
+        for(int i = 0; i<blockadeIds.size();i++) {
+            if (!alreadyDone.contains(blockadeIds.get(i))) { //was this id searched and done already?
+                alreadyDone.add(blockadeIds.get(i)); //adds the id to the ones which are doe already
+                List<HexSpace> blockadeSpace = new ArrayList<>(); //create new list of Hexspaces which stores all spaces belonging to same blockade
+                for (int j = 0; j < blockadeIds.size(); j++) { //loop over all ids again
+                    if (blockadeIds.get(j).equals(blockadeIds.get(i))) {
+                        blockadeSpace.add(hexSpaceMatrix.get(blockadeX.get(j),blockadeY.get(j)));//if they match the first one store the according Spaces in the list
+                    }
+                }
+                allBlockades.add(new Blockade(blockadeSpace));
+            }
+        }
+        return allBlockades;
     }
 
-    /*
+    /**
     Used by the GameBorad and returns an Arrays with the HexSpaces of the starting-fields.
     The GameEntity needs these information to place the playing Pieces. We rather request these
     informations from the assembler than parsing the matrix.
-     */
+     **/
     public List<HexSpace> getStartingFields(int boardId, Game game) {
         List<HexSpace> StartingSpaces = new ArrayList<>();
         BoardEntity board = boardService.getBoard(boardId);
@@ -371,11 +419,11 @@ public class Assembler implements Serializable {
         return StartingSpaces;
     }
 
-    /*
+    /**
     Used by the GameBorad and returns an Arrays with the HexSpaces of the ending-fields.
     The GameEntity needs these information to place the playing Pieces. We rather request these
     informations from the Assembler than parsing the matrix.
-     */
+     **/
     public List<HexSpace> getEndingFields(int boardId, Game game) {
         BoardEntity board = boardService.getBoard(boardId);
         List<HexSpace> EndingSpaces = new ArrayList<>();

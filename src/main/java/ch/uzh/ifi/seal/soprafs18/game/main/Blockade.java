@@ -13,14 +13,14 @@ import java.util.List;
 
 public class Blockade  implements Serializable {
 
-    public Blockade(List<BlockadeSpace> blockadeSpaces){
+    public Blockade(List<HexSpace> blockadeSpaces){
         this.spaces = blockadeSpaces;
         this.cost = blockadeSpaces.get(0).getStrength();
     }
     /*
     List of BlockadeSpaces the Blockade consists of.
      */
-    private List<BlockadeSpace> spaces;
+    private List<HexSpace> spaces;
 
     /*
     Cost to remove this blockade. The cost is the same for all
@@ -41,13 +41,13 @@ public class Blockade  implements Serializable {
 
     /*
     Assings a new BlockadeSpace to the Blockade by appending it to the spaces array.
-    NOT NEEDED I THINK (MARIUS)
+    */
 
     public void assign(Blockade blockade){
 
     }
-    */
-    public List<BlockadeSpace> getSpaces() {
+
+    public List<HexSpace> getSpaces() {
         return spaces;
     }
 
