@@ -124,7 +124,7 @@ public class Game  implements Serializable {
     of HexSpaceEntity that is located at that position in the pathMatrix.
      */
     public HexSpace getHexSpace(Point point){
-        return null;
+        return pathMatrix.get(point.x,point.y);
     }
 
     public int getID() {

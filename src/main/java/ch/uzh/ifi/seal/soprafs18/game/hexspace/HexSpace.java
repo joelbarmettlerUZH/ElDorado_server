@@ -20,8 +20,8 @@ public class HexSpace implements Serializable{
      */
 
     public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY, Game game){
-        //this.color = COLOR.valueOf(hexSpaceEntity.getColor());
-        this.color = COLOR.EMPTY;
+        this.color = COLOR.valueOf(hexSpaceEntity.getColor());
+        //this.color = COLOR.EMPTY;
         this.strength = hexSpaceEntity.getStrength();
         this.minimalCost = 1000;
         this.minimalDepth = 0;
@@ -103,6 +103,7 @@ public class HexSpace implements Serializable{
      */
     protected List<HexSpace> getAllNeighbour(){
         List<HexSpace> neighbours = new ArrayList<>();
+        int x = this.point.x;
         neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y)));
         neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y)));
         neighbours.add(this.game.getHexSpace(new Point(this.point.x,this.point.y+1)));
@@ -130,8 +131,11 @@ public class HexSpace implements Serializable{
     public List<HexSpace> getNeighbour(){
         List<HexSpace> neighbours = getAllNeighbour();
         //now handle blockades
+        System.out.println(neighbours.iterator().next().getClass());
         for (HexSpace current:neighbours){
-            if (HexSpace.class.isAssignableFrom(current.getClass())){
+            System.out.println(current.getClass().getCanonicalName());
+            if (current.getClass()==BlockadeSpace.class){
+                System.out.println(current.getClass().getCanonicalName());
                 //current is BlockadeSpace
                 BlockadeSpace currentBlockadeSpace = (BlockadeSpace) current;
                 int blockade = currentBlockadeSpace.getBlockadeId();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)

@@ -137,8 +137,8 @@ public class Application {
 
             //Tile A
             List<HexSpaceEntity> HexSpaces_TileA = new ArrayList<>();
-            String[] HexSpaceIds_TileA = {"J1", "S1", "J1", "J1", "J1", "J1", "ST", "ST", "ST", "ST", "J1", "J1", "J1", "J1", "W1", "J1", "B1", "J1",
-                    "J1", "J1", "S1", "W1", "J1", "J1", "J1", "J1", "J1", "S1", "M", "M",
+            String[] HexSpaceIds_TileA = {"J1","S1","J1","J1","J1", "J1","ST","ST","ST","ST","J1","J1","J1","J1","W1","J1","B1","J1",
+                    "J1","J1","S1","W1","J1","J1","J1","J1","J1","S1","M","M",
                     "J1", "J1", "J1", "S1", "J1", "S1",
                     "W1"};
             for (String id : HexSpaceIds_TileA) {
@@ -224,7 +224,7 @@ public class Application {
 
             List<Integer> tilePositionsY_defaultPath = new ArrayList<>();
             tilePositionsY_defaultPath.add(4);
-            tilePositionsY_defaultPath.add(5);
+            tilePositionsY_defaultPath.add(12);
             tilePositionsY_defaultPath.add(16);
             tilePositionsY_defaultPath.add(19);
             tilePositionsY_defaultPath.add(27);
