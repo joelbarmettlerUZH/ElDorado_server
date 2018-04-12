@@ -53,8 +53,16 @@ public class Application {
     @Autowired
     BoardRepository boardRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RoomRepository roomRepository;
+
+
+
     @Bean
-    public CommandLineRunner loadDUsers(UserRepository userRepository) {
+    public CommandLineRunner loadDUsers() {
         return (args) -> {
             for(String name:new String[] {"Joel", "Marius"}){
                 UserEntity user = new UserEntity(name, 1, null);
@@ -65,14 +73,14 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner loadRooms(RoomRepository roomRepository) {
+    public CommandLineRunner loadRooms() {
         return (args) -> {
             roomRepository.save(new RoomEntity("Testroom"));
         };
     }
 
     @Bean
-    public CommandLineRunner userToGame(UserRepository userRepository, RoomRepository roomRepository) {
+    public CommandLineRunner userToGame() {
         return (args) -> {
             RoomEntity roomEntity = roomRepository.findAll().iterator().next();
             List<UserEntity> users = new ArrayList<>();

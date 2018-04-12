@@ -31,6 +31,7 @@ public class Game  implements Serializable {
     }
 
     public Game(){
+        this.boardId = 0;
         this.players = new ArrayList<>();
         this.running = true;
         this.ID = -1;
@@ -185,9 +186,7 @@ public class Game  implements Serializable {
     }
 
     public void assemble(){
-        System.out.println("hskajdhlkj");
         Assembler assembler = new Assembler();
-        System.out.println(assembler.assembleBoard(boardId, this).length);
         this.pathMatrix = new Matrix(assembler.assembleBoard(boardId, this));
     }
 

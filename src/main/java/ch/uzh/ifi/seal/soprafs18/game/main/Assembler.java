@@ -115,9 +115,13 @@ public class Assembler implements Serializable {
         HexSpace[][] hexSpaceMatrix = new HexSpace[entityMarix.length][entityMarix[0].length];
         for (int i = 0; i<entityMarix.length;i++){
             for (int j = 0; j<entityMarix[0].length;j++){
-                hexSpaceMatrix[i][j]= new HexSpace();
-                //hexSpaceMatrix[i][j]= new HexSpace(entityMarix[i][j], i, j, game);
-        }
+                if (entityMarix[i][j]==null){
+                    //convert null entires to HexSpaces with EMPTY as entry
+                    hexSpaceMatrix[i][j]= new HexSpace(i,j,game);
+                }else{
+                    hexSpaceMatrix[i][j]=new HexSpace(entityMarix[i][j],i,j,game);
+                }
+            }
         }
         return hexSpaceMatrix;
     }
@@ -159,7 +163,7 @@ public class Assembler implements Serializable {
      **/
     protected HexSpaceEntity[][] cropMatrix(HexSpaceEntity[][] boardMatrix){
         //Get Row-Domension
-        int maxRow = 100;
+        int maxRow = boardMatrix.length;
         for (int row = boardMatrix.length-1; row > 1; row--){
             for (int col = boardMatrix[0].length-1; col>1; col--){
                 if (boardMatrix[row][col] != null){
@@ -167,12 +171,12 @@ public class Assembler implements Serializable {
                     break;
                 }
             }
-            if (maxRow!=100){
+            if (maxRow!=boardMatrix.length){
                 break;
             }
         }
         //Get Column-Dimension
-        int maxCol = 100;
+        int maxCol = boardMatrix[0].length;
         for (int col = boardMatrix[0].length-1; col>1; col--){
             for (int row = maxRow-1; row > 1; row--){
                 if (boardMatrix[row][col] != null){
@@ -180,7 +184,7 @@ public class Assembler implements Serializable {
                     break;
                 }
             }
-            if (maxCol!=100){
+            if (maxCol!=boardMatrix[0].length){
                 break;
             }
         }
@@ -200,16 +204,9 @@ public class Assembler implements Serializable {
     protected HexSpaceEntity[][] assembleTiles(HexSpaceEntity[][] boardMatrix, List<TileEntity> Tile,
                                             List<Integer> TilePositionX, List<Integer> TilePositionY,
                                             List<Integer> TileRotation) {
-        System.out.println("assembleTiles");
-        System.out.println(Tile.size());
         for (int i = 0; i < Tile.size(); i++) {
-            System.out.println(i);
             int currentTileRotation = TileRotation.get(i);
             List<HexSpaceEntity> currentTileHexSpaces = Tile.get(i).getHexSpaceEntities();
-            System.out.println(currentTileHexSpaces.size());
-            System.out.println(currentTileHexSpaces.size());
-            System.out.println(currentTileHexSpaces.size());
-            System.out.println(currentTileHexSpaces.size());
             for (int j = 0; j < currentTileHexSpaces.size(); j++) {
                 if (j < 18) {
                     if (TilePositionX.get(i) % 2 == 0) {
@@ -236,7 +233,6 @@ public class Assembler implements Serializable {
                                 = currentTileHexSpaces.get(30 + (((j - 30) + (currentTileRotation)) % 6));
                     }
                 } else {
-                    System.out.println(j);
                     boardMatrix[TilePositionX.get(i)][TilePositionY.get(i)]
                             = currentTileHexSpaces.get((j));
                 }
@@ -291,7 +287,7 @@ public class Assembler implements Serializable {
      * COMMENT: rather query this than hardcode for better extendability. Just add new blockade types
      * @return int of how many blockadetypes are stored in the DB
      */
-    private int getBlockadesCount(){
+    protected int getBlockadesCount(){
         return blockadeSpaceService.getBlockadeCount();
     }
 

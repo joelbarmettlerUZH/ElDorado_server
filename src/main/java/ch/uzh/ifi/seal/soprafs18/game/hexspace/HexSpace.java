@@ -20,7 +20,8 @@ public class HexSpace implements Serializable{
      */
 
     public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY, Game game){
-        this.color = COLOR.valueOf(hexSpaceEntity.getColor());
+        //this.color = COLOR.valueOf(hexSpaceEntity.getColor());
+        this.color = COLOR.EMPTY;
         this.strength = hexSpaceEntity.getStrength();
         this.minimalCost = 1000;
         this.minimalDepth = 0;
@@ -37,6 +38,16 @@ public class HexSpace implements Serializable{
         this.previous = new ArrayList<>();
         this.point = new Point(-1,-1);
         this.game = null;
+    }
+
+    public HexSpace(int x,int y,Game game){
+        this.color = COLOR.EMPTY;
+        this.strength = 1000;
+        this.minimalCost = 1000;
+        this.minimalDepth = 0;
+        this.previous = new ArrayList<>();
+        this.point = new Point(x,y);
+        this.game = game;
     }
 
     /*
@@ -142,6 +153,10 @@ public class HexSpace implements Serializable{
 
     public int getStrength() {
         return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
 
     public int getMinimalCost() {
