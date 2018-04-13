@@ -9,6 +9,9 @@ import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
@@ -19,11 +22,12 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "GAME_ENTITY")
 public class Game implements Serializable {
 
     @Id
-    @GeneratedValue
-    private int randomGameId;
+    @Column(name = "GLOBAL_GAMEID")
+    private int gameId;
 
     //Constructor
     public Game(int boardNumber, int gameID){
@@ -37,17 +41,12 @@ public class Game implements Serializable {
         this.players = new ArrayList<>();;
         this.running = true;
         this.gameId = -1;
-        HexSpace[][] temp = new HexSpace[2][2];
-        for (int row = 0; row < 2; row ++)
-            for (int col = 0; col < 2; col++)
-                temp[row][col] = new HexSpace();
-        this.pathMatrix = new Matrix(temp);
         this.startingSpaces = new ArrayList<>();
         //Temporary
         this.startingSpaces.add(new HexSpace());
         this.winners = new ArrayList<>();
         this.blockades = new ArrayList<>();
-        List<BlockadeSpace> blockadeSpaces = new ArrayList<>();
+        ArrayList<BlockadeSpace> blockadeSpaces = new ArrayList<>();
         blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 3, 30, 300, new Point(-3, -3), null, 1));
         blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 4, 40, 400, new Point(-4, -3), null, 1));
         Blockade blockade = new Blockade(blockadeSpaces);
@@ -57,19 +56,12 @@ public class Game implements Serializable {
     }
 
     /*
-    Globally unique Identifier to identify a running game
-     */
-    @JsonIgnore
-    private int gameId;
-
-    /*
     Player that can currently play the round. When one player calls endRound,
     the turn of the next player starts. The next player is always the one with either
     the next bigger ID or, there is none, the one with ID 0.
     With N players: current = (current + 1) % N.
      */
-    @Transient
-    @JsonIgnore
+    @OneToOne
     private Player current; //
 
     @Embedded
@@ -108,16 +100,17 @@ public class Game implements Serializable {
     Is used to calculate the final winner and to determine when the game is ended.
     Winners are not directly returned in the gameEntity but only on request via the GameService.
      */
-    @Transient
-    @JsonIgnore
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "board", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Player> winners;
 
     /*
     List of all blockades that are in the game so that we can set the strength
     of all blockades belonging together to 0 when one blockade is removed.
      */
-    @JsonIgnore
-    @Transient
+
+    @Embedded
+    @ElementCollection
     private List<Blockade> blockades;
 
     /*
@@ -131,7 +124,6 @@ public class Game implements Serializable {
     PathFinder modifies them, so that the HexSpaces can be reset.
     Json does not need to be in the gameEntity
      */
-    @Transient
     @JsonIgnore
     private Memento memento;
 
@@ -145,9 +137,18 @@ public class Game implements Serializable {
 
     public void setPlayers(List<Player> players) {
         this.current = players.get(0);
-        this.currentPlayerID = current.getPlayerID();
+        this.currentPlayerID = current.getPlayerId();
         this.players = players;
         System.out.println("***set current***");
     }
 
+    //TODO: DELETETELE AGAIN
+    public void makeMatrixPls(){
+        HexSpace[][] temp = new HexSpace[2][2];
+        for (int row = 0; row < 2; row ++)
+            for (int col = 0; col < 2; col++){
+                temp[row][col] = new HexSpace(COLOR.EMPTY, -1, -2, -3, new Point(row, col), this);
+            }
+        this.pathMatrix = new Matrix(temp);
+    }
 }

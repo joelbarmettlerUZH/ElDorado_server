@@ -3,7 +3,9 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 //import com.sun.xml.internal.bind.v2.TODO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,12 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
+@MappedSuperclass
 @Data
 public class HexSpace implements Serializable{
+
     /*
     CONSTRUCTOR
      */
-
     public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY, Game game){
         this.color = COLOR.valueOf(hexSpaceEntity.getColor());
         this.strength = hexSpaceEntity.getStrength();
@@ -80,9 +83,12 @@ public class HexSpace implements Serializable{
     the pathfinding-algorithm. The length of the HexSpaces array corresponds to the depth / amount of steps it took the
     pathfinding-algorithm to reach the HexSpaceEntity. BlockadeSpaces are included in the Previous history.
      */
+    /*@ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hexid")
+    @Column(name="PREVIOUS")*/
     @Transient
     @JsonIgnore
-    private List<HexSpace> previous;
+    private ArrayList<HexSpace> previous;
 
     /*
     HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
@@ -99,13 +105,17 @@ public class HexSpace implements Serializable{
     the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the
     previous. This way the blockade can handle the neighbours with taking the previous direction into account.
      */
-    @JsonIgnore
     @Transient
     public List<HexSpace> getNeighbour(){
         return null;
-    } //Todo
+    }
+    @Transient
     public List<HexSpace> getNeighbour(HexSpace previous){
         return null;
     }
 
+    //TODO: DLEETETLERLE AGAIN
+    public void printGamePls(){
+        //System.out.println("***************"+this.game.getGameId());
+    }
 }

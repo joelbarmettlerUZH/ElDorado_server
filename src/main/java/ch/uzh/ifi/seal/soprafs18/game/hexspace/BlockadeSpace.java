@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import java.awt.*;
 import java.io.Serializable;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.BlockadeSpaceEntity;
@@ -10,7 +11,7 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
+@Embeddable
 public class BlockadeSpace extends HexSpace implements Serializable {
     /*
     CONSTRUCTOR
@@ -24,6 +25,8 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         super(color, strength, minimalCost, minimalDepth, point, game);
         this.parentBlockade = parentBlockade;
     }
+
+    public BlockadeSpace(){}
 
     /*
     stores to which blockade it belongs to
@@ -39,5 +42,13 @@ public class BlockadeSpace extends HexSpace implements Serializable {
     @Override
     public List<HexSpace> getNeighbour(){
         return null;
+    }
+
+    public int getParentBlockade(){
+        return this.parentBlockade;
+    }
+
+    public void setParentBlockade(int parentBlockade){
+        this.parentBlockade = parentBlockade;
     }
 }

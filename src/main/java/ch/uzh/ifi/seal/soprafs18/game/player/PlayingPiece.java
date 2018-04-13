@@ -4,10 +4,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.io.Serializable;
@@ -20,6 +17,8 @@ public class PlayingPiece  implements Serializable {
         this.playingPieceId = id;
         this.standsOn = hexSpace;
     }
+
+    public PlayingPiece(){}
 
     /*
     unique id for the playing piece
@@ -40,4 +39,5 @@ public class PlayingPiece  implements Serializable {
     function to move itself to a different HexSpace
      */
     public void move(HexSpace moveTo){}
+
 }

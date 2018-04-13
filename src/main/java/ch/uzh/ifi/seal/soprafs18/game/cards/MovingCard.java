@@ -9,6 +9,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 
 @Entity
 @Data
@@ -37,6 +38,7 @@ public class MovingCard extends Card{
     List of all colors on which this card can move on. Every movingCard always supports the color rubble and basecamp
     as well.
      */
+    @Enumerated
     protected COLOR colors;
 
     /*

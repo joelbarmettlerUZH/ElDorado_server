@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs18;
 
-import ch.uzh.ifi.seal.soprafs18.entity.GameEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -21,6 +21,7 @@ import java.util.List;
 
 @ComponentScan
 @EnableAutoConfiguration
+@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {

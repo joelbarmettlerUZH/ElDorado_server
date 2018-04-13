@@ -1,12 +1,10 @@
 package ch.uzh.ifi.seal.soprafs18.controller;
 
-import ch.uzh.ifi.seal.soprafs18.entity.GameEntity;
-import ch.uzh.ifi.seal.soprafs18.entity.PlayerEntity;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
-import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
-import ch.uzh.ifi.seal.soprafs18.repository.PlayerRepository;
+import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.service.GameService;
 import ch.uzh.ifi.seal.soprafs18.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,28 +27,28 @@ public class GameController  implements Serializable {
     //gets all games
     @GetMapping(value = context)
     @ResponseStatus(HttpStatus.OK)
-    private List<GameEntity> getGames(){
+    private List<Game> getGames(){
         return gameService.getAll();
     }
 
     //gets game id
     @GetMapping(value = context+"/{id}")
     @ResponseStatus(HttpStatus.OK)
-    private GameEntity getGame(@PathVariable int id){
+    private Game getGame(@PathVariable int id){
         return gameService.getGame(id);
     }
 
     //Gets current player
     @GetMapping(value = context+"/{id}/Current")
     @ResponseStatus(HttpStatus.OK)
-    private PlayerEntity getCurrent(@PathVariable int id){
+    private Player getCurrent(@PathVariable int id){
         return gameService.getCurrentPlayer(id);
     }
 
     //Gets all players
     @GetMapping(value = context+"/{id}/Players")
     @ResponseStatus(HttpStatus.OK)
-    private List<PlayerEntity> getPlayers(@PathVariable int id){
+    private List<Player> getPlayers(@PathVariable int id){
         return gameService.getPlayers(id);
     }
 
@@ -78,7 +76,7 @@ public class GameController  implements Serializable {
     //Gets winners
     @GetMapping(value = context+"/{id}/Winner")
     @ResponseStatus(HttpStatus.OK)
-    private List<PlayerEntity> getWinners(@PathVariable int id){
+    private List<Player> getWinners(@PathVariable int id){
         return gameService.getWinners(id);
     }
 }

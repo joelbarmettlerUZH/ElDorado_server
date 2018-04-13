@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jdk.nashorn.internal.ir.Block;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.swing.*;
@@ -23,17 +25,14 @@ import static java.lang.Boolean.FALSE;
 
 @Entity
 @Data
+@Table(name = "PLAYER_ENTITY")
 public class Player  implements Serializable {
 
-    @Id
-    @GeneratedValue
-    private int randomPlayerId;
-
-    public Player(int PlayerID, String name, Game game, int id){
+    public Player(int PlayerID, String name, Game game, String token){
         this();
+        //this.token = token;
         this.name = name;
-        this.playerID = PlayerID;
-        this.id = id;
+        this.playerId = PlayerID;
         this.board = game;
         this.playingPieces.add(new PlayingPiece(5, new HexSpace(COLOR.BASECAMP, 5, 55, 555, new Point(-5, -5), game)));
         this.history = new ArrayList<>();
@@ -43,8 +42,8 @@ public class Player  implements Serializable {
 
     public Player(){
         this.name = "Unknown";
-        this.playerID = -1;
-        this.id = -1;
+        this.playerId = -1;
+        this.playerId = -1;
         this.board = new Game();
         this.coins = (float) 0;
         this.pathFinder = new Pathfinder();
@@ -58,12 +57,15 @@ public class Player  implements Serializable {
         this.discardPile = new ArrayList<Card>();
         discardPile.add(new ActionCard("ActionCard", -12, -12));
         this.bought = FALSE;
+        this.token = "TESTTOKEN";
     }
 
     /*
     Globally unique ID
      */
-    private int playerID;
+    @Id
+    @Column(name = "GLOBAL_PLAYERID")
+    private int playerId;
 
     /*
     Players  name, set by the User. Has to be unique in the Game
@@ -71,9 +73,9 @@ public class Player  implements Serializable {
     private String name;
 
     /*
-    Globally unique ID to recognize a Player within the Game.
+    Unique token to identify a Payer
      */
-    private Integer id;
+    private String token;
 
     /*
     Global unique token that identifies a User to its player.
@@ -106,14 +108,16 @@ public class Player  implements Serializable {
     List of playing pieces the player controls.
      */
     @Embedded
-    @JsonIgnore
-    private ArrayList<PlayingPiece> playingPieces;
+    @ElementCollection
+    private List<PlayingPiece> playingPieces;
 
     /*
     List of blockades the Player has collected so far.
      */
+    //@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    //@Fetch(value = FetchMode.SUBSELECT)
     @Embedded
-    @JsonIgnore
+    @ElementCollection
     private List<Blockade> blockades;
 
     /*

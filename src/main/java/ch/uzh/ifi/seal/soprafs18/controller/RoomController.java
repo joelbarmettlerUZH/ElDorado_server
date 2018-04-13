@@ -1,6 +1,5 @@
 package ch.uzh.ifi.seal.soprafs18.controller;
 
-import ch.uzh.ifi.seal.soprafs18.entity.PlayerEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.service.RoomService;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

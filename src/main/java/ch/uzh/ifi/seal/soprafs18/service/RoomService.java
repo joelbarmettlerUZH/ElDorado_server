@@ -1,14 +1,9 @@
 package ch.uzh.ifi.seal.soprafs18.service;
 
-import ch.uzh.ifi.seal.soprafs18.controller.UserController;
-import ch.uzh.ifi.seal.soprafs18.entity.GameEntity;
-import ch.uzh.ifi.seal.soprafs18.entity.PlayerEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
-import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.repository.RoomRepository;
 import ch.uzh.ifi.seal.soprafs18.repository.UserRepository;
-import org.hibernate.boot.jaxb.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -6,29 +6,34 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Embeddable
 public class Blockade  implements Serializable {
 
-    private int blockadeID;
+    private int blockadeNumber;
 
     public Blockade(){
-
+        this.spaces = new ArrayList<>();
+        this.blockadeNumber = -1;
+        this.cost = -1;
     }
 
-    public Blockade(List<BlockadeSpace> blockadeSpaces){
+    public Blockade(ArrayList<BlockadeSpace> blockadeSpaces){
         this.spaces = blockadeSpaces;
-        this.blockadeID = this.spaces.get(0).getParentBlockade();
+        this.blockadeNumber = this.spaces.get(0).getParentBlockade();
         this.cost = blockadeSpaces.get(0).getStrength();
     }
 
     /*
     List of BlockadeSpaces the Blockade consists of.
      */
-    @Embedded
-    @ElementCollection
+    //@Embedded
+    //@ElementCollection
+    @JsonIgnore
+    @Transient
     private List<BlockadeSpace> spaces;
 
     /*
@@ -48,13 +53,5 @@ public class Blockade  implements Serializable {
         this.cost = 0;
     }
 
-    /*
-    Assings a new BlockadeSpace to the Blockade by appending it to the spaces array.
-    NOT NEEDED I THINK (MARIUS)
-    */
-
-    public void assign(Blockade blockade){
-
-    }
 
 }

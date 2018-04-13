@@ -7,9 +7,7 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 @Embeddable
 @Data
