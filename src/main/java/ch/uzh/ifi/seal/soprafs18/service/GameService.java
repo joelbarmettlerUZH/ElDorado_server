@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
+import ch.uzh.ifi.seal.soprafs18.game.main.Assembler;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
@@ -77,7 +78,8 @@ public class GameService implements Serializable{
 
         LOGGER.info("Setting players of game");
         game.setPlayers(players);
-        game.makeMatrixPls();
+        LOGGER.info("Setting PathMatrix of game"); //Marius
+        game.assemble(); //Marius
         gameRepository.save(game);
         LOGGER.info("Save game " + game.getGameId() + " to the database");
         for(int n = 0; n<players.size(); n++){

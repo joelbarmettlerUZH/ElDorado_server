@@ -2,14 +2,21 @@ package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "HEXSPACE")
 @Inheritance (strategy = InheritanceType.JOINED)
-public class HexSpaceEntity {
+@Embeddable
+public class HexSpaceEntity implements Serializable {
+
+    public HexSpaceEntity(){
+
+    }
 
     public HexSpaceEntity(String id, String color, int strength){
         //System.out.println("constr");
@@ -18,8 +25,9 @@ public class HexSpaceEntity {
         this.strength = strength;
     }
 
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "hexSpaceEntities")
     @Id
-    @Column(name = "ID", unique = true)
+    @Column(name = "ID",columnDefinition="VARCHAR(4)")
     private String hexID;
 
     @Column(name = "COLOR")
@@ -29,16 +37,8 @@ public class HexSpaceEntity {
     @Column(name = "STRENGTH")
     private int strength;
 
-    /*
-    public HexSpaceEntity(COLOR color, int strength){
-        this.color = color;
-        this.strength = strength;
-    }
-    */
-
-    public HexSpaceEntity(){
-
-    }
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "tileID")
 
     public String getId() {
         return hexID;

@@ -2,17 +2,52 @@ package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
 import javax.persistence.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "BOARD")
-public class BoardEntity {
+public class BoardEntity implements Serializable {
+
+    public BoardEntity(int boardID, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,
+                       List<Integer> tilesPositionY,List<StripEntity> strip, List<Integer> stripRotation,
+                       List<Integer> stripPositionX,List<Integer> stripPositionY,List<Integer> blockadeId,
+                       List<Integer> blockadePositionX, List<Integer> blockadePositionY,List<HexSpaceEntity> endingSpaces,
+                       List<Integer> endingSpacePositionX, List<Integer> endingSpacePositionY) {
+        //System.out.println("constr");
+        this.boardID = boardID;
+        this.tiles = tiles;
+        this.tilesRotation = tilesRotation;
+        this.tilesPositionX = tilesPositionX;
+        this.tilesPositionY = tilesPositionY;
+        this.strip = strip;
+        this.stripRotation = stripRotation;
+        this.stripPositionX = stripPositionX;
+        this.stripPositionY = stripPositionY;
+        this.blockadeId = blockadeId;
+        this.blockadePositionX = blockadePositionX;
+        this.blockadePositionY = blockadePositionY;
+        this.endingSpaces = endingSpaces;
+        this.endingSpacePositionX = endingSpacePositionX;
+        this.endingSpacePositionY = endingSpacePositionY;
+    }
+
+    public BoardEntity(){
+
+    }
+
     @Id
     @Column(unique = true, name = "BOARDID")
     private int boardID;
 
+
+    @Embedded
+    //@ElementCollection
+    @ManyToMany
+    @JoinColumn(name = "tileID")
     @Column(name = "TILES")
-    @ElementCollection
+    //@OneToMany(targetEntity = TileEntity.class, fetch = FetchType.EAGER)
+    //@JoinTable(name="TILES",joinColumns = @JoinColumn(name="BOARD_BOARDID"),inverseJoinColumns = @JoinColumn(name="TILE_ID"))
     private List<TileEntity> tiles;
 
     @Column(name = "TILESROTATION")
@@ -27,43 +62,49 @@ public class BoardEntity {
     @ElementCollection
     private List<Integer> tilesPositionY;
 
-    @Column(name = "STRIP")
-    @ElementCollection
+    @Embedded
+    @ManyToMany
+    @JoinColumn(name = "stripID")
+    @Column(name = "STRIP",nullable = true)
+    //@ElementCollection
     private List<StripEntity> strip;
 
-    @Column(name = "STRIPROTATION")
+    @Column(name = "STRIPROTATION",nullable = true)
     @ElementCollection
     private List<Integer> stripRotation;
 
-    @Column(name = "STRIPPOSITIONX")
+    @Column(name = "STRIPPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> stripPositionX;
 
-    @Column(name = "STRIPPOSITIONY")
+    @Column(name = "STRIPPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> stripPositionY;
 
-    @Column(name = "BLOCKADEID")
+    @Column(name = "BLOCKADEID",nullable = true)
     @ElementCollection
     private List<Integer> blockadeId;
 
-    @Column(name = "BLOCKADEPOSITIONX")
+    @Column(name = "BLOCKADEPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> blockadePositionX;
 
-    @Column(name = "BLOCKADEPOSITIONY")
+    @Column(name = "BLOCKADEPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> blockadePositionY;
 
-    @Column(name = "ENDINGSPACES")
-    @ElementCollection
+    @Column(name = "ENDINGSPACES",nullable = true)
+    @Embedded
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hexid")
+    //@ElementCollection
     private List<HexSpaceEntity> endingSpaces;
 
-    @Column(name = "ENDINGSPACEPOSITIONX")
+    @Column(name = "ENDINGSPACEPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> endingSpacePositionX;
 
-    @Column(name = "ENDINGSPACEPOSITIONY")
+    @Column(name = "ENDINGSPACEPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> endingSpacePositionY;
 
@@ -147,7 +188,7 @@ public class BoardEntity {
         this.blockadeId = blockadeId;
     }
 
-    public List<Integer> getBlockandePositionX(){
+    public List<Integer> getBlockadePositionX(){
         return blockadePositionX;
     }
 
@@ -155,7 +196,7 @@ public class BoardEntity {
         this.blockadePositionX = blockadePositionX;
     }
 
-    public List<Integer> getBlockandePositionY(){
+    public List<Integer> getBlockadePositionY(){
         return blockadePositionY;
     }
 

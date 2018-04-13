@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.service;
 
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
+import ch.uzh.ifi.seal.soprafs18.game.board.entity.TileEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.BlockadeSpaceRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.BoardRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceRepository;
@@ -10,13 +11,14 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.Inheritance;
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.lang.annotation.Inherited;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Inheritance
-public class HexSpaceService {
+public class HexSpaceService implements Serializable {
 
     @Autowired
     private HexSpaceRepository hexSpaceRepository;
@@ -33,7 +35,7 @@ public class HexSpaceService {
         return hexSpaceRepository.findByHexID(id);
     }
 
-    public void addHexSpaceEntity(HexSpaceEntity hexSpaceEntity){
+    public void saveHexspace(HexSpaceEntity hexSpaceEntity){
         hexSpaceRepository.save(hexSpaceEntity);
     }
 

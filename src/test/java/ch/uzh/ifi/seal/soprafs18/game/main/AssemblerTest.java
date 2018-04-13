@@ -1,21 +1,28 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
+import ch.uzh.ifi.seal.soprafs18.Application;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.BlockadeSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.TileEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.StripEntity;
+import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.StripRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.TileRepository;
+import ch.uzh.ifi.seal.soprafs18.game.board.service.BlockadeSpaceService;
+import ch.uzh.ifi.seal.soprafs18.game.board.service.BoardService;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +30,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
+
 public class AssemblerTest {
 
     //private Assembler assembler = new Assembler();
@@ -41,6 +50,15 @@ public class AssemblerTest {
 
     @MockBean
     private StripRepository stripRepository;
+
+    @MockBean
+    private HexSpaceRepository hexSpaceRepository;
+
+    @MockBean
+    private BoardService boardService;
+
+    @MockBean
+    private BlockadeSpaceService blockadeSpaceService;
 
 
     @Before
@@ -141,7 +159,8 @@ public class AssemblerTest {
 
     @Test
     public void createEmptyMatrix() {
-        HexSpaceEntity[][] emptyMatrix = Assembler.createEmptyMatrix();
+        Assembler assembler = new Assembler();
+        HexSpaceEntity[][] emptyMatrix = assembler.createEmptyMatrix();
         assertEquals("Dimension One is 100",100, emptyMatrix.length);
         assertEquals("Dimension Two is 100",100, emptyMatrix[0].length);
     }
@@ -164,15 +183,16 @@ public class AssemblerTest {
 
     @Test
     public void assembleTiles() {
-        HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
-        HexSpaceEntity[][] newMatrix = Assembler.assembleTiles(boardMatrix, this.tileEntitylist,
+        Assembler assembler = new Assembler();
+        HexSpaceEntity[][] boardMatrix = assembler.createEmptyMatrix();
+        HexSpaceEntity[][] newMatrix = assembler.assembleTiles(boardMatrix, this.tileEntitylist,
                                                                 this.posX, this.posY, this.Rotation);
         assertEquals("Dimension One is 100",100, newMatrix.length);
         assertEquals("Dimension Two is 100",100, newMatrix[0].length);
         assertEquals("Centerpiece correct","RIVER", newMatrix[10][10].getColor());
         assertEquals("offcenter piece correct","JUNGLE", newMatrix[10][11].getColor());
 
-        HexSpaceEntity[][] newMatrix2 = Assembler.assembleTiles(boardMatrix, this.tileEntitylist,
+        HexSpaceEntity[][] newMatrix2 = assembler.assembleTiles(boardMatrix, this.tileEntitylist,
                 this.posX, this.posY, this.Rotation2);
         assertEquals("offcenter piece correct with rotation","SAND", newMatrix2[10][11].getColor());
 
@@ -180,23 +200,25 @@ public class AssemblerTest {
 
     @Test
     public void assembleStrips() {
-        HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
-        HexSpaceEntity[][] newMatrix = Assembler.assembleStrips(boardMatrix, this.stripEntitylist,
+        Assembler assembler = new Assembler();
+        HexSpaceEntity[][] boardMatrix = assembler.createEmptyMatrix();
+        HexSpaceEntity[][] newMatrix = assembler.assembleStrips(boardMatrix, this.stripEntitylist,
                 this.posX, this.posY, this.Rotation);
         assertEquals("Dimension One is 100",100, newMatrix.length);
         assertEquals("Dimension Two is 100",100, newMatrix[0].length);
         assertEquals("Centerpiece Color correct","JUNGLE", newMatrix[10][10].getColor());
         assertEquals("Centerpiece Strength correct",2, newMatrix[10][10].getStrength());
-        assertEquals("offcenter piece correct","RUBBLE", newMatrix[11][10].getColor());
-        HexSpaceEntity[][] newMatrix2 = Assembler.assembleStrips(boardMatrix, this.stripEntitylist,
+        assertEquals("offcenter piece correct","RUBBLE", newMatrix[10][11].getColor());
+        HexSpaceEntity[][] newMatrix2 = assembler.assembleStrips(boardMatrix, this.stripEntitylist,
                 this.posX, this.posY, this.Rotation2);
-        assertEquals("offcenter piece correct with rotation","JUNGLE", newMatrix[11][10].getColor());
+        assertEquals("offcenter piece correct with rotation","JUNGLE", newMatrix[10][11].getColor());
     }
 
 
     @Test
     public void getRandomBlockades(){
-        List<Integer>randomList = Assembler.getRandomBlockades(5);
+        Assembler assembler = new Assembler();
+        List<Integer>randomList = assembler.getRandomBlockades(5);
         int min = Collections.min(randomList);
         int max = Collections.max(randomList);
         assertEquals("min correct",1, min);
@@ -209,6 +231,7 @@ public class AssemblerTest {
 
     @Test
     public void assembleEndingSpaces() {
+        Assembler assembler = new Assembler();
         List<Integer> EndingPosX = new ArrayList<>();
         EndingPosX.add(5);
         EndingPosX.add(5);
@@ -217,8 +240,8 @@ public class AssemblerTest {
         EndingPosY.add(5);
         EndingPosY.add(6);
         EndingPosY.add(6);
-        HexSpaceEntity[][] boardMatrix = Assembler.createEmptyMatrix();
-        HexSpaceEntity[][] newMatrix = Assembler.assembleEndingSpaces(boardMatrix,this.endingSpaces,EndingPosX,EndingPosY);
+        HexSpaceEntity[][] boardMatrix = assembler.createEmptyMatrix();
+        HexSpaceEntity[][] newMatrix = assembler.assembleEndingSpaces(boardMatrix,this.endingSpaces,EndingPosX,EndingPosY);
         assertEquals("correct Ending space 1","EJ", newMatrix[5][5].getId());
         assertEquals("correct Ending space 2","EJ", newMatrix[5][6].getId());
         assertEquals("correct Ending space 3","EW", newMatrix[6][6].getId());

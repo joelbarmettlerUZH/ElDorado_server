@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -13,28 +14,19 @@ import java.util.List;
 @Embeddable
 public class Blockade  implements Serializable {
 
-    private int blockadeNumber;
-
-    public Blockade(){
-        this.spaces = new ArrayList<>();
-        this.blockadeNumber = -1;
-        this.cost = -1;
-    }
-
-    public Blockade(ArrayList<BlockadeSpace> blockadeSpaces){
+    public Blockade(List<HexSpace> blockadeSpaces){
         this.spaces = blockadeSpaces;
-        this.blockadeNumber = this.spaces.get(0).getParentBlockade();
         this.cost = blockadeSpaces.get(0).getStrength();
     }
 
     /*
-    List of BlockadeSpaces the Blockade consists of.
+    List of BlockadeSpaces/HexSpaces the Blockade consists of.
      */
     //@Embedded
     //@ElementCollection
     @JsonIgnore
     @Transient
-    private List<BlockadeSpace> spaces;
+    private List<HexSpace> spaces;
 
     /*
     Cost to remove this blockade. The cost is the same for all

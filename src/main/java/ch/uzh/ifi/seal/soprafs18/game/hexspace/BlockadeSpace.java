@@ -3,14 +3,16 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import java.awt.*;
+import java.awt.*;
 import java.io.Serializable;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.BlockadeSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import lombok.Data;
 
+import javax.persistence.Embeddable;
+import java.util.ArrayList;
 import java.util.List;
-
 @Embeddable
 public class BlockadeSpace extends HexSpace implements Serializable {
     /*
@@ -26,7 +28,8 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         this.parentBlockade = parentBlockade;
     }
 
-    public BlockadeSpace(){}
+    public BlockadeSpace(){
+    }
 
     /*
     stores to which blockade it belongs to
@@ -41,7 +44,28 @@ public class BlockadeSpace extends HexSpace implements Serializable {
 
     @Override
     public List<HexSpace> getNeighbour(){
-        return null;
+        List<HexSpace> neighbours = getAllNeighbour();
+        //now handle blockades
+        for (int i = 0; i<neighbours.size();i++) {
+            if (HexSpace.class.isAssignableFrom(neighbours.get(i).getClass())) {
+                //current is BlockadeSpace, thus remove it.
+                neighbours.remove(i);
+            }
+        }
+        return neighbours;
+    }
+
+    @Override
+    public List<HexSpace> getNeighbour(HexSpace previous){
+        return this.getNeighbour();
+    }
+
+    public int getBlockadeId() {
+        return parentBlockade;
+    }
+
+    public void setBlockadeId(int blockadeId) {
+        this.parentBlockade = blockadeId;
     }
 
     public int getParentBlockade(){

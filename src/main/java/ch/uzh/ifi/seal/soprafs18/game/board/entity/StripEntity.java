@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Embeddable
 @Table(name = "STRIP")
 public class StripEntity {
     @Id

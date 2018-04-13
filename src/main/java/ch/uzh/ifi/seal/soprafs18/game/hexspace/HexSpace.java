@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 //import com.sun.xml.internal.bind.v2.TODO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+//import com.sun.xml.internal.bind.v2.TODO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -48,35 +49,47 @@ public class HexSpace implements Serializable{
         this.game = game;
     }
 
+    // for creating empty spaces instead of null
+    public HexSpace(int x,int y,Game game){
+        this.color = COLOR.EMPTY;
+        this.strength = 1000;
+        this.minimalCost = 1000;
+        this.minimalDepth = 0;
+        this.previous = new ArrayList<>();
+        this.point = new Point(x,y);
+        this.game = game;
+    }
+
     /*
     The strength of a field indicates how high the card-value has to be to make it accessible. The strength of
     non-playing fields such as Mountains, Empty-Fields is set to 1000, all the other field strength correspond to
     the card strength needed to enter the field.
      */
-    private int strength;
+    protected int strength;
 
     /*
     Costfactor assigned by the Pathfinding algorithm indicating how expensive it is to reach this field. This cost
     factor should by default be 1000 and be overwritten by the pathfinding whenever a way to the HexSpaceEntity is found.
     The value is reset to 1000 once the path algorithm finished.
      */
-    private int minimalCost;
+    protected int minimalCost;
 
     /*
     Keeps track of how many moving-steps were needed by the player to move to this current field with the minimal costs.
      */
-    private int minimalDepth;
+    protected int minimalDepth;
 
     /*
     Enum of all possible colours a HexSpaceEntity can have. Each HexSpaceEntity has exactly one colour.
      */
     @Enumerated
-    private COLOR color;
+    protected COLOR color;
 
     /*
     The X/Y coordinates of the HexSpaceEntity in the GameEntity Matrix.
      */
-    private Point point;
+    protected Point point;
+
 
     /*
     The way our pathfinding-algorithm found to access this HexSpaceEntity. The field is usually an empty ArrayList and set by
@@ -88,7 +101,7 @@ public class HexSpace implements Serializable{
     @Column(name="PREVIOUS")*/
     @Transient
     @JsonIgnore
-    private ArrayList<HexSpace> previous;
+    protected List<HexSpace> previous;
 
     /*
     HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
@@ -96,6 +109,28 @@ public class HexSpace implements Serializable{
     @Transient
     @JsonIgnore
     protected Game game;
+
+    /**
+     Function to calculata all six neighbors of a hexspace without any postprocessing
+     */
+    protected List<HexSpace> getAllNeighbour(){
+        List<HexSpace> neighbours = new ArrayList<>();
+        int x = this.point.x;
+        neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y)));
+        neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y)));
+        neighbours.add(this.game.getHexSpace(new Point(this.point.x,this.point.y+1)));
+        neighbours.add(this.game.getHexSpace(new Point(this.point.x,this.point.y-1)));
+        if(this.point.x%2==0){
+            //even Column
+            neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
+            neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y-1)));
+        } else {
+            //odd Column
+            neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
+            neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
+        }
+        return neighbours;
+    }
 
     /*
     Method that takes the previous HexSpaceEntity, the user came from, into consideration when calculating the neighbours.
@@ -105,17 +140,32 @@ public class HexSpace implements Serializable{
     the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the
     previous. This way the blockade can handle the neighbours with taking the previous direction into account.
      */
-    @Transient
+    @JsonIgnore
     public List<HexSpace> getNeighbour(){
-        return null;
-    }
-    @Transient
-    public List<HexSpace> getNeighbour(HexSpace previous){
-        return null;
-    }
+        List<HexSpace> neighbours = getAllNeighbour();
+        //now handle blockades
+        System.out.println(neighbours.iterator().next().getClass());
+        for (HexSpace current:neighbours){
+            System.out.println(current.getClass().getCanonicalName());
+            if (current.getClass()==BlockadeSpace.class){
+                System.out.println(current.getClass().getCanonicalName());
+                //current is BlockadeSpace
+                BlockadeSpace currentBlockadeSpace = (BlockadeSpace) current;
+                int blockade = currentBlockadeSpace.getBlockadeId();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)
+                if (currentBlockadeSpace.getStrength()==0){
+                    //blockade is inactive
+                    neighbours.addAll(currentBlockadeSpace.getNeighbour(this));
+                }
 
-    //TODO: DLEETETLERLE AGAIN
-    public void printGamePls(){
-        //System.out.println("***************"+this.game.getGameId());
+            }
+
+        }
+        return neighbours;
+    }
+    //I don't know anymore why it plays a role from where we call the functions
+    //I think it does not really matter, even for blockade (Marius)
+    @JsonIgnore
+    public List<HexSpace> getNeighbour(HexSpace previous){
+        return getNeighbour();
     }
 }

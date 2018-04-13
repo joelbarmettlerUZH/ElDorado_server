@@ -13,6 +13,11 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.service.spi.InjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -33,11 +38,13 @@ public class Game implements Serializable {
     public Game(int boardNumber, int gameID){
         //assembler uses boardNumber
         this();
+        this.boardId = boardNumber;
         this.gameId = gameID;
         System.out.println("****created game*******");
     }
 
     public Game(){
+        this.boardId = 0;
         this.players = new ArrayList<>();;
         this.running = true;
         this.gameId = -1;
@@ -46,7 +53,7 @@ public class Game implements Serializable {
         this.startingSpaces.add(new HexSpace());
         this.winners = new ArrayList<>();
         this.blockades = new ArrayList<>();
-        ArrayList<BlockadeSpace> blockadeSpaces = new ArrayList<>();
+        ArrayList<HexSpace> blockadeSpaces = new ArrayList<>();
         blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 3, 30, 300, new Point(-3, -3), null, 1));
         blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 4, 40, 400, new Point(-4, -3), null, 1));
         Blockade blockade = new Blockade(blockadeSpaces);
@@ -54,6 +61,16 @@ public class Game implements Serializable {
         this.marketPlace = new Market();
         this.memento = new Memento();
     }
+
+
+    //private Assembler assembler;
+
+    private int boardId;
+
+    /*
+    Globally unique Identifier to identify a running game
+     */
+    private int ID;
 
     /*
     Player that can currently play the round. When one player calls endRound,
@@ -132,7 +149,7 @@ public class Game implements Serializable {
     of HexSpaceEntity that is located at that position in the pathMatrix.
      */
     public HexSpace getHexSpace(Point point){
-        return null;
+        return pathMatrix.get(point.x,point.y);
     }
 
     public void setPlayers(List<Player> players) {
@@ -142,13 +159,8 @@ public class Game implements Serializable {
         System.out.println("***set current***");
     }
 
-    //TODO: DELETETELE AGAIN
-    public void makeMatrixPls(){
-        HexSpace[][] temp = new HexSpace[2][2];
-        for (int row = 0; row < 2; row ++)
-            for (int col = 0; col < 2; col++){
-                temp[row][col] = new HexSpace(COLOR.EMPTY, -1, -2, -3, new Point(row, col), this);
-            }
-        this.pathMatrix = new Matrix(temp);
+    public void assemble(){
+        Assembler assembler = new Assembler();
+        this.pathMatrix = new Matrix(assembler.assembleBoard(boardId, this));
     }
 }

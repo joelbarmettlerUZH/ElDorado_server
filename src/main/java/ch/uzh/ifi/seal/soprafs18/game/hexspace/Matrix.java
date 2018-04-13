@@ -20,12 +20,19 @@ public class Matrix implements Serializable{
 
     public Matrix(HexSpace[][] boardMatrix){
         this();
-        yDim = boardMatrix.length;
-        xDim = boardMatrix[0].length;
+        xDim = boardMatrix.length; //switched x and y (Marius)
+        yDim = boardMatrix[0].length;
         matrixArray = new ArrayList<>();
+        /*
         for(HexSpace[] row:boardMatrix){
             for(HexSpace hexSpace:row){
                 this.matrixArray.add(hexSpace);
+            }
+        }
+        */
+        for (int i = 0; i<xDim; i++){
+            for (int j = 0; j<yDim;j++){
+                this.matrixArray.add(boardMatrix[i][j]);
             }
         }
     }
