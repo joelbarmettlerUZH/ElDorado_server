@@ -91,14 +91,14 @@ public class PlayerService  implements Serializable {
     }
 
     public List<PlayingPiece> getPlayingPieces(int id) {
-        LOGGER.info("Returning playing pieces of Player" + id);
+        LOGGER.info("Returning playing pieces of Player " + id);
         Player player = playerRepository.findByPlayerId(id).get(0);
         //System.out.println("***********"+player.getPlayingPieces().get(0).getStandsOn().getColor().toString());
         return player.getPlayingPieces();
     }
 
     public List<Blockade> getBlockades(int id){
-        LOGGER.info("Returning Blockades of Player" + id);
+        LOGGER.info("Returning Blockades of Player " + id);
         Player player = playerRepository.findByPlayerId(id).get(0);
         //return player.getBlockades();
         return null;
@@ -107,7 +107,7 @@ public class PlayerService  implements Serializable {
     public List<Card> getHandPile(int id, String token){
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
-            LOGGER.info("Returning Handpile of Player" + id);
+            LOGGER.info("Returning Handpile of Player " + id);
             return player.getHandPile();
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -119,7 +119,7 @@ public class PlayerService  implements Serializable {
         Slot slot = slotRepository.findBySlotId(s.getSlotId()).get(0);
         if (validate(player, token)) {
             player.buy(slot);
-            LOGGER.info("Player " + player.getPlayerId() + " buys" + slot.getCard().getName());
+            LOGGER.info("Player " + player.getPlayerId() + " buys " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -167,7 +167,7 @@ public class PlayerService  implements Serializable {
         Slot slot = slotRepository.findBySlotId(s.getSlotId()).get(0);
         if (validate(player, token)) {
             player.steal(slot);
-            LOGGER.info("Player " + player.getPlayerId() + " steals " + slot.getCard().getName());
+            LOGGER.info("Player " + player.getPlayerId() + " steals " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -179,37 +179,23 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             LOGGER.info("Player " + player.getPlayerId() + " is moving to Field at position ( "+point.getX()+" / "+point.getY()+" ).");
             List<Card> cards = new ArrayList<>();
-            if(playingPiece>player.getPlayingPieces().size()){
-                LOGGER.warning("Player " + player.getPlayerId() + " tries to move with PlayingPiece '" + playingPiece + " that is out of bounds.");
-                return player;
-            }
             for(Card card:c){
-                Card validCard = cardRepository.findById(card.getId()).get(0);
-                if(!player.getHandPile().contains(validCard)){
-                    LOGGER.warning("Player " + player.getPlayerId() + " does NOT have the card '" + card.getName() + "' in his Handpile.");
-                    return player;
-                }
-                cards.add(validCard);
+                cards.add(cardRepository.findById(card.getId()).get(0));
                 LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. ");
             }
             player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(point));
-
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
         return player;
     }
 
-    public Player performAction(int id, Card card, String token) {
+    public Player performAction(int id, Card c, String token) {
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
             LOGGER.info("Player " + player.getPlayerId() + " is performing action.");
-            Card validCard = cardRepository.findById(card.getId()).get(0);
-            if(!player.getHandPile().contains(validCard)){
-                LOGGER.warning("Player " + player.getPlayerId() + " does NOT have the card '" + card.getName() + "' in his Handpile.");
-                return player;
-            }
-            player.action((ActionCard) validCard);
+            Card card = cardRepository.findById(c.getId()).get(0);
+            player.action((ActionCard) card);
             LOGGER.info("Player "+player.getPlayerId()+" performs action with "+card.getName());
             return player;
         }
@@ -241,9 +227,8 @@ public class PlayerService  implements Serializable {
     public Game endRound(int id, String token) {
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
-            player.endRound();
             LOGGER.info("Player "+player.getPlayerId()+" ends his round.");
-            player.endRound();
+            //player.endRound();
             return player.getBoard();
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);

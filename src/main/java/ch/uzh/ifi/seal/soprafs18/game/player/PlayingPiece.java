@@ -13,9 +13,12 @@ import java.io.Serializable;
 @Data
 public class PlayingPiece  implements Serializable {
 
-    public PlayingPiece(HexSpace hexSpace){
+    public PlayingPiece(HexSpace hexSpace, int id){
+        this.id = id;
         this.standsOn = hexSpace;
     }
+
+    private int id;
 
     public PlayingPiece(){}
 

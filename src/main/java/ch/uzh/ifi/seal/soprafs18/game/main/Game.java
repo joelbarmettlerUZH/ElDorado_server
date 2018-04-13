@@ -164,7 +164,11 @@ public class Game implements Serializable {
         System.out.println("post ghettos blockados");
         int i = 0;
         for(Player player:players){
-            player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i)));
+            player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i), 0));
+            if(players.size() == 2){
+                i++;
+                player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i), 1));
+            }
             System.out.println("constructos playos pieceos"+i);
             i++;
         }

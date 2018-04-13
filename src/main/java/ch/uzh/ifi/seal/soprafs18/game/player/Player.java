@@ -51,7 +51,7 @@ public class Player  implements Serializable {
         history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11,  new SpecialActions(3, 3, 3)), "Testaction"));
         this.drawPile  = new ArrayList<Card>();
         this.handPile = new ArrayList<Card>();
-        handPile.add(new MovingCard("MovingCard", -4, -5, -6, -7, new COLOR[] {COLOR.RIVER}));
+        handPile.add(new RemoveMoveSellCard("MovingCard", -4, -5, -6, -7, new COLOR[] {COLOR.RIVER}));
         this.discardPile = new ArrayList<Card>();
         discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
         this.bought = FALSE;

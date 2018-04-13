@@ -2,14 +2,28 @@ package ch.uzh.ifi.seal.soprafs18.game.cards;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.swing.*;
 import java.io.Serializable;
 
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = MovingCard.class, name = "MovingCard"),
+        @JsonSubTypes.Type(value = RemoveMoveCard.class, name = "RemoveMoveCard"),
+        @JsonSubTypes.Type(value = RemoveMoveSellCard.class, name = "RemoveMoveSellCard"),
+        @JsonSubTypes.Type(value = RemoveActionCard.class, name = "RemoveActionCard"),
+        @JsonSubTypes.Type(value = ActionCard.class, name = "ActionCard") }
+)
 public abstract class Card  implements Serializable, Cloneable {
     public Card(){
     }

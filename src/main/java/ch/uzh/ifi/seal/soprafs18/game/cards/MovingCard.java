@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 
 import javax.persistence.ElementCollection;
@@ -20,6 +21,7 @@ import java.util.List;
 @Data
 public class MovingCard extends Card{
 
+    @JsonCreator
     public MovingCard(String name, int coinValue, int coinCost, int strength, int depth, COLOR[] colors){
         super(name, coinValue, coinCost);
         this.strength = strength;
@@ -27,6 +29,7 @@ public class MovingCard extends Card{
         this.colors = new ArrayList<>(Arrays.asList(colors));
     }
 
+    @JsonCreator
     public MovingCard(){
         super();
     }

@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs18.game.cards;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Data;
 
 import javax.persistence.Embedded;
@@ -11,11 +12,14 @@ import javax.persistence.Entity;
 @Data
 @Entity
 public class ActionCard extends Card {
+
+    @JsonCreator
     public ActionCard(String name, int coinValue, int coinCost, SpecialActions specialActions){
         super(name, coinValue, coinCost);
         this.actions = specialActions;
     }
 
+    @JsonCreator
     public ActionCard(){
         super();
     }

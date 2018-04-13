@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -84,21 +86,26 @@ public class PlayerController  implements Serializable {
         return playerService.stealCard(id, slot, token);
     }
 
+    /*
     //Move the Player
-    @PutMapping(value = context+"/{id}/Move")
+    @PutMapping(value = context+"/{id}/Move/{playingPiece}")
     @ResponseStatus(HttpStatus.OK)
-    public Player movePlayer(@PathVariable int id, @RequestBody Point point, @RequestBody int playingPiece, @RequestBody List<Card> cards, @RequestParam("token") String token){
+    public Player movePlayer(@PathVariable int id, @PathVariable int playingPiece, @RequestBody Point point, @RequestBody List<Card> cards, @RequestParam("token") String token){
         return playerService.movePlayer(id, cards, playingPiece, point, token);
+    }
+    */
+    @PutMapping(value = context+"/{id}/Move/{playingPiece}")
+    @ResponseStatus(HttpStatus.OK)
+    public Player movePlayer(@PathVariable int id, @PathVariable int playingPiece, @RequestBody MoveWrapper moveWrapper, @RequestParam("token") String token){
+        return playerService.movePlayer(id, moveWrapper.getCards(), playingPiece, moveWrapper.getPoint(), token);
     }
 
     //Use ActionCard
     @PutMapping(value = context+"/{id}/Action")
     @ResponseStatus(HttpStatus.OK)
-    public Player actionPlayer(@PathVariable int id, Card card, @RequestParam("token") String token){
+    public Player actionPlayer(@PathVariable int id, @RequestBody Card card, @RequestParam("token") String token){
         return playerService.performAction(id, card, token);
     }
-
-    //TODO: FindPath
 
     //End Round
     @PutMapping(value = context+"/{id}/End")
