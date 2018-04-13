@@ -9,9 +9,15 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Embeddable
+@Entity
 @Data
 public class CardAction  implements Serializable {
+
+    @Id
+    @GeneratedValue
+    @JsonIgnore
+    private int cardActionId;
+
     public CardAction(Card card, String actionName){
         this.cards = new ArrayList<>();
         addCard(card);
@@ -32,8 +38,8 @@ public class CardAction  implements Serializable {
     /*
     List of Cards that were used to perform a certain action.
      */
-    @JsonIgnore
-    @Transient
+    @Embedded
+    @ElementCollection
     private List<Card> cards;
 
     public void addCard(Card card){

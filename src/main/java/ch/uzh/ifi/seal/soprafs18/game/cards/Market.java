@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -17,13 +18,13 @@ public class Market implements Serializable {
         active = new ArrayList<>();
         active.add(
                 new Slot(
-                    new MovingCard("ActiveMoving", 1, 2)
+                    new MovingCard("ActivePile_MovingCard", 1, 2, 3, 4, new COLOR[] {COLOR.JUNGLE} )
                 )
         );
         passive = new ArrayList<>();
         passive.add(
                 new Slot(
-                        new ActionCard("PassiveAction", 3, 4)
+                        new ActionCard("PassivePile_ActionCard", 3, 4,  new SpecialActions(6, 6, 6))
                 )
         );
     }

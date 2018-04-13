@@ -8,15 +8,23 @@ import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import lombok.Data;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Data
 public class MovingCard extends Card{
 
-    public MovingCard(String name, int coinValue, int coinCost){
+    public MovingCard(String name, int coinValue, int coinCost, int strength, int depth, COLOR[] colors){
         super(name, coinValue, coinCost);
+        this.strength = strength;
+        this.depth = depth;
+        this.colors = new ArrayList<>(Arrays.asList(colors));
     }
 
     public MovingCard(){
@@ -38,8 +46,9 @@ public class MovingCard extends Card{
     List of all colors on which this card can move on. Every movingCard always supports the color rubble and basecamp
     as well.
      */
+    @ElementCollection(targetClass = COLOR.class)
     @Enumerated
-    protected COLOR colors;
+    protected List<COLOR> colors;
 
     /*
     Checks whether the HexSpaces color matches one of the cards colors and whether the strengthLeft is as least as high

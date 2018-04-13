@@ -403,14 +403,15 @@ public class Assembler implements Serializable {
                 int posX = containedTilesPosX.get(i);
                 int posY = containedTilesPosY.get(i);
                 for (int j = 9; j>=6; j--) {
-                    if (rotation % 2 == 0) {
+                    System.out.println("startos fieldos J counteros"+j);
+                    if (posX % 2 == 0) {
                         StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
-                                posX + outerRingDislocXEven[(i + (3 * rotation)) % 18],
-                                posY + outerRingDislocY[(i + (3 * rotation)) % 18]));
+                                posX + outerRingDislocXEven[(j + (3 * rotation)) % 18],
+                                posY + outerRingDislocY[(j + (3 * rotation)) % 18]));
                     } else {
                         StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
-                                posX + outerRingDislocXOdd[(i + 3 * rotation) % 18],
-                                posY + outerRingDislocY[(i + 3 * rotation) % 18]));
+                                posX + outerRingDislocXOdd[(j + 3 * rotation) % 18],
+                                posY + outerRingDislocY[(j + 3 * rotation) % 18]));
                     }
                 }
             }

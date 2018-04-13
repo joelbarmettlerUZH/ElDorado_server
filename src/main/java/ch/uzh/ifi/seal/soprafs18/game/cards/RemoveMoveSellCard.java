@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import lombok.Data;
 
@@ -9,8 +10,8 @@ import javax.persistence.Entity;
 @Data
 public class RemoveMoveSellCard extends RemoveMoveCard {
 
-    public RemoveMoveSellCard(String name, int coinValue, int coinCost){
-        super(name, coinValue, coinCost);
+    public RemoveMoveSellCard(String name, int coinValue, int coinCost, int strength, int depth, COLOR[] colors){
+        super(name, coinValue, coinCost, strength, depth, colors);
     }
 
     public RemoveMoveSellCard(){

@@ -11,13 +11,13 @@ import javax.persistence.Entity;
 @Data
 @Entity
 public class ActionCard extends Card {
-    public ActionCard(String name, int coinValue, int coinCost){
+    public ActionCard(String name, int coinValue, int coinCost, SpecialActions specialActions){
         super(name, coinValue, coinCost);
+        this.actions = specialActions;
     }
 
     public ActionCard(){
         super();
-        this.actions = new SpecialActions(3, 3, 3);
     }
     /*
     The Budget that is granted to the user when the ActionCards action is performed. Bugeds stores how many

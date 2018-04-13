@@ -48,12 +48,12 @@ public class Player  implements Serializable {
         this.playingPieces = new ArrayList<PlayingPiece>();
         this.specialAction = new SpecialActions(0,0,0);
         this.history = new ArrayList<CardAction>();
-        history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11), "Testaction"));
+        history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11,  new SpecialActions(3, 3, 3)), "Testaction"));
         this.drawPile  = new ArrayList<Card>();
         this.handPile = new ArrayList<Card>();
-        handPile.add(new MovingCard("MovingCard", -5, -5));
+        handPile.add(new MovingCard("MovingCard", -4, -5, -6, -7, new COLOR[] {COLOR.RIVER}));
         this.discardPile = new ArrayList<Card>();
-        discardPile.add(new ActionCard("ActionCard", -12, -12));
+        discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
         this.bought = FALSE;
         this.token = "TESTTOKEN";
     }
@@ -132,8 +132,7 @@ public class Player  implements Serializable {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    @Embedded
-    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CardAction> history;
 
     /*

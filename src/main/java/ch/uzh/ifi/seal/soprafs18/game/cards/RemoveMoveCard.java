@@ -11,8 +11,8 @@ import javax.persistence.Entity;
 @Data
 public class RemoveMoveCard extends MovingCard {
 
-    public RemoveMoveCard(String name, int coinValue, int coinCost){
-        super(name, coinValue, coinCost);
+    public RemoveMoveCard(String name, int coinValue, int coinCost, int strength, int depth, COLOR[] colors){
+        super(name, coinValue, coinCost, strength, depth, colors);
     }
 
     public RemoveMoveCard(){
@@ -25,7 +25,7 @@ public class RemoveMoveCard extends MovingCard {
     @Override
     public void moveAction(Player player, HexSpace moveTo) {
 
-        if (this.colors == COLOR.RUBBLE){
+        if (this.colors.contains(COLOR.RUBBLE)){
             player.discard(this);
         } else {
             player.remove(this);
