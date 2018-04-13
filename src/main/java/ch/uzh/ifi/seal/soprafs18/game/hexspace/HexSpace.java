@@ -101,7 +101,7 @@ public class HexSpace implements Serializable{
     @Column(name="PREVIOUS")*/
     @Transient
     @JsonIgnore
-    protected List<HexSpace> previous;
+    protected ArrayList<HexSpace> previous;
 
     /*
     HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
@@ -113,6 +113,8 @@ public class HexSpace implements Serializable{
     /**
      Function to calculata all six neighbors of a hexspace without any postprocessing
      */
+    @Transient
+    @JsonIgnore
     protected List<HexSpace> getAllNeighbour(){
         List<HexSpace> neighbours = new ArrayList<>();
         int x = this.point.x;
@@ -141,6 +143,7 @@ public class HexSpace implements Serializable{
     previous. This way the blockade can handle the neighbours with taking the previous direction into account.
      */
     @JsonIgnore
+    @Transient
     public List<HexSpace> getNeighbour(){
         List<HexSpace> neighbours = getAllNeighbour();
         //now handle blockades
@@ -165,6 +168,7 @@ public class HexSpace implements Serializable{
     //I don't know anymore why it plays a role from where we call the functions
     //I think it does not really matter, even for blockade (Marius)
     @JsonIgnore
+    @Transient
     public List<HexSpace> getNeighbour(HexSpace previous){
         return getNeighbour();
     }

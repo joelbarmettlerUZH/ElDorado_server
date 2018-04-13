@@ -19,6 +19,10 @@ public class Blockade  implements Serializable {
         this.cost = blockadeSpaces.get(0).getStrength();
     }
 
+    public Blockade(){
+
+    }
+
     /*
     List of BlockadeSpaces/HexSpaces the Blockade consists of.
      */
