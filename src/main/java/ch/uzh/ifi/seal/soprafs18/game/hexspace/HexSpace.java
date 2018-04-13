@@ -25,39 +25,38 @@ public class HexSpace implements Serializable{
     /*
     CONSTRUCTOR
      */
-    public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY, Game game){
+    public HexSpace(HexSpaceEntity hexSpaceEntity, int posX, int posY){
         this.color = COLOR.valueOf(hexSpaceEntity.getColor());
         this.strength = hexSpaceEntity.getStrength();
         this.minimalCost = 1000;
         this.minimalDepth = 0;
         this.previous = new ArrayList<>();
         this.point = new Point(posX,posY);
-        this.game = game;
     }
+
 
     public HexSpace(){
-        this(COLOR.EMPTY, 10, 100, 1000, new Point(-1, -2), null);
+        this(COLOR.EMPTY, 10, 100, 1000, new Point(-1, -2));
     }
 
-    public HexSpace(COLOR color, int strength, int minimalCost, int minimalDepth, Point point, Game game){
+
+    public HexSpace(COLOR color, int strength, int minimalCost, int minimalDepth, Point point){
         this.color = color;
         this.strength = strength;
         this.minimalCost = minimalCost;
         this.minimalDepth = minimalDepth;
         this.previous = new ArrayList<>();
         this.point = point;
-        this.game = game;
     }
 
     // for creating empty spaces instead of null
-    public HexSpace(int x,int y,Game game){
+    public HexSpace(int x,int y){
         this.color = COLOR.EMPTY;
         this.strength = 1000;
         this.minimalCost = 1000;
         this.minimalDepth = 0;
         this.previous = new ArrayList<>();
         this.point = new Point(x,y);
-        this.game = game;
     }
 
     /*
@@ -99,37 +98,29 @@ public class HexSpace implements Serializable{
     /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hexid")
     @Column(name="PREVIOUS")*/
-    @Transient
-    @JsonIgnore
-    protected ArrayList<HexSpace> previous;
 
-    /*
-    HexSpaceEntity need to know to which GameEntity it belongs. Primarily used for the PathFinder.
-     */
-    @Transient
-    @JsonIgnore
-    protected Game game;
+    protected ArrayList<HexSpace> previous;
 
     /**
      Function to calculata all six neighbors of a hexspace without any postprocessing
      */
     @Transient
     @JsonIgnore
-    protected List<HexSpace> getAllNeighbour(){
+    protected List<HexSpace> getAllNeighbour(Game game){
         List<HexSpace> neighbours = new ArrayList<>();
         int x = this.point.x;
-        neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y)));
-        neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y)));
-        neighbours.add(this.game.getHexSpace(new Point(this.point.x,this.point.y+1)));
-        neighbours.add(this.game.getHexSpace(new Point(this.point.x,this.point.y-1)));
+        neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y)));
+        neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y)));
+        neighbours.add(game.getHexSpace(new Point(this.point.x,this.point.y+1)));
+        neighbours.add(game.getHexSpace(new Point(this.point.x,this.point.y-1)));
         if(this.point.x%2==0){
             //even Column
-            neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
-            neighbours.add(this.game.getHexSpace(new Point(this.point.x+1,this.point.y-1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y-1)));
         } else {
             //odd Column
-            neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
-            neighbours.add(this.game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
         }
         return neighbours;
     }
@@ -144,8 +135,8 @@ public class HexSpace implements Serializable{
      */
     @JsonIgnore
     @Transient
-    public List<HexSpace> getNeighbour(){
-        List<HexSpace> neighbours = getAllNeighbour();
+    public List<HexSpace> getNeighbour(Game game){
+        List<HexSpace> neighbours = getAllNeighbour(game);
         //now handle blockades
         System.out.println(neighbours.iterator().next().getClass());
         for (HexSpace current:neighbours){
@@ -157,19 +148,12 @@ public class HexSpace implements Serializable{
                 int blockade = currentBlockadeSpace.getBlockadeId();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)
                 if (currentBlockadeSpace.getStrength()==0){
                     //blockade is inactive
-                    neighbours.addAll(currentBlockadeSpace.getNeighbour(this));
+                    neighbours.addAll(currentBlockadeSpace.getNeighbour(game));
                 }
 
             }
 
         }
         return neighbours;
-    }
-    //I don't know anymore why it plays a role from where we call the functions
-    //I think it does not really matter, even for blockade (Marius)
-    @JsonIgnore
-    @Transient
-    public List<HexSpace> getNeighbour(HexSpace previous){
-        return getNeighbour();
     }
 }

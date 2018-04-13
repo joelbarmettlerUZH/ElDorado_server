@@ -13,17 +13,11 @@ import java.io.Serializable;
 @Data
 public class PlayingPiece  implements Serializable {
 
-    public PlayingPiece(int id, HexSpace hexSpace){
-        this.playingPieceId = id;
+    public PlayingPiece(HexSpace hexSpace){
         this.standsOn = hexSpace;
     }
 
     public PlayingPiece(){}
-
-    /*
-    unique id for the playing piece
-     */
-    private Integer playingPieceId;
 
     /*
     Current HexSpace the PLayingPiece is standing on
@@ -31,6 +25,7 @@ public class PlayingPiece  implements Serializable {
     @Embedded
     private HexSpace standsOn;
 
+    @JsonIgnore
     public Point getPosition(){
         return standsOn.getPoint();
     }

@@ -51,7 +51,7 @@ public class HexSpaceTest {
         System.out.println("Testing Hexspace 222");
         System.out.println(hexSpace.getPoint().x);
         System.out.println(hexSpace.getPoint().y);
-        List<HexSpace> neighbours = hexSpace.getNeighbour();
+        List<HexSpace> neighbours = hexSpace.getNeighbour(game);
         List<COLOR> colors = new ArrayList<>();
 
         for (HexSpace neighborSpace:neighbours){

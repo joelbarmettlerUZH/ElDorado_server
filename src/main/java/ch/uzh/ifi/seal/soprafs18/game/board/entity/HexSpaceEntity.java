@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "HEXSPACE")
+@Table(name = "HEXSPACE_ENTITY")
 @Inheritance (strategy = InheritanceType.JOINED)
 @Embeddable
 public class HexSpaceEntity implements Serializable {

@@ -18,17 +18,18 @@ public class BlockadeSpace extends HexSpace implements Serializable {
     /*
     CONSTRUCTOR
     */
-    public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY, Game game){
-        super(blockadeSpaceEntity,posX,posY,game);
+    public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY){
+        super(blockadeSpaceEntity,posX,posY);
         this.parentBlockade = blockadeSpaceEntity.getBlockadeId();
     }
 
-    public BlockadeSpace(COLOR color, int strength, int minimalCost, int minimalDepth, Point point, Game game, int parentBlockade){
-        super(color, strength, minimalCost, minimalDepth, point, game);
+    public BlockadeSpace(COLOR color, int strength, int minimalCost, int minimalDepth, Point point, int parentBlockade){
+        super(color, strength, minimalCost, minimalDepth, point);
         this.parentBlockade = parentBlockade;
     }
 
     public BlockadeSpace(){
+        super();
     }
 
     /*
@@ -43,8 +44,8 @@ public class BlockadeSpace extends HexSpace implements Serializable {
      */
 
     @Override
-    public List<HexSpace> getNeighbour(){
-        List<HexSpace> neighbours = getAllNeighbour();
+    public List<HexSpace> getNeighbour(Game game){
+        List<HexSpace> neighbours = getAllNeighbour(game);
         //now handle blockades
         for (int i = 0; i<neighbours.size();i++) {
             if (HexSpace.class.isAssignableFrom(neighbours.get(i).getClass())) {
@@ -55,10 +56,6 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         return neighbours;
     }
 
-    @Override
-    public List<HexSpace> getNeighbour(HexSpace previous){
-        return this.getNeighbour();
-    }
 
     public int getBlockadeId() {
         return parentBlockade;

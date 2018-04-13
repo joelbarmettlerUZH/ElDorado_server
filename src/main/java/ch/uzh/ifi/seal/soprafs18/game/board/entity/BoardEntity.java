@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "BOARD")
+@Table(name = "BOARD_ENTITY")
 public class BoardEntity implements Serializable {
 
     public BoardEntity(int boardID, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,

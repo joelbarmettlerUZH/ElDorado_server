@@ -93,14 +93,15 @@ public class PlayerService  implements Serializable {
     public List<PlayingPiece> getPlayingPieces(int id) {
         LOGGER.info("Returning playing pieces of Player" + id);
         Player player = playerRepository.findByPlayerId(id).get(0);
-        System.out.println("***********"+player.getPlayingPieces().get(0).getStandsOn().getColor().toString());
+        //System.out.println("***********"+player.getPlayingPieces().get(0).getStandsOn().getColor().toString());
         return player.getPlayingPieces();
     }
 
     public List<Blockade> getBlockades(int id){
         LOGGER.info("Returning Blockades of Player" + id);
         Player player = playerRepository.findByPlayerId(id).get(0);
-        return player.getBlockades();
+        //return player.getBlockades();
+        return null;
     }
 
     public List<Card> getHandPile(int id, String token){

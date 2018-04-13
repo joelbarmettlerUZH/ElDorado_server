@@ -34,10 +34,8 @@ public class Player  implements Serializable {
         this.name = name;
         this.playerId = PlayerID;
         this.board = game;
-        this.playingPieces.add(new PlayingPiece(5, new HexSpace(COLOR.BASECAMP, 5, 55, 555, new Point(-5, -5), game)));
         this.history = new ArrayList<>();
         history.add(new CardAction("Testaction"));
-        System.out.println("***********"+playingPieces.get(0).getStandsOn().getColor().toString());
     }
 
     public Player(){
@@ -113,12 +111,15 @@ public class Player  implements Serializable {
 
     /*
     List of blockades the Player has collected so far.
-     */
-    //@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    //@Fetch(value = FetchMode.SUBSELECT)
-    @Embedded
-    @ElementCollection
-    private List<Blockade> blockades;
+
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+
+    */
+    //@Embedded
+    //@ElementCollection
+    //@ManyToMany
+    //private List<Blockade> blockades;
 
     /*
     The budget the user has for the current round.
@@ -309,6 +310,8 @@ public class Player  implements Serializable {
         coins = coins + amount;
     }
 
-
+    public void addPlayingPiece(PlayingPiece playingPiece){
+        this.playingPieces.add(playingPiece);
+    }
 
 }

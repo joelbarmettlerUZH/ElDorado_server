@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "BLOCKADE")
+@Table(name = "BLOCKADE_ENTITY")
 @Embeddable
 public class BlockadeSpaceEntity extends HexSpaceEntity {
 

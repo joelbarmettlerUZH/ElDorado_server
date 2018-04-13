@@ -41,7 +41,6 @@ public class Matrix implements Serializable{
         yDim = 0;
         xDim = 0;
         matrixArray = new ArrayList<>();
-        matrixArray.add(new HexSpace());
     }
 
     public HexSpace get(int x, int y){

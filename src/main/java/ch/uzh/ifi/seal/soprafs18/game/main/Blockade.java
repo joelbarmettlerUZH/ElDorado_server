@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jdk.nashorn.internal.ir.Block;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,25 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Embeddable
+@Entity
+@Table(name = "BLOCKADE")
 public class Blockade  implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int BLOCKADE_ID;
+
     public Blockade(List<HexSpace> blockadeSpaces){
+        System.out.println("Constructorioalo si callodos magnificos "+blockadeSpaces.size());
         this.spaces = blockadeSpaces;
         this.cost = blockadeSpaces.get(0).getStrength();
     }
 
-    public Blockade(){
 
+    private Blockade(){
     }
 
     /*
     List of BlockadeSpaces/HexSpaces the Blockade consists of.
      */
-    //@Embedded
-    //@ElementCollection
-    @JsonIgnore
-    @Transient
+    @Embedded
+    @ElementCollection
     private List<HexSpace> spaces;
 
     /*

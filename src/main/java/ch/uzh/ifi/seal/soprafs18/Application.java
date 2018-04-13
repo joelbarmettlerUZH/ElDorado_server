@@ -134,6 +134,7 @@ public class Application {
             blockadeSpaceRepository.save(new BlockadeSpaceEntity("RB1","RUBBLE",1,5));
             blockadeSpaceRepository.save(new BlockadeSpaceEntity("BR2","RUBBLE",2,6));
 
+            System.out.println("Applicationos buildos tilete A");
 
             //Tile A
             List<HexSpaceEntity> HexSpaces_TileA = new ArrayList<>();

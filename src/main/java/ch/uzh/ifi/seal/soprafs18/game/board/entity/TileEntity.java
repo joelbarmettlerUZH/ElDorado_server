@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Embeddable
-@Table(name = "TILE")
+@Table(name = "TILE_ENTITY")
 public class TileEntity implements Serializable {
     @Id
     @Column(name = "ID",columnDefinition="CHAR",nullable = false)

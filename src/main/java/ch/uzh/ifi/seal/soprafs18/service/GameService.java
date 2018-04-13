@@ -91,7 +91,7 @@ public class GameService implements Serializable{
     public Game getGame(int gameID) {
         LOGGER.info("Returning game with ID " + gameID);
         Game game = gameRepository.findByGameId(gameID).get(0);
-        //game.getPathMatrix().getMatrixArray().get(0).printGamePls();
+        System.out.println("WA-DU-HEK: "+game.getPathMatrix().get(4, 4).getColor());
         return game;
     }
 

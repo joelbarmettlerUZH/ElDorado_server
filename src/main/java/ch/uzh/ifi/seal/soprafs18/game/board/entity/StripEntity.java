@@ -5,7 +5,7 @@ import java.util.List;
 
 @Entity
 @Embeddable
-@Table(name = "STRIP")
+@Table(name = "STRIP_ENTITY")
 public class StripEntity {
     @Id
     @Column(name = "ID", unique = true)

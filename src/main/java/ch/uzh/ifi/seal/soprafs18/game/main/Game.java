@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -49,15 +50,7 @@ public class Game implements Serializable {
         this.running = true;
         this.gameId = -1;
         this.startingSpaces = new ArrayList<>();
-        //Temporary
-        this.startingSpaces.add(new HexSpace());
         this.winners = new ArrayList<>();
-        this.blockades = new ArrayList<>();
-        ArrayList<HexSpace> blockadeSpaces = new ArrayList<>();
-        blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 3, 30, 300, new Point(-3, -3), null, 1));
-        blockadeSpaces.add(new BlockadeSpace(COLOR.JUNGLE, 4, 40, 400, new Point(-4, -3), null, 1));
-        Blockade blockade = new Blockade(blockadeSpaces);
-        this.blockades.add(blockade);
         this.marketPlace = new Market();
         this.memento = new Memento();
     }
@@ -124,11 +117,14 @@ public class Game implements Serializable {
     /*
     List of all blockades that are in the game so that we can set the strength
     of all blockades belonging together to 0 when one blockade is removed.
-     */
 
-    @Embedded
-    @ElementCollection
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    */
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="BLOCKADES",joinColumns = @JoinColumn(name="gameId"),inverseJoinColumns = @JoinColumn(name="waduhek"))
     private List<Blockade> blockades;
+
 
     /*
     Instance of the current Marketplace that contains active and passive cards.
@@ -161,6 +157,16 @@ public class Game implements Serializable {
 
     public void assemble(){
         Assembler assembler = new Assembler();
-        this.pathMatrix = new Matrix(assembler.assembleBoard(boardId, this));
+        System.out.println(this.getGameId());
+        this.pathMatrix = new Matrix(assembler.assembleBoard(this.boardId));
+        this.startingSpaces.addAll(assembler.getStartingFields(this.boardId));
+        this.blockades = assembler.getBlockades(this);
+        System.out.println("post ghettos blockados");
+        int i = 0;
+        for(Player player:players){
+            player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i)));
+            System.out.println("constructos playos pieceos"+i);
+            i++;
+        }
     }
 }
