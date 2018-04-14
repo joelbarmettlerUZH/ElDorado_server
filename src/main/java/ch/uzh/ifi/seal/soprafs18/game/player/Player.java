@@ -192,6 +192,11 @@ public class Player  implements Serializable {
     If this is the case, he adds himself to the Games winning Player array.
      */
     public void move(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo) {
+
+        /*
+        TODO: In the end, check whether the player stands next to a blockade: If he does, check whhat strength is left fro his cards
+        TODO: and ask him to remove the blockade when enough strenght is left (summed strength of cards - minimal cost of new playing piece position)
+         */
     }
 
     /*

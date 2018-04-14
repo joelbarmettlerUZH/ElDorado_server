@@ -105,7 +105,7 @@ public class HexSpace implements Serializable{
      */
     @Transient
     @JsonIgnore
-    protected List<HexSpace> getAllNeighbour(Game game){
+    public List<HexSpace> getAllNeighbour(Game game){
         List<HexSpace> neighbours = new ArrayList<>();
         int x = this.point.x;
         neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y)));
@@ -149,11 +149,8 @@ public class HexSpace implements Serializable{
                     //blockade is inactive
                     neighbours.addAll(currentBlockadeSpace.getNeighbour(game));
                 }
-
             }
-
         }
         return neighbours;
     }
-
 }
