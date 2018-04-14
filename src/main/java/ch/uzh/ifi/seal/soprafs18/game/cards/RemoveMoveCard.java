@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 @Data
 public class RemoveMoveCard extends MovingCard {
 
-    public RemoveMoveCard(String name, int coinValue, int coinCost, int strength, int depth, COLOR[] colors){
+    public RemoveMoveCard(String name, float coinValue, int coinCost, int strength, int depth, COLOR[] colors){
         super(name, coinValue, coinCost, strength, depth, colors);
     }
 

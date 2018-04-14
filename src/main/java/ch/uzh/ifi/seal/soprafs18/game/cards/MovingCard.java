@@ -22,7 +22,7 @@ import java.util.List;
 public class MovingCard extends Card{
 
     @JsonCreator
-    public MovingCard(String name, int coinValue, int coinCost, int strength, int depth, COLOR[] colors){
+    public MovingCard(String name, float coinValue, int coinCost, int strength, int depth, COLOR[] colors){
         super(name, coinValue, coinCost);
         this.strength = strength;
         this.depth = depth;
