@@ -28,7 +28,7 @@ public abstract class Card  implements Serializable, Cloneable {
     public Card(){
     }
 
-    public Card(String name, int coinValue, int coinCost){
+    public Card(String name, float coinValue, int coinCost){
         this.name = name;
         this.coinValue = coinValue;
         this.coinCost = coinCost;

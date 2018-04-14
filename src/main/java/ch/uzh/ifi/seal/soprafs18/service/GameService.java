@@ -128,6 +128,8 @@ public class GameService implements Serializable{
 
     public void stop(int id) {
         LOGGER.info("Stoppping game " + id);
-        gameRepository.findByGameId(id).get(0).setRunning(false);
+        Game game = gameRepository.findByGameId(id).get(0);
+        game.setRunning(false);
+        gameRepository.save(game);
     }
 }

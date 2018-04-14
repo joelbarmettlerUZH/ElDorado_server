@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 public class ActionCard extends Card {
 
     @JsonCreator
-    public ActionCard(String name, int coinValue, int coinCost, SpecialActions specialActions){
+    public ActionCard(String name, float coinValue, int coinCost, SpecialActions specialActions){
         super(name, coinValue, coinCost);
         this.actions = specialActions;
     }

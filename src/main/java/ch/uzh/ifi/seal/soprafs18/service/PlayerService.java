@@ -120,6 +120,8 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.buy(slot);
             LOGGER.info("Player " + player.getPlayerId() + " buys " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -132,6 +134,7 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.discard(card);
             LOGGER.info("Player " + player.getPlayerId() + " Discards card " + card.getName());
+            playerRepository.save(player);
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -144,6 +147,7 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.remove(card);
             LOGGER.info("Player " + player.getPlayerId() + " removes card " + card.getName());
+            playerRepository.save(player);
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -156,6 +160,7 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.sell(card);
             LOGGER.info("Player " + player.getPlayerId() + " sells card " + card.getName());
+            playerRepository.save(player);
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -168,6 +173,8 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.steal(slot);
             LOGGER.info("Player " + player.getPlayerId() + " steals " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -184,6 +191,8 @@ public class PlayerService  implements Serializable {
                 LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. ");
             }
             player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(point));
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -197,6 +206,8 @@ public class PlayerService  implements Serializable {
             Card card = cardRepository.findById(c.getId()).get(0);
             player.action((ActionCard) card);
             LOGGER.info("Player "+player.getPlayerId()+" performs action with "+card.getName());
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -221,6 +232,7 @@ public class PlayerService  implements Serializable {
             LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. ");
         }
         LOGGER.info("Player "+player.getPlayerId()+" requested pathfinding.");
+        gameRepository.save(player.getBoard());
         return Pathfinder.getWay(cards, playingPiece);
     }
 
@@ -228,11 +240,12 @@ public class PlayerService  implements Serializable {
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
             LOGGER.info("Player "+player.getPlayerId()+" ends his round.");
-            //player.endRound();
+            player.endRound();
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player.getBoard();
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
         return player.getBoard();
     }
-
 }

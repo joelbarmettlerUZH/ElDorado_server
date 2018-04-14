@@ -144,7 +144,7 @@ public class HexSpace implements Serializable{
                 System.out.println(current.getClass().getCanonicalName());
                 //current is BlockadeSpace
                 BlockadeSpace currentBlockadeSpace = (BlockadeSpace) current;
-                int blockade = currentBlockadeSpace.getBlockadeId();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)
+                int blockade = currentBlockadeSpace.getParentBlockade();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)
                 if (currentBlockadeSpace.getStrength()==0){
                     //blockade is inactive
                     neighbours.addAll(currentBlockadeSpace.getNeighbour(game));
