@@ -17,10 +17,6 @@ public class RemoveActionCard extends ActionCard {
    Calls the parents performAction to use Player.remove(Card) instead of Player.discard(Card).
      */
 
-    public RemoveActionCard(String name, int coinValue, int coinCost, SpecialActions specialActions){
-        super(name, coinValue, coinCost, specialActions);
-    }
-
     public RemoveActionCard(){
         super();
     }

@@ -14,20 +14,87 @@ import java.util.stream.Stream;
 @Data
 public class Market implements Serializable {
 
-    //TODO: Instanciate real instances of Slots
-    public Market(){
+    public Market() {
         active = new ArrayList<>();
         active.add(
                 new Slot(
-                    new MovingCard("ActivePile_MovingCard", 1, 2, 3, 4, new COLOR[] {COLOR.JUNGLE} )
-                )
-        );
+                        new MovingCard("Scout", (float) 0.5, 1, 2, 99, new COLOR[]{COLOR.JUNGLE}))
+                );
+        active.add(
+                new Slot(
+                        new MovingCard("Trailblazer", (float) 0.5, 3, 3, 99, new COLOR[]{COLOR.JUNGLE}))
+                );
+        active.add(
+                new Slot(
+                        new RemoveMoveCard("Treasure chest", 4, 3, 4, 99, new COLOR[]{COLOR.JUNGLE}))
+                );
+        active.add(
+                new Slot(
+                        new MovingCard("Jack-of-all-trades", 1, 2, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+                );
+        active.add(
+                new Slot(
+                        new RemoveActionCard("Transmitter", (float) 0.5, 4, new SpecialActions(0,0,1) ))
+                );
+        active.add(
+                new Slot(
+                        new MovingCard("Photographer", 2, 2, 2, 99, new COLOR[]{COLOR.SAND}))
+                );
+
+
+
         passive = new ArrayList<>();
+
         passive.add(
                 new Slot(
-                        new ActionCard("PassivePile_ActionCard", 3, 4,  new SpecialActions(6, 6, 6))
-                )
+                        new MovingCard("Millionaire", 5, 4, 4, 99, new COLOR[]{COLOR.SAND}))
         );
+        passive.add(
+                new Slot(
+                        new RemoveActionCard("Travelblog", (float) 0.5, 3, new SpecialActions(2,2,0)))
+        );
+        passive.add(
+                new Slot(
+                        new RemoveMoveSellCard("Prop plane", 4, 4, 4, 99, new COLOR[]{COLOR.SAND, COLOR.RIVER, COLOR.JUNGLE}))
+        );
+        passive.add(
+                new Slot(
+                        new MovingCard("Native", (float) 0.5, 5, 99, 1, new COLOR[]{COLOR.BASECAMP, COLOR.RUBBLE, COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+        );
+        passive.add(
+                new Slot(
+                        new ActionCard("Scientist", (float) 0.5, 4, new SpecialActions(1,1,0)))
+        );
+        passive.add(
+                new Slot(
+                        new RemoveActionCard("Compass", (float) 0.5, 2, new SpecialActions(2,0,0)))
+        );
+
+        passive.add(
+                new Slot(
+                        new ActionCard("Cartographer", (float) 0.5, 4, new SpecialActions(2,0,0)))
+        );
+        passive.add(
+                new Slot(
+                        new MovingCard("Pioneer", (float) 0.5, 5, 5, 99, new COLOR[]{COLOR.JUNGLE}))
+        );
+        passive.add(
+                new Slot(
+                        new RemoveMoveCard("Giant machete", (float) 0.5, 3, 6, 99, new COLOR[]{COLOR.JUNGLE}))
+        );
+        passive.add(
+                new Slot(
+                        new MovingCard("Adventurer", 2, 4, 2, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+        );
+        passive.add(
+                new Slot(
+                        new MovingCard("Captain", (float) 0.5, 2, 3, 99, new COLOR[]{COLOR.RIVER}))
+        );
+        passive.add(
+                new Slot(
+                        new MovingCard("Journalist", 3, 3, 3, 99, new COLOR[]{COLOR.SAND}))
+        );
+
     }
 
     /*
