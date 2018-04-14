@@ -78,6 +78,7 @@ public class GameService implements Serializable{
 
         LOGGER.info("Setting players of game");
         game.setPlayers(players);
+        game.setWinners(new ArrayList<>());
         LOGGER.info("Setting PathMatrix of game"); //Marius
         game.assemble(); //Marius
         gameRepository.save(game);

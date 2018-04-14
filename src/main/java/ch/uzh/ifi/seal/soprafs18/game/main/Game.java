@@ -96,8 +96,9 @@ public class Game implements Serializable {
     /*
     List of all players participating in the GameEntity.
      */
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "board", fetch = FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Player> players;
 
     /*
@@ -105,8 +106,9 @@ public class Game implements Serializable {
     Is used to calculate the final winner and to determine when the game is ended.
     Winners are not directly returned in the gameEntity but only on request via the GameService.
      */
-    @OneToMany(cascade=CascadeType.ALL, mappedBy = "board", fetch = FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Player> winners;
 
     /*

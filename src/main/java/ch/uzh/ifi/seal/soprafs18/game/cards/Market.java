@@ -116,6 +116,7 @@ public class Market implements Serializable {
     the active Slot. If The Slot was an active Slot and only one Card was left, the Slot gets removed entirely. The player
     then puts the card on the discard pile using Card.discard()
      */
+    @JsonIgnore
     public Card buy(Slot slot) {
 
         Card tmp = slot.buy();
@@ -155,22 +156,9 @@ public class Market implements Serializable {
     }
 
     /*
-    Returns the active slots.
-     */
-    public List<Slot> getActive() {
-        return active;
-    }
-
-    /*
-    Returns the passive slots.
-     */
-    public List<Slot> getPassive() {
-        return passive;
-    }
-
-    /*
     Lets the user take one card from active and passive slots. If the slot becomes empty, removes that slot from the active Slots.
      */
+    @JsonIgnore
     public Card stealCard(Slot slot) {
 
         Card tmp = slot.buy();
