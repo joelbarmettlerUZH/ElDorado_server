@@ -8,6 +8,11 @@ import javax.persistence.Entity;
 @Entity
 @Data
 public class RemoveActionCard extends ActionCard {
+
+    public RemoveActionCard(String name, float value, int cost, SpecialActions actions){
+        super(name, value, cost, actions);
+    }
+
     /*
    Calls the parents performAction to use Player.remove(Card) instead of Player.discard(Card).
      */

@@ -21,6 +21,7 @@ public class Slot implements Serializable{
         pile.add((Card) card.clone());
         pile.add((Card) card.clone());
     }
+
     /*
     Unique identifier for a slot
      */

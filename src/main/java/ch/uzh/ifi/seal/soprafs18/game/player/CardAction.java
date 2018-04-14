@@ -19,7 +19,7 @@ public class CardAction  implements Serializable {
     private int cardActionId;
 
     public CardAction(Card card, String actionName){
-        this.cards = new ArrayList<>();
+        cards = new ArrayList<>();
         addCard(card);
         this.actionName = actionName;
     }

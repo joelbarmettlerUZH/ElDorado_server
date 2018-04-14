@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 @Data
 public class Market implements Serializable {
 
+    //TODO: Instanciate real instances of Slots
     public Market(){
         active = new ArrayList<>();
         active.add(
@@ -76,7 +77,7 @@ public class Market implements Serializable {
     Returns either the active Slots when size of active slots is 6, active and passive slots otherwise.
      */
     public List<Slot> getPurchasable() {
-        if (active.size() <= 6) {
+        if (active.size() >= 6) {
             return active;
         } else {
             List<Slot> both = new ArrayList<Slot>();

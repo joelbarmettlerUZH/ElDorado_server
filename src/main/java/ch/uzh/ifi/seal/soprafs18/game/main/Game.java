@@ -61,11 +61,6 @@ public class Game implements Serializable {
     private int boardId;
 
     /*
-    Globally unique Identifier to identify a running game
-     */
-    private int ID;
-
-    /*
     Player that can currently play the round. When one player calls endRound,
     the turn of the next player starts. The next player is always the one with either
     the next bigger ID or, there is none, the one with ID 0.

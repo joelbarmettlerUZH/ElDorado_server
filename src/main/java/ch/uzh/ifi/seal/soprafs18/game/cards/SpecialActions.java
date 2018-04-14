@@ -21,17 +21,17 @@ public class SpecialActions implements Serializable{
     /*
     Amount of cards that can be drawn
      */
-    private Integer draw;
+    private int draw;
 
     /*
     Amount of cards that can be removed
      */
-    private Integer remove;
+    private int remove;
 
     /*
     Amount of cards that can be stolen from the market
      */
-    private Integer steal;
+    private int steal;
 
     public void reduceDraw(){
         draw = draw - 1;

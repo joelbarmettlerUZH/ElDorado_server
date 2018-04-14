@@ -14,7 +14,6 @@ import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
@@ -156,4 +155,5 @@ public class HexSpace implements Serializable{
         }
         return neighbours;
     }
+
 }

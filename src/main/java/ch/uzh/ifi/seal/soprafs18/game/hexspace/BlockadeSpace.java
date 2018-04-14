@@ -13,7 +13,9 @@ import lombok.Data;
 import javax.persistence.Embeddable;
 import java.util.ArrayList;
 import java.util.List;
+
 @Embeddable
+@Data
 public class BlockadeSpace extends HexSpace implements Serializable {
     /*
     CONSTRUCTOR
@@ -54,22 +56,5 @@ public class BlockadeSpace extends HexSpace implements Serializable {
             }
         }
         return neighbours;
-    }
-
-
-    public int getBlockadeId() {
-        return parentBlockade;
-    }
-
-    public void setBlockadeId(int blockadeId) {
-        this.parentBlockade = blockadeId;
-    }
-
-    public int getParentBlockade(){
-        return this.parentBlockade;
-    }
-
-    public void setParentBlockade(int parentBlockade){
-        this.parentBlockade = parentBlockade;
     }
 }
