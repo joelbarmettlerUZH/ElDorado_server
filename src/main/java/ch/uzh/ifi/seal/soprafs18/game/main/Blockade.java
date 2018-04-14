@@ -20,7 +20,7 @@ public class Blockade  implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int BLOCKADE_ID;
 
-    public Blockade(List<HexSpace> blockadeSpaces){
+    public Blockade(List<BlockadeSpace> blockadeSpaces){
         System.out.println("Constructorioalo si callodos magnificos "+blockadeSpaces.size());
         this.spaces = blockadeSpaces;
         this.cost = blockadeSpaces.get(0).getStrength();
@@ -35,7 +35,7 @@ public class Blockade  implements Serializable {
      */
     @Embedded
     @ElementCollection
-    private List<HexSpace> spaces;
+    private List<BlockadeSpace> spaces;
 
     /*
     Cost to remove this blockade. The cost is the same for all

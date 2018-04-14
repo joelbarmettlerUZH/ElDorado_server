@@ -214,7 +214,6 @@ public class PlayerService  implements Serializable {
         return player;
     }
 
-    //TODO: FindPath
     public List<HexSpace> findPath(int id, String token, List<Card> c, PlayingPiece playingPiece) {
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (!validate(player, token)) {
@@ -223,17 +222,14 @@ public class PlayerService  implements Serializable {
         }
         List<Card> cards = new ArrayList<>();
         for(Card card:c){
-            Card validCard = cardRepository.findById(card.getId()).get(0);
-            if(!player.getHandPile().contains(validCard)){
-                LOGGER.warning("Player " + player.getPlayerId() + " does NOT have the card '" + card.getName() + "' in his Handpile.");
-                return new ArrayList<HexSpace>();
-            }
-            cards.add(validCard);
+            cards.add(cardRepository.findById(card.getId()).get(0));
             LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. ");
         }
         LOGGER.info("Player "+player.getPlayerId()+" requested pathfinding.");
+        Game game = player.getBoard();
+        List<HexSpace> reachables = Pathfinder.getWay(game, cards, playingPiece);
         gameRepository.save(player.getBoard());
-        return Pathfinder.getWay(cards, playingPiece);
+        return reachables;
     }
 
     public Game endRound(int id, String token) {
@@ -247,5 +243,17 @@ public class PlayerService  implements Serializable {
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
         return player.getBoard();
+    }
+
+    public Player removeBlockade(int id, String token, Blockade blockade){
+        Player player = playerRepository.findByPlayerId(id).get(0);
+        if (validate(player, token)) {
+            player.removeBlockade(blockade);
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
+            return player;
+        }
+        LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
+        return player;
     }
 }

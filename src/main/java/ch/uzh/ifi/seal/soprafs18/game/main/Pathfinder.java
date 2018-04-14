@@ -97,19 +97,22 @@ public class Pathfinder  implements Serializable {
         List<HexSpace> reachables = new ArrayList<>();
         reachables.add(hexSpace);
         int currentPosition = 0;
-        while(currentPosition<reachables.size()){
+        do{
             HexSpace current = reachables.get(currentPosition);
+            System.out.println("Current: "+current.toString());
             List<HexSpace> potentialNeighbours = reachables.get(currentPosition).getNeighbour(game);
             for(HexSpace neighbour: potentialNeighbours){
+                System.out.println("Neighbour: "+neighbour.toString());
                 if((neighbour.getColor() == color)
                         &&
                         (strength - current.getMinimalCost() - neighbour.getStrength() >= 0)
                         &&
                         (depth - current.getMinimalDepth() - 1 >= 0)){
+                    System.out.println("validito");
                     if((!reachables.contains(neighbour) || neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength())){
                         neighbour.setMinimalCost(current.getMinimalCost() + neighbour.getStrength());
                         neighbour.setMinimalDepth(current.getMinimalDepth()+1);
-                        ArrayList<HexSpace> previous = current.getPrevious();
+                        ArrayList<HexSpace> previous = new ArrayList<>(current.getPrevious());
                         previous.add(current);
                         neighbour.setPrevious(previous);
                         if(reachables.contains(neighbour)){
@@ -122,7 +125,9 @@ public class Pathfinder  implements Serializable {
                     }
                 }
             }
-        }
+            currentPosition++;
+        }while(currentPosition<reachables.size());
+        System.out.println("dijkstrato finitototo");
         return new HashSet<>(reachables);
     }
 

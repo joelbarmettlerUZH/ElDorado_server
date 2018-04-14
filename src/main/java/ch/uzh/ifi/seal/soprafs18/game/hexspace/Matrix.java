@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
+import ch.uzh.ifi.seal.soprafs18.game.main.Assembler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -41,6 +42,25 @@ public class Matrix implements Serializable{
         yDim = 0;
         xDim = 0;
         matrixArray = new ArrayList<>();
+    }
+
+    public void printMatrix(int fromX, int fromY, int toX, int toY){
+        for(int i = fromX; i<toX; i++){
+            for(int j = fromY; j<toY; j++){
+                HexSpace hexSpace = get(i, j);
+                if(hexSpace.getColor() == COLOR.EMPTY){
+                    System.out.print("   ");
+                    continue;
+                }
+                if(hexSpace instanceof BlockadeSpace){
+                    System.out.print("|"+hexSpace.getColor().toString().charAt(0)+"|");
+                    continue;
+                }
+                String s = hexSpace.getColor().toString();
+                System.out.print(s.charAt(0)+""+s.charAt(1)+" ");
+            }
+            System.out.println("");
+        }
     }
 
     public HexSpace get(int x, int y){

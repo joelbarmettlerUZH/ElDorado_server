@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class SlotTest {
+    /*
 
     Card card1 = new MovingCard("test1", 3,4,2,2, COLOR.JUNGLE);
     Card card2 = new MovingCard("test2", 3,4,2,2, COLOR.JUNGLE);
@@ -38,4 +39,5 @@ public class SlotTest {
         pile.add(card3);
         assertEquals(pile, testSlot.getPile());
     }
+    */
 }

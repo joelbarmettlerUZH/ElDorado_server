@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 //import java.awt.*;
@@ -18,7 +20,8 @@ import java.util.List;
 
 @Embeddable
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 public class HexSpace implements Serializable{
 
     /*
@@ -107,19 +110,19 @@ public class HexSpace implements Serializable{
     @JsonIgnore
     public List<HexSpace> getAllNeighbour(Game game){
         List<HexSpace> neighbours = new ArrayList<>();
-        int x = this.point.x;
+        //int x = this.point.x;
         neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y)));
         neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y)));
         neighbours.add(game.getHexSpace(new Point(this.point.x,this.point.y+1)));
         neighbours.add(game.getHexSpace(new Point(this.point.x,this.point.y-1)));
-        if(this.point.x%2==0){
+        if(this.point.y%2==0){
             //even Column
-            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
-            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y-1)));
-        } else {
-            //odd Column
             neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
             neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
+        } else {
+            //odd Column
+            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y-1)));
         }
         return neighbours;
     }
@@ -152,5 +155,11 @@ public class HexSpace implements Serializable{
             }
         }
         return neighbours;
+    }
+
+    @Override
+    public String toString(){
+        return color.toString()+"-Space at Point ("+point.x+","+point.y+"), Strength: "+strength+", minimalCost: "+
+                minimalCost+", minimalDepth: "+ minimalDepth+", previoussize: " +previous.size();
     }
 }

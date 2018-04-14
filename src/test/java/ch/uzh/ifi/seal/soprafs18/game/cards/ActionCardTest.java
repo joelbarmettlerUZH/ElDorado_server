@@ -1,3 +1,4 @@
+
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
@@ -17,6 +18,7 @@ import static org.junit.Assert.*;
 
 public class ActionCardTest {
 
+    /*
     Game testGame = new Game();
     HexSpace testBaseCamp = new HexSpace(4,1,3, BASECAMP, new Point(), new ArrayList<>(), testGame);
     HexSpace testJungle= new HexSpace(4,1,3, JUNGLE, new Point(), new ArrayList<>(), testGame);
@@ -55,14 +57,16 @@ public class ActionCardTest {
 
         //assertEquals(testPlayer. , testCard.performAction(testPlayer));
 
-       // testPlayer.move(testPiece, testPlayer. , testBaseCamp);
+       //testPlayer.move(testPiece, testPlayer. , testBaseCamp);
 
 
-        /* have no idea how to test this /////////////////////
+        /* have no idea how to test this
         testCard.moveAction(testPlayer, testBaseCamp);
 
         testPlayer.
         assertEquals(null, testPlayer.);
-        *////////////////////
-    }
+        */
+
+
+    //}
 }

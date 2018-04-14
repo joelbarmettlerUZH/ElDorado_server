@@ -42,7 +42,7 @@ public class Memento  implements Serializable {
     /*
     Refill Memento with new information from the PathFinder.
      */
-    public void reset(List<HexSpace> reachables, List<Card> selectedCards){
+    public void reset(){
         for(HexSpace hexSpace: reachables){
             hexSpace.setMinimalCost(1000);
             hexSpace.setMinimalDepth(1000);
@@ -55,9 +55,7 @@ public class Memento  implements Serializable {
     /*
     Deletes all entries from reachables and selectedCards, playingPiece can be set to Null.
      */
-    public void reset(){
 
-    }
 
     public Set<HexSpace> getReachables() {
         return reachables;

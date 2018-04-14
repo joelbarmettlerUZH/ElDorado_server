@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs18.controller;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
+import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
@@ -98,6 +99,13 @@ public class PlayerController  implements Serializable {
     @ResponseStatus(HttpStatus.OK)
     public Player movePlayer(@PathVariable int id, @PathVariable int playingPiece, @RequestBody MoveWrapper moveWrapper, @RequestParam("token") String token){
         return playerService.movePlayer(id, moveWrapper.getCards(), playingPiece, moveWrapper.getPoint(), token);
+    }
+
+    //Remove Blockades
+    @PutMapping(value = context+"/{id}/Blockade")
+    @ResponseStatus(HttpStatus.OK)
+    public Player removeBlockades(@PathVariable int id, @RequestBody Blockade blockade, @RequestParam("token") String token){
+        return playerService.removeBlockade(id, token, blockade);
     }
 
     //Use ActionCard
