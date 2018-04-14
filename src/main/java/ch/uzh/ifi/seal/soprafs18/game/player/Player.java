@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -28,10 +29,10 @@ import static java.lang.Boolean.FALSE;
 @Table(name = "PLAYER_ENTITY")
 public class Player  implements Serializable {
 
-    //TODO: Set correct initial drawpile
     //TODO: Set correct  initial cardAction budget
     public Player(int PlayerID, String name, Game game, String token){
         this();
+
         //this.token = token;
         this.name = name;
         this.playerId = PlayerID;
@@ -51,7 +52,18 @@ public class Player  implements Serializable {
         this.specialAction = new SpecialActions(0,0,0);
         this.history = new ArrayList<CardAction>();
         history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11,  new SpecialActions(3, 3, 3)), "Testaction"));
+
         this.drawPile  = new ArrayList<Card>();
+        drawPile.add(new MovingCard("Sailor", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER}));
+        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Traveler", 1, 0, 2, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Traveler", 1, 0, 2, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Traveler", 1, 0, 2, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Traveler", 1, 0, 2, 99, new COLOR[]{COLOR.SAND}));
+        Collections.shuffle(drawPile);
+
         this.handPile = new ArrayList<Card>();
         handPile.add(new RemoveMoveSellCard("MovingCard", -4, -5, -6, -7, new COLOR[] {COLOR.RIVER}));
         this.discardPile = new ArrayList<Card>();

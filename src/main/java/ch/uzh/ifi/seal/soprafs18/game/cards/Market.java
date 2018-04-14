@@ -18,27 +18,27 @@ public class Market implements Serializable {
         active = new ArrayList<>();
         active.add(
                 new Slot(
-                        new MovingCard("Kundschafter", (float) 0.5, 1, 2, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new MovingCard("Scout", (float) 0.5, 1, 2, 99, new COLOR[]{COLOR.JUNGLE}))
                 );
         active.add(
                 new Slot(
-                        new MovingCard("Entdecker", (float) 0.5, 3, 3, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new MovingCard("Trailblazer", (float) 0.5, 3, 3, 99, new COLOR[]{COLOR.JUNGLE}))
                 );
         active.add(
                 new Slot(
-                        new RemoveMoveCard("Schatztruhe", 4, 3, 4, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new RemoveMoveCard("Treasure chest", 4, 3, 4, 99, new COLOR[]{COLOR.JUNGLE}))
                 );
         active.add(
                 new Slot(
-                        new MovingCard("Tausendsassa", 1, 2, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+                        new MovingCard("Jack-of-all-trades", 1, 2, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
                 );
         active.add(
                 new Slot(
-                        new RemoveActionCard("Fernsprechgerät", (float) 0.5, 4, new SpecialActions(0,0,1) ))
+                        new RemoveActionCard("Transmitter", (float) 0.5, 4, new SpecialActions(0,0,1) ))
                 );
         active.add(
                 new Slot(
-                        new MovingCard("Fotografin", 2, 2, 2, 99, new COLOR[]{COLOR.SAND}))
+                        new MovingCard("Photographer", 2, 2, 2, 99, new COLOR[]{COLOR.SAND}))
                 );
 
 
@@ -47,52 +47,52 @@ public class Market implements Serializable {
 
         passive.add(
                 new Slot(
-                        new MovingCard("Millionärin", 5, 4, 4, 99, new COLOR[]{COLOR.SAND}))
+                        new MovingCard("Millionaire", 5, 4, 4, 99, new COLOR[]{COLOR.SAND}))
         );
         passive.add(
                 new Slot(
-                        new RemoveActionCard("Reisetagebuch", (float) 0.5, 3, new SpecialActions(2,2,0)))
+                        new RemoveActionCard("Travelblog", (float) 0.5, 3, new SpecialActions(2,2,0)))
         );
         passive.add(
                 new Slot(
-                        new RemoveMoveSellCard("Propellerflugzeug", 4, 4, 4, 99, new COLOR[]{COLOR.SAND, COLOR.RIVER, COLOR.JUNGLE}))
+                        new RemoveMoveSellCard("Prop plane", 4, 4, 4, 99, new COLOR[]{COLOR.SAND, COLOR.RIVER, COLOR.JUNGLE}))
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Ureinwohner", (float) 0.5, 5, 99, 1, new COLOR[]{COLOR.BASECAMP, COLOR.RUBBLE, COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+                        new MovingCard("Native", (float) 0.5, 5, 99, 1, new COLOR[]{COLOR.BASECAMP, COLOR.RUBBLE, COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
         );
         passive.add(
                 new Slot(
-                        new ActionCard("Wissenschaftlerin", (float) 0.5, 4, new SpecialActions(1,1,0)))
+                        new ActionCard("Scientist", (float) 0.5, 4, new SpecialActions(1,1,0)))
         );
         passive.add(
                 new Slot(
-                        new RemoveActionCard("Kompass", (float) 0.5, 2, new SpecialActions(2,0,0)))
+                        new RemoveActionCard("Compass", (float) 0.5, 2, new SpecialActions(2,0,0)))
         );
 
         passive.add(
                 new Slot(
-                        new ActionCard("Kartograph", (float) 0.5, 4, new SpecialActions(2,0,0)))
+                        new ActionCard("Cartographer", (float) 0.5, 4, new SpecialActions(2,0,0)))
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Pionier", (float) 0.5, 5, 5, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new MovingCard("Pioneer", (float) 0.5, 5, 5, 99, new COLOR[]{COLOR.JUNGLE}))
         );
         passive.add(
                 new Slot(
-                        new RemoveMoveCard("Mächtige Machete", (float) 0.5, 3, 6, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new RemoveMoveCard("Giant machete", (float) 0.5, 3, 6, 99, new COLOR[]{COLOR.JUNGLE}))
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Abenteurerin", 2, 2, 2, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+                        new MovingCard("Adventurer", 2, 4, 2, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Kapitän", (float) 0.5, 2, 3, 99, new COLOR[]{COLOR.RIVER}))
+                        new MovingCard("Captain", (float) 0.5, 2, 3, 99, new COLOR[]{COLOR.RIVER}))
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Journalistin", 3, 3, 3, 99, new COLOR[]{COLOR.SAND}))
+                        new MovingCard("Journalist", 3, 3, 3, 99, new COLOR[]{COLOR.SAND}))
         );
 
     }
