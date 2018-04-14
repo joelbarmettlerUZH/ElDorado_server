@@ -26,6 +26,7 @@ public class UserEntity {
     private boolean ready = false;
 
     @Column(name = "GAME")
+
     @ManyToOne
     @JoinColumn(name="ROOMID")
     protected GameEntity game;

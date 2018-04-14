@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import java.util.ArrayList;
 
 import java.awt.*;
 import java.util.List;
@@ -10,17 +11,45 @@ import java.util.List;
 
 public class Game {
 
+    //Constructor
+    public Game(int boardNumber, List<Player> players, int gameID){
+        //assembler uses boardNumber
+        this();
+        this.players = players;
+        this.ID = gameID;
+        System.out.println("****created game*******");
+    }
+
+    public Game(){
+        /*this.players = new ArrayList<>();
+        this.running = true;
+        this.ID = -1;
+        HexSpace[][] temp = new HexSpace[2][2];
+        for (int row = 0; row < 2; row ++)
+            for (int col = 0; col < 2; col++)
+                temp[row][col] = new HexSpace();
+        //this.pathMatrix = new Matrix(temp);
+        this.winners = new ArrayList<>();
+        this.blockades = new ArrayList<>();
+        //this.marketPlace = new Market();
+        this.memento = new Memento();*/
+    }
+
     /*
     Globally unique Identifier to identify a running game
      */
+    private int ID;
+
     private int gameID;
 
     /*
-    Player that can currently play the round. When one player calls endRound,
-    the turn of the next player starts. The next player is always the one with either
-    the next bigger ID or, there is none, the one with ID 0.
-    With N players: current = (current + 1) % N.
-     */
+
+        /*
+        Player that can currently play the round. When one player calls endRound,
+        the turn of the next player starts. The next player is always the one with either
+        the next bigger ID or, there is none, the one with ID 0.
+        With N players: current = (current + 1) % N.
+         */
     private Player current; //
 
     /*
