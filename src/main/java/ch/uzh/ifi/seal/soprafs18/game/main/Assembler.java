@@ -63,7 +63,7 @@ public class Assembler implements Serializable {
     compute relative positions for InnerRing
     **/
     private int[] innerRingDislocY = {0, 1, 1, 0, -1, -1};
-    private int[] innerRingDislocXEven = {-1, -1, 0, 1, 0, 1};
+    private int[] innerRingDislocXEven = {-1, -1, 0, 1, 0, -1};
     private int[] innerRingDislocXOdd = {-1, 0, 1, 1, 1, 0};
 
 
@@ -119,7 +119,12 @@ public class Assembler implements Serializable {
                     //convert null entires to HexSpaces with EMPTY as entry
                     hexSpaceMatrix[i][j]= new HexSpace(i,j);
                 }else{
-                    hexSpaceMatrix[i][j]=new HexSpace(entityMarix[i][j],i,j);
+                    HexSpaceEntity hexSpaceEntity = entityMarix[i][j];
+                    if (hexSpaceEntity instanceof BlockadeSpaceEntity){
+                        hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity)entityMarix[i][j],i,j);
+                    } else {
+                        hexSpaceMatrix[i][j] = new HexSpace(entityMarix[i][j], i, j);
+                    }
                 }
             }
         }
@@ -209,7 +214,7 @@ public class Assembler implements Serializable {
             List<HexSpaceEntity> currentTileHexSpaces = Tile.get(i).getHexSpaceEntities();
             for (int j = 0; j < currentTileHexSpaces.size(); j++) {
                 if (j < 18) {
-                    if (TilePositionX.get(i) % 2 == 0) {
+                    if (TilePositionY.get(i) % 2 == 0) {
                         boardMatrix[TilePositionX.get(i) + outerRingDislocXEven[j]][TilePositionY.get(i) +
                                 outerRingDislocY[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
                     } else {
@@ -217,7 +222,7 @@ public class Assembler implements Serializable {
                                 outerRingDislocY[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
                     }
                 } else if (j < 30) {
-                    if (TilePositionX.get(i) % 2 == 0) {
+                    if (TilePositionY.get(i) % 2 == 0) {
                         boardMatrix[TilePositionX.get(i) + midRingDislocXEven[j-18]][TilePositionY.get(i) + midRingDislocY[j-18]]
                                 = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 12));
                     } else {
@@ -225,7 +230,7 @@ public class Assembler implements Serializable {
                                 = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 12));
                     }
                 } else if (j < 36) {
-                    if (TilePositionX.get(i) % 2 == 0) {
+                    if (TilePositionY.get(i) % 2 == 0) {
                         boardMatrix[TilePositionX.get(i) + innerRingDislocXEven[j-30]][TilePositionY.get(i) + innerRingDislocY[j-30]]
                                 = currentTileHexSpaces.get(30 + (((j - 30) + (currentTileRotation)) % 6));
                     } else {
@@ -372,10 +377,10 @@ public class Assembler implements Serializable {
             System.out.println("Assemblos getthos Blockadododos");
             if (!alreadyDone.contains(blockadeIds.get(i))) { //was this id searched and done already?
                 alreadyDone.add(blockadeIds.get(i)); //adds the id to the ones which are doe already
-                List<HexSpace> blockadeSpace = new ArrayList<>(); //create new list of Hexspaces which stores all spaces belonging to same blockade
+                List<BlockadeSpace> blockadeSpace = new ArrayList<>(); //create new list of Hexspaces which stores all spaces belonging to same blockade
                 for (int j = 0; j < blockadeIds.size(); j++) { //loop over all ids again
                     if (blockadeIds.get(j).equals(blockadeIds.get(i))) {
-                        blockadeSpace.add(hexSpaceMatrix.get(blockadeX.get(j),blockadeY.get(j)));//if they match the first one store the according Spaces in the list
+                        blockadeSpace.add((BlockadeSpace)hexSpaceMatrix.get(blockadeX.get(j),blockadeY.get(j)));//if they match the first one store the according Spaces in the list
                     }
                 }
                 allBlockades.add(new Blockade(blockadeSpace));

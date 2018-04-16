@@ -1,14 +1,15 @@
 package ch.uzh.ifi.seal.soprafs18.game.player;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.*;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import ch.uzh.ifi.seal.soprafs18.game.main.Memento;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.nashorn.internal.ir.Block;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -17,10 +18,8 @@ import javax.persistence.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 import static java.lang.Boolean.FALSE;
 
@@ -32,7 +31,6 @@ public class Player implements Serializable {
     //TODO: Set correct  initial cardAction budget
     public Player(int PlayerID, String name, Game game, String token) {
         this();
-
         //this.token = token;
         this.name = name;
         this.playerId = PlayerID;
@@ -74,6 +72,8 @@ public class Player implements Serializable {
         // discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
         this.bought = FALSE;
         this.token = "TESTTOKEN";
+        this.removeBlockades = new ArrayList<>();
+        this.blockades = new ArrayList<>();
     }
 
     /*
@@ -92,6 +92,19 @@ public class Player implements Serializable {
     Unique token to identify a Payer
      */
     private String token;
+
+    /*
+    Blockades that can be removes
+     */
+    @ElementCollection
+    private List<Integer> removeBlockades;
+
+    /*
+    Blockades the user has removed already
+     */
+    @ElementCollection
+    private List<Integer> blockades;
+
 
     /*
     Global unique token that identifies a User to its player.
@@ -207,7 +220,80 @@ public class Player implements Serializable {
     When the move is done, the Player checks whether his PlayingPiece stands on a HexSpace of colour ElDoardo.
     If this is the case, he adds himself to the Games winning Player array.
      */
-    public void move(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo) {
+    public List<Blockade> move(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo) {
+        for(Card card: cards){
+            if(!this.handPile.contains(card)){
+                return new ArrayList<>();
+            }
+        }
+        if(!this.playingPieces.contains(playingPiece)){
+            return new ArrayList<>();
+        }
+        this.removeBlockades = new ArrayList<>();
+        Set<Blockade> removable = new HashSet<>();
+        Memento memento = board.getMemento();
+        if (!(playingPiece == memento.getPlayingPiece() && cards.equals(memento.getSelectedCards()))) {
+           Pathfinder.getWay(board,cards,playingPiece);
+        }
+        Set<HexSpace> reachables = memento.getReachables();
+        if (reachables.contains(moveTo)){
+            HexSpace oldPosition = playingPiece.getStandsOn();
+            playingPiece.setStandsOn(moveTo);
+            for(Card card: cards){
+                card.moveAction(this, moveTo);
+            }
+            Set<Integer> blockadeIds = new HashSet<>();
+            for(HexSpace hexSpace: moveTo.getPrevious()){
+                if(hexSpace instanceof BlockadeSpace){
+                    this.removeBlockades.add(((BlockadeSpace) hexSpace).getParentBlockade());
+                    removeBlockadeId(((BlockadeSpace) hexSpace).getParentBlockade());
+                }
+            }
+            for(HexSpace hexSpace: playingPiece.getStandsOn().getAllNeighbour(board)){
+                if(hexSpace instanceof BlockadeSpace){
+                    Card card = cards.get(0);
+                    if(cards.size()==1 && card instanceof MovingCard){
+                        if(((MovingCard) card).getColors().contains(hexSpace.getColor())
+                                && ((MovingCard) card).getStrength()-moveTo.getMinimalCost() >= hexSpace.getStrength()
+                                && ((MovingCard) card).getDepth()-moveTo.getMinimalDepth() > 0){
+                            if(!(((MovingCard) card).getColors().size()>1) || (hexSpace.getColor() == moveTo.getColor())){
+                                blockadeIds.add(((BlockadeSpace) hexSpace).getParentBlockade());
+                            }
+                        }
+                    }else if(cards.size()>1 && oldPosition == playingPiece.getStandsOn()){
+                        if(hexSpace.getColor() == COLOR.RUBBLE && hexSpace.getStrength() <= cards.size()){
+                            blockadeIds.add(((BlockadeSpace) hexSpace).getParentBlockade());
+                        }
+                    }
+                }
+            }
+            this.removeBlockades = new ArrayList<Integer>(blockadeIds);
+            for(int id:blockadeIds){
+                for(Blockade blockade: board.getBlockades()){
+                    if(blockade.getBLOCKADE_ID() == id){
+                        removable.add(blockade);
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(removable);
+    }
+
+    public void removeBlockade(Blockade blockade){
+        if(this.removeBlockades.contains(blockade.getBLOCKADE_ID()) && board.getBlockades().contains(blockade)){
+            board.getBlockades().remove(blockade);
+            this.blockades.add(blockade.getCost());
+            this.removeBlockades.remove(blockade.getBLOCKADE_ID());
+        }
+    }
+
+    public void removeBlockadeId(int blockadeId){
+        this.removeBlockades.add(blockadeId);
+        for(Blockade blockade: board.getBlockades()) {
+            if (blockade.getBLOCKADE_ID() == blockadeId) {
+                removeBlockade(blockade);
+            }
+        }
     }
 
     /*
@@ -326,6 +412,7 @@ public class Player implements Serializable {
      */
     public void endRound() {
         draw();
+        this.removeBlockades = new ArrayList<>();
         coins = (float) 0;
         bought = false;
     }

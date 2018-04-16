@@ -158,16 +158,21 @@ public class Game implements Serializable {
         this.pathMatrix = new Matrix(assembler.assembleBoard(this.boardId));
         this.startingSpaces.addAll(assembler.getStartingFields(this.boardId));
         this.blockades = assembler.getBlockades(this);
+        for(Blockade blockade: blockades){
+            for(BlockadeSpace blockadeSpace: blockade.getSpaces()){
+                blockadeSpace.setParentBlockade(blockade.getBLOCKADE_ID());
+            }
+        }
         System.out.println("post ghettos blockados");
-        int i = 0;
+        int i = 3;
         for(Player player:players){
             player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i), 0));
             if(players.size() == 2){
-                i++;
+                i--;
                 player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i), 1));
             }
             System.out.println("constructos playos pieceos"+i);
-            i++;
+            i--;
         }
     }
 }

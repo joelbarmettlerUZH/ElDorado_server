@@ -1,10 +1,15 @@
 package ch.uzh.ifi.seal.soprafs18.game.main;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
+import ch.uzh.ifi.seal.soprafs18.game.cards.MovingCard;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,19 +37,135 @@ public class Pathfinder  implements Serializable {
     contining the reachable HexSpaces with using the Xth colour. The union of these arrays then is the returned
     value for reachables.
 
-    If multiple cards were selected or just one card of type actionCard, PathFinder checks whether one of the neighbours
-    is of color “rubble” and only allows the move if a rubble with strenght less than the number of cards selected is in the set of neighbours.
+    -If multiple cards were selected or just one card of type actionCard, PathFinder checks whether one of the neighbours
+    -is of color “rubble” and only allows the move if a rubble with strenght less than the number of cards selected is in the set of neighbours.
 
-    When the PathFinder finished calculating the reachables, he sets the memento by setting the mementos cards and the
-    references to all reachables. In the next call of the PathFinder, he will loop over all the HexSpaceEntity references saved
-    inside the Memento and resets their states like previous and minialCost, minimalDepth so that he will not have false
-    leftover information from the previous call.
+    -When the PathFinder finished calculating the reachables, he sets the memento by setting the mementos cards and the
+    -references to all reachables. In the next call of the PathFinder, he will loop over all the HexSpaceEntity references saved
+    -inside the Memento and resets their states like previous and minialCost, minimalDepth so that he will not have false
+    -leftover information from the previous call.
 
-    Before the PathFinder returns the reachables, all HexSpaces of type Blockade are filtered out of it so that the user
-    can not move on Hexspace. Note that the Baricades to not disapear from the previous history of the individual reachable
-    HexSpaces.
+    -Before the PathFinder returns the reachables, all HexSpaces of type Blockade are filtered out of it so that the user
+    -can not move on Hexspace. Note that the Blockades to not disapear from the previous history of the individual reachable
+    -HexSpaces.
     */
-    public static List<HexSpace> getWay(List<Card> cards, PlayingPiece playingPiece){
-        return null;
+    public static List<HexSpace> getWay(Game game, List<Card> inputCards, PlayingPiece playingPiece){
+        /*
+        When the PathFinder finished calculating the reachables, he sets the memento by setting the mementos cards and the
+        references to all reachables. In the next call of the PathFinder, he will loop over all the HexSpaceEntity references saved
+        inside the Memento and resets their states like previous and minialCost, minimalDepth so that he will not have false
+        leftover information from the previous call.
+         */
+        Set<Card> cards = new HashSet<>(inputCards);
+        game.getMemento().reset();
+        Set<HexSpace> reachables;
+        HexSpace hexSpace = playingPiece.getStandsOn();
+        hexSpace.setMinimalDepth(0);
+        hexSpace.setMinimalCost(0);
+
+        if(cards.size()==1){
+            reachables = singlecardCase(game, cards, hexSpace);
+        }
+        else{
+            reachables = multicardCase(game, cards, hexSpace);
+        }
+
+        /*
+        Before the PathFinder returns the reachables, all HexSpaces of type Blockade are filtered out of it so that the user
+        can not move on Hexspace. Note that the Blockades to not disapear from the previous history of the individual reachable
+        HexSpaces.
+        */
+        setMemento(game, reachables, cards, playingPiece);
+        return new ArrayList<>(filterBlockades(reachables));
     }
+
+    private static Set<HexSpace> singlecardCase(Game game, Set<Card> cards, HexSpace hexSpace){
+        Set<HexSpace> reachables = new HashSet<>();
+        Card card = cards.iterator().next();
+        if(card instanceof MovingCard){
+            for(COLOR color: ((MovingCard) card).getColors()){
+                reachables.addAll(findReachables(game, color, ((MovingCard) card).getStrength(), ((MovingCard) card).getDepth(), hexSpace));
+            }
+        }
+
+        //Check rubble as well
+        reachables.addAll(multicardCase(game, new HashSet<>(cards), hexSpace));
+        return reachables;
+    }
+
+    private static Set<HexSpace> findReachables(Game game, COLOR color, int strength, int depth, HexSpace hexSpace){
+        List<HexSpace> reachables = new ArrayList<>();
+        reachables.add(hexSpace);
+        int currentPosition = 0;
+        do{
+            HexSpace current = reachables.get(currentPosition);
+            System.out.println("Current: "+current.toString());
+            List<HexSpace> potentialNeighbours = reachables.get(currentPosition).getNeighbour(game);
+            for(HexSpace neighbour: potentialNeighbours){
+                System.out.println("Neighbour: "+neighbour.toString());
+                if((neighbour.getColor() == color)
+                        &&
+                        (strength - current.getMinimalCost() - neighbour.getStrength() >= 0)
+                        &&
+                        (depth - current.getMinimalDepth() - 1 >= 0)){
+                    System.out.println("validito");
+                    if((!reachables.contains(neighbour) || neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength())){
+                        neighbour.setMinimalCost(current.getMinimalCost() + neighbour.getStrength());
+                        neighbour.setMinimalDepth(current.getMinimalDepth()+1);
+                        ArrayList<HexSpace> previous = new ArrayList<>(current.getPrevious());
+                        previous.add(current);
+                        neighbour.setPrevious(previous);
+                        if(reachables.contains(neighbour)){
+                            if(reachables.indexOf(neighbour) < currentPosition){
+                                currentPosition--;
+                            }
+                            reachables.remove(neighbour);
+                        }
+                        reachables.add(neighbour);
+                    }
+                }
+            }
+            currentPosition++;
+        }while(currentPosition<reachables.size());
+        System.out.println("dijkstrato finitototo");
+        return new HashSet<>(reachables);
+    }
+
+    private static Set<HexSpace> multicardCase(Game game, Set<Card> cards, HexSpace hexSpace){
+        /*
+        If multiple cards were selected or just one card of type actionCard, PathFinder checks whether one of the neighbours
+        is of color “rubble” and only allows the move if a rubble with strenght less than the number of cards selected is in the set of neighbours.
+         */
+        Set<HexSpace> neighbours = new HashSet<>(hexSpace.getAllNeighbour(game));
+        Set<HexSpace> reachables = new HashSet<>();
+        reachables.add(hexSpace);
+        for(HexSpace neighbour: neighbours){
+            if(neighbour.getColor().equals(COLOR.RUBBLE) && neighbour.getStrength() >= cards.size()){
+                reachables.add(neighbour);
+            }
+            if(neighbour.getColor().equals(COLOR.BASECAMP) && neighbour.getStrength() >= cards.size()){
+                reachables.add(neighbour);
+            }
+        }
+        return reachables;
+    }
+
+
+    private static Set<HexSpace> filterBlockades(Set<HexSpace> hexSpaces){
+        /*
+        Filter out all hexSpaces that are part of a blockade
+         */
+        for(HexSpace hexSpace: hexSpaces){
+            if(hexSpace.getClass() == BlockadeSpace.class){
+                hexSpaces.remove(hexSpace);
+            }
+        }
+        return hexSpaces;
+    }
+
+    private static void setMemento(Game game, Set<HexSpace> hexSpaces, Set<Card> cards, PlayingPiece playingPiece){
+        Memento memento = new Memento(hexSpaces, cards, playingPiece);
+        game.setMemento(memento);
+    }
+
 }
