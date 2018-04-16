@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class CardTest {
 
-    Card card1 = new MovingCard("test", 3,4,2,2, COLOR.JUNGLE);
+    Card card1 = new MovingCard("test", 3,4,2,2,new COLOR[]{COLOR.JUNGLE});
 
     @Test
     public void sellAction() {

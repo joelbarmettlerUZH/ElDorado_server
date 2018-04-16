@@ -41,8 +41,6 @@ public class Market implements Serializable {
                         new MovingCard("Photographer", 2, 2, 2, 99, new COLOR[]{COLOR.SAND}))
                 );
 
-
-
         passive = new ArrayList<>();
 
         passive.add(
@@ -94,7 +92,6 @@ public class Market implements Serializable {
                 new Slot(
                         new MovingCard("Journalist", 3, 3, 3, 99, new COLOR[]{COLOR.SAND}))
         );
-
     }
 
     /*

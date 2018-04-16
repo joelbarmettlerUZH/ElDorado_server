@@ -34,9 +34,11 @@ public class ActionCard extends Card {
     /*
    The performAction returns a Budget of how many cards the Player can draw/remove/steal for free.
      */
-    public SpecialActions performAction(Player player){
+    public SpecialActions performAction(Player player)
+    {
         return actions;
     }
+
 
     /*
     Calls Player.discard(this) in the standard case. If the to-HexSpace happens to be of color BaseCamp,
@@ -44,10 +46,12 @@ public class ActionCard extends Card {
      */
     @Override
     public void moveAction(Player player, HexSpace moveTo){
-        if (moveTo.getColor() == COLOR.BASECAMP) {
-            player.remove(this);
-        } else {
-            player.discard(this);
+        if (player.getHandPile().contains(this)) {
+            if (moveTo.getColor() == COLOR.BASECAMP) {
+                player.remove(this);
+            } else {
+                player.discard(this);
+            }
         }
     }
 }

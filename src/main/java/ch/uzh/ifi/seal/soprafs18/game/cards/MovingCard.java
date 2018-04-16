@@ -73,10 +73,12 @@ public class MovingCard extends Card{
     @Override
     public void moveAction(Player player, HexSpace moveTo) {
 
-        if (moveTo.getColor() == COLOR.BASECAMP){
-            player.remove(this);
-        } else {
-            player.discard(this);
+        if (player.getHandPile().contains(this)) {
+            if (moveTo.getColor() == COLOR.BASECAMP) {
+                player.remove(this);
+            } else {
+                player.discard(this);
+            }
         }
     }
 }

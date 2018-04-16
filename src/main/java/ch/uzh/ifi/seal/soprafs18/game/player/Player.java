@@ -27,21 +27,23 @@ import static java.lang.Boolean.FALSE;
 @Entity
 @Data
 @Table(name = "PLAYER_ENTITY")
-public class Player  implements Serializable {
+public class Player implements Serializable {
 
     //TODO: Set correct  initial cardAction budget
-    public Player(int PlayerID, String name, Game game, String token){
+    public Player(int PlayerID, String name, Game game, String token) {
         this();
 
         //this.token = token;
         this.name = name;
         this.playerId = PlayerID;
         this.board = game;
-        this.history = new ArrayList<>();
+
+        //Already in this()
+        this.history = new ArrayList<CardAction>();
         history.add(new CardAction("Testaction"));
     }
 
-    public Player(){
+    public Player() {
         this.name = "Unknown";
         this.playerId = -1;
         this.playerId = -1;
@@ -49,11 +51,11 @@ public class Player  implements Serializable {
         this.coins = (float) 0;
         this.pathFinder = new Pathfinder();
         this.playingPieces = new ArrayList<PlayingPiece>();
-        this.specialAction = new SpecialActions(0,0,0);
+        this.specialAction = new SpecialActions(0, 0, 0);
         this.history = new ArrayList<CardAction>();
-        history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11,  new SpecialActions(3, 3, 3)), "Testaction"));
+        history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11, new SpecialActions(3, 3, 3)), "Testaction"));
 
-        this.drawPile  = new ArrayList<Card>();
+        this.drawPile = new ArrayList<Card>();
         drawPile.add(new MovingCard("Sailor", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER}));
         drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE}));
         drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE}));
@@ -65,9 +67,11 @@ public class Player  implements Serializable {
         Collections.shuffle(drawPile);
 
         this.handPile = new ArrayList<Card>();
-        handPile.add(new RemoveMoveSellCard("MovingCard", -4, -5, -6, -7, new COLOR[] {COLOR.RIVER}));
+        // Why adding a card? Had to comment it for testing purposes.
+        // handPile.add(new RemoveMoveSellCard("MovingCard", -4, -5, -6, -7, new COLOR[]{COLOR.RIVER}));
         this.discardPile = new ArrayList<Card>();
-        discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
+        // Why is this?
+        // discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
         this.bought = FALSE;
         this.token = "TESTTOKEN";
     }
@@ -212,10 +216,12 @@ public class Player  implements Serializable {
      */
 
     public void action(ActionCard card) {
-        specialAction = card.performAction(this);
+        if (handPile.contains(card)) {
+            specialAction = card.performAction(this);
 
-        CardAction cardAct = new CardAction(card, "Play: " + card.getName());
-        history.add(cardAct);
+            CardAction cardAct = new CardAction(card, "Play: " + card.getName());
+            history.add(cardAct);
+        }
     }
 
     /*
@@ -224,7 +230,7 @@ public class Player  implements Serializable {
      */
     public void discard(Card card) {
 
-        CardAction cardAct = new CardAction(card,"Discard: " + card.getName());
+        CardAction cardAct = new CardAction(card, "Discard: " + card.getName());
         history.add(cardAct);
 
         if (handPile.contains(card)) {
@@ -239,9 +245,10 @@ public class Player  implements Serializable {
     calls Card.sell(self: Player)
      */
     public void sell(Card card) {
-
-        history.add(new CardAction(card,"Sell: " + card.getName()));
-        card.sellAction(this);
+        if (handPile.contains(card)) {
+            history.add(new CardAction(card, "Sell: " + card.getName()));
+            card.sellAction(this);
+        }
     }
 
     /*
@@ -273,7 +280,7 @@ public class Player  implements Serializable {
         int amountTmp = amount;
         CardAction cardAct = new CardAction("Draw " + amountTmp + " cards.");
         while (drawPile.size() > 0 && amount > 0) {
-            cardAct.addCard(drawPile.get(0));
+            cardAct.addCard(this.drawPile.get(0));
             handPile.add(drawPile.remove(0));
             amount--;
         }
@@ -298,16 +305,20 @@ public class Player  implements Serializable {
     coins nor the bought-boolean into consideration.
      */
     public void steal(Slot slot) {
-        history.add(new CardAction(slot.getCard(), "Take: " + slot.getCard().getName()));
-        discardPile.add(slot.buy());
+        if (specialAction.getSteal() > 0) {
+            history.add(new CardAction(slot.getCard(), "Take: " + slot.getCard().getName()));
+            discardPile.add(slot.buy());
+        }
     }
 
     /*
     Moves the card from the handPile to the removePile.
      */
     public void remove(Card card) {
-        history.add(new CardAction(card,"Remove: " + card.getName()));
-        handPile.remove(card);
+        if (handPile.contains(card)) {
+            history.add(new CardAction(card, "Remove: " + card.getName()));
+            handPile.remove(card);
+        }
     }
 
     /*
@@ -323,8 +334,7 @@ public class Player  implements Serializable {
         coins = coins + amount;
     }
 
-    public void addPlayingPiece(PlayingPiece playingPiece){
+    public void addPlayingPiece(PlayingPiece playingPiece) {
         this.playingPieces.add(playingPiece);
     }
-
 }

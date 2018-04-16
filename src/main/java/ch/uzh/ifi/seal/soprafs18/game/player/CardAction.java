@@ -19,16 +19,19 @@ public class CardAction  implements Serializable {
     private int cardActionId;
 
     public CardAction(Card card, String actionName){
-        cards = new ArrayList<>();
+        this();
         addCard(card);
         this.actionName = actionName;
     }
 
     public CardAction(String actionName){
+        this();
         this.actionName = actionName;
     }
 
-    public CardAction(){ }
+    public CardAction(){
+        cards = new ArrayList<>();
+    }
 
     /*
     Name of the corresponding Action that is then displayed in the FrontEnd
@@ -40,7 +43,7 @@ public class CardAction  implements Serializable {
      */
     @Embedded
     @ElementCollection
-    private List<Card> cards;
+    private ArrayList<Card> cards;
 
     public void addCard(Card card){
         cards.add(card);

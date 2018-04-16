@@ -18,51 +18,23 @@ import static org.junit.Assert.*;
 public class ActionCardTest {
 
     Game testGame = new Game();
-    HexSpace testBaseCamp = new HexSpace(4,1,3, BASECAMP, new Point(), new ArrayList<>(), testGame);
-    HexSpace testJungle= new HexSpace(4,1,3, JUNGLE, new Point(), new ArrayList<>(), testGame);
-    SpecialActions testActions = new SpecialActions(3,3,3);
-
-    PlayingPiece testPiece = new PlayingPiece();
-
-    Card card1 = new MovingCard("test1", 3,4,2,2, COLOR.JUNGLE);
-    Card card2 = new MovingCard("test2", 3,4,2,2, COLOR.JUNGLE);
-    Card card3 = new MovingCard("test3", 3,4,2,2, COLOR.JUNGLE);
-
-    ArrayList drawPile = new ArrayList();
-
+    HexSpace testJungle= new HexSpace();
+    SpecialActions testActions = new SpecialActions(0,0,0);
     ActionCard testCard = new ActionCard("test", 4, 3, testActions);
+    Player testPlayer = new Player(1, "testPlayer", testGame,"testToken");
 
     @Test
     public void performAction() {
 
-        drawPile.add(card1);
-        drawPile.add(card2);
-        drawPile.add(card3);
-
-        Player testPlayer = new Player("testPlayer", testGame, 1, new SpecialActions(), drawPile,"testToken");
-
-        assertEquals(testActions, testCard.performAction(testPlayer));
+        assertEquals(testPlayer.getSpecialAction(), testCard.performAction(testPlayer));
     }
 
     @Test
     public void moveAction() {
 
-        drawPile.add(card1);
-        drawPile.add(card2);
-        drawPile.add(card3);
-
-        Player testPlayer = new Player("testPlayer", testGame, 1, new SpecialActions(), drawPile,"testToken");
-
-        //assertEquals(testPlayer. , testCard.performAction(testPlayer));
-
-       // testPlayer.move(testPiece, testPlayer. , testBaseCamp);
-
-
-        /* have no idea how to test this /////////////////////
-        testCard.moveAction(testPlayer, testBaseCamp);
-
-        testPlayer.
-        assertEquals(null, testPlayer.);
-        *////////////////////
+        testPlayer.draw();
+        assertEquals(0, testPlayer.getDiscardPile().size());
+        testPlayer.getHandPile().get(0).moveAction(testPlayer, testJungle);
+        assertEquals(1, testPlayer.getDiscardPile().size());
     }
 }

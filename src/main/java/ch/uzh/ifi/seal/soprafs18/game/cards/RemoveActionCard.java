@@ -22,8 +22,12 @@ public class RemoveActionCard extends ActionCard {
     }
 
     @Override
-    public SpecialActions performAction(Player player){
-        player.remove(this);
-        return actions;
+    public SpecialActions performAction(Player player) {
+        if (player.getHandPile().contains(this)) {
+            player.remove(this);
+            return actions;
+        } else {
+            return new SpecialActions();
+        }
     }
 }

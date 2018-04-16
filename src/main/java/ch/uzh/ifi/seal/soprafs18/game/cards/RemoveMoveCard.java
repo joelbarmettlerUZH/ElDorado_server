@@ -24,11 +24,12 @@ public class RemoveMoveCard extends MovingCard {
      */
     @Override
     public void moveAction(Player player, HexSpace moveTo) {
-
-        if (this.colors.contains(COLOR.RUBBLE)){
-            player.discard(this);
-        } else {
-            player.remove(this);
+        if (player.getHandPile().contains(this)) {
+            if (this.colors.contains(COLOR.RUBBLE)) {
+                player.discard(this);
+            } else {
+                player.remove(this);
+            }
         }
     }
 }
