@@ -243,7 +243,7 @@ public class Application {
             }
 
             List<Integer> blockadeY_defaultPath = new ArrayList<>();
-            int [] blockadeY = {7,7,6,6,9,10,11,12,8,9,10,11,14,13,12,11};
+            int [] blockadeY = {7,7,6,6,9,10,11,12,8,9,10,11,14,13,13,12};
             for (int posY : blockadeY) {
                 blockadeY_defaultPath.add(posY);
             }
