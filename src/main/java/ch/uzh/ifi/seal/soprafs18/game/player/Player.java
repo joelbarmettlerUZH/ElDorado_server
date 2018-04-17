@@ -11,12 +11,8 @@ import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.swing.*;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
 import java.util.List;
@@ -82,6 +78,11 @@ public class Player implements Serializable {
     @Id
     @Column(name = "GLOBAL_PLAYERID")
     private int playerId;
+
+    /*
+    Character number
+     */
+    private int characterNumber;
 
     /*
     Players  name, set by the User. Has to be unique in the Game
@@ -204,7 +205,7 @@ public class Player implements Serializable {
     }
 
     public boolean myTurn(){
-        if(!(board.getCurrentPlayerID() == this.getPlayerId())){
+        if(!(board.getCurrent().getPlayerId() == this.getPlayerId())){
             System.out.println("Not the players turn!");
             return false;
         }
@@ -242,7 +243,7 @@ public class Player implements Serializable {
         if (!(playingPiece == memento.getPlayingPiece() && cards.equals(memento.getSelectedCards()))) {
            Pathfinder.getWay(board,cards,playingPiece);
         }
-        Set<HexSpace> reachables = memento.getReachables();
+        Set<HexSpace> reachables = new HashSet<>(memento.getReachables());
         if (reachables.contains(moveTo)){
             HexSpace oldPosition = playingPiece.getStandsOn();
             playingPiece.setStandsOn(moveTo);
@@ -446,6 +447,7 @@ public class Player implements Serializable {
         this.removeBlockades = new ArrayList<>();
         coins = (float) 0;
         bought = false;
+        board.endRound();
     }
 
     public void addCoins(Float amount) {

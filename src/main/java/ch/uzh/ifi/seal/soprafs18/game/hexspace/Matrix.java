@@ -3,6 +3,8 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Assembler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,8 +15,8 @@ import java.util.List;
 @Data
 public class Matrix implements Serializable{
 
-    @Embedded
-    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     private List<HexSpace> matrixArray;
 
     private int xDim, yDim;

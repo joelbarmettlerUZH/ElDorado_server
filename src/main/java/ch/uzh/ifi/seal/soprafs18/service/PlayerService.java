@@ -181,16 +181,16 @@ public class PlayerService  implements Serializable {
         return player;
     }
 
-    public Player movePlayer(int id, List<Card> c, int playingPiece, Point point, String token){
+    public Player movePlayer(int id, List<Card> c, int playingPiece, HexSpace hexSpace, String token){
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
-            LOGGER.info("Player " + player.getPlayerId() + " is moving to Field at position ( "+point.getX()+" / "+point.getY()+" ).");
+            LOGGER.info("Player " + player.getPlayerId() + " is moving to Field at position ( "+hexSpace.getPoint().getX()+" / "+hexSpace.getPoint().getY()+" ).");
             List<Card> cards = new ArrayList<>();
             for(Card card:c){
                 cards.add(cardRepository.findById(card.getId()).get(0));
                 LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. ");
             }
-            player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(point));
+            player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(hexSpace.getPoint()));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             return player;
@@ -228,6 +228,8 @@ public class PlayerService  implements Serializable {
         }
         LOGGER.info("Player "+player.getPlayerId()+" requested pathfinding.");
         Game game = player.getBoard();
+        game.getMemento().reset();
+        gameRepository.save(player.getBoard());
         List<HexSpace> reachables = Pathfinder.getWay(game, cards, playingPiece);
         gameRepository.save(player.getBoard());
         return reachables;

@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 //import java.awt.*;
@@ -18,11 +20,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Embeddable
-@MappedSuperclass
+@Entity
+@Inheritance
 @Getter
 @Setter
 public class HexSpace implements Serializable{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int hexSpaceId;
 
     /*
     CONSTRUCTOR
@@ -101,8 +107,10 @@ public class HexSpace implements Serializable{
     @JoinColumn(name = "hexid")
     @Column(name="PREVIOUS")*/
 
-    @ElementCollection
-    protected ArrayList<HexSpace> previous;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    @JsonIgnore
+    protected List<HexSpace> previous;
 
     /**
      Function to calculata all six neighbors of a hexspace without any postprocessing

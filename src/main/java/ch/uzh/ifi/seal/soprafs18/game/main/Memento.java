@@ -6,6 +6,9 @@ import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,13 +27,13 @@ public class Memento  implements Serializable {
     private int momentoId;
 
     public Memento(Set<HexSpace> reachables, Set<Card> selectedCards, PlayingPiece playingPiece){
-        this.reachables = reachables;
+        this.reachables = new ArrayList<>(reachables);
         this.selectedCards = selectedCards;
         this.playingPiece = playingPiece;
     }
 
     public Memento(){
-        this.reachables = new HashSet<>();
+        this.reachables = new ArrayList<>();
         this.selectedCards = new HashSet<>();
         this.playingPiece = null;
     }
@@ -38,9 +41,9 @@ public class Memento  implements Serializable {
     /*
     List of HexSpaces that the PathFinder reached.
      */
-    @Embedded
-    @ElementCollection
-    private Set<HexSpace> reachables;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    private List<HexSpace> reachables;
 
     /*
     List of Cards that were used to perform the pathfinding-algorithm.

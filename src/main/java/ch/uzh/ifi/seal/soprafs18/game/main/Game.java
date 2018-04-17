@@ -2,23 +2,14 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
-import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.hibernate.service.spi.InjectService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -69,14 +60,14 @@ public class Game implements Serializable {
     @OneToOne
     private Player current; //
 
-    @Embedded
-    @ElementCollection
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
     private List<HexSpace> startingSpaces;
 
     /*
     Serves as an identifier for the current player for hibernate
      */
-    private int currentPlayerID;
+    private int currentPlayerNumber;
 
     /*
     Indicates whether the game is still in a running state or whether it has finished.
@@ -134,8 +125,8 @@ public class Game implements Serializable {
     PathFinder modifies them, so that the HexSpaces can be reset.
     Json does not need to be in the gameEntity
      */
-    @Transient
-    //@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Memento memento;
 
     /*
@@ -147,8 +138,9 @@ public class Game implements Serializable {
     }
 
     public void setPlayers(List<Player> players) {
-        this.current = players.get(0);
-        this.currentPlayerID = current.getPlayerId();
+        int index = (int) (Math.random()*players.size());
+        this.current = players.get(index);
+        this.currentPlayerNumber = index;
         this.players = players;
         System.out.println("***set current***");
     }
@@ -174,5 +166,10 @@ public class Game implements Serializable {
             }
             i--;
         }
+    }
+
+    public void endRound(){
+        currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
+        current = players.get(currentPlayerNumber);
     }
 }

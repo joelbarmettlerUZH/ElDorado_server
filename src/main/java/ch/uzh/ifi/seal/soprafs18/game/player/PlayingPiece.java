@@ -18,14 +18,14 @@ public class PlayingPiece  implements Serializable {
         this.standsOn = hexSpace;
     }
 
-    private int playingPieceId;
+    private Integer playingPieceId;
 
     public PlayingPiece(){}
 
     /*
     Current HexSpace the PLayingPiece is standing on
      */
-    @Embedded
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private HexSpace standsOn;
 
     @JsonIgnore
