@@ -44,23 +44,23 @@ public class RoomService  implements Serializable {
         }
     }
 
-    public void joinUser(int roomID, UserEntity userEntity, String token) {
-        if (!UserService.valid(token, userEntity, userRepository)) {
-            LOGGER.warning("User " + userEntity.getUserID() + " was trying to join with wrong or missing token");
-            return;
-        }
+    public RoomEntity joinUser(int roomID, UserEntity userEntity, String token) {
         UserEntity user = userRepository.findByUserID(userEntity.getUserID()).get(0);
         RoomEntity room = roomRepository.findByRoomID(roomID).get(0);
+        if (!UserService.valid(token, userEntity, userRepository)) {
+            LOGGER.warning("User " + userEntity.getUserID() + " was trying to join with wrong or missing token");
+            return room;
+        }
         if (room.getUsers().size() == 4) {
             LOGGER.info("Unable to join room " + roomID + " due to a usernumber of 4");
-            return;
+            return room;
         }
         int character = user.getCharacter();
         for(UserEntity u: room.getUsers()){
             if(u.getCharacter() == user.getCharacter() || u.getName().toLowerCase().equals(user.getName().toLowerCase())){
                 LOGGER.info("Unable to join room " + roomID + " Since chosen character "+user.getCharacter()
                         +"or chosen Name " + user.getName() + " is already existent:");
-                return;
+                return room;
             }
         }
         user.setRoomEntity(room);
@@ -69,15 +69,16 @@ public class RoomService  implements Serializable {
         userRepository.save(user);
         LOGGER.info("User " + user.getUserID() + " joined room " + roomID + " successfully. Updating room now");
         updateRoom(room);
+        return room;
     }
 
-    public void leaveUser(int roomID, UserEntity userEntity, String token) {
+    public RoomEntity leaveUser(int roomID, UserEntity userEntity, String token) {
         UserEntity user = userRepository.findByUserID(userEntity.getUserID()).get(0);
+        RoomEntity room = roomRepository.findByRoomID(roomID).get(0);
         if (!UserService.valid(token, user, userRepository)) {
             LOGGER.warning("User " + userEntity.getUserID() + " was trying to leave room with wrong or missing token");
-            return;
+            return room;
         }
-        RoomEntity room = roomRepository.findByRoomID(roomID).get(0);
         List<UserEntity> currentUsers = room.getUsers();
         currentUsers.remove(user);
         room.setUsers(currentUsers);
@@ -88,6 +89,7 @@ public class RoomService  implements Serializable {
             roomRepository.delete(room);
             LOGGER.info("Deleted room since no users are left");
         }
+        return room;
     }
 
     public List<UserEntity> getUsers(RoomEntity roomEntity) {
@@ -95,10 +97,10 @@ public class RoomService  implements Serializable {
         return roomEntity.getUsers();
     }
 
-    public int newRoom(RoomEntity roomEntity) {
+    public RoomEntity newRoom(RoomEntity roomEntity) {
         roomRepository.save(roomEntity);
         LOGGER.info("Created new room " + roomEntity.getRoomID());
-        return roomEntity.getRoomID();
+        return roomEntity;
 
     }
 

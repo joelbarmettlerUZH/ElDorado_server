@@ -69,6 +69,7 @@ public class GameService implements Serializable{
         for (UserEntity user : users) {
             LOGGER.info("Creating new player "+user.getUserID()+" with name "+user.getName()+" and position "+i);
             Player player = new Player(user.getUserID(), user.getName(), null, user.getToken());
+            player.setCharacterNumber(user.getCharacter());
             LOGGER.info("Added player to players");
             players.add(player);
             LOGGER.info("Save Player to database");
@@ -91,9 +92,7 @@ public class GameService implements Serializable{
 
     public Game getGame(int gameID) {
         LOGGER.info("Returning game with ID " + gameID);
-        Game game = gameRepository.findByGameId(gameID).get(0);
-        System.out.println("WA-DU-HEK: "+game.getPathMatrix().get(4, 4).getColor());
-        return game;
+        return gameRepository.findByGameId(gameID).get(0);
     }
 
     public List<Player> getPlayers(int id) {

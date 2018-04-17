@@ -33,8 +33,7 @@ public class Blockade  implements Serializable {
     /*
     List of BlockadeSpaces/HexSpaces the Blockade consists of.
      */
-    @Embedded
-    @ElementCollection
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BlockadeSpace> spaces;
 
     /*

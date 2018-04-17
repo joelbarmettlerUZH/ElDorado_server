@@ -29,9 +29,8 @@ public class RoomController  implements Serializable {
     //Creates new empty room
     @PostMapping(value = context)
     @ResponseStatus(HttpStatus.CREATED)
-    public String createRoom(@RequestBody RoomEntity roomEntity){
-        int number = roomService.newRoom(roomEntity);
-        return context + "/" + String.valueOf(number);
+    public RoomEntity createRoom(@RequestBody RoomEntity roomEntity){
+        return roomService.newRoom(roomEntity);
     }
 
     //Gets room by its ID
@@ -44,15 +43,15 @@ public class RoomController  implements Serializable {
     //Joins a player to a room
     @PutMapping(value = context+"/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void joinUser(@PathVariable int id, @RequestBody UserEntity userEntity, @RequestParam("token") String token){
-        roomService.joinUser(id, userEntity, token);
+    public RoomEntity joinUser(@PathVariable int id, @RequestBody UserEntity userEntity, @RequestParam("token") String token){
+        return roomService.joinUser(id, userEntity, token);
     }
 
     //Remove a player from a room
     @DeleteMapping(value = context+"/{id}")
     @ResponseStatus(HttpStatus.GONE)
-    public void leaveUser(@PathVariable int id, @RequestBody UserEntity userEntity, @RequestParam("token") String token){
-        roomService.leaveUser(id, userEntity, token);
+    public RoomEntity leaveUser(@PathVariable int id, @RequestBody UserEntity userEntity, @RequestParam("token") String token){
+        return roomService.leaveUser(id, userEntity, token);
     }
 
 

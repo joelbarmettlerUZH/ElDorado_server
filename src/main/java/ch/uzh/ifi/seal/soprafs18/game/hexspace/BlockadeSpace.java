@@ -14,7 +14,7 @@ import javax.persistence.Embeddable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Embeddable
+@Entity
 @Data
 public class BlockadeSpace extends HexSpace implements Serializable {
     /*
