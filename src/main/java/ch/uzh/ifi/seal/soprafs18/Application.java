@@ -214,21 +214,21 @@ public class Application {
             tileRotation_defaultPath.add(0);
             tileRotation_defaultPath.add(3);
             tileRotation_defaultPath.add(3);
-            tileRotation_defaultPath.add(5);
+            tileRotation_defaultPath.add(1);
 
             List<Integer> tilePositionsX_defaultPath = new ArrayList<>();
             tilePositionsX_defaultPath.add(4);
-            tilePositionsX_defaultPath.add(5);
-            tilePositionsX_defaultPath.add(11);
-            tilePositionsX_defaultPath.add(17);
+            tilePositionsX_defaultPath.add(8);
             tilePositionsX_defaultPath.add(16);
+            tilePositionsX_defaultPath.add(24);
+            tilePositionsX_defaultPath.add(27);
 
             List<Integer> tilePositionsY_defaultPath = new ArrayList<>();
             tilePositionsY_defaultPath.add(4);
-            tilePositionsY_defaultPath.add(12);
+            tilePositionsY_defaultPath.add(10);
+            tilePositionsY_defaultPath.add(11);
+            tilePositionsY_defaultPath.add(10);
             tilePositionsY_defaultPath.add(16);
-            tilePositionsY_defaultPath.add(19);
-            tilePositionsY_defaultPath.add(27);
 
             List<Integer> blockadeIDs_defaultPath = new ArrayList<>();
             int [] blockadeIds = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3};
@@ -237,13 +237,13 @@ public class Application {
             }
 
             List<Integer> blockadeX_defaultPath = new ArrayList<>();
-            int [] blockadeX = {3,4,5,6,8,8,7,7,15,14,14,13,15,16,17,18};
+            int [] blockadeX = {5,6,7,8,12,12,12,12,20,20,20,20,24,25,26,27};
             for (int posX : blockadeX) {
                 blockadeX_defaultPath.add(posX);
             }
 
             List<Integer> blockadeY_defaultPath = new ArrayList<>();
-            int [] blockadeY = {8,8,8,8,13,14,15,16,16,17,18,19,23,23,23,23};
+            int [] blockadeY = {7,7,6,6,9,10,11,12,8,9,10,11,14,13,12,11};
             for (int posY : blockadeY) {
                 blockadeY_defaultPath.add(posY);
             }
@@ -255,12 +255,12 @@ public class Application {
             }
 
             List<Integer> EndSpacesX_defaultPath = new ArrayList<>();
-            int [] EndSpacesX = {14,14,15};
+            int [] EndSpacesX = {26,27,28};
             for (int posX : EndSpacesX) {
                 EndSpacesX_defaultPath.add(posX);
             }
             List<Integer> EndSpacesY_defaultPath = new ArrayList<>();
-            int [] EndSpacesY = {30,31,31};
+            int [] EndSpacesY = {20,20,20};
             for (int posY : EndSpacesY) {
                 EndSpacesY_defaultPath.add(posY);
             }

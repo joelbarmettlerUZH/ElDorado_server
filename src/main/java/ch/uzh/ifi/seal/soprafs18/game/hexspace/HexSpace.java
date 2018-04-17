@@ -101,7 +101,8 @@ public class HexSpace implements Serializable{
     @JoinColumn(name = "hexid")
     @Column(name="PREVIOUS")*/
 
-    @ElementCollection
+    //@ElementCollection
+    @Transient
     protected ArrayList<HexSpace> previous;
 
     /**
@@ -116,14 +117,14 @@ public class HexSpace implements Serializable{
         neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y)));
         neighbours.add(game.getHexSpace(new Point(this.point.x,this.point.y+1)));
         neighbours.add(game.getHexSpace(new Point(this.point.x,this.point.y-1)));
-        if(this.point.y%2==0){
+        if(this.point.x%2==0){
             //even Column
-            neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
             neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y-1)));
         } else {
             //odd Column
+            neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
             neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
-            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y-1)));
         }
         return neighbours;
     }

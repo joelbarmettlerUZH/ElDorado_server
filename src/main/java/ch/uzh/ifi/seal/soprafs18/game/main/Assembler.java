@@ -45,26 +45,26 @@ public class Assembler implements Serializable {
     //private int boardId;
 
     /**
-    compute relative positions for OuterRing
-    */
-    private int[] outerRingDislocY = {0, 1, 2, 3, 3, 3, 3, 2, 1, 0, -1, -2, -3, -3, -3, -3, -2, -1};
-    private int[] outerRingDislocXEven = {-3, -3, -2, -2, -1, 0, 1, 2, 2, 3, 2, 2, 1, 0, -1, -2, -2, -3};
-    private int[] outerRingDislocXOdd = {-3, -2, -2, -1, 0, 1, 2, 2, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2};
+     compute relative positions for OuterRing
+     */
+    private int[] outerRingDislocX = {-3,-2,-1,0,1,2,3,3,3,3,2,1,0,-1,-2,-3,-3,-3};
+    private int[] outerRingDislocYEven = {1,2,2,3,2,2,1,0,-1,-2,-2,-3,-3,-3,-2,-2,-1,0};
+    private int[] outerRingDislocYOdd = {2,2,3,3,3,2,2,1,0,-1,-2,-2,-3,-2,-2,-1,0,1};
 
     /**
-    compute relative positions for MidRing
-    **/
-    private int[] midRingDislocY = {0, 1, 2, 2, 2, 1, 0, -1, -2, -2, -2, -1};
-    private int[] midRingDislocXEven = {-2, -2, -1, -0, 1, 1, 2, 1, 1, 0, -1, -2};
-    private int[] midRingDislocXOdd = {-2, -1, -1, 0, 1, 2, 2, 2, 1, 0, -1, -1};
+     compute relative positions for MidRing
+     **/
+    private int[] midRingDislocX = {-2,-1,0,1,2,2,2,1,0,-1,-2,-2};
+    private int[] midRingDislocYEven = {1,1,2,1,1,0,-1,-2,-2,-2,-1,0};
+    private int[] midRingDislocYOdd = {1,2,2,2,1,0,-1,-1,-2,-1,-1,0};
 
 
     /**
-    compute relative positions for InnerRing
-    **/
-    private int[] innerRingDislocY = {0, 1, 1, 0, -1, -1};
-    private int[] innerRingDislocXEven = {-1, -1, 0, 1, 0, -1};
-    private int[] innerRingDislocXOdd = {-1, 0, 1, 1, 1, 0};
+     compute relative positions for InnerRing
+     **/
+    private int[] innerRingDislocX = {-1,0,1,1,0,-1};
+    private int[] innerRingDislocYEven = {0,1,0,-1,-1,-1};
+    private int[] innerRingDislocYOdd = {1,1,1,0,-1,0};
 
 
     /**
@@ -101,7 +101,7 @@ public class Assembler implements Serializable {
      **/
     private void fillStripEntryInMatrix(HexSpaceEntity[][] boardMatrix, int posX, int posY, int[] disLocY,
                                         int[] disLocEvenX, int[] disLocOddX, int j, HexSpaceEntity hexSpaceEntity) {
-        if (posY % 2 == 0) {
+        if (posX % 2 == 0) {
             boardMatrix[posX + disLocEvenX[j]][posY + disLocY[j]] = hexSpaceEntity;
         } else {
             boardMatrix[posX + disLocOddX[j]][posY + disLocY[j]] = hexSpaceEntity;
@@ -214,27 +214,27 @@ public class Assembler implements Serializable {
             List<HexSpaceEntity> currentTileHexSpaces = Tile.get(i).getHexSpaceEntities();
             for (int j = 0; j < currentTileHexSpaces.size(); j++) {
                 if (j < 18) {
-                    if (TilePositionY.get(i) % 2 == 0) {
-                        boardMatrix[TilePositionX.get(i) + outerRingDislocXEven[j]][TilePositionY.get(i) +
-                                outerRingDislocY[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
+                                outerRingDislocYEven[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
                     } else {
-                        boardMatrix[TilePositionX.get(i) + outerRingDislocXOdd[j]][TilePositionY.get(i) +
-                                outerRingDislocY[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
+                        boardMatrix[TilePositionX.get(i) + outerRingDislocX[j]][TilePositionY.get(i) +
+                                outerRingDislocYOdd[j]] = currentTileHexSpaces.get((j + (currentTileRotation * 3)) % 18);
                     }
                 } else if (j < 30) {
-                    if (TilePositionY.get(i) % 2 == 0) {
-                        boardMatrix[TilePositionX.get(i) + midRingDislocXEven[j-18]][TilePositionY.get(i) + midRingDislocY[j-18]]
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + midRingDislocX[j-18]][TilePositionY.get(i) + midRingDislocYEven[j-18]]
                                 = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 12));
                     } else {
-                        boardMatrix[TilePositionX.get(i) + midRingDislocXOdd[j-18]][TilePositionY.get(i) + midRingDislocY[j-18]]
+                        boardMatrix[TilePositionX.get(i) + midRingDislocX[j-18]][TilePositionY.get(i) + midRingDislocYOdd[j-18]]
                                 = currentTileHexSpaces.get(18 + (((j - 18) + (currentTileRotation * 2)) % 12));
                     }
                 } else if (j < 36) {
-                    if (TilePositionY.get(i) % 2 == 0) {
-                        boardMatrix[TilePositionX.get(i) + innerRingDislocXEven[j-30]][TilePositionY.get(i) + innerRingDislocY[j-30]]
+                    if (TilePositionX.get(i) % 2 == 0) {
+                        boardMatrix[TilePositionX.get(i) + innerRingDislocX[j-30]][TilePositionY.get(i) + innerRingDislocYEven[j-30]]
                                 = currentTileHexSpaces.get(30 + (((j - 30) + (currentTileRotation)) % 6));
                     } else {
-                        boardMatrix[TilePositionX.get(i) + innerRingDislocXOdd[j-30]][TilePositionY.get(i) + innerRingDislocY[j-30]]
+                        boardMatrix[TilePositionX.get(i) + innerRingDislocX[j-30]][TilePositionY.get(i) + innerRingDislocYOdd[j-30]]
                                 = currentTileHexSpaces.get(30 + (((j - 30) + (currentTileRotation)) % 6));
                     }
                 } else {
@@ -411,12 +411,12 @@ public class Assembler implements Serializable {
                     System.out.println("startos fieldos J counteros"+j);
                     if (posX % 2 == 0) {
                         StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
-                                posX + outerRingDislocXEven[(j + (3 * rotation)) % 18],
-                                posY + outerRingDislocY[(j + (3 * rotation)) % 18]));
+                                posX + outerRingDislocX[(j + (3 * rotation)) % 18],
+                                posY + outerRingDislocYEven[(j + (3 * rotation)) % 18]));
                     } else {
                         StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
-                                posX + outerRingDislocXOdd[(j + 3 * rotation) % 18],
-                                posY + outerRingDislocY[(j + 3 * rotation) % 18]));
+                                posX + outerRingDislocX[(j + 3 * rotation) % 18],
+                                posY + outerRingDislocYOdd[(j + 3 * rotation) % 18]));
                     }
                 }
             }
