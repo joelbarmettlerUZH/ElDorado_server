@@ -134,7 +134,8 @@ public class Game implements Serializable {
     PathFinder modifies them, so that the HexSpaces can be reset.
     Json does not need to be in the gameEntity
      */
-    @JsonIgnore
+    @Transient
+    //@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Memento memento;
 
     /*
@@ -171,7 +172,6 @@ public class Game implements Serializable {
                 i--;
                 player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i), 1));
             }
-            System.out.println("constructos playos pieceos"+i);
             i--;
         }
     }

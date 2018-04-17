@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class CardAction  implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private int cardActionId;
 
@@ -41,9 +41,8 @@ public class CardAction  implements Serializable {
     /*
     List of Cards that were used to perform a certain action.
      */
-    @Embedded
-    @ElementCollection
-    private ArrayList<Card> cards;
+    @ManyToMany
+    private List<Card> cards;
 
     public void addCard(Card card){
         cards.add(card);

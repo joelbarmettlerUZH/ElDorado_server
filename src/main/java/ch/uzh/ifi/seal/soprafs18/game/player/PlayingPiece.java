@@ -14,11 +14,11 @@ import java.io.Serializable;
 public class PlayingPiece  implements Serializable {
 
     public PlayingPiece(HexSpace hexSpace, int id){
-        this.id = id;
+        this.playingPieceId = id;
         this.standsOn = hexSpace;
     }
 
-    private int id;
+    private int playingPieceId;
 
     public PlayingPiece(){}
 

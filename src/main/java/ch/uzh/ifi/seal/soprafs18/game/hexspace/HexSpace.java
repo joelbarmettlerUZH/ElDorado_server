@@ -101,6 +101,7 @@ public class HexSpace implements Serializable{
     @JoinColumn(name = "hexid")
     @Column(name="PREVIOUS")*/
 
+    @ElementCollection
     protected ArrayList<HexSpace> previous;
 
     /**

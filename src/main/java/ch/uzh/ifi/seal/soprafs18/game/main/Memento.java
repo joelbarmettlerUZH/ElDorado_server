@@ -3,14 +3,25 @@ package ch.uzh.ifi.seal.soprafs18.game.main;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
+@Entity
 public class Memento  implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int momentoId;
 
     public Memento(Set<HexSpace> reachables, Set<Card> selectedCards, PlayingPiece playingPiece){
         this.reachables = reachables;
@@ -27,16 +38,20 @@ public class Memento  implements Serializable {
     /*
     List of HexSpaces that the PathFinder reached.
      */
+    @Embedded
+    @ElementCollection
     private Set<HexSpace> reachables;
 
     /*
     List of Cards that were used to perform the pathfinding-algorithm.
      */
+    @OneToMany
     private Set<Card> selectedCards;
 
     /*
     PlayingPiece from which the PathFinder performed its pathfinder-algorithm.
      */
+    @Embedded
     private PlayingPiece playingPiece;
 
     /*
@@ -50,22 +65,5 @@ public class Memento  implements Serializable {
             this.playingPiece = null;
             this.selectedCards = new HashSet<>();
         }
-    }
-
-    /*
-    Deletes all entries from reachables and selectedCards, playingPiece can be set to Null.
-     */
-
-
-    public Set<HexSpace> getReachables() {
-        return reachables;
-    }
-
-    public Set<Card> getSelectedCards() {
-        return selectedCards;
-    }
-
-    public PlayingPiece getPlayingPiece() {
-        return playingPiece;
     }
 }

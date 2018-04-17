@@ -2,6 +2,7 @@ package ch.uzh.ifi.seal.soprafs18.controller;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
@@ -120,5 +121,12 @@ public class PlayerController  implements Serializable {
     @ResponseStatus(HttpStatus.OK)
     public Game actionPlayer(@PathVariable int id, @RequestParam("token") String token){
         return playerService.endRound(id, token);
+    }
+
+    //End Round
+    @PutMapping(value = context+"/{id}/Path/{playingPiece}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<HexSpace> findPath(@PathVariable int id, @PathVariable int playingPiece, @RequestBody MoveWrapper moveWrapper, @RequestParam("token") String token){
+        return playerService.findPath(id, moveWrapper.getCards(), playingPiece, token);
     }
 }

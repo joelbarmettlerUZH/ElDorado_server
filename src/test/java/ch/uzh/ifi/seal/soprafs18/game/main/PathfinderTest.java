@@ -36,6 +36,7 @@ public class PathfinderTest {
 
     @Test
     public void getWay() {
+
         game.assemble();
         Player player = game.getCurrent();
         player.getPlayingPieces().get(0).setStandsOn(game.getPathMatrix().get(3,12));
@@ -47,5 +48,7 @@ public class PathfinderTest {
         for(HexSpace hexspace :Pathfinder.getWay(game, cards, game.getPlayers().get(0).getPlayingPieces().get(0))){
             System.out.println(hexspace.toString());
         }
+
     }
+
 }

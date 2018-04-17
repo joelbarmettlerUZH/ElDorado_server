@@ -214,8 +214,9 @@ public class PlayerService  implements Serializable {
         return player;
     }
 
-    public List<HexSpace> findPath(int id, String token, List<Card> c, PlayingPiece playingPiece) {
+    public List<HexSpace> findPath(int id, List<Card> c, int playingPieceId, String token) {
         Player player = playerRepository.findByPlayerId(id).get(0);
+        PlayingPiece playingPiece = player.getPlayingPieces().get(playingPieceId);
         if (!validate(player, token)) {
             LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
             return null;

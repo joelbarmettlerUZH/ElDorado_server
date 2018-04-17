@@ -47,7 +47,6 @@ public class Player implements Serializable {
         this.playerId = -1;
         this.board = new Game();
         this.coins = (float) 0;
-        this.pathFinder = new Pathfinder();
         this.playingPieces = new ArrayList<PlayingPiece>();
         this.specialAction = new SpecialActions(0, 0, 0);
         this.history = new ArrayList<CardAction>();
@@ -74,6 +73,7 @@ public class Player implements Serializable {
         this.token = "TESTTOKEN";
         this.removeBlockades = new ArrayList<>();
         this.blockades = new ArrayList<>();
+        this.draw(4);
     }
 
     /*
@@ -130,9 +130,6 @@ public class Player implements Serializable {
     Instance of PATHFINDER the player uses to find the possible paths.
      */
 
-    @JsonIgnore
-    private Pathfinder pathFinder;
-
     /*
     List of playing pieces the player controls.
      */
@@ -163,19 +160,19 @@ public class Player implements Serializable {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CardAction> history;
 
     /*
     List of cards the user has in his drawPile.
      */
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Card> drawPile;
 
     /*
     List of cards the user has in his handPile.
      */
-    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Card> handPile;
 
@@ -206,6 +203,13 @@ public class Player implements Serializable {
         return null;
     }
 
+    public boolean myTurn(){
+        if(!(board.getCurrentPlayerID() == this.getPlayerId())){
+            System.out.println("Not the players turn!");
+            return false;
+        }
+        return true;
+    }
     /*
     Checks in the memento whether cards corresponds to SelectedCards,
     placingPiece to playingPiece and if to-HexSpace is in reachables.
@@ -221,6 +225,9 @@ public class Player implements Serializable {
     If this is the case, he adds himself to the Games winning Player array.
      */
     public List<Blockade> move(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo) {
+        if(!myTurn()){
+            return new ArrayList<>();
+        }
         for(Card card: cards){
             if(!this.handPile.contains(card)){
                 return new ArrayList<>();
@@ -280,6 +287,9 @@ public class Player implements Serializable {
     }
 
     public void removeBlockade(Blockade blockade){
+        if(!myTurn()){
+            return;
+        }
         if(this.removeBlockades.contains(blockade.getBLOCKADE_ID()) && board.getBlockades().contains(blockade)){
             board.getBlockades().remove(blockade);
             this.blockades.add(blockade.getCost());
@@ -302,6 +312,9 @@ public class Player implements Serializable {
      */
 
     public void action(ActionCard card) {
+        if(!myTurn()){
+            return;
+        }
         if (handPile.contains(card)) {
             specialAction = card.performAction(this);
 
@@ -315,7 +328,9 @@ public class Player implements Serializable {
     Adds instance of CardAction with dedicated name to the history array.
      */
     public void discard(Card card) {
-
+        if(!myTurn()){
+            return;
+        }
         CardAction cardAct = new CardAction(card, "Discard: " + card.getName());
         history.add(cardAct);
 
@@ -331,6 +346,9 @@ public class Player implements Serializable {
     calls Card.sell(self: Player)
      */
     public void sell(Card card) {
+        if(!myTurn()){
+            return;
+        }
         if (handPile.contains(card)) {
             history.add(new CardAction(card, "Sell: " + card.getName()));
             card.sellAction(this);
@@ -342,18 +360,27 @@ public class Player implements Serializable {
     not yet bought anything. Adds instance of CardAction with dedicated name to the history array.
      */
     public void buy(Slot slot) {
+        if(!myTurn()){
+            return;
+        }
 
         history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
 
         if (slot.getCard().getCoinCost() <= coins && !bought) {
-            this.discard(slot.buy());
+            Card card = slot.buy();
+            this.discard(card);
+            this.coins -= card.getCoinCost();
         }
     }
 
     /*
     Calls draw(amount) with the amount being 4 - length of HandPile.
      */
+
     public void draw() {
+        if(!myTurn()){
+            return;
+        }
         draw(4 - handPile.size());
     }
 
@@ -372,12 +399,7 @@ public class Player implements Serializable {
         }
         history.add(cardAct);
 
-       /* while (drawPile.size() > 0 && specialAction.getDraw() > 0) {
-            handPile.add(drawPile.remove(0));
-            amount--;
-        }*/
-
-        if (drawPile.size() < 1) {
+        if (drawPile.size() < 1 && amount != 0) {
             for (int i = discardPile.size(); i == 0; i--) {
                 int rnd = new Random().nextInt(discardPile.size());
                 drawPile.add(discardPile.remove(rnd));
@@ -391,6 +413,9 @@ public class Player implements Serializable {
     coins nor the bought-boolean into consideration.
      */
     public void steal(Slot slot) {
+        if(!myTurn()){
+            return;
+        }
         if (specialAction.getSteal() > 0) {
             history.add(new CardAction(slot.getCard(), "Take: " + slot.getCard().getName()));
             discardPile.add(slot.buy());
@@ -401,6 +426,9 @@ public class Player implements Serializable {
     Moves the card from the handPile to the removePile.
      */
     public void remove(Card card) {
+        if(!myTurn()){
+            return;
+        }
         if (handPile.contains(card)) {
             history.add(new CardAction(card, "Remove: " + card.getName()));
             handPile.remove(card);
@@ -411,6 +439,9 @@ public class Player implements Serializable {
     Calls draw() and resets the coins to 0 and the bought-boolean to False.
      */
     public void endRound() {
+        if(!myTurn()){
+            return;
+        }
         draw();
         this.removeBlockades = new ArrayList<>();
         coins = (float) 0;
