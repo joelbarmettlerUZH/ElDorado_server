@@ -67,6 +67,16 @@ public class HexSpaceTest {
 
         assertEquals("Placeholder",true, colors.containsAll(expectedColorList));
     }
+
+    @Test
+    public void toStringTest(){
+        game.assemble();
+        HexSpace hexSpace = game.getPathMatrix().get(4,4);
+        System.out.println(hexSpace.toString());
+        assertEquals("Correct String",
+                "JUNGLE-Space at Point (4,4), Strength: 1, minimalCost: 1000, minimalDepth: 0, previoussize: 0",
+                hexSpace.toString());
+    }
     /*
     @Test
     public void getNeighbour1() {

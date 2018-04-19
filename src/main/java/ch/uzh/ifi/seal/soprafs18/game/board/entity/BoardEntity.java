@@ -93,11 +93,10 @@ public class BoardEntity implements Serializable {
     @ElementCollection
     private List<Integer> blockadePositionY;
 
-    @Column(name = "ENDINGSPACES",nullable = true)
     @Embedded
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hexid")
-    //@ElementCollection
+    @Column(name = "ENDINGSPACES",nullable = true)
     private List<HexSpaceEntity> endingSpaces;
 
     @Column(name = "ENDINGSPACEPOSITIONX",nullable = true)
