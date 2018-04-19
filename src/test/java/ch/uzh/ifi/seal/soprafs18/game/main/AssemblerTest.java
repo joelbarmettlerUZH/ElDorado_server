@@ -264,5 +264,8 @@ public class AssemblerTest {
 
     @Test
     public void getBoard() {
+        Assembler assembler = new Assembler();
+        assertEquals("correct board Id", 0, assembler.getBoard(0).getBoardID());
+
     }
 }
