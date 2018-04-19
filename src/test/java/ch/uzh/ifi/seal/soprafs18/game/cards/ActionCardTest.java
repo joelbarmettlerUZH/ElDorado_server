@@ -5,10 +5,14 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR.BASECAMP;
 import static ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR.JUNGLE;
@@ -22,6 +26,13 @@ public class ActionCardTest {
     SpecialActions testActions = new SpecialActions(0,0,0);
     ActionCard testCard = new ActionCard("test", 4, 3, testActions);
     Player testPlayer = new Player(1, "testPlayer", testGame,"testToken");
+
+    @Before
+    public void setUp() {
+        List<Player> testPlayers = new ArrayList<>();
+        testPlayers.add(testPlayer);
+        testGame.setPlayers(testPlayers);
+    }
 
     @Test
     public void performAction() {

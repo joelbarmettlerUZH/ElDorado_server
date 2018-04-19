@@ -45,19 +45,20 @@ public class AssemblerTest {
     private List<HexSpaceEntity> endingSpaces;
 
 
-    @MockBean
+    //@MockBean
+    @Autowired
     private TileRepository tileRepository;
 
-    @MockBean
+    @Autowired
     private StripRepository stripRepository;
 
-    @MockBean
+    @Autowired
     private HexSpaceRepository hexSpaceRepository;
 
-    @MockBean
+    @Autowired
     private BoardService boardService;
 
-    @MockBean
+    @Autowired
     private BlockadeSpaceService blockadeSpaceService;
 
 
@@ -155,6 +156,7 @@ public class AssemblerTest {
         //  ('BJ1','JUNGLE',1,1),
         //  ('BJ3','JUNGLE',3,2),
 
+
     }
 
     @Test
@@ -165,21 +167,6 @@ public class AssemblerTest {
         assertEquals("Dimension Two is 100",100, emptyMatrix[0].length);
     }
 
-    @Test
-    public void getTiles() {
-    }
-
-    @Test
-    public void getTilePositionX() {
-    }
-
-    @Test
-    public void getTilePositionY() {
-    }
-
-    @Test
-    public void getTilesRotation() {
-    }
 
     @Test
     public void assembleTiles() {
@@ -194,7 +181,7 @@ public class AssemblerTest {
 
         HexSpaceEntity[][] newMatrix2 = assembler.assembleTiles(boardMatrix, this.tileEntitylist,
                 this.posX, this.posY, this.Rotation2);
-        assertEquals("offcenter piece correct with rotation","SAND", newMatrix2[10][11].getColor());
+        assertEquals("offcenter piece correct with rotation","JUNGLE", newMatrix2[10][11].getColor());
 
     }
 
