@@ -32,28 +32,10 @@ public class HexSpaceTest {
     @Test
     public void getNeighbour() {
 
-        System.out.println("Testing Hexspace getNeighbour");
         game.assemble();
-        System.out.println("Testing Hexspace 111");
-        /* test for printing out the matrix
-        Matrix matrix = game.getPathMatrix();
-        System.out.println(matrix.getxDim());
-        System.out.println(matrix.getyDim());
-        for (int i = 0; i< matrix.getxDim();i++){
-            for (int j=0;j< matrix.getyDim();j++){
-                System.out.println(matrix.get(i,j).getColor());
-            }
-        }
-        */
         HexSpace hexSpace = game.getPathMatrix().get(4,4);
-
-        System.out.println(hexSpace.getColor().name());
-        System.out.println("Testing Hexspace 222");
-        System.out.println(hexSpace.getPoint().x);
-        System.out.println(hexSpace.getPoint().y);
         List<HexSpace> neighbours = hexSpace.getNeighbour(game);
         List<COLOR> colors = new ArrayList<>();
-
         for (HexSpace neighborSpace:neighbours){
             colors.add(neighborSpace.getColor());
             System.out.println(neighborSpace.getColor().name());
@@ -64,8 +46,37 @@ public class HexSpaceTest {
         for (COLOR col:expectedColors){
             expectedColorList.add(col);
         }
+        System.out.println("neighbours of 4/4: "+colors);
+        assertEquals("All Neighbors correct",true, colors.containsAll(expectedColorList));
+    }
 
-        assertEquals("Placeholder",true, colors.containsAll(expectedColorList));
+    @Test
+    public void toStringTest(){
+        game.assemble();
+        HexSpace hexSpace = game.getPathMatrix().get(4,4);
+        System.out.println(hexSpace.toString());
+        assertEquals("Correct String",
+                "JUNGLE-Space at Point (4,4), Strength: 1, minimalCost: 1000, minimalDepth: 0, previoussize: 0",
+                hexSpace.toString());
+    }
+
+    @Test
+    public void getNeighborBlockade(){
+        game.assemble();
+        HexSpace hexSpace = game.getPathMatrix().get(8,6);
+        List<HexSpace> neighbours = hexSpace.getNeighbour(game);
+        List<COLOR> colors = new ArrayList<>();
+        for (HexSpace neighborSpace:neighbours){
+            colors.add(neighborSpace.getColor());
+        }
+
+        COLOR[] expectedColors = {COLOR.EMPTY,COLOR.RIVER,COLOR.EMPTY,COLOR.JUNGLE,COLOR.EMPTY};
+        List<COLOR> expectedColorList = new ArrayList<>();
+        for (COLOR col:expectedColors){
+            expectedColorList.add(col);
+        }
+
+        assertEquals("All Neighbors correct",true, colors.containsAll(expectedColorList));
     }
     /*
     @Test

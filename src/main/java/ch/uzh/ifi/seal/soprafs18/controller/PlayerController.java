@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class PlayerController  implements Serializable {
     private final String context = CONSTANTS.APICONTEXT + "/Player";
@@ -123,7 +123,7 @@ public class PlayerController  implements Serializable {
         return playerService.endRound(id, token);
     }
 
-    //End Round
+    //Path
     @PutMapping(value = context+"/{id}/Path/{playingPiece}")
     @ResponseStatus(HttpStatus.OK)
     public List<HexSpace> findPath(@PathVariable int id, @PathVariable int playingPiece, @RequestBody MoveWrapper moveWrapper, @RequestParam("token") String token){

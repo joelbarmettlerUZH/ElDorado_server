@@ -48,11 +48,13 @@ public class BlockadeSpace extends HexSpace implements Serializable {
     @Override
     public List<HexSpace> getNeighbour(Game game){
         List<HexSpace> neighbours = getAllNeighbour(game);
+        //System.out.println("bb " + neighbours);
         //now handle blockades
-        for (int i = 0; i<neighbours.size();i++) {
-            if (HexSpace.class.isAssignableFrom(neighbours.get(i).getClass())) {
+        for (int i = neighbours.size()-1; i>=0 ;i--) {
+            if (neighbours.get(i).getClass()==BlockadeSpace.class) {
                 //current is BlockadeSpace, thus remove it.
                 neighbours.remove(i);
+
             }
         }
         return neighbours;

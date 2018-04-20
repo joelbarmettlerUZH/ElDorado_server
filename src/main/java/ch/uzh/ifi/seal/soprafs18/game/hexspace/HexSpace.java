@@ -133,6 +133,7 @@ public class HexSpace implements Serializable{
             neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y+1)));
             neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
         }
+        //System.out.println("neighbours of "+this.point.x+"/"+this.point.y+" = " + neighbours);
         return neighbours;
     }
 

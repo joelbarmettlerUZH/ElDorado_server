@@ -11,6 +11,7 @@ import ch.uzh.ifi.seal.soprafs18.game.board.repository.TileRepository;
 import ch.uzh.ifi.seal.soprafs18.game.board.service.BlockadeSpaceService;
 import ch.uzh.ifi.seal.soprafs18.game.board.service.BoardService;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +33,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-
+@Transactional
 public class AssemblerTest {
 
     //private Assembler assembler = new Assembler();
@@ -244,9 +246,26 @@ public class AssemblerTest {
 
     @Test
     public void getEndingFields() {
+        //Assemble Ending Spaces
+        Assembler assembler = new Assembler();
+        List<HexSpace> endingSpaces= new ArrayList<>();
+        endingSpaces.addAll(assembler.getEndingFields(0));
+        System.out.println(endingSpaces);
+        // expected points
+        List<Point> expectedPoints= new ArrayList<>();
+        expectedPoints.add(new Point(26,26));
+        expectedPoints.add(new Point(27,27));
+        expectedPoints.add(new Point(28,28));
+        for (int i = 0; i<endingSpaces.size(); i++){
+            assertEquals("correct Ending space type 1","ENDFIELDRIVER", endingSpaces.get(i).getColor().toString());
+            assertEquals("correct Ending space pos "+i, expectedPoints.get(i), endingSpaces.get(i).getPoint());
+        }
     }
 
     @Test
     public void getBoard() {
+        Assembler assembler = new Assembler();
+        assertEquals("correct board Id", 0, assembler.getBoard(0).getBoardID());
+
     }
 }
