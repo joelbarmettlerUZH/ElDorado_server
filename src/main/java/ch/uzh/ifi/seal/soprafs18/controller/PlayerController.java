@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class PlayerController  implements Serializable {
     private final String context = CONSTANTS.APICONTEXT + "/Player";
