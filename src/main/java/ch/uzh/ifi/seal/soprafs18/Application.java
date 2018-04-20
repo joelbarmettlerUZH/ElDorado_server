@@ -202,38 +202,29 @@ public class Application {
             }
             tileRepository.save(new TileEntity('K', HexSpaces_TileK));
 
-            //Default_path
+            //DEFAULT PATH
             List<TileEntity> tiles_defaultPath = new ArrayList<>();
-            tiles_defaultPath.add(tileRepository.findByTileID('B'));
-            tiles_defaultPath.add(tileRepository.findByTileID('C'));
-            tiles_defaultPath.add(tileRepository.findByTileID('N'));
-            tiles_defaultPath.add(tileRepository.findByTileID('I'));
-            tiles_defaultPath.add(tileRepository.findByTileID('K'));
+            char [] tile = {'B','C','N','I','K'};
+            for (char id : tile) {
+                tiles_defaultPath.add(tileRepository.findByTileID(id));
+            }
+
             List<Integer> tileRotation_defaultPath = new ArrayList<>();
-            tileRotation_defaultPath.add(3);
-            tileRotation_defaultPath.add(0);
-            tileRotation_defaultPath.add(3);
-            tileRotation_defaultPath.add(3);
-            tileRotation_defaultPath.add(1);
+            int [] tileRot = {3,0,3,3,5};
+            for (int rot : tileRot) {
+                tileRotation_defaultPath.add(rot);
+            }
 
             List<Integer> tilePositionsX_defaultPath = new ArrayList<>();
-            tilePositionsX_defaultPath.add(4);
-            tilePositionsX_defaultPath.add(8);
-            tilePositionsX_defaultPath.add(16);
-            tilePositionsX_defaultPath.add(24);
-            tilePositionsX_defaultPath.add(27);
+            int [] tilePosX = {4,8,16,24,27};
+            for (int pos : tilePosX) {
+                tilePositionsX_defaultPath.add(pos);
+            }
 
             List<Integer> tilePositionsY_defaultPath = new ArrayList<>();
-            tilePositionsY_defaultPath.add(4);
-            tilePositionsY_defaultPath.add(10);
-            tilePositionsY_defaultPath.add(11);
-            tilePositionsY_defaultPath.add(10);
-            tilePositionsY_defaultPath.add(16);
-
-            List<Integer> blockadeIDs_defaultPath = new ArrayList<>();
-            int [] blockadeIds = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3};
-            for (int id : blockadeIds) {
-                blockadeIDs_defaultPath.add(id);
+            int [] tilePosY = {4,10,11,10,16};
+            for (int id : tilePosY) {
+                tilePositionsY_defaultPath.add(id);
             }
 
             List<Integer> blockadeX_defaultPath = new ArrayList<>();
@@ -242,8 +233,14 @@ public class Application {
                 blockadeX_defaultPath.add(posX);
             }
 
+            List<Integer> blockadeIDs_defaultPath = new ArrayList<>();
+            int [] blockadeId = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3};
+            for (int id : blockadeId) {
+                blockadeIDs_defaultPath.add(id);
+            }
+
             List<Integer> blockadeY_defaultPath = new ArrayList<>();
-            int [] blockadeY = {7,7,6,6,9,10,11,12,8,9,10,11,14,13,13,12};
+            int [] blockadeY = {7,7,6,6,9,10,11,12,9,10,11,12,14,13,13,12};
             for (int posY : blockadeY) {
                 blockadeY_defaultPath.add(posY);
             }
@@ -269,81 +266,8 @@ public class Application {
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath));
-            //TEST
-            /*
-            List<TileEntity> tiles_defaultPath = new ArrayList<>();
-            TileEntity tile_A= tileRepository.findByTileID('A');
-            System.out.println(tile_A.getTileID());
-            System.out.println(tile_A.getTileID());
-            //System.out.println(tile_A.getTileID());
-            //System.out.println(tile_A.getTileID());
-            tiles_defaultPath.add(tile_A);
-            List<Integer> tilePositionsX_defaultPath = new ArrayList<>();
-            tilePositionsX_defaultPath.add(4);
-
-            boardRepository.save(new BoardEntity(0, tiles_defaultPath, tilePositionsX_defaultPath, tilePositionsX_defaultPath,
-                    tilePositionsX_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                    new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-            */
-
-
-            /*
-              (1,
-    ('B','C'),(3,0,3,3,5),(4,5,11,17,16),(4,5,16,19,27),
-    (),(),(),(),
-    (1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4),(3,4,5,6,8,8,7,7,15,14,14,13,15,16,17,18),(8,8,8,8,13,14,15,16,16,17,18,19,23,23,23,23),
-    ("EW","EW","EW"),(14,14,15),(30,31,31));
-             */
-
         };
     }
-/*
-    @Bean CommandLineRunner saveTilesToDB() {
-
-        List<HexSpaceEntity> HexSpaces_TileA = new ArrayList<>();
-        String[] HexSpaceIds_TileA = {"J1", "S1", "J1", "J1", "J1", "J1", "ST", "ST", "ST", "ST", "J1", "J1", "J1", "J1", "W1", "J1", "B1", "J1",
-                                    "J1", "J1", "S1", "W1", "J1", "J1", "J1", "J1", "J1", "S1", "M", "M",
-                                    "J1", "J1", "J1", "S1", "J1", "S1",
-                                    "W1"};
-        for (String id : HexSpaceIds_TileA) {
-            HexSpaces_TileA.add(hexSpaceRepository.findByHexID(id));
-        }
-        return (args) -> {
-            tileRepository.save(new TileEntity('A', HexSpaces_TileA));
-            //HexSpaceEntity newEntity = tileRepository.findAll().iterator().next().getHexSpaceEntities().iterator().next();
-            //System.out.println(newEntity.getColor());
-            //System.out.println(tileRepository.findAll().iterator().next().getTileID());
-            //System.out.println(tileRepository.findAll().iterator().next().getTileID());
-        };
-    }
-
-    @Bean CommandLineRunner savePathToDB() {
-        List<TileEntity> tiles_defaultPath = new ArrayList<>();
-        TileEntity tile_A= tileRepository.findByTileID('A');
-        //System.out.println(tile_A.getTileID());
-        //System.out.println(tile_A.getTileID());
-        //System.out.println(tile_A.getTileID());
-        //System.out.println(tile_A.getTileID());
-        tiles_defaultPath.add(tile_A);
-        List<Integer> tilePositionsX_defaultPath = new ArrayList<>();
-        tilePositionsX_defaultPath.add(4);
-        return (args) -> {
-            boardRepository.save(new BoardEntity(0, tiles_defaultPath, tilePositionsX_defaultPath, tilePositionsX_defaultPath,
-                tilePositionsX_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-            };
-    }
-
-*/
-    /*(1,
-                ('B','C'),(3,0,3,3,5),(4,5,11,17,16),(4,5,16,19,27),
-        (),(),(),(),
-                (1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4),(3,4,5,6,8,8,7,7,15,14,14,13,15,16,17,18),(8,8,8,8,13,14,15,16,16,17,18,19,23,23,23,23),
-        ("EW","EW","EW"),(14,14,15),(30,31,31));*/
-
-
-
-
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
