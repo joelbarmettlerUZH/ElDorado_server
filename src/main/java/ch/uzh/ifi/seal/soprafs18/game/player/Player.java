@@ -189,21 +189,6 @@ public class Player implements Serializable {
      */
     private Boolean bought;
 
-    /*
-    Calls PathFinder with the cards and the selected playingPiece. Returns the same arrayList the PathFinder returns.
-     */
-    public ArrayList<HexSpace> findPath(List<Card> activeCards, PlayingPiece playingPiece) {
-        return null;
-    }
-
-    /*
-    Call this.pathFinder with the first playingPiece and the list of Cards.
-    Returns the same arrayList this.pathFinder returns.
-     */
-    public ArrayList<HexSpace> findPath(List<Card> activeCards) {
-        return null;
-    }
-
     public boolean myTurn(){
         if(!(board.getCurrent().getPlayerId() == this.getPlayerId())){
             System.out.println("Not the players turn!");
@@ -398,6 +383,7 @@ public class Player implements Serializable {
             handPile.add(drawPile.remove(0));
             amount--;
         }
+
         history.add(cardAct);
 
         if (drawPile.size() < 1 && amount != 0) {
