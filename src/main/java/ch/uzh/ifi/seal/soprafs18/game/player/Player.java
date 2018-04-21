@@ -385,11 +385,12 @@ public class Player implements Serializable {
         }
 
         history.add(cardAct);
-
+        Random rand = new Random();
         if (drawPile.size() < 1 && amount != 0) {
-            for (int i = discardPile.size(); i == 0; i--) {
-                int rnd = new Random().nextInt(discardPile.size());
+            for (int i = discardPile.size(); i > 0; i--) {
+                int rnd = rand.nextInt(discardPile.size());
                 drawPile.add(discardPile.remove(rnd));
+                System.out.println("balbab");
             }
             draw(amount);
         }
