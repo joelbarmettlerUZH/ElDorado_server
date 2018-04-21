@@ -124,6 +124,7 @@ public class PlayerController  implements Serializable {
     }
 
     //Path
+    @CrossOrigin
     @PutMapping(value = context+"/{id}/Path/{playingPiece}")
     @ResponseStatus(HttpStatus.OK)
     public List<HexSpace> findPath(@PathVariable int id, @PathVariable int playingPiece, @RequestBody MoveWrapper moveWrapper, @RequestParam("token") String token){
