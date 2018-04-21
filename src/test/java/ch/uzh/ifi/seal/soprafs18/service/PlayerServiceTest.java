@@ -1,9 +1,16 @@
 package ch.uzh.ifi.seal.soprafs18.service;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
+import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
+import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
+import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
+import ch.uzh.ifi.seal.soprafs18.repository.CardRepository;
+import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs18.repository.PlayerRepository;
+import ch.uzh.ifi.seal.soprafs18.repository.SlotRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,19 +48,30 @@ public class PlayerServiceTest {
     @MockBean
     private PlayerRepository playerRepository;
 
+    @MockBean
+    private CardRepository cardRepository;
+
+    @MockBean
+    private SlotRepository slotRepository;
 
     @Before
-    public void setUp(){
-        Player testPlayer = new Player(99,"TestPlayer",null,"TOKENFORTEST");
-        Player testPlayer2 = new Player(98,"TestPlayer2",null,"TOKENFORTEST2");
-                //    public Player(int PlayerID, String name, Game game, String token) {
+    public void setUp() {
+        Game testGame = new Game(1, 1);
+        Market testMarket = testGame.getMarketPlace();
+
+        Player testPlayer = new Player(99, "TestPlayer", testGame, "TESTTOKEN");
+
         List<Player> playerList = new ArrayList<>();
         playerList.add(testPlayer);
-        playerList.add(testPlayer2);
+        playerList.add(testPlayer);
         List<Player> playerList2 = new ArrayList<>();
         playerList2.add(testPlayer);
+        testGame.setPlayers(playerList);
+
         Mockito.when(playerRepository.findAll()).thenReturn(playerList);
-        Mockito.when(playerRepository.findByPlayerId(testPlayer.getPlayerId())).thenReturn(playerList2);
+        Mockito.when(playerRepository.findByPlayerId(99)).thenReturn(playerList);
+        Mockito.when(cardRepository.findById(testPlayer.getHandPile().get(0).getId())).thenReturn(testPlayer.getHandPile());
+        Mockito.when(slotRepository.findBySlotId(0)).thenReturn(testMarket.getActive());
     }
 
 
@@ -62,58 +80,84 @@ public class PlayerServiceTest {
 
         List<Player> found = playerService.getPlayers();
 
-        assertEquals("Playernames found (Player 1)","TestPlayer", found.get(0).getName());
-        assertEquals("Playernames found (Player 2)","TestPlayer2", found.get(1).getName());
-        assertEquals("PlayerIds found (Player 1)",99, found.get(0).getPlayerId());
-        assertEquals("PlayerIds found (Player 2)",98, found.get(1).getPlayerId());
+        assertEquals("Playernames found (Player 1)", "TestPlayer", found.get(0).getName());
+        assertEquals("Playernames found (Player 2)", "TestPlayer", found.get(1).getName());
+        assertEquals("PlayerIds found (Player 1)", 99, found.get(0).getPlayerId());
+        assertEquals("PlayerIds found (Player 2)", 99, found.get(1).getPlayerId());
     }
 
     @Test
     public void getPlayer() {
         Player found = playerService.getPlayer(99);
-        assertEquals("Playername found (Player 1)","TestPlayer", found.getName());
-        assertEquals("PlayerId found (Player 1)",99, found.getPlayerId());
-
+        assertEquals("Playername found (Player 1)", "TestPlayer", found.getName());
+        assertEquals("PlayerId found (Player 1)", 99, found.getPlayerId());
     }
 
     @Test
     public void getGame() {
+        Game found = playerService.getGame(99, "TESTTOKEN");
+        assertEquals(1, found.getGameId());
+        ArrayList arl = new ArrayList();
+        assertEquals(arl, found.getWinners());
+        assertEquals(2, found.getPlayers().size());
     }
 
     @Test
     public void getPlayingPieces() {
+        List<PlayingPiece> found = playerService.getPlayingPieces(99);
+        assertEquals(0, found.size());
     }
 
     @Test
     public void getBlockades() {
+        List<Blockade> found = playerService.getBlockades(99);
+        assertEquals(null, found);
     }
 
     @Test
     public void getHandPile() {
         //TOKEN gets overwritten currently
         List<Card> found = playerService.getHandPile(99, "TESTTOKEN");
-        assertEquals("Handpile found (Player 1)",4, found.size());
+        assertEquals("Handpile found (Player 1)", 4, found.size());
 
     }
 
     @Test
     public void buyCard() {
+
+        // Game testGame = playerService.getGame(99, "TESTTOKEN");
+        //Player found = playerService.buyCard(99, testGame.getMarketPlace().getActive().get(0), "TESTTOKEN");
+        //assertEquals(5, found.getDiscardPile().size());
     }
 
     @Test
     public void discardCard() {
+        Player testPlayer = playerService.getPlayer(99);
+        Player found = playerService.discardCard(99, testPlayer.getHandPile().get(0), "TESTTOKEN");
+        assertEquals(3, found.getHandPile().size());
     }
 
     @Test
     public void removeCard() {
+        Player testPlayer = playerService.getPlayer(99);
+        Player found = playerService.removeCard(99, testPlayer.getHandPile().get(0), "TESTTOKEN");
+        assertEquals(3, found.getHandPile().size());
+
     }
 
     @Test
     public void sellCard() {
+        Player testPlayer = playerService.getPlayer(99);
+        Player found = playerService.sellCard(99, testPlayer.getHandPile().get(0), "TESTTOKEN");
+        assertEquals(3, found.getHandPile().size());
     }
 
     @Test
     public void stealCard() {
+
+        //Game testGame = playerService.getGame(99, "TESTTOKEN");
+        //Player found = playerService.stealCard(1, testGame.getMarketPlace().getActive().get(0), "TESTTOKEN");
+        //assertEquals(5, found.getDiscardPile().size());
     }
 
     @Test
@@ -126,10 +170,14 @@ public class PlayerServiceTest {
 
     @Test
     public void findPath() {
+
     }
 
     @Test
     public void endRound() {
+        //
+        //Game found = playerService.endRound(99, "TESTTOKEN");
+        //assertEquals(found.getGameId(), 1);
     }
 
     @Test
