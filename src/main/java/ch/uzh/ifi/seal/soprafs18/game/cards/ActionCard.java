@@ -26,16 +26,16 @@ public class ActionCard extends Card {
     /*
     The Budget that is granted to the user when the ActionCards action is performed. Bugeds stores how many
      cards the user can draw from the draw pile, how many card she/he can remove and how many cards she/he  
-     can steal from the market according to the cards type.
+     can stealAction from the market according to the cards type.
      */
     @Embedded
     protected SpecialActions actions;
 
     /*
-   The performAction returns a Budget of how many cards the Player can draw/remove/steal for free.
+   The performAction returns a Budget of how many cards the Player can draw/remove/stealAction for free.
      */
-    public SpecialActions performAction(Player player)
-    {
+    public SpecialActions performAction(Player player){
+        player.discard(this);
         return actions;
     }
 

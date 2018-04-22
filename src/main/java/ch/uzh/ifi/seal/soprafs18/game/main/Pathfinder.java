@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs18.game.cards.MovingCard;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 
 import java.io.Serializable;
@@ -76,7 +77,7 @@ public class Pathfinder  implements Serializable {
         HexSpaces.
         */
         setMemento(game, reachables, cards, playingPiece);
-        return new ArrayList<>(filterBlockades(reachables));
+        return new ArrayList<>(filterBlockades(reachables, game));
     }
 
     private static Set<HexSpace> singlecardCase(Game game, Set<Card> cards, HexSpace hexSpace){
@@ -151,15 +152,24 @@ public class Pathfinder  implements Serializable {
     }
 
 
-    private static Set<HexSpace> filterBlockades(Set<HexSpace> hexSpaces){
+    private static Set<HexSpace> filterBlockades(Set<HexSpace> hexSpaces, Game game){
         /*
         Filter out all hexSpaces that are part of a blockade
          */
+        List<HexSpace> toRemove = new ArrayList<>();
         for(HexSpace hexSpace: hexSpaces){
             if(hexSpace.getClass() == BlockadeSpace.class){
-                hexSpaces.remove(hexSpace);
+                toRemove.add(hexSpace);
+            }
+            for(Player player: game.getPlayers()){
+                for(PlayingPiece playingPiece: player.getPlayingPieces()){
+                    if(playingPiece.getStandsOn().getHexSpaceId() == hexSpace.getHexSpaceId()){
+                        toRemove.add(hexSpace);
+                    }
+                }
             }
         }
+        hexSpaces.removeAll(toRemove);
         return hexSpaces;
     }
 

@@ -10,6 +10,8 @@ import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs18.repository.PlayerRepository;
+import ch.uzh.ifi.seal.soprafs18.repository.RoomRepository;
+import ch.uzh.ifi.seal.soprafs18.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,9 @@ public class GameService implements Serializable{
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private RoomRepository roomRepository;
 
     private final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
     private FileHandler filehandler;
@@ -88,6 +93,7 @@ public class GameService implements Serializable{
             players.get(n).setBoard(game);
             playerRepository.save(players.get(n));
         }
+        roomRepository.delete(room);
     }
 
     public Game getGame(int gameID) {
@@ -101,9 +107,9 @@ public class GameService implements Serializable{
         return g.getPlayers();
     }
 
-    public List<Player> getWinners(int id){
+    public Player getWinner(int id){
         LOGGER.info("Returning possible winners of Game " + id);
-        return gameRepository.findByGameId(id).get(0).getWinners();
+        return gameRepository.findByGameId(id).get(0).getWinner();
     }
 
     public Player getCurrentPlayer(int id) {

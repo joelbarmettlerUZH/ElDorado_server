@@ -101,8 +101,7 @@ public class GameServiceTest {
 
     @Test
     public void getWinners() {
-        List<Player> players = new ArrayList<Player>();
-        assertEquals(players, gameService.getWinners(1));
+        assertEquals(null, gameService.getWinner(1));
     }
 
     @Test

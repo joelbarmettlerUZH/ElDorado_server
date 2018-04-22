@@ -129,4 +129,11 @@ public class PlayerController  implements Serializable {
     public List<HexSpace> findPath(@PathVariable int id, @PathVariable int playingPiece, @RequestBody MoveWrapper moveWrapper, @RequestParam("token") String token){
         return playerService.findPath(id, moveWrapper.getCards(), playingPiece, token);
     }
+
+    //Draw
+    @PutMapping(value = context+"/{id}/Draw")
+    @ResponseStatus(HttpStatus.OK)
+    public Player draw(@PathVariable int id, @RequestParam("token") String token){
+        return playerService.drawCard(id, token);
+    }
 }

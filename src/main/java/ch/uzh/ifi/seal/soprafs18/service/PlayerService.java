@@ -14,7 +14,6 @@ import ch.uzh.ifi.seal.soprafs18.repository.SlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -64,7 +63,7 @@ public class PlayerService  implements Serializable {
     private boolean validate(Player p, String token) {
         Player player = playerRepository.findByPlayerId(p.getPlayerId()).get(0);
         LOGGER.info("Validating user");
-        return player.getToken().equals(token);
+        return player.getToken().equals(token) && player.getBoard().isRunning();
     }
 
     public List<Player> getPlayers(){
@@ -171,7 +170,7 @@ public class PlayerService  implements Serializable {
         Player player = playerRepository.findByPlayerId(id).get(0);
         Slot slot = slotRepository.findBySlotId(s.getSlotId()).get(0);
         if (validate(player, token)) {
-            player.steal(slot);
+            player.stealAction(slot);
             LOGGER.info("Player " + player.getPlayerId() + " steals " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
@@ -251,9 +250,22 @@ public class PlayerService  implements Serializable {
     public Player removeBlockade(int id, String token, Blockade blockade){
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
+            LOGGER.info("Player "+player.getPlayerId()+" Removes blockade number " + blockade.getBLOCKADE_ID());
             player.removeBlockade(blockade);
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
+            return player;
+        }
+        LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
+        return player;
+    }
+
+    public Player drawCard(int id, String token){
+        Player player = playerRepository.findByPlayerId(id).get(0);
+        if (validate(player, token)) {
+            player.drawAction();
+            LOGGER.info("Player "+player.getPlayerId()+" draws a new card.");
+            playerRepository.save(player);
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);

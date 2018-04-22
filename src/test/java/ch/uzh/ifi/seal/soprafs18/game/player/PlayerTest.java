@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.player;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.ActionCard;
-import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
 import ch.uzh.ifi.seal.soprafs18.game.cards.SpecialActions;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
@@ -96,7 +95,7 @@ public class PlayerTest {
         SpecialActions specAct = new SpecialActions(0,0,1);
         testPlayer.setSpecialAction(specAct);
         assertEquals(0,testPlayer.getDiscardPile().size());
-        testPlayer.steal(testMarket.getActive().get(0));
+        testPlayer.stealAction(testMarket.getActive().get(0));
         assertEquals(1,testPlayer.getDiscardPile().size());
     }
 

@@ -76,7 +76,7 @@ public class GameController  implements Serializable {
     //Gets winners
     @GetMapping(value = context+"/{id}/Winner")
     @ResponseStatus(HttpStatus.OK)
-    private List<Player> getWinners(@PathVariable int id){
-        return gameService.getWinners(id);
+    private Player getWinner(@PathVariable int id){
+        return gameService.getWinner(id);
     }
 }
