@@ -33,10 +33,10 @@ public class UserController  implements Serializable {
     }
 
     //delete user
-    @DeleteMapping(value = context)
+    @DeleteMapping(value = context+"/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteUser(@RequestBody UserEntity user, @RequestParam("token") String token){
-        userService.deleteUser(user, token);
+    public void deleteUser(@PathVariable int id, @RequestParam("token") String token){
+        userService.deleteUser(id, token);
     }
 
     //get a specific user

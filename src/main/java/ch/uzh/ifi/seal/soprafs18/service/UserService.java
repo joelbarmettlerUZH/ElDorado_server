@@ -26,6 +26,9 @@ public class UserService  implements Serializable {
     @Autowired
     private RoomService roomService;
 
+    @Autowired
+    private RoomRepository roomRepository;
+
     private final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
     private FileHandler filehandler;
 
@@ -64,14 +67,6 @@ public class UserService  implements Serializable {
         l.add(String.valueOf(user.getUserID()));
         LOGGER.info("Created new user " + user.getUserID());
         return l;
-    }
-
-    public void deleteUser(UserEntity user, String token) {
-        if (valid(token, user)) {
-            LOGGER.warning("Deleting user " + user.getUserID());
-            userRepository.delete(userRepository.findByUserID(user.getUserID()).get(0));
-        }
-        LOGGER.warning("User " + user.getUserID() + " provided wrong token " + token);
     }
 
     public List<UserEntity> getAll() {
@@ -121,5 +116,24 @@ public class UserService  implements Serializable {
             roomService.updateRoom(user.getRoomEntity());
         }
         return user;
+    }
+
+    public void deleteUser(int userId, String token) {
+        UserEntity user = userRepository.findByUserID(userId).get(0);
+        RoomEntity room = user.getRoomEntity();
+        if (!UserService.valid(token, user, userRepository)) {
+            LOGGER.warning("User " + user.getUserID() + " was trying to leave room with wrong or missing token");
+            return;
+        }
+        List<UserEntity> currentUsers = room.getUsers();
+        currentUsers.remove(user);
+        room.setUsers(currentUsers);
+        roomRepository.save(room);
+        userRepository.delete(user);
+        LOGGER.info("User " + user.getUserID() + " left room and got deleted");
+        if (room.getUsers().size() == 0) {
+            roomRepository.delete(room);
+            LOGGER.info("Deleted room since no users are left");
+        }
     }
 }

@@ -47,12 +47,4 @@ public class RoomController  implements Serializable {
         return roomService.joinUser(id, userEntity, token);
     }
 
-    //Remove a player from a room
-    @DeleteMapping(value = context+"/{id}")
-    @ResponseStatus(HttpStatus.GONE)
-    public RoomEntity leaveUser(@PathVariable int id, @RequestBody UserEntity userEntity, @RequestParam("token") String token){
-        return roomService.leaveUser(id, userEntity, token);
-    }
-
-
 }
