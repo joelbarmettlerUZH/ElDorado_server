@@ -49,20 +49,20 @@ public class Player implements Serializable {
         history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11, new SpecialActions(3, 3, 3)), "Testaction"));
 
         this.drawPile = new ArrayList<Card>();
-        drawPile.add(new MovingCard("Sailor", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER}));
-        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
-        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
-        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
         /*
-        drawPile.add(new MovingCard("Traveler", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
-        drawPile.add(new MovingCard("Traveler", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
-        drawPile.add(new MovingCard("Traveler", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
-        drawPile.add(new MovingCard("Traveler", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
         */
-        drawPile.add(new ActionCard("TestAction1", 2, 1, new SpecialActions(2,2,2)));
-        drawPile.add(new ActionCard("TestAction2", 2, 1, new SpecialActions(2,2,2)));
-        drawPile.add(new ActionCard("TestAction3", 2, 1, new SpecialActions(2,2,2)));
-        drawPile.add(new ActionCard("TestAction4", 2, 1, new SpecialActions(2,2,2)));
+        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
+        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
+        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
+        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
         Collections.shuffle(drawPile);
 
         this.handPile = new ArrayList<Card>();
