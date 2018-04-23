@@ -76,8 +76,11 @@ public class Pathfinder  implements Serializable {
         can not move on Hexspace. Note that the Blockades to not disapear from the previous history of the individual reachable
         HexSpaces.
         */
-        setMemento(game, reachables, cards, playingPiece);
-        return new ArrayList<>(filterBlockades(reachables, game));
+
+        Set<HexSpace> reachable = new HashSet<>(filterBlockades(reachables,game));
+        reachable.add(hexSpace);
+        setMemento(game, reachable, cards, playingPiece);
+        return new ArrayList<>(reachable);
     }
 
     private static Set<HexSpace> singlecardCase(Game game, Set<Card> cards, HexSpace hexSpace){
