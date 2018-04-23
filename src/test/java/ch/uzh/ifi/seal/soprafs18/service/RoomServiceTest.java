@@ -34,12 +34,12 @@ public class RoomServiceTest {
     @Autowired
     private RoomService roomService;
 
-    //@MockBean
-    //private RoomRepository roomRepository;
+ //   @MockBean
+  //  private RoomRepository roomRepository;
 
-    /*@Before
+    @Before
     public void setUp() {
-        /*
+
         RoomEntity testRoom = new RoomEntity("TestRoom");
         List<RoomEntity> rooms = new ArrayList<RoomEntity>();
         rooms.add(testRoom);
@@ -50,15 +50,15 @@ public class RoomServiceTest {
         games.add(testGame);
 
         Mockito.when(gameRepository.findAll()).thenReturn(games);
-        Mockito.when(gameRepository.findByGameId(1)).thenReturn(games);
+        Mockito.when(gameRepository.findByGameId(1)).thenReturn(games); */
 
-        Mockito.when(roomRepository.findByRoomID(1)).thenReturn(rooms);*/
-    //}
+        //Mockito.when(roomRepository.findByRoomID(1)).thenReturn(rooms);
+    }
 
     @Test
     public void joinUser() {
-        //UserEntity user1 = new UserEntity("user1", 1, roomService.getRoom(1));
-        //roomService.joinUser(1,user1, "TESTTOKEN");
+//        UserEntity user1 = new UserEntity("user1", 1, roomService.getRoom(1));
+//        roomService.joinUser(1,user1, "TESTTOKEN");
     }
 
     @Test

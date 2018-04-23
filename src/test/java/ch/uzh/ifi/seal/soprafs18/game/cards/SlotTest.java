@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class SlotTest {
-    /*
 
     Card card1 = new MovingCard("test1", 3,4,2,2, new COLOR[]{COLOR.JUNGLE});
     Slot testSlot = new Slot(card1);
@@ -28,5 +27,4 @@ public class SlotTest {
         ArrayList<Card> pile = new ArrayList<Card>();
         pile.add(card1);
     }
-    */
 }

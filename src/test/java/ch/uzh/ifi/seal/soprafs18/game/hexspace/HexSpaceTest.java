@@ -26,7 +26,6 @@ public class HexSpaceTest {
     public void setUp() {
         System.out.println("Testing Hexspace Setup");
         this.game = new Game();
-
     }
 
     @Test

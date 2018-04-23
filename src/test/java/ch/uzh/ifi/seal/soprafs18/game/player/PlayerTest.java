@@ -13,6 +13,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.junit.Assert.*;
 
 public class PlayerTest {
@@ -23,7 +25,6 @@ public class PlayerTest {
     SpecialActions testActions = new SpecialActions(0,0,0);
     ActionCard testCard = new ActionCard("test", 4, 3, testActions);
     Player testPlayer = new Player(1, "testPlayer", testGame,"testToken");
-    Market testMarket = new Market();
 
     @Before
     public void setUp() {
@@ -41,14 +42,61 @@ public class PlayerTest {
     }
 
     @Test
+    public void removeBlockade() {
+    }
+
+    @Test
+    public void myTurn() {
+        assertEquals(TRUE, testPlayer.myTurn());
+    }
+
+    @Test
+    public void drawAction(){
+        SpecialActions specAct = new SpecialActions(1,0,0);
+        testPlayer.setSpecialAction(specAct);
+        assertEquals(4,testPlayer.getHandPile().size());
+        testPlayer.drawAction();
+        assertEquals(5,testPlayer.getHandPile().size());
+    }
+
+    @Test
+    public void stealAction(){
+        Market testMarket = new Market();
+        SpecialActions specAct = new SpecialActions(0,0,1);
+        testPlayer.setSpecialAction(specAct);
+        assertEquals(0,testPlayer.getDiscardPile().size());
+        testPlayer.stealAction(testMarket.getActive().get(0));
+        assertEquals(1,testPlayer.getDiscardPile().size());
+    }
+
+    @Test
+    public void removeAction(){
+        SpecialActions specAct = new SpecialActions(0,1,0);
+        testPlayer.setSpecialAction(specAct);
+        assertEquals(4,testPlayer.getHandPile().size());
+        testPlayer.removeAction(testPlayer.getHandPile().get(0));
+        assertEquals(3,testPlayer.getHandPile().size());
+    }
+
+    @Test
+    public void removeBlockadeId(){
+
+    }
+
+    @Test
     public void action() {
+        testPlayer.action(testCard);
+        assertEquals(1,testPlayer.getHistory().size());
+
     }
 
     @Test
     public void discard() {
         assertEquals(4,testPlayer.getHandPile().size());
+        assertEquals(0, testPlayer.getDiscardPile().size());
         testPlayer.discard(testPlayer.getHandPile().get(0));
         assertEquals(3,testPlayer.getHandPile().size());
+        assertEquals(1, testPlayer.getDiscardPile().size());
     }
 
     @Test
@@ -60,6 +108,8 @@ public class PlayerTest {
 
     @Test
     public void buy() {
+        Market testMarket = new Market();
+        testPlayer.addCoins((float) 1);
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
@@ -88,15 +138,6 @@ public class PlayerTest {
         assertEquals(0,testPlayer.getHandPile().size());
         testPlayer.draw();
         assertEquals(4,testPlayer.getHandPile().size());
-    }
-
-    @Test
-    public void steal() {
-        SpecialActions specAct = new SpecialActions(0,0,1);
-        testPlayer.setSpecialAction(specAct);
-        assertEquals(0,testPlayer.getDiscardPile().size());
-        testPlayer.stealAction(testMarket.getActive().get(0));
-        assertEquals(1,testPlayer.getDiscardPile().size());
     }
 
     @Test
