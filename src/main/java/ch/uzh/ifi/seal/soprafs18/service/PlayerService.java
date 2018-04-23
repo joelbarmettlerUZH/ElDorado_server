@@ -181,7 +181,7 @@ public class PlayerService  implements Serializable {
         return player;
     }
 
-    public Player movePlayer(int id, List<Card> c, int playingPiece, HexSpace hexSpace, String token){
+    public List<Blockade> movePlayer(int id, List<Card> c, int playingPiece, HexSpace hexSpace, String token){
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
             LOGGER.info("Player " + player.getPlayerId() + " is moving to Field at position ( "+hexSpace.getPoint().getX()+" / "+hexSpace.getPoint().getY()+" ).");
@@ -190,13 +190,13 @@ public class PlayerService  implements Serializable {
                 cards.add(cardRepository.findById(card.getId()).get(0));
                 LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. ");
             }
-            player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(hexSpace.getPoint()));
+            List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(hexSpace.getPoint()));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
-            return player;
+            return removables;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
-        return player;
+        return new ArrayList<Blockade>();
     }
 
     public Player performAction(int id, Card c, String token) {

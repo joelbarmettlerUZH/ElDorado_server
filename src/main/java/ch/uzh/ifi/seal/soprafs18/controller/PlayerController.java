@@ -98,7 +98,7 @@ public class PlayerController  implements Serializable {
     */
     @PutMapping(value = context+"/{id}/Move/{playingPiece}")
     @ResponseStatus(HttpStatus.OK)
-    public Player movePlayer(@PathVariable int id, @PathVariable int playingPiece, @RequestBody MoveWrapper moveWrapper, @RequestParam("token") String token){
+    public List<Blockade> movePlayer(@PathVariable int id, @PathVariable int playingPiece, @RequestBody MoveWrapper moveWrapper, @RequestParam("token") String token){
         return playerService.movePlayer(id, moveWrapper.getCards(), playingPiece, moveWrapper.getHexSpace(), token);
     }
 
