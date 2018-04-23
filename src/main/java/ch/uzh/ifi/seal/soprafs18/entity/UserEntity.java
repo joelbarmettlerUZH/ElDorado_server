@@ -33,7 +33,7 @@ public class UserEntity  implements Serializable {
     @Column(name = "TOKEN")
     private String token;
 
-    @Column(name = "NAME", unique = true)
+    @Column(name = "NAME", unique = false)
     private String name;
 
     @Column(name = "CHARACTER")
