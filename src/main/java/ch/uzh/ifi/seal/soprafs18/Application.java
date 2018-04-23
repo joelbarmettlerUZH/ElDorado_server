@@ -262,10 +262,29 @@ public class Application {
                 EndSpacesY_defaultPath.add(posY);
             }
 
+
+
             boardRepository.save(new BoardEntity(0, tiles_defaultPath, tileRotation_defaultPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath));
+
+
+
+
+            //----------------------TEST PATH----------------------------------------
+            List<Integer> tileRotation_testPath = new ArrayList<>();
+            int [] tileRot_test = {5,0,3,3,5};
+            for (int rot : tileRot_test) {
+                tileRotation_testPath.add(rot);
+            }
+
+
+            boardRepository.save(new BoardEntity(99, tiles_defaultPath, tileRotation_testPath, tilePositionsX_defaultPath,
+                    tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                    blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
+                    EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath));
+
         };
     }
 

@@ -127,7 +127,7 @@ public class Game implements Serializable {
     Json does not need to be in the gameEntity
      */
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Memento memento;
 
     /*

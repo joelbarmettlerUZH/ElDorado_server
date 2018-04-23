@@ -48,7 +48,7 @@ public class Memento  implements Serializable {
     /*
     List of Cards that were used to perform the pathfinding-algorithm.
      */
-    @OneToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Card> selectedCards;
 
     /*
