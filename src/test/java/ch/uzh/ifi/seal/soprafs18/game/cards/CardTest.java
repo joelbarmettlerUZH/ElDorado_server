@@ -6,7 +6,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class CardTest {
-    /*
 
     Card card1 = new MovingCard("test", 3,4,2,2,new COLOR[]{COLOR.JUNGLE});
 
@@ -35,5 +34,4 @@ public class CardTest {
     public void getCoinCost() {
         assertEquals(4, card1.getCoinCost());
     }
-    */
 }
