@@ -49,14 +49,20 @@ public class Player implements Serializable {
         history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11, new SpecialActions(3, 3, 3)), "Testaction"));
 
         this.drawPile = new ArrayList<Card>();
-        drawPile.add(new MovingCard("Sailor", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER}));
-        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE}));
-        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE}));
-        drawPile.add(new MovingCard("Explorer", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE}));
-        drawPile.add(new MovingCard("Traveler", 1, 0, 2, 99, new COLOR[]{COLOR.SAND}));
-        drawPile.add(new MovingCard("Traveler", 1, 0, 2, 99, new COLOR[]{COLOR.SAND}));
-        drawPile.add(new MovingCard("Traveler", 1, 0, 2, 99, new COLOR[]{COLOR.SAND}));
-        drawPile.add(new MovingCard("Traveler", 1, 0, 2, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
+        /*
+        drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+        */
+        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
+        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
+        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
+        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
         Collections.shuffle(drawPile);
 
         this.handPile = new ArrayList<Card>();
@@ -153,7 +159,7 @@ public class Player implements Serializable {
     /*
     The budget the user has for the current round.
     Is set from the action cards and reset either at the end of the game or
-    value-by-value each time the corresponding method (draw, remove, steal) is called.
+    value-by-value each time the corresponding method (draw, remove, stealAction) is called.
      */
     @Embedded
     private SpecialActions specialAction;
@@ -268,6 +274,10 @@ public class Player implements Serializable {
                     }
                 }
             }
+        }
+        if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
+                playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDRIVER ){
+            this.board.getWinners().add(this);
         }
         return new ArrayList<>(removable);
     }
@@ -385,27 +395,43 @@ public class Player implements Serializable {
         }
 
         history.add(cardAct);
-
+        Random rand = new Random();
         if (drawPile.size() < 1 && amount != 0) {
-            for (int i = discardPile.size(); i == 0; i--) {
-                int rnd = new Random().nextInt(discardPile.size());
+            for (int i = discardPile.size(); i > 0; i--) {
+                int rnd = rand.nextInt(discardPile.size());
                 drawPile.add(discardPile.remove(rnd));
+                System.out.println("balbab");
             }
             draw(amount);
         }
     }
 
+    public void drawAction(){
+        if(specialAction.getDraw() > 0 && myTurn() && drawPile.size() > 0){
+            this.draw(1);
+            specialAction.reduceDraw();
+        }
+    }
+
     /*
-    Calls market.steal and adds the returned card to the discardpile. Does neither take the amount of
+    Calls market.stealAction and adds the returned card to the discardpile. Does neither take the amount of
     coins nor the bought-boolean into consideration.
      */
-    public void steal(Slot slot) {
+    public void stealAction(Slot slot) {
         if(!myTurn()){
             return;
         }
         if (specialAction.getSteal() > 0) {
-            history.add(new CardAction(slot.getCard(), "Take: " + slot.getCard().getName()));
+            history.add(new CardAction(slot.getCard(), "Steal: " + slot.getCard().getName()));
             discardPile.add(slot.buy());
+            specialAction.reduceSteal();
+        }
+    }
+
+    public void removeAction(Card card){
+        if(specialAction.getRemove() > 0 && myTurn()){
+            this.remove(card);
+            specialAction.reduceRemove();
         }
     }
 
@@ -429,10 +455,18 @@ public class Player implements Serializable {
         if(!myTurn()){
             return;
         }
+        if(this.board.getWinners().contains(this.board.getPlayers().get(((this.board.getCurrentPlayerNumber()+1)%this.board.getPlayers().size())))){
+            this.board.setRunning(false);
+        }
+        // currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
+        // current = players.get(currentPlayerNumber);
         draw();
         this.removeBlockades = new ArrayList<>();
         coins = (float) 0;
         bought = false;
+        specialAction.setDraw(0);
+        specialAction.setRemove(0);
+        specialAction.setSteal(0);
         board.endRound();
     }
 

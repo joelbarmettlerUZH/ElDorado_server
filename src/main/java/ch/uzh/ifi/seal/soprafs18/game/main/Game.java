@@ -16,6 +16,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Data
@@ -171,5 +172,35 @@ public class Game implements Serializable {
     public void endRound(){
         currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
         current = players.get(currentPlayerNumber);
+    }
+
+    public Player getWinner(){
+        if(winners.size() == 0){
+            return null;
+        }
+        if(this.winners.size() < 2){
+            return this.winners.get(0);
+        }
+        for(Player potentialWinner: winners){
+            boolean wins = true;
+            for(Player player: winners){
+                wins = wins & potentialWinner.getBlockades().size() > player.getBlockades().size();
+            }
+            if(wins){
+                return potentialWinner;
+            }
+        }
+        for(Player potentialWinner: winners){
+            boolean wins = true;
+            for(Player player: winners){
+                int sumPotentialWinner = potentialWinner.getBlockades().stream().mapToInt(Integer::intValue).sum();
+                int sumPlayer = player.getBlockades().stream().mapToInt(Integer::intValue).sum();
+                wins = wins & sumPotentialWinner > sumPlayer;
+            }
+            if(wins){
+                return potentialWinner;
+            }
+        }
+        return winners.get((new Random()).nextInt(winners.size()));
     }
 }

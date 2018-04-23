@@ -72,26 +72,6 @@ public class RoomService  implements Serializable {
         return room;
     }
 
-    public RoomEntity leaveUser(int roomID, UserEntity userEntity, String token) {
-        UserEntity user = userRepository.findByUserID(userEntity.getUserID()).get(0);
-        RoomEntity room = roomRepository.findByRoomID(roomID).get(0);
-        if (!UserService.valid(token, user, userRepository)) {
-            LOGGER.warning("User " + userEntity.getUserID() + " was trying to leave room with wrong or missing token");
-            return room;
-        }
-        List<UserEntity> currentUsers = room.getUsers();
-        currentUsers.remove(user);
-        room.setUsers(currentUsers);
-        roomRepository.save(room);
-        userRepository.delete(user);
-        LOGGER.info("User " + user.getUserID() + " left room and got deleted");
-        if (room.getUsers().size() == 0) {
-            roomRepository.delete(room);
-            LOGGER.info("Deleted room since no users are left");
-        }
-        return room;
-    }
-
     public List<UserEntity> getUsers(RoomEntity roomEntity) {
         LOGGER.info("Requested users of room " + roomEntity.getRoomID());
         return roomEntity.getUsers();
@@ -102,11 +82,6 @@ public class RoomService  implements Serializable {
         LOGGER.info("Created new room " + roomEntity.getRoomID());
         return roomEntity;
 
-    }
-
-    public void removeRoom(RoomEntity roomEntity) {
-        roomRepository.delete(roomEntity);
-        LOGGER.info("Deleted room " + roomEntity.getRoomID());
     }
 
     public RoomEntity getRoom(int RoomID) {

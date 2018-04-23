@@ -34,16 +34,26 @@ public class RoomServiceTest {
     @Autowired
     private RoomService roomService;
 
-    //TODO: With RoomRepository the test won't compile... Don't know why...
-    @MockBean
-    private RoomRepository roomRepository;
+    //@MockBean
+    //private RoomRepository roomRepository;
 
-    @Before
+    /*@Before
     public void setUp() {
+        /*
         RoomEntity testRoom = new RoomEntity("TestRoom");
         List<RoomEntity> rooms = new ArrayList<RoomEntity>();
         rooms.add(testRoom);
-    }
+
+        /*
+        Game testGame = new Game(1, 1);
+        List<Game> games = new ArrayList<Game>();
+        games.add(testGame);
+
+        Mockito.when(gameRepository.findAll()).thenReturn(games);
+        Mockito.when(gameRepository.findByGameId(1)).thenReturn(games);
+
+        Mockito.when(roomRepository.findByRoomID(1)).thenReturn(rooms);*/
+    //}
 
     @Test
     public void joinUser() {
