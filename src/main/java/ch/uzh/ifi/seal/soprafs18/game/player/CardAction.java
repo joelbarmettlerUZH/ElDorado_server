@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class CardAction  implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @JsonIgnore
     private int cardActionId;
 
