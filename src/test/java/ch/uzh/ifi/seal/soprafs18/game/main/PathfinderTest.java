@@ -53,7 +53,7 @@ public class PathfinderTest {
         reachables.add(new Point(3,3));
         reachables.add(new Point(5,3));
         for(HexSpace hexspace :Pathfinder.getWay(game, cards, game.getPlayers().get(0).getPlayingPieces().get(0))){
-            System.out.println(hexspace.toString());
+            System.out.println("reachables" + hexspace.toString());
             assertEquals("hexspace in expected",true, reachables.contains(hexspace.getPoint()));
         }
     }
