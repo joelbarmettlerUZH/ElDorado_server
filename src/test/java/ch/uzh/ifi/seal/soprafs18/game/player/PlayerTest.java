@@ -110,13 +110,39 @@ public class PlayerTest {
     public void buy() {
         Market testMarket = new Market();
         testPlayer.addCoins((float) 1);
+        assertEquals(4, testPlayer.getHandPile().size());
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
+        assertEquals(0,testPlayer.getHandPile().size());
         assertEquals(4,testPlayer.getDiscardPile().size());
         testPlayer.buy(testMarket.getActive().get(1));
         assertEquals(5,testPlayer.getDiscardPile().size());
+
+        /*System.out.println("---------------------------DEBUG---------------------------------------");
+        testPlayer.addCoins((float) 100);
+        testPlayer.setBought(FALSE);
+
+        testMarket.getPurchasable();
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.buy(testMarket.getActive().get(1));
+        testPlayer.setBought(FALSE);
+
+        testMarket.getPurchasable();
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.buy(testMarket.getActive().get(1));
+        testPlayer.setBought(FALSE);
+
+        testMarket.getPurchasable();
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.buy(testMarket.getActive().get(1));
+
+        testMarket.getPurchasable();
+        System.out.println(testMarket.getActive().get(1)); */
+
+
+
     }
 
     @Test

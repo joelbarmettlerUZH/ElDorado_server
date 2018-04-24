@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@Transactional
 public class PlayerServiceTest {
 
     @TestConfiguration
@@ -54,6 +56,9 @@ public class PlayerServiceTest {
     @MockBean
     private SlotRepository slotRepository;
 
+    @MockBean
+    private GameRepository gameRepository;
+
     @Before
     public void setUp() {
         Game testGame = new Game(1, 1);
@@ -71,7 +76,9 @@ public class PlayerServiceTest {
         Mockito.when(playerRepository.findAll()).thenReturn(playerList);
         Mockito.when(playerRepository.findByPlayerId(99)).thenReturn(playerList);
         Mockito.when(cardRepository.findById(testPlayer.getHandPile().get(0).getId())).thenReturn(testPlayer.getHandPile());
-        Mockito.when(slotRepository.findBySlotId(0)).thenReturn(testMarket.getActive());
+        Mockito.when(slotRepository.findBySlotId(99)).thenReturn(testMarket.getActive());
+        Mockito.when(slotRepository.findBySlotId(testMarket.getActive().get(0).getSlotId())).thenReturn(testMarket.getActive());
+        Mockito.when(gameRepository.save(testPlayer.getBoard())).thenReturn(testPlayer.getBoard());
     }
 
 
@@ -125,9 +132,9 @@ public class PlayerServiceTest {
     @Test
     public void buyCard() {
 
-        // Game testGame = playerService.getGame(99, "TESTTOKEN");
-        //Player found = playerService.buyCard(99, testGame.getMarketPlace().getActive().get(0), "TESTTOKEN");
-        //assertEquals(5, found.getDiscardPile().size());
+        Game testGame = playerService.getGame(99, "TESTTOKEN");
+        Player found = playerService.buyCard(99, testGame.getMarketPlace().getActive().get(0), "TESTTOKEN");
+        assertEquals(0, found.getDiscardPile().size());
     }
 
     @Test
@@ -154,10 +161,10 @@ public class PlayerServiceTest {
 
     @Test
     public void stealCard() {
+        Game testGame = playerService.getGame(99, "TESTTOKEN");
+        Player found = playerService.stealCard(99, testGame.getMarketPlace().getActive().get(0), "TESTTOKEN");
+        assertEquals(0, found.getDiscardPile().size());
 
-        //Game testGame = playerService.getGame(99, "TESTTOKEN");
-        //Player found = playerService.stealCard(1, testGame.getMarketPlace().getActive().get(0), "TESTTOKEN");
-        //assertEquals(5, found.getDiscardPile().size());
     }
 
     @Test
@@ -175,9 +182,9 @@ public class PlayerServiceTest {
 
     @Test
     public void endRound() {
-        //
-        //Game found = playerService.endRound(99, "TESTTOKEN");
-        //assertEquals(found.getGameId(), 1);
+
+        Game found = playerService.endRound(99, "TESTTOKEN");
+        assertEquals(found.getGameId(), 1);
     }
 
     @Test

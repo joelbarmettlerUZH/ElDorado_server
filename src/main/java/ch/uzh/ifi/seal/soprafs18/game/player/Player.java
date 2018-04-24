@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.List;
 
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 @Entity
 @Data
@@ -353,17 +354,23 @@ public class Player implements Serializable {
     not yet bought anything. Adds instance of CardAction with dedicated name to the history array.
      */
     public void buy(Slot slot) {
-        if(!myTurn()){
+        if (slot.getPile().size() != 0) {
+            if (!myTurn() || bought) {
+                return;
+            }
+
+            history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
+
+            if (slot.getCard().getCoinCost() <= coins && !bought) {
+                Card card = slot.buy();
+                this.discard(card);
+                this.coins -= 0;
+                bought = TRUE;
+            }
+        } else {
             return;
         }
 
-        history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
-
-        if (slot.getCard().getCoinCost() <= coins && !bought) {
-            Card card = slot.buy();
-            this.discard(card);
-            this.coins -= card.getCoinCost();
-        }
     }
 
     /*

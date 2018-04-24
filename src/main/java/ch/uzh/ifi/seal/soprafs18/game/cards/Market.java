@@ -142,6 +142,8 @@ public class Market implements Serializable {
     Returns either the active Slots when size of active slots is 6, active and passive slots otherwise.
      */
     public List<Slot> getPurchasable() {
+
+        active.removeIf(slot -> slot.isEmpty());
         if (active.size() >= 6) {
             return active;
         } else {

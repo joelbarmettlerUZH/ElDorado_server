@@ -21,7 +21,6 @@ public class UserEntity  implements Serializable {
     }
 
     public UserEntity(){
-
     }
 
     @Id

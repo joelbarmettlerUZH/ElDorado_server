@@ -63,7 +63,9 @@ public abstract class Card  implements Serializable, Cloneable {
 
     public void sellAction(Player player){
         if (player.getHandPile().contains(this)) {
-            player.addCoins(coinValue);
+            if(!player.getBought()){
+                player.addCoins(coinValue);
+            }
             player.discard(this);
         }
     }

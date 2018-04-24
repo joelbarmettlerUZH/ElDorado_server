@@ -52,4 +52,11 @@ public class Slot implements Serializable{
         return pile.get(0);
     }
 
+    public boolean isEmpty() {
+        if (pile.isEmpty()){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
