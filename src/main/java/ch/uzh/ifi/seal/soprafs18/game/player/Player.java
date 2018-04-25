@@ -166,6 +166,7 @@ public class Player implements Serializable {
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
     // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     @Transient
     private List<CardAction> history;
 
