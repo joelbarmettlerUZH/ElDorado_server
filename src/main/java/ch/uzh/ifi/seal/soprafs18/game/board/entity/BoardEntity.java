@@ -107,6 +107,8 @@ public class BoardEntity implements Serializable {
     @ElementCollection
     private List<Integer> endingSpacePositionY;
 
+
+
     public int getBoardID() {
         return boardID;
     }

@@ -285,6 +285,25 @@ public class Application {
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath));
 
+            //----------------------TEST PATH----------------------------------------
+            List<TileEntity> tiles_demoPath = new ArrayList<>();
+            char [] tiles = {'K','C','N','I','B'};
+            for (char id : tiles) {
+                tiles_demoPath.add(tileRepository.findByTileID(id));
+            }
+
+            List<Integer> tileRotation_demoPath = new ArrayList<>();
+            int [] tileRot_demo = {5,0,3,3,4};
+            for (int rot : tileRot_demo) {
+                tileRotation_demoPath.add(rot);
+            }
+
+
+            boardRepository.save(new BoardEntity(98, tiles_demoPath, tileRotation_demoPath, tilePositionsX_defaultPath,
+                    tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                    blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
+                    EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath));
+
         };
     }
 
