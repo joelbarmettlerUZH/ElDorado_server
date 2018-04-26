@@ -26,11 +26,12 @@ public class PlayerController  implements Serializable {
     private PlayerService playerService;
 
     //Gets all players
+    /*
     @GetMapping(value = context)
     @ResponseStatus(HttpStatus.OK)
     public List<Player> getPlayers(){
         return playerService.getPlayers();
-    }
+    }*/
 
     //Get specific player
     @GetMapping(value = context+"/{id}")
@@ -40,18 +41,20 @@ public class PlayerController  implements Serializable {
     }
 
     //Get playing pieces
+    /*
     @GetMapping(value = context+"/{id}/PlayingPiece")
     @ResponseStatus(HttpStatus.OK)
     public List<PlayingPiece> getPlayingPiece(@PathVariable int id){
         return playerService.getPlayingPieces(id);
-    }
+    }*/
 
     //Get handpile
+    /*
     @GetMapping(value = context+"/{id}/HandPile")
     @ResponseStatus(HttpStatus.OK)
     public List<Card> getHandPile(@PathVariable int id, @RequestParam("token") String token){
         return playerService.getHandPile(id, token);
-    }
+    }*/
 
     //Sells a Card
     @PutMapping(value = context+"/{id}/Sell")
@@ -136,5 +139,12 @@ public class PlayerController  implements Serializable {
     @ResponseStatus(HttpStatus.OK)
     public Player draw(@PathVariable int id, @RequestParam("token") String token){
         return playerService.drawCard(id, token);
+    }
+
+    //EndSpacialAction
+    @PutMapping(value = context+"/{id}/EndAction")
+    @ResponseStatus(HttpStatus.OK)
+    public void resetSpacialActions(@PathVariable int id, @RequestParam("token") String token){
+        playerService.resetSpacialActions(id, token);
     }
 }

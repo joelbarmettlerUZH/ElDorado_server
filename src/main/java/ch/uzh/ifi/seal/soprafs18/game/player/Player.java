@@ -50,20 +50,32 @@ public class Player implements Serializable {
         history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11, new SpecialActions(3, 3, 3)), "Testaction"));
 
         this.drawPile = new ArrayList<Card>();
+
+        drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
+        drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+        drawPile.add(new ActionCard("Wissenschaftlerin", (float) 0.5, 4, new SpecialActions(1,1,0)));
+        drawPile.add(new MovingCard("Entdecker", (float) 0.5, 3, 3, 99, new COLOR[]{COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}));
+        drawPile.add(new MovingCard("Tausendsassa", 1, 2, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER,COLOR.ENDFIELDJUNGLE,COLOR.ENDFIELDRIVER}));
+        drawPile.add(new RemoveActionCard("Fernsprechgerät", (float) 0.5, 4, new SpecialActions(0,0,1) ));
+
+        drawPile.add(new MovingCard("Millionärin", 4, 5, 4, 99, new COLOR[]{COLOR.SAND}));
+
+
+        /* ---------ORIGINAL_DECK--------------
         drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
         drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
         drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
         drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
-        /*
+
         drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
         drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
         drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
         drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
+
         */
-        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
-        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
-        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
-        drawPile.add(new ActionCard("Wissenschaftlerin", 2, 1, new SpecialActions(2,2,2)));
         Collections.shuffle(drawPile);
 
         this.handPile = new ArrayList<Card>();
@@ -485,5 +497,9 @@ public class Player implements Serializable {
 
     public void addPlayingPiece(PlayingPiece playingPiece) {
         this.playingPieces.add(playingPiece);
+    }
+
+    public void resetSpacialActions(){
+        this.specialAction = new SpecialActions(0,0,0);
     }
 }

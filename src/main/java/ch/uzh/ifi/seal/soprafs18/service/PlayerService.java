@@ -54,11 +54,12 @@ public class PlayerService  implements Serializable {
         }
     }
 
+    /*
     private boolean validate(Player p, Game g, String token) {
         Player player = playerRepository.findByPlayerId(p.getPlayerId()).get(0);
         LOGGER.info("Validating user with game");
         return player.getToken().equals(token) && gameRepository.findByGameId(g.getGameId()).get(0).getPlayers().contains(player);
-    }
+    }*/
 
     private boolean validate(Player p, String token) {
         Player player = playerRepository.findByPlayerId(p.getPlayerId()).get(0);
@@ -270,5 +271,17 @@ public class PlayerService  implements Serializable {
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
         return player;
+    }
+
+    public void resetSpacialActions(int id, String token){
+        Player player = playerRepository.findByPlayerId(id).get(0);
+        if (validate(player, token)) {
+            player.resetSpacialActions();
+            LOGGER.info("Player "+player.getPlayerId()+" ends spacial action.");
+            playerRepository.save(player);
+            return;
+        }
+        LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
+        return;
     }
 }

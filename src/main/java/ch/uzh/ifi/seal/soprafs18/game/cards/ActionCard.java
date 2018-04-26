@@ -16,7 +16,7 @@ public class ActionCard extends Card {
     @JsonCreator
     public ActionCard(String name, float coinValue, int coinCost, SpecialActions specialActions){
         super(name, coinValue, coinCost);
-        this.actions = specialActions;
+        this.actions = new SpecialActions(specialActions.getDraw(),specialActions.getRemove(),specialActions.getSteal());
     }
 
     @JsonCreator

@@ -45,6 +45,7 @@ public class GameServiceTest {
     @MockBean
     private GameRepository gameRepository;
 
+    /*
     @MockBean
     private PlayerRepository playerRepository;
 
@@ -55,7 +56,7 @@ public class GameServiceTest {
     private SlotRepository slotRepository;
 
     @MockBean
-    private RoomService roomService;
+    private RoomService roomService;*/
 
 
     @Before
@@ -99,6 +100,7 @@ public class GameServiceTest {
         assertEquals(1,found.getGameId());
     }
 
+    /*
     @Test
     public void getPlayers() {
         List<Player> players = new ArrayList<Player>();
@@ -136,5 +138,5 @@ public class GameServiceTest {
         assertEquals(true, found.isRunning());
         gameService.stop(1);
         assertEquals(false, found.isRunning());
-    }
+    }*/
 }
