@@ -1,10 +1,13 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import org.junit.Before;
 import org.junit.Test;
+import sun.jvm.hotspot.oops.Mark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +30,15 @@ public class RemoveMoveSellCardTest {
     //Test insufficient
     @Test
     public void sellAction() {
-        testPlayer.draw();
-        assertEquals(0, testPlayer.getDiscardPile().size());
+        Card testCard = new RemoveMoveSellCard("testname", 2, 2,2,2, new COLOR[]{COLOR.JUNGLE});
+        List handpile = new ArrayList<Card>();
+        handpile.add(testCard);
+        handpile.add(testCard);
+        handpile.add(testCard);
+        handpile.add(testCard);
+        handpile.add(testCard);
+        testPlayer.setHandPile(handpile);
+        testPlayer.sell(testCard);
+        assertEquals(4, testPlayer.getDrawPile().size());
     }
 }

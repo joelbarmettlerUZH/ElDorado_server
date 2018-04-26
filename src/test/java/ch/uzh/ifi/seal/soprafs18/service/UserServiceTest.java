@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
+import ch.uzh.ifi.seal.soprafs18.repository.RoomRepository;
 import ch.uzh.ifi.seal.soprafs18.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +41,6 @@ public class UserServiceTest {
 
     @MockBean
     private UserRepository userRepository;
-
 
     @Before
     public void setUp() {

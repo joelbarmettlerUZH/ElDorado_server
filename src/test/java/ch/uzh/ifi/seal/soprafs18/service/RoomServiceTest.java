@@ -36,8 +36,9 @@ public class RoomServiceTest {
     @Autowired
     private RoomService roomService;
 
- //   @MockBean
-  //  private RoomRepository roomRepository;
+    //If this is not commented everything fails!
+//    @MockBean
+ //   public RoomRepository roomRepository;
 
     @Before
     public void setUp() {

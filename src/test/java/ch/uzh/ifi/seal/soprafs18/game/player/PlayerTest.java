@@ -62,11 +62,32 @@ public class PlayerTest {
     @Test
     public void stealAction(){
         Market testMarket = new Market();
-        SpecialActions specAct = new SpecialActions(0,0,1);
+        SpecialActions specAct = new SpecialActions(0,0,6);
         testPlayer.setSpecialAction(specAct);
         assertEquals(0,testPlayer.getDiscardPile().size());
         testPlayer.stealAction(testMarket.getActive().get(0));
         assertEquals(1,testPlayer.getDiscardPile().size());
+
+        /*
+        testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.stealAction(testMarket.getActive().get(1));
+
+        testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.stealAction(testMarket.getActive().get(1));
+
+        testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.stealAction(testMarket.getActive().get(1));
+
+        testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.stealAction(testMarket.getActive().get(1));*/
     }
 
     @Test
@@ -76,6 +97,7 @@ public class PlayerTest {
         assertEquals(4,testPlayer.getHandPile().size());
         testPlayer.removeAction(testPlayer.getHandPile().get(0));
         assertEquals(3,testPlayer.getHandPile().size());
+
     }
 
     @Test
@@ -120,28 +142,45 @@ public class PlayerTest {
         testPlayer.buy(testMarket.getActive().get(1));
         assertEquals(5,testPlayer.getDiscardPile().size());
 
-        /*System.out.println("---------------------------DEBUG---------------------------------------");
+        /*
+        System.out.println("---------------------------DEBOGO---------------------------------------");
         testPlayer.addCoins((float) 100);
         testPlayer.setBought(FALSE);
 
         testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
         System.out.println(testMarket.getActive().get(1));
         testPlayer.buy(testMarket.getActive().get(1));
         testPlayer.setBought(FALSE);
 
         testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
         System.out.println(testMarket.getActive().get(1));
         testPlayer.buy(testMarket.getActive().get(1));
         testPlayer.setBought(FALSE);
 
         testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
         System.out.println(testMarket.getActive().get(1));
         testPlayer.buy(testMarket.getActive().get(1));
+        testPlayer.setBought(FALSE);
 
         testMarket.getPurchasable();
-        System.out.println(testMarket.getActive().get(1)); */
+        System.out.println("Market size active: " + testMarket.getActive().size());
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.buy(testMarket.getActive().get(1));
+        testPlayer.setBought(FALSE);
 
+        testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
+        System.out.println(testMarket.getActive().get(1));
+        testPlayer.buy(testMarket.getActive().get(1));
+        testPlayer.setBought(FALSE);
 
+        testMarket.getPurchasable();
+        System.out.println("Market size active: " + testMarket.getActive().size());
+        System.out.println(testMarket.getActive().get(1));
+        */
 
     }
 
