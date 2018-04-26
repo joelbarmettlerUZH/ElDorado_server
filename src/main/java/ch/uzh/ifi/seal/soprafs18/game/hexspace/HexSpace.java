@@ -136,11 +136,14 @@ public class HexSpace implements Serializable{
             neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
         }
         //System.out.println("neighbours of "+this.point.x+"/"+this.point.y+" = " + neighbours);
+
         List<HexSpace> occupied = new ArrayList<>();
         for(HexSpace neighbor: neighbours){
             for(Player player: game.getPlayers()){
                 for(PlayingPiece playingPiece: player.getPlayingPieces()){
-                    if(playingPiece.getStandsOn().getHexSpaceId() == neighbor.getHexSpaceId()){
+                    System.out.println(playingPiece.getStandsOn().toString());
+                    if(playingPiece.getStandsOn() == neighbor){
+                        System.out.println("remove: "+ neighbor.toString());
                         occupied.add(neighbor);
                     }
                 }
@@ -163,7 +166,7 @@ public class HexSpace implements Serializable{
     public List<HexSpace> getNeighbour(Game game){
         List<HexSpace> neighbours = getAllNeighbour(game);
         //now handle blockades
-        System.out.println(neighbours.iterator().next().getClass());
+        // System.out.println(neighbours.iterator().next().getClass());
         for (HexSpace current:neighbours){
             System.out.println(current.getClass().getCanonicalName());
             if (current.getClass()==BlockadeSpace.class){

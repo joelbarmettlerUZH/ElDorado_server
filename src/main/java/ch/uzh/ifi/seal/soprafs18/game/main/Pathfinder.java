@@ -76,10 +76,15 @@ public class Pathfinder  implements Serializable {
         can not move on Hexspace. Note that the Blockades to not disapear from the previous history of the individual reachable
         HexSpaces.
         */
-
+        for (HexSpace reach: reachables){
+            System.out.println("Reachable: " + reach.toString());
+        }
         Set<HexSpace> reachable = new HashSet<>(filterBlockades(reachables,game));
         reachable.add(hexSpace);
         setMemento(game, reachable, cards, playingPiece);
+        for (HexSpace reach: reachable){
+            System.out.println("Reachable: " + reach.toString());
+        }
         return new ArrayList<>(reachable);
     }
 
@@ -166,7 +171,7 @@ public class Pathfinder  implements Serializable {
             }
             for(Player player: game.getPlayers()){
                 for(PlayingPiece playingPiece: player.getPlayingPieces()){
-                    if(playingPiece.getStandsOn().getHexSpaceId() == hexSpace.getHexSpaceId()){
+                    if(playingPiece.getStandsOn() == hexSpace){
                         toRemove.add(hexSpace);
                     }
                 }
