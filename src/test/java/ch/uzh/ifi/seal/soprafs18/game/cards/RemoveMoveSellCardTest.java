@@ -7,7 +7,6 @@ import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import org.junit.Before;
 import org.junit.Test;
-import sun.jvm.hotspot.oops.Mark;
 
 import java.util.ArrayList;
 import java.util.List;
