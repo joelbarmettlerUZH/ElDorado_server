@@ -39,50 +39,44 @@ public class GameController  implements Serializable {
     }
 
     //Gets current player
-    /*
     @GetMapping(value = context+"/{id}/Current")
     @ResponseStatus(HttpStatus.OK)
     private Player getCurrent(@PathVariable int id){
         return gameService.getCurrentPlayer(id);
-    }*/
+    }
 
     //Gets all players
-    /*
     @GetMapping(value = context+"/{id}/Players")
     @ResponseStatus(HttpStatus.OK)
     private List<Player> getPlayers(@PathVariable int id){
         return gameService.getPlayers(id);
-    }*/
+    }
 
     //Gets board
-    /*
     @GetMapping(value = context+"/{id}/Board")
     @ResponseStatus(HttpStatus.OK)
     private Matrix getBoard(@PathVariable int id){
         return gameService.getBoard(id);
-    }*/
+    }
 
     //Gets Market
-    /*
     @GetMapping(value = context+"/{id}/Market")
     @ResponseStatus(HttpStatus.OK)
     private Market getMarket(@PathVariable int id){
         return gameService.getMarket(id);
-    }*/
+    }
 
     //Gets blockades
-    /*
     @GetMapping(value = context+"/{id}/Blockade")
     @ResponseStatus(HttpStatus.OK)
     private List<Blockade> getBlockades(@PathVariable int id){
         return gameService.getBlockades(id);
-    }*/
+    }
 
     //Gets winners
-    /*
     @GetMapping(value = context+"/{id}/Winner")
     @ResponseStatus(HttpStatus.OK)
     private Player getWinner(@PathVariable int id){
         return gameService.getWinner(id);
-    }*/
+    }
 }

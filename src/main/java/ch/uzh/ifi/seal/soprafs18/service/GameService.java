@@ -101,48 +101,41 @@ public class GameService implements Serializable{
         return gameRepository.findByGameId(gameID).get(0);
     }
 
-    /*
     public List<Player> getPlayers(int id) {
         LOGGER.info("Returning Players of game " + id);
         Game g = gameRepository.findByGameId(id).get(0);
         return g.getPlayers();
-    }*/
+    }
 
-    /*
     public Player getWinner(int id){
         LOGGER.info("Returning possible winners of Game " + id);
         return gameRepository.findByGameId(id).get(0).getWinner();
-    }*/
+    }
 
-    /*
     public Player getCurrentPlayer(int id) {
         LOGGER.info("Returning current player of game " + id);
         return gameRepository.findByGameId(id).get(0).getCurrent();
-    }*/
+    }
 
-    /*
     public Matrix getBoard(int id){
         LOGGER.info("Returning board of game " + id);
         return gameRepository.findByGameId(id).get(0).getPathMatrix();
-    }*/
+    }
 
-    /*
     public List<Blockade> getBlockades(int id){
         LOGGER.info("Returning board of game " + id);
         return gameRepository.findByGameId(id).get(0).getBlockades();
-    }*/
+    }
 
-    /*
     public Market getMarket(int id){
         LOGGER.info("Returning board of game " + id);
         return gameRepository.findByGameId(id).get(0).getMarketPlace();
-    }*/
+    }
 
-    /*
     public void stop(int id) {
         LOGGER.info("Stoppping game " + id);
         Game game = gameRepository.findByGameId(id).get(0);
         game.setRunning(false);
         gameRepository.save(game);
-    }*/
+    }
 }
