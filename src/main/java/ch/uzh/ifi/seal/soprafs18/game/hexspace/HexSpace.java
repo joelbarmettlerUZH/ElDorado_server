@@ -3,6 +3,8 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 //import com.sun.xml.internal.bind.v2.TODO;
+import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 //import com.sun.xml.internal.bind.v2.TODO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -134,6 +136,17 @@ public class HexSpace implements Serializable{
             neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
         }
         //System.out.println("neighbours of "+this.point.x+"/"+this.point.y+" = " + neighbours);
+        List<HexSpace> occupied = new ArrayList<>();
+        for(HexSpace neighbor: neighbours){
+            for(Player player: game.getPlayers()){
+                for(PlayingPiece playingPiece: player.getPlayingPieces()){
+                    if(playingPiece.getStandsOn().getHexSpaceId() == neighbor.getHexSpaceId()){
+                        occupied.add(neighbor);
+                    }
+                }
+            }
+        }
+        neighbours.removeAll(occupied);
         return neighbours;
     }
 
