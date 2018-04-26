@@ -17,7 +17,7 @@ import java.util.List;
 public class Blockade  implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private int BLOCKADE_ID;
 
     public Blockade(List<BlockadeSpace> blockadeSpaces){
