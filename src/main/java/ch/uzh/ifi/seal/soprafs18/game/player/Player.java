@@ -50,10 +50,10 @@ public class Player implements Serializable {
         history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11, new SpecialActions(3, 3, 3)), "Testaction"));
 
         this.drawPile = new ArrayList<Card>();
-        drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER}));
-        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
-        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
-        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE}));
+        drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
         /*
         drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));
         drawPile.add(new MovingCard("Reisende", 1, 0, 1, 99, new COLOR[]{COLOR.SAND}));

@@ -18,19 +18,19 @@ public class Market implements Serializable {
         active = new ArrayList<>();
         active.add(
                 new Slot(
-                        new MovingCard("Kundschafter", (float) 0.5, 1, 2, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new MovingCard("Kundschafter", (float) 0.5, 1, 2, 99, new COLOR[]{COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}))
                 );
         active.add(
                 new Slot(
-                        new MovingCard("Entdecker", (float) 0.5, 3, 3, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new MovingCard("Entdecker", (float) 0.5, 3, 3, 99, new COLOR[]{COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}))
                 );
         active.add(
                 new Slot(
-                        new RemoveMoveCard("Schatztruhe", 4, 3, 4, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new RemoveMoveCard("Schatztruhe", 4, 3, 4, 99, new COLOR[]{COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}))
                 );
         active.add(
                 new Slot(
-                        new MovingCard("Tausendsassa", 1, 2, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+                        new MovingCard("Tausendsassa", 1, 2, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER,COLOR.ENDFIELDJUNGLE,COLOR.ENDFIELDRIVER}))
                 );
         active.add(
                 new Slot(
@@ -53,11 +53,11 @@ public class Market implements Serializable {
         );
         passive.add(
                 new Slot(
-                        new RemoveMoveSellCard("Propellerflugzeug", 4, 4, 4, 99, new COLOR[]{COLOR.SAND, COLOR.RIVER, COLOR.JUNGLE}))
+                        new RemoveMoveSellCard("Propellerflugzeug", 4, 4, 4, 99, new COLOR[]{COLOR.SAND, COLOR.RIVER, COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}))
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Ureinwohner", (float) 0.5, 5, 99, 1, new COLOR[]{COLOR.BASECAMP, COLOR.RUBBLE, COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+                        new MovingCard("Ureinwohner", (float) 0.5, 5, 99, 1, new COLOR[]{COLOR.BASECAMP, COLOR.RUBBLE, COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER,COLOR.ENDFIELDJUNGLE,COLOR.ENDFIELDRIVER}))
         );
         passive.add(
                 new Slot(
@@ -74,19 +74,19 @@ public class Market implements Serializable {
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Pionier", (float) 0.5, 5, 5, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new MovingCard("Pionier", (float) 0.5, 5, 5, 99, new COLOR[]{COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}))
         );
         passive.add(
                 new Slot(
-                        new RemoveMoveCard("Mächtige Machete", (float) 0.5, 3, 6, 99, new COLOR[]{COLOR.JUNGLE}))
+                        new RemoveMoveCard("Mächtige Machete", (float) 0.5, 3, 6, 99, new COLOR[]{COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}))
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Abenteurerin", 2, 4, 2, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER}))
+                        new MovingCard("Abenteurerin", 2, 4, 2, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER,COLOR.ENDFIELDJUNGLE,COLOR.ENDFIELDRIVER}))
         );
         passive.add(
                 new Slot(
-                        new MovingCard("Kapitän", (float) 0.5, 2, 3, 99, new COLOR[]{COLOR.RIVER}))
+                        new MovingCard("Kapitän", (float) 0.5, 2, 3, 99, new COLOR[]{COLOR.RIVER,COLOR.ENDFIELDRIVER}))
         );
         passive.add(
                 new Slot(
