@@ -148,6 +148,9 @@ public class Assembler implements Serializable {
         boardMatrix = this.assembleEndingSpaces(boardMatrix,board.getEndingSpaces(),
                                                     board.getEndingSpacePositionX(),
                                                     board.getEndingSpacePositionY());
+        boardMatrix = this.assembleElDorado(boardMatrix,board.getEldoradoSpace(),
+                                                    board.getEldoradoSpacePositionX(),
+                                                    board.getEldoradoSpacePositionY());
         return convertMatrix(cropMatrix(boardMatrix));
     }
 
@@ -345,9 +348,17 @@ public class Assembler implements Serializable {
      * @return: boradMatrix with filled in EndingSpaces as HesSpaceEntities.
      */
     public HexSpaceEntity[][] assembleEndingSpaces(HexSpaceEntity[][] boardMatrix, List<HexSpaceEntity> endingSpaces,
-                                                   List<Integer> endingSpacesPositionX,List<Integer> endingSpacesPositionY){
+                                                        List<Integer> endingSpacesPositionX,List<Integer> endingSpacesPositionY){
         for (int i = 0; i< endingSpaces.size(); i++) {
             boardMatrix[endingSpacesPositionX.get(i)][endingSpacesPositionY.get(i)] = endingSpaces.get(i);
+        }
+        return boardMatrix;
+    }
+
+    public HexSpaceEntity[][] assembleElDorado(HexSpaceEntity[][] boardMatrix, List<HexSpaceEntity> eldoradoSpaces,
+                                                   List<Integer> eldoradoPositionX,List<Integer> eldoradoPositionY){
+        for (int i = 0; i< eldoradoSpaces.size(); i++) {
+            boardMatrix[eldoradoPositionX.get(i)][eldoradoPositionY.get(i)] = eldoradoSpaces.get(i);
         }
         return boardMatrix;
     }

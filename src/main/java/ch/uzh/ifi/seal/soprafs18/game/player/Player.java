@@ -72,7 +72,7 @@ public class Player implements Serializable {
         this.discardPile = new ArrayList<Card>();
         // Why is this?
         // discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
-        this.bought = FALSE;
+        this.bought = false;
         this.token = "TESTTOKEN";
         this.removeBlockades = new ArrayList<>();
         this.blockades = new ArrayList<>();
@@ -165,7 +165,9 @@ public class Player implements Serializable {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @Transient
     private List<CardAction> history;
 
     /*
@@ -311,7 +313,10 @@ public class Player implements Serializable {
         }
         if (handPile.contains(card)) {
             specialAction = card.performAction(this);
-
+            while (specialAction.getDraw() > 0){
+                this.draw(1);
+                specialAction.reduceDraw();
+            }
             CardAction cardAct = new CardAction(card, "Play: " + card.getName());
             history.add(cardAct);
         }
@@ -364,8 +369,8 @@ public class Player implements Serializable {
             if (slot.getCard().getCoinCost() <= coins && !bought) {
                 Card card = slot.buy();
                 this.discard(card);
-                this.coins -= 0;
-                bought = TRUE;
+                this.coins = 0.0f;
+                bought = true;
             }
         } else {
             return;

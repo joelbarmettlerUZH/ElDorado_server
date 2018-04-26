@@ -262,12 +262,30 @@ public class Application {
                 EndSpacesY_defaultPath.add(posY);
             }
 
+            List<HexSpaceEntity> EldoradoSpaces_defaultPath = new ArrayList<>();
+            String[] EldoradoSpacesId_defaultPath = {"ED","ED","ED"};
+            for (String id : EldoradoSpacesId_defaultPath) {
+                EldoradoSpaces_defaultPath.add(hexSpaceRepository.findByHexID(id));
+            }
+
+            List<Integer> EldoradoSpacesX_defaultPath = new ArrayList<>();
+            int [] EldoradoSpacesX = {26,27,28};
+            for (int posX : EldoradoSpacesX) {
+                EldoradoSpacesX_defaultPath.add(posX);
+            }
+            List<Integer> EldoradoSpacesY_defaultPath = new ArrayList<>();
+            int [] EldoradoSpacesY = {21,21,21};
+            for (int posY : EldoradoSpacesY) {
+                EldoradoSpacesY_defaultPath.add(posY);
+            }
+
 
 
             boardRepository.save(new BoardEntity(0, tiles_defaultPath, tileRotation_defaultPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
-                    EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath));
+                    EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
+                    EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));
 
 
 
@@ -283,7 +301,28 @@ public class Application {
             boardRepository.save(new BoardEntity(99, tiles_defaultPath, tileRotation_testPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
-                    EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath));
+                    EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
+                    EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));
+
+            //----------------------TEST PATH----------------------------------------
+            List<TileEntity> tiles_demoPath = new ArrayList<>();
+            char [] tiles = {'K','C','N','I','B'};
+            for (char id : tiles) {
+                tiles_demoPath.add(tileRepository.findByTileID(id));
+            }
+
+            List<Integer> tileRotation_demoPath = new ArrayList<>();
+            int [] tileRot_demo = {5,0,3,3,4};
+            for (int rot : tileRot_demo) {
+                tileRotation_demoPath.add(rot);
+            }
+
+
+            boardRepository.save(new BoardEntity(98, tiles_demoPath, tileRotation_demoPath, tilePositionsX_defaultPath,
+                    tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                    blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
+                    EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
+                    EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));
 
         };
     }

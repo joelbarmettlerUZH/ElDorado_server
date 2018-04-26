@@ -1,5 +1,8 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
@@ -13,7 +16,8 @@ public class BoardEntity implements Serializable {
                        List<Integer> tilesPositionY,List<StripEntity> strip, List<Integer> stripRotation,
                        List<Integer> stripPositionX,List<Integer> stripPositionY,List<Integer> blockadeId,
                        List<Integer> blockadePositionX, List<Integer> blockadePositionY,List<HexSpaceEntity> endingSpaces,
-                       List<Integer> endingSpacePositionX, List<Integer> endingSpacePositionY) {
+                       List<Integer> endingSpacePositionX, List<Integer> endingSpacePositionY, List<HexSpaceEntity> eldoradoSpace,
+                       List<Integer> eldoradoSpacePositionX, List<Integer> eldoradoSpacePositionY)  {
         //System.out.println("constr");
         this.boardID = boardID;
         this.tiles = tiles;
@@ -30,6 +34,9 @@ public class BoardEntity implements Serializable {
         this.endingSpaces = endingSpaces;
         this.endingSpacePositionX = endingSpacePositionX;
         this.endingSpacePositionY = endingSpacePositionY;
+        this.eldoradoSpacePositionX = eldoradoSpacePositionX;
+        this.eldoradoSpacePositionY = eldoradoSpacePositionY;
+        this.eldoradoSpace = eldoradoSpace;
     }
 
     public BoardEntity(){
@@ -97,6 +104,7 @@ public class BoardEntity implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hexid")
     @Column(name = "ENDINGSPACES",nullable = true)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<HexSpaceEntity> endingSpaces;
 
     @Column(name = "ENDINGSPACEPOSITIONX",nullable = true)
@@ -106,6 +114,21 @@ public class BoardEntity implements Serializable {
     @Column(name = "ENDINGSPACEPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> endingSpacePositionY;
+
+    @Embedded
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hexid")
+    @Column(name = "ELDORADO",nullable = true)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<HexSpaceEntity> eldoradoSpace;
+
+    @Column(name = "ELDORADOPOSITIONX",nullable = true)
+    @ElementCollection
+    private List<Integer> eldoradoSpacePositionX;
+
+    @Column(name = "ELDORADOPOSITIONY",nullable = true)
+    @ElementCollection
+    private List<Integer> eldoradoSpacePositionY;
 
     public int getBoardID() {
         return boardID;
@@ -225,5 +248,29 @@ public class BoardEntity implements Serializable {
 
     public void setEndingSpacePositionY(List<Integer> endingSpacePositionY) {
         this.endingSpacePositionY = endingSpacePositionY;
+    }
+
+    public List<HexSpaceEntity> getEldoradoSpace() {
+        return eldoradoSpace;
+    }
+
+    public void setEldoradoSpace(List<HexSpaceEntity> eldoradoSpace) {
+        this.eldoradoSpace = eldoradoSpace;
+    }
+
+    public List<Integer> getEldoradoSpacePositionX() {
+        return eldoradoSpacePositionX;
+    }
+
+    public void setEldoradoSpacePositionX(List<Integer> eldoradoSpacePositionX) {
+        this.eldoradoSpacePositionX = eldoradoSpacePositionX;
+    }
+
+    public List<Integer> getEldoradoSpacePositionY() {
+        return eldoradoSpacePositionY;
+    }
+
+    public void setEldoradoSpacePositionY(List<Integer> eldoradoSpacePositionY) {
+        this.eldoradoSpacePositionY = eldoradoSpacePositionY;
     }
 }
