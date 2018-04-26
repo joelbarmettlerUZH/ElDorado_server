@@ -298,7 +298,7 @@ public class Application {
             }
 
 
-            boardRepository.save(new BoardEntity(99, tiles_defaultPath, tileRotation_testPath, tilePositionsX_defaultPath,
+            boardRepository.save(new BoardEntity(2, tiles_defaultPath, tileRotation_testPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
@@ -318,7 +318,7 @@ public class Application {
             }
 
 
-            boardRepository.save(new BoardEntity(98, tiles_demoPath, tileRotation_demoPath, tilePositionsX_defaultPath,
+            boardRepository.save(new BoardEntity(3, tiles_demoPath, tileRotation_demoPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
