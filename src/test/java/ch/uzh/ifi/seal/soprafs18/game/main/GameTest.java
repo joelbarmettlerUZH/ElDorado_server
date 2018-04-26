@@ -8,5 +8,26 @@ public class GameTest {
 
     @Test
     public void getHexSpace() {
+        
+    }
+
+    @Test
+    public void getHexSpace1() {
+    }
+
+    @Test
+    public void setPlayers() {
+    }
+
+    @Test
+    public void assemble() {
+    }
+
+    @Test
+    public void endRound() {
+    }
+
+    @Test
+    public void getWinner() {
     }
 }

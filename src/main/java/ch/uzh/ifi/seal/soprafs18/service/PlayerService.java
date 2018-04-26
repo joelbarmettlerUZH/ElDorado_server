@@ -144,7 +144,7 @@ public class PlayerService  implements Serializable {
         Player player = playerRepository.findByPlayerId(id).get(0);
         Card card = cardRepository.findById(c.getId()).get(0);
         if (validate(player, token)) {
-            player.remove(card);
+            player.removeAction(card);
             LOGGER.info("Player " + player.getPlayerId() + " removes card " + card.getName());
             playerRepository.save(player);
             return player;

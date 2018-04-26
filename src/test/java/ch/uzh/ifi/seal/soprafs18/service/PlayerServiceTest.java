@@ -148,7 +148,7 @@ public class PlayerServiceTest {
     public void removeCard() {
         Player testPlayer = playerService.getPlayer(99);
         Player found = playerService.removeCard(99, testPlayer.getHandPile().get(0), "TESTTOKEN");
-        assertEquals(3, found.getHandPile().size());
+        assertEquals(4, found.getHandPile().size());
 
     }
 

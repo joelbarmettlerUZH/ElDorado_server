@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs18.service;
 import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
+import ch.uzh.ifi.seal.soprafs18.game.main.Assembler;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.repository.CardRepository;
@@ -76,16 +77,20 @@ public class GameServiceTest {
     @Test
     public void newGame() {
 
-/*        RoomEntity room = new RoomEntity("Room1");
+        /*
+        RoomEntity room = new RoomEntity();
         UserEntity user1 = new UserEntity("user1", 0, room);
         UserEntity user2 = new UserEntity("user2", 1, room);
 
         roomService.getRoom(0);
 
+
+        Assembler assembler = new Assembler();
+        assembler.
         room.addUser(user1);
         assertEquals(1,gameService.getAll().size());
         gameService.newGame(room);
-        assertEquals(2,gameService.getAll().size());*/
+        assertEquals(2,gameService.getAll().size()); */
     }
 
     @Test
