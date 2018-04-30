@@ -2,14 +2,8 @@ package ch.uzh.ifi.seal.soprafs18;
 
 import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
-import ch.uzh.ifi.seal.soprafs18.game.board.entity.BlockadeSpaceEntity;
-import ch.uzh.ifi.seal.soprafs18.game.board.entity.BoardEntity;
-import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
-import ch.uzh.ifi.seal.soprafs18.game.board.entity.TileEntity;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.BlockadeSpaceRepository;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.BoardRepository;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.HexSpaceRepository;
-import ch.uzh.ifi.seal.soprafs18.game.board.repository.TileRepository;
+import ch.uzh.ifi.seal.soprafs18.game.board.entity.*;
+import ch.uzh.ifi.seal.soprafs18.game.board.repository.*;
 import ch.uzh.ifi.seal.soprafs18.game.board.service.BlockadeSpaceService;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
@@ -47,6 +41,9 @@ public class Application {
 
     @Autowired
     TileRepository tileRepository;
+
+    @Autowired
+    StripRepository stripRepository;
 
     @Autowired
     BoardRepository boardRepository;
@@ -291,6 +288,43 @@ public class Application {
                 HexSpaces_TileN.add(hexSpaceRepository.findByHexID(id));
             }
             tileRepository.save(new TileEntity('N', HexSpaces_TileN));
+
+            //-------------------------------------
+            //Strip O
+            List<HexSpaceEntity> HexSpaces_StripO = new ArrayList<>();
+            String[] HexSpaceIds_StripO = {"S1","S2","S1","R1","J2","R2","R1","R1","J1","J2","W1","S1",
+                    "M","W4","M","M"};
+            for (String id : HexSpaceIds_StripO) {
+                HexSpaces_StripO.add(hexSpaceRepository.findByHexID(id));
+            }
+            stripRepository.save(new StripEntity('O', HexSpaces_StripO));
+
+            //Strip P
+            List<HexSpaceEntity> HexSpaces_StripP = new ArrayList<>();
+            String[] HexSpaceIds_StripP = {"J2","R1","S1","S1","W1","J3","J2","W2","J1","J1","R3","J1",
+                    "R1","J2","S3","W1"};
+            for (String id : HexSpaceIds_StripP) {
+                HexSpaces_StripP.add(hexSpaceRepository.findByHexID(id));
+            }
+            stripRepository.save(new StripEntity('P', HexSpaces_StripP));
+
+            //Strip Q
+            List<HexSpaceEntity> HexSpaces_StripQ = new ArrayList<>();
+            String[] HexSpaceIds_StripQ = {"J2","R1","S1","S1","W1","J3","J2","W2","J1","J1","R3","J1",
+                    "R1","J2","S3","W1"};
+            for (String id : HexSpaceIds_StripQ) {
+                HexSpaces_StripQ.add(hexSpaceRepository.findByHexID(id));
+            }
+            stripRepository.save(new StripEntity('Q', HexSpaces_StripQ));
+
+            //Strip R
+            List<HexSpaceEntity> HexSpaces_StripR = new ArrayList<>();
+            String[] HexSpaceIds_StripR = {"J1","J1","J1","M","S1","S1","S1","S1","S1","M","J1","J1",
+                    "J3","M","R1","B1"};
+            for (String id : HexSpaceIds_StripR) {
+                HexSpaces_StripR.add(hexSpaceRepository.findByHexID(id));
+            }
+            stripRepository.save(new StripEntity('R', HexSpaces_StripR));
 
             //DEFAULT PATH
             List<TileEntity> tiles_defaultPath = new ArrayList<>();
