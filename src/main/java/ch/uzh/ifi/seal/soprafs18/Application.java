@@ -109,6 +109,7 @@ public class Application {
             hexSpaceRepository.save(new HexSpaceEntity("W1", "RIVER", 1));
             hexSpaceRepository.save(new HexSpaceEntity("W2", "RIVER", 2));
             hexSpaceRepository.save(new HexSpaceEntity("W3", "RIVER", 3));
+            hexSpaceRepository.save(new HexSpaceEntity("W4", "RIVER", 4));
             hexSpaceRepository.save(new HexSpaceEntity("S1", "SAND", 1));
             hexSpaceRepository.save(new HexSpaceEntity("S2", "SAND", 2));
             hexSpaceRepository.save(new HexSpaceEntity("S3", "SAND", 3));
@@ -169,16 +170,61 @@ public class Application {
             }
             tileRepository.save(new TileEntity('C', HexSpaces_TileC));
 
-            //Tile N
-            List<HexSpaceEntity> HexSpaces_TileN = new ArrayList<>();
-            String[] HexSpaceIds_TileN = {"J1","W1","W1","S1","S1","J1","J1","J1","J1","J1","J1","W1","W1","S1","S1","J1","J1","J1",
-                    "J1","W1","S2","S2","J1","J2","J1","W1","W1","S2","J1","J2",
-                    "W1","S3","J1","W1","S3","J1",
-                    "S4"};
-            for (String id : HexSpaceIds_TileN) {
-                HexSpaces_TileN.add(hexSpaceRepository.findByHexID(id));
+            //Tile D
+            List<HexSpaceEntity> HexSpaces_TileD = new ArrayList<>();
+            String[] HexSpaceIds_TileD = {"W3","M","J1","J2","J1","J1","J2","J1","J1","J1","J1","J1","J2","J1","J1","J2","J1","M",
+                    "S1","S3","J1","W1","W1","W1","W1","W1","W1","W1","J1","S3",
+                    "J1","W2","W1","W2","J1","M",
+                    "M"};
+            for (String id : HexSpaceIds_TileD) {
+                HexSpaces_TileD.add(hexSpaceRepository.findByHexID(id));
             }
-            tileRepository.save(new TileEntity('N', HexSpaces_TileN));
+            tileRepository.save(new TileEntity('D', HexSpaces_TileD));
+
+            //Tile E
+            List<HexSpaceEntity> HexSpaces_TileE = new ArrayList<>();
+            String[] HexSpaceIds_TileE = {"S1","S1","J1","R1","J1","J1","J1","R1","R1","M","R1","J1","J1","R1","J1","B1","S1","S1",
+                    "M","W1","J2","M","W2","J2","M","R1","J2","J1","J2","J1",
+                    "W1","J1","R1","R3","J3","M",
+                    "W1"};
+            for (String id : HexSpaceIds_TileE) {
+                HexSpaces_TileE.add(hexSpaceRepository.findByHexID(id));
+            }
+            tileRepository.save(new TileEntity('E', HexSpaces_TileE));
+
+            //Tile F
+            List<HexSpaceEntity> HexSpaces_TileF = new ArrayList<>();
+            String[] HexSpaceIds_TileF = {"W1","W1","R1","R1","R1","W2","B2","R1","J2","B1","J1","R1","R1","R1","J2","J1","M","M",
+                    "W1","W1","J1","J1","W2","J1","J3","S1","S1","J1","J1","M",
+                    "W3","J2","J1","R2","S2","W2",
+                    "M"};
+            for (String id : HexSpaceIds_TileF) {
+                HexSpaces_TileF.add(hexSpaceRepository.findByHexID(id));
+            }
+            tileRepository.save(new TileEntity('F', HexSpaces_TileF));
+
+            //Tile G
+            List<HexSpaceEntity> HexSpaces_TileG = new ArrayList<>();
+            String[] HexSpaceIds_TileG = {"J1","J1","J1","B1","J1","J1","J1","J1","J1","J1","J1","S1","M","S1","J1","J1","J1","J1",
+                    "M","S1","J2","S1","M","S1","J2","S2","M","S2","J2","S1",
+                    "R1","S2","R1","S2","S4","S2",
+                    "S3"};
+            for (String id : HexSpaceIds_TileG) {
+                HexSpaces_TileG.add(hexSpaceRepository.findByHexID(id));
+            }
+            tileRepository.save(new TileEntity('G', HexSpaces_TileG));
+
+            //Tile H
+            List<HexSpaceEntity> HexSpaces_TileH = new ArrayList<>();
+            String[] HexSpaceIds_TileH = {"W2","W2","W2","J1","J2","J2","J2","J2","J2","J1","S1","S2","S3","S2","S1","W1","W2","W2",
+                    "W1","W1","J1","J1","J1","J1","J1","S2","M","S2","W1","W1",
+                    "S1","S1","S1","S1","S2","S1",
+                    "S2"};
+
+            for (String id : HexSpaceIds_TileH) {
+                HexSpaces_TileH.add(hexSpaceRepository.findByHexID(id));
+            }
+            tileRepository.save(new TileEntity('H', HexSpaces_TileH));
 
             //Tile I
             List<HexSpaceEntity> HexSpaces_TileI = new ArrayList<>();
@@ -191,6 +237,17 @@ public class Application {
             }
             tileRepository.save(new TileEntity('I', HexSpaces_TileI));
 
+            //Tile J
+            List<HexSpaceEntity> HexSpaces_TileJ = new ArrayList<>();
+            String[] HexSpaceIds_TileJ = {"W1","R2","R1","R1","R1","R1","R2","S1","S1","S1","S1","S1","S1","W1","W1","W1","W1","W1",
+                    "W1","R2","R2","R2","M","S2","S2","S2","S1","W2","M","W2",
+                    "J2","J1","J1","J2","J2","J1",
+                    "B1"};
+            for (String id : HexSpaceIds_TileJ) {
+                HexSpaces_TileJ.add(hexSpaceRepository.findByHexID(id));
+            }
+            tileRepository.save(new TileEntity('J', HexSpaces_TileJ));
+
             //Tile K
             List<HexSpaceEntity> HexSpaces_TileK = new ArrayList<>();
             String[] HexSpaceIds_TileK = {"J1","J2","J2","J2","J1","J1","B1","J2","J2","J1","J2","J2","J2","J1","J1","B1","J2","J2",
@@ -201,6 +258,39 @@ public class Application {
                 HexSpaces_TileK.add(hexSpaceRepository.findByHexID(id));
             }
             tileRepository.save(new TileEntity('K', HexSpaces_TileK));
+
+            //Tile L
+            List<HexSpaceEntity> HexSpaces_TileL = new ArrayList<>();
+            String[] HexSpaceIds_TileL = {"J3","J1","J2","J2","J1","J1","M","J1","J2","J2","S2","J1","J2","J2","J1","W1","B1","B1",
+                    "J3","J1","J1","J2","J1","S2","B2","J2","J1","J1","W1","W1",
+                    "J3","M","J1","J2","M","J1",
+                    "J1"};
+            for (String id : HexSpaceIds_TileL) {
+                HexSpaces_TileL.add(hexSpaceRepository.findByHexID(id));
+            }
+            tileRepository.save(new TileEntity('L', HexSpaces_TileL));
+
+            //Tile M
+            List<HexSpaceEntity> HexSpaces_TileM = new ArrayList<>();
+            String[] HexSpaceIds_TileM = {"B1","W4","M","M","J1","J1","J1","J1","W1","W1","J1","M","M","J1","J1","J1","J1","J1",
+                    "M","W1","J1","R2","R2","J1","J1","M","J1","S2","S4","M",
+                    "J1","J1","M","M","J1","J1",
+                    "R2"};
+            for (String id : HexSpaceIds_TileM) {
+                HexSpaces_TileM.add(hexSpaceRepository.findByHexID(id));
+            }
+            tileRepository.save(new TileEntity('M', HexSpaces_TileM));
+
+            //Tile N
+            List<HexSpaceEntity> HexSpaces_TileN = new ArrayList<>();
+            String[] HexSpaceIds_TileN = {"J1","W1","W1","S1","S1","J1","J1","J1","J1","J1","J1","W1","W1","S1","S1","J1","J1","J1",
+                    "J1","W1","S2","S2","J1","J2","J1","W1","W1","S2","J1","J2",
+                    "W1","S3","J1","W1","S3","J1",
+                    "S4"};
+            for (String id : HexSpaceIds_TileN) {
+                HexSpaces_TileN.add(hexSpaceRepository.findByHexID(id));
+            }
+            tileRepository.save(new TileEntity('N', HexSpaces_TileN));
 
             //DEFAULT PATH
             List<TileEntity> tiles_defaultPath = new ArrayList<>();
