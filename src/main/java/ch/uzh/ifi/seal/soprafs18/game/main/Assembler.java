@@ -70,29 +70,29 @@ public class Assembler implements Serializable {
     /**
     Terrain-Strips Dislocation for the six different rotations
      **/
-    private int[] Rot0DislocY = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
-    private int[] Rot0EvenDislocX = {0, -1, 0, 0, 1, 1, 2, 3, 2, 2, 1, 1, 0, 1, 1, 2};
-    private int[] Rot0OddDislocX = {0, 0, 0, 1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2};
+    private int[] Rot0DislocX = {0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, -0, -1, -2, -3, -4};
+    private int[] Rot0EvenDislocY = {0, -1, 0, 0, 1, 1, 2, 3, 2, 2, 1, 1, 0, 1, 1, 2};
+    private int[] Rot0OddDislocY = {0, 0, 0, 1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2};
 
-    private int[] Rot1DislocY = {0, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0};
-    private int[] Rot1EvenDislocX = {0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
-    private int[] Rot1OddDislocX = {0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
+    private int[] Rot1DislocX = {0, -1, -1,-1, -1, -1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0};
+    private int[] Rot1EvenDislocY = {0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
+    private int[] Rot1OddDislocY = {0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
 
-    private int[] Rot2DislocY = {0, 0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
-    private int[] Rot2EvenDislocX = {0, 1, 2, 2, 3, 3, 3, 2, 1, 1, 0, 0, 1, 1, 2, 2};
-    private int[] Rot2OddDislocX = {0, 1, 1, 2, 2, 3, 2, 1, 1, 0, 0, -1, 0, 1, 1, 2};
+    private int[] Rot2DislocX = {0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
+    private int[] Rot2EvenDislocY = {0, 1, 2, 2, 3, 3, 3, 2, 1, 1, 0, 0, 1, 1, 2, 2};
+    private int[] Rot2OddDislocY = {0, 1, 1, 2, 2, 3, 2, 1, 1, 0, 0, -1, 0, 1, 1, 2};
 
-    private int[] Rot3DislocY = {0, -1, -1, -1, -1, -1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0};
-    private int[] Rot3EvenDislocX = {0, 0, -1, -2, -3, -4, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
-    private int[] Rot3OddDislocX = {0, -1, -2, -3, -4, -5, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
+    private int[] Rot3DislocX = {0, 1, 1, 1, 1, 1, 0, -1, -1, -1, -1, -1, 0, 0, 0, 0};
+    private int[] Rot3EvenDislocY = {0, 0, -1, -2, -3, -4, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
+    private int[] Rot3OddDislocY = {0, -1, -2, -3, -4, -5, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
 
-    private int[] Rot4DislocY = {0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, 0, -1, -2, -3, -4};
-    private int[] Rot4EvenDislocX = {0, 0, 0, -1, -1, -2, -3, -3, -3, -2, -2, -1, -1, -1, -2, -2};
-    private int[] Rot4OddDislocX = {0, 1, 0, 0, -1, -1, -2, -3, -2, -2, -1, -1, 0, -1, -1, -2};
+    private int[] Rot4DislocX = {0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
+    private int[] Rot4EvenDislocY = {0, 0, 0, -1, -1, -2, -3, -3, -3, -2, -2, -1, -1, -1, -2, -2};
+    private int[] Rot4OddDislocY = {0, 1, 0, 0, -1, -1, -2, -3, -2, -2, -1, -1, 0, -1, -1, -2};
 
-    private int[] Rot5DislocY = {0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
-    private int[] Rot5EvenDislocX = {0, -1, -1, -2, -2, -3, -2, -1, -1, 0, 0, 1, 0, -1, -1, -2};
-    private int[] Rot5OddDislocX = {0, -1, -2, -2, -3, -3, -3, -2, -1, -1, 0, 0, -1, -1, -2, -2};
+    private int[] Rot5DislocX = {0, 0, -1, -2, -3, -4, -5, -5, -4, -3, -2, -1, -1, -2, -3, -4};
+    private int[] Rot5EvenDislocY = {0, -1, -1, -2, -2, -3, -2, -1, -1, 0, 0, 1, 0, -1, -1, -2};
+    private int[] Rot5OddDislocY = {0, -1, -2, -2, -3, -3, -3, -2, -1, -1, 0, 0, -1, -1, -2, -2};
 
     /**
     Function used to assemble the strips into the matrix. We have 12 cases, 6  rotation-dependent each, even and odd
@@ -262,27 +262,27 @@ public class Assembler implements Serializable {
                 switch (currentStripRotation) {
                     case 0:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot0DislocY, Rot0EvenDislocX, Rot0OddDislocX, j, currentStripHexSpaces.get(j));
+                                Rot0DislocX, Rot0EvenDislocY, Rot0OddDislocY, j, currentStripHexSpaces.get(j));
                         break;
                     case 1:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot1DislocY, Rot1EvenDislocX, Rot1OddDislocX, j, currentStripHexSpaces.get(j));
+                                Rot1DislocX, Rot1EvenDislocY, Rot1OddDislocY, j, currentStripHexSpaces.get(j));
                         break;
                     case 2:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot2DislocY, Rot2EvenDislocX, Rot2OddDislocX, j, currentStripHexSpaces.get(j));
+                                Rot2DislocX, Rot2EvenDislocY, Rot2OddDislocY, j, currentStripHexSpaces.get(j));
                         break;
                     case 3:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot3DislocY, Rot3EvenDislocX, Rot3OddDislocX, j, currentStripHexSpaces.get(j));
+                                Rot3DislocX, Rot3EvenDislocY, Rot3OddDislocY, j, currentStripHexSpaces.get(j));
                         break;
                     case 4:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot4DislocY, Rot4EvenDislocX, Rot4OddDislocX, j, currentStripHexSpaces.get(j));
+                                Rot4DislocX, Rot4EvenDislocY, Rot4OddDislocY, j, currentStripHexSpaces.get(j));
                         break;
                     case 5:
                         fillStripEntryInMatrix(boardMatrix, StripPositionX.get(i), StripPositionY.get(i),
-                                Rot5DislocY, Rot5EvenDislocX, Rot5OddDislocX, j, currentStripHexSpaces.get(j));
+                                Rot5DislocX, Rot5EvenDislocY, Rot5OddDislocY, j, currentStripHexSpaces.get(j));
                         break;
                 }
             }
