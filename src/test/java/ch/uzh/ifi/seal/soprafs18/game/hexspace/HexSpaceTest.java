@@ -67,6 +67,7 @@ public class HexSpaceTest {
         List<COLOR> colors = new ArrayList<>();
         for (HexSpace neighborSpace:neighbours){
             colors.add(neighborSpace.getColor());
+            System.out.println("NeighborBlockadeTest: "+neighborSpace.toString());
         }
 
         COLOR[] expectedColors = {COLOR.EMPTY,COLOR.RIVER,COLOR.EMPTY,COLOR.JUNGLE,COLOR.EMPTY};

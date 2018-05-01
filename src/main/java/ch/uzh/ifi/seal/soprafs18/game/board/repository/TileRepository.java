@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface TileRepository extends CrudRepository<TileEntity, Integer>{
+public interface TileRepository extends CrudRepository<TileEntity, Character>{
     TileEntity findByTileID(char id);
 }

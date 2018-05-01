@@ -38,8 +38,6 @@ public class PathfinderTest {
 
     @Test
     public void getWay() {
-
-
         Player player = game.getCurrent();
         player.getPlayingPieces().get(0).setStandsOn(game.getPathMatrix().get(4,4));
         game.getPathMatrix().printMatrix(0,0,game.getPathMatrix().getXDim(),game.getPathMatrix().getYDim());
@@ -57,5 +55,6 @@ public class PathfinderTest {
             assertEquals("hexspace in expected",true, reachables.contains(hexspace.getPoint()));
         }
     }
+
 
 }
