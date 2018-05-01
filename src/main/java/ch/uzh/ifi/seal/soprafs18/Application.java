@@ -403,7 +403,7 @@ public class Application {
                 EldoradoSpacesY_defaultPath.add(posY);
             }
 
-            boardRepository.save(new BoardEntity(0, tiles_defaultPath, tileRotation_defaultPath, tilePositionsX_defaultPath,
+            boardRepository.save(new BoardEntity(0, "Quest for Eldorado", tiles_defaultPath, tileRotation_defaultPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
@@ -487,7 +487,7 @@ public class Application {
                 EldoradoSpacesY_HillsOfGoldPath.add(posY);
             }
 
-            boardRepository.save(new BoardEntity(1, tiles_HillsOfGoldPath, tileRotation_HillsOfGoldPath, tilePositionsX_HillsOfGoldPath,
+            boardRepository.save(new BoardEntity(1,"Hills of Gold", tiles_HillsOfGoldPath, tileRotation_HillsOfGoldPath, tilePositionsX_HillsOfGoldPath,
                     tilePositionsY_HillsOfGoldPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_HillsOfGoldPath, blockadeX_HillsOfGoldPath, blockadeY_HillsOfGoldPath,
                     EndSpaces_HillsOfGoldPath, EndSpacesX_HillsOfGoldPath, EndSpacesY_HillsOfGoldPath,
@@ -596,7 +596,7 @@ public class Application {
                 EldoradoSpacesY_HomeStretchPath.add(posY);
             }
 
-            boardRepository.save(new BoardEntity(2, tiles_HomeStretchPath, tileRotation_HomeStretchPath, tilePositionsX_HomeStretchPath,
+            boardRepository.save(new BoardEntity(2, "Home Stretch", tiles_HomeStretchPath, tileRotation_HomeStretchPath, tilePositionsX_HomeStretchPath,
                     tilePositionsY_HomeStretchPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_HomeStretchPath, blockadeX_HomeStretchPath, blockadeY_HomeStretchPath,
                     EndSpaces_HomeStretchPath, EndSpacesX_HomeStretchPath, EndSpacesY_HomeStretchPath,
@@ -610,7 +610,7 @@ public class Application {
             }
 
 
-            boardRepository.save(new BoardEntity(98, tiles_defaultPath, tileRotation_testPath, tilePositionsX_defaultPath,
+            boardRepository.save(new BoardEntity(98, "Test 98", tiles_defaultPath, tileRotation_testPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, strip_HomeStretchPath, stripRotation_HomeStretchPath,
                     stripPositionsX_HomeStretchPath, stripPositionsY_HomeStretchPath,
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
@@ -631,7 +631,7 @@ public class Application {
             }
 
 
-            boardRepository.save(new BoardEntity(99, tiles_demoPath, tileRotation_demoPath, tilePositionsX_defaultPath,
+            boardRepository.save(new BoardEntity(99,"Test 99", tiles_demoPath, tileRotation_demoPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,

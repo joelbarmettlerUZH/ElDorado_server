@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-public class GameController  implements Serializable {
+public class GameController implements Serializable {
     private final String context = CONSTANTS.APICONTEXT + "/Game";
 
     @Autowired

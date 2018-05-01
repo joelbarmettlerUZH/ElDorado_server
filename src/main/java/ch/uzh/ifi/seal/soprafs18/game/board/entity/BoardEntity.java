@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -12,13 +13,14 @@ import java.util.List;
 @Table(name = "BOARD_ENTITY")
 public class BoardEntity implements Serializable {
 
-    public BoardEntity(int boardID, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,
+    public BoardEntity(int boardID, String name, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,
                        List<Integer> tilesPositionY,List<StripEntity> strip, List<Integer> stripRotation,
                        List<Integer> stripPositionX,List<Integer> stripPositionY,List<Integer> blockadeId,
                        List<Integer> blockadePositionX, List<Integer> blockadePositionY,List<HexSpaceEntity> endingSpaces,
                        List<Integer> endingSpacePositionX, List<Integer> endingSpacePositionY, List<HexSpaceEntity> eldoradoSpace,
                        List<Integer> eldoradoSpacePositionX, List<Integer> eldoradoSpacePositionY)  {
         //System.out.println("constr");
+        this.name = name;
         this.boardID = boardID;
         this.tiles = tiles;
         this.tilesRotation = tilesRotation;
@@ -47,9 +49,11 @@ public class BoardEntity implements Serializable {
     @Column(unique = true, name = "BOARDID")
     private int boardID;
 
+    @Column(name = "NAME")
+    private String name;
 
+    @JsonIgnore
     @Embedded
-    //@ElementCollection
     @ManyToMany
     @JoinColumn(name = "tileID")
     @Column(name = "TILES")
@@ -57,18 +61,22 @@ public class BoardEntity implements Serializable {
     //@JoinTable(name="TILES",joinColumns = @JoinColumn(name="BOARD_BOARDID"),inverseJoinColumns = @JoinColumn(name="TILE_ID"))
     private List<TileEntity> tiles;
 
+    @JsonIgnore
     @Column(name = "TILESROTATION")
     @ElementCollection
     private List<Integer> tilesRotation;
 
+    @JsonIgnore
     @Column(name = "TILESPOSITIONX")
     @ElementCollection
     private List<Integer> tilesPositionX;
 
+    @JsonIgnore
     @Column(name = "TILESPOSITIONY")
     @ElementCollection
     private List<Integer> tilesPositionY;
 
+    @JsonIgnore
     @Embedded
     @ManyToMany
     @JoinColumn(name = "stripID")
@@ -76,30 +84,37 @@ public class BoardEntity implements Serializable {
     //@ElementCollection
     private List<StripEntity> strip;
 
+    @JsonIgnore
     @Column(name = "STRIPROTATION",nullable = true)
     @ElementCollection
     private List<Integer> stripRotation;
 
+    @JsonIgnore
     @Column(name = "STRIPPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> stripPositionX;
 
+    @JsonIgnore
     @Column(name = "STRIPPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> stripPositionY;
 
+    @JsonIgnore
     @Column(name = "BLOCKADEID",nullable = true)
     @ElementCollection
     private List<Integer> blockadeId;
 
+    @JsonIgnore
     @Column(name = "BLOCKADEPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> blockadePositionX;
 
+    @JsonIgnore
     @Column(name = "BLOCKADEPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> blockadePositionY;
 
+    @JsonIgnore
     @Embedded
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hexid")
@@ -107,14 +122,17 @@ public class BoardEntity implements Serializable {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<HexSpaceEntity> endingSpaces;
 
+    @JsonIgnore
     @Column(name = "ENDINGSPACEPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> endingSpacePositionX;
 
+    @JsonIgnore
     @Column(name = "ENDINGSPACEPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> endingSpacePositionY;
 
+    @JsonIgnore
     @Embedded
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "hexid")
@@ -122,10 +140,12 @@ public class BoardEntity implements Serializable {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<HexSpaceEntity> eldoradoSpace;
 
+    @JsonIgnore
     @Column(name = "ELDORADOPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> eldoradoSpacePositionX;
 
+    @JsonIgnore
     @Column(name = "ELDORADOPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> eldoradoSpacePositionY;
