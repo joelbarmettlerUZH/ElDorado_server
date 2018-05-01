@@ -99,12 +99,12 @@ public class Assembler implements Serializable {
     position of the "center Hexspace" (it's actually not in the center. it's the Hexspace which is at the first
     position of the HexSpaceEntity list
      **/
-    private void fillStripEntryInMatrix(HexSpaceEntity[][] boardMatrix, int posX, int posY, int[] disLocY,
-                                        int[] disLocEvenX, int[] disLocOddX, int j, HexSpaceEntity hexSpaceEntity) {
+    private void fillStripEntryInMatrix(HexSpaceEntity[][] boardMatrix, int posX, int posY, int[] disLocX,
+                                        int[] disLocEvenY, int[] disLocOddY, int j, HexSpaceEntity hexSpaceEntity) {
         if (posX % 2 == 0) {
-            boardMatrix[posX + disLocEvenX[j]][posY + disLocY[j]] = hexSpaceEntity;
+            boardMatrix[posX + disLocX[j]][posY + disLocEvenY[j]] = hexSpaceEntity;
         } else {
-            boardMatrix[posX + disLocOddX[j]][posY + disLocY[j]] = hexSpaceEntity;
+            boardMatrix[posX + disLocX[j]][posY + disLocOddY[j]] = hexSpaceEntity;
         }
     }
 

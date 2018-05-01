@@ -62,7 +62,7 @@ public class HexSpaceTest {
     @Test
     public void getNeighborBlockade(){
         game.assemble();
-        HexSpace hexSpace = game.getPathMatrix().get(8,6);
+        HexSpace hexSpace = game.getPathMatrix().get(7,5);
         List<HexSpace> neighbours = hexSpace.getNeighbour(game);
         List<COLOR> colors = new ArrayList<>();
         for (HexSpace neighborSpace:neighbours){

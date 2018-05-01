@@ -197,7 +197,7 @@ public class AssemblerTest {
         assertEquals("Dimension Two is 100",100, newMatrix[0].length);
         assertEquals("Centerpiece Color correct","JUNGLE", newMatrix[10][10].getColor());
         assertEquals("Centerpiece Strength correct",2, newMatrix[10][10].getStrength());
-        assertEquals("offcenter piece correct","RUBBLE", newMatrix[10][11].getColor());
+        assertEquals("offcenter piece correct","RUBBLE", newMatrix[9][10].getColor());
         HexSpaceEntity[][] newMatrix2 = assembler.assembleStrips(boardMatrix, this.stripEntitylist,
                 this.posX, this.posY, this.Rotation2);
         assertEquals("offcenter piece correct with rotation","JUNGLE", newMatrix[10][11].getColor());
