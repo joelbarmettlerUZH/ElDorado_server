@@ -170,12 +170,8 @@ public class HexSpace implements Serializable{
         Set<HexSpace> neighbours = new HashSet<>(getAllNeighbour(game));
         neighbours.forEach(x -> System.out.println("intitial"+x.toString()));
         //now handle blockades
-        // System.out.println(neighbours.iterator().next().getClass());
-        System.out.println(neighbours);
         for (HexSpace current:neighbours){
-            System.out.println(current.getClass().getCanonicalName());
             if (current.getClass() == BlockadeSpace.class){
-                System.out.println(current.getClass().getCanonicalName());
                 //current is BlockadeSpace
                 BlockadeSpace currentBlockadeSpace = (BlockadeSpace) current;
                 int blockade = currentBlockadeSpace.getParentBlockade();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)
@@ -183,13 +179,14 @@ public class HexSpace implements Serializable{
                     //blockade is inactive
                 neighboursOfBlockade.addAll(currentBlockadeSpace.getNeighbour(game));
                 System.out.println(neighboursOfBlockade);
+                /*
                 for (HexSpace hex: neighboursOfBlockade) {
                     System.out.println("hex"+hex.toString());
                     if (!neighbours.contains(hex) && hex.getClass() == BlockadeSpace.class) {
                         System.out.println("test333");
                         neighboursOfBlockade.remove(hex);
                     }
-                }
+                }*/
 
                 // }
             }
