@@ -65,7 +65,7 @@ public class Market implements Serializable {
         );
         passive.add(
                 new Slot(
-                        new RemoveActionCard("Kompass", (float) 0.5, 2, new SpecialActions(2,0,0)))
+                        new RemoveActionCard("Kompass", (float) 0.5, 2, new SpecialActions(3,0,0)))
         );
 
         passive.add(
