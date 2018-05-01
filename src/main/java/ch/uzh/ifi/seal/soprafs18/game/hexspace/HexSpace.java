@@ -177,8 +177,8 @@ public class HexSpace implements Serializable{
                 int blockade = currentBlockadeSpace.getParentBlockade();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)
                 // if (currentBlockadeSpace.getStrength() == 0){
                     //blockade is inactive
-                neighboursOfBlockade.addAll(currentBlockadeSpace.getNeighbour(game));
-                System.out.println(neighboursOfBlockade);
+                // neighboursOfBlockade.addAll(currentBlockadeSpace.getNeighbour(game));
+                // System.out.println(neighboursOfBlockade);
                 /*
                 for (HexSpace hex: neighboursOfBlockade) {
                     System.out.println("hex"+hex.toString());
@@ -191,7 +191,7 @@ public class HexSpace implements Serializable{
                 // }
             }
         }
-        neighbours.addAll(neighboursOfBlockade);
+        // neighbours.addAll(neighboursOfBlockade);
         List<HexSpace> filteredNeighbors = new ArrayList<>(neighbours);
         return filteredNeighbors;
     }
