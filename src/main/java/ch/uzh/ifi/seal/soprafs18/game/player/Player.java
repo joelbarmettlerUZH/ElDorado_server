@@ -254,15 +254,15 @@ public class Player implements Serializable {
             }
             Set<Integer> blockadeIds = new HashSet<>();
             for(HexSpace hexSpace: moveTo.getPrevious()){
-                if(hexSpace instanceof BlockadeSpace){
+                if(hexSpace.getClass() == BlockadeSpace.class){
                     this.removeBlockades.add(((BlockadeSpace) hexSpace).getParentBlockade());
                     removeBlockadeId(((BlockadeSpace) hexSpace).getParentBlockade());
                 }
             }
             for(HexSpace hexSpace: playingPiece.getStandsOn().getAllNeighbour(board)){
-                if(hexSpace instanceof BlockadeSpace){
+                if(hexSpace.getClass() == BlockadeSpace.class){
                     Card card = cards.get(0);
-                    if(cards.size()==1 && card instanceof MovingCard){
+                    if(cards.size()==1 && card.getClass() == MovingCard.class){
                         if(((MovingCard) card).getColors().contains(hexSpace.getColor())
                                 && ((MovingCard) card).getStrength()-moveTo.getMinimalCost() >= hexSpace.getStrength()
                                 && ((MovingCard) card).getDepth()-moveTo.getMinimalDepth() > 0){
