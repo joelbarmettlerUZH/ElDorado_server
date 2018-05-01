@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.service;
 
+import ch.uzh.ifi.seal.soprafs18.entity.RoomEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.BoardEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.BoardRepository;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
@@ -40,6 +41,18 @@ public class BoardService implements Serializable {
         List<BoardEntity> boards = new ArrayList<>();
         boardRepository.findAll().forEach(boards::add);
         return boards;
+    }
+
+    public List<BoardEntity> getBoards(int fromIndex, int toIndex) {
+        toIndex = toIndex + 1;
+        List<BoardEntity> boards = getAll();
+        if (fromIndex > toIndex) {
+            return new ArrayList<>();
+        }
+        if (toIndex > boards.size()) {
+            toIndex = boards.size();
+        }
+        return boards.subList(fromIndex, toIndex);
     }
 
 

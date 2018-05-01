@@ -49,7 +49,7 @@ public class BoardEntity implements Serializable {
     @Column(unique = true, name = "BOARDID")
     private int boardID;
 
-    @Column(name = "NAME")
+    @Column(name = "PATHNAME")
     private String name;
 
     @JsonIgnore
@@ -149,6 +149,14 @@ public class BoardEntity implements Serializable {
     @Column(name = "ELDORADOPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> eldoradoSpacePositionY;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getBoardID() {
         return boardID;
