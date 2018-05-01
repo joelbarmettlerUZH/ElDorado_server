@@ -326,7 +326,7 @@ public class Application {
             }
             stripRepository.save(new StripEntity('R', HexSpaces_StripR));
 
-            //DEFAULT PATH
+            //----------------------DEFAULT PATH----------------------
             List<TileEntity> tiles_defaultPath = new ArrayList<>();
             char [] tile = {'B','C','N','I','K'};
             for (char id : tile) {
@@ -403,16 +403,204 @@ public class Application {
                 EldoradoSpacesY_defaultPath.add(posY);
             }
 
-
-
             boardRepository.save(new BoardEntity(0, tiles_defaultPath, tileRotation_defaultPath, tilePositionsX_defaultPath,
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
                     EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));
 
+            //----------------------HILLSOFGOLD PATH----------------------
+
+            List<TileEntity> tiles_HillsOfGoldPath = new ArrayList<>();
+            char [] tile_HillsOfGoldPath = {'B','C','G','K','J','N'};
+            for (char id : tile_HillsOfGoldPath) {
+                tiles_HillsOfGoldPath.add(tileRepository.findByTileID(id));
+            }
+
+            List<Integer> tileRotation_HillsOfGoldPath = new ArrayList<>();
+            int [] tileRot_HillsOfGoldPath = {3,2,0,3,3,0};
+            for (int rot : tileRot_HillsOfGoldPath) {
+                tileRotation_HillsOfGoldPath.add(rot);
+            }
+
+            List<Integer> tilePositionsX_HillsOfGoldPath = new ArrayList<>();
+            int [] tilePosX_HillsOfGoldPath = {4,7,11,15,18,26};
+            for (int pos : tilePosX_HillsOfGoldPath) {
+                tilePositionsX_HillsOfGoldPath.add(pos);
+            }
+
+            List<Integer> tilePositionsY_HillsOfGoldPath = new ArrayList<>();
+            int [] tilePosY_HillsOfGoldPath = {5,11,17,11,5,4};
+            for (int id : tilePosY_HillsOfGoldPath) {
+                tilePositionsY_HillsOfGoldPath.add(id);
+            }
+
+            List<Integer> blockadeX_HillsOfGoldPath = new ArrayList<>();
+            int [] blockadesX_HillsOfGoldPath = {4,5,6,7,7,8,9,10,12,13,14,15,15,16,17,18,22,22,22,22};
+            for (int posX : blockadesX_HillsOfGoldPath) {
+                blockadeX_HillsOfGoldPath.add(posX);
+            }
+
+            List<Integer> blockadeIDs_HillsOfGoldPath = new ArrayList<>();
+            int [] blockadeId_HillsOfGoldPath = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4};
+            for (int id : blockadeId_HillsOfGoldPath) {
+                blockadeIDs_HillsOfGoldPath.add(id);
+            }
+
+            List<Integer> blockadeY_HillsOfGoldPath = new ArrayList<>();
+            int [] blockadesY_HillsOfGoldPath = {9,8,8,7,15,15,14,14,14,14,15,15,7,8,8,9,3,4,5,6};
+            for (int posY : blockadesY_HillsOfGoldPath) {
+                blockadeY_HillsOfGoldPath.add(posY);
+            }
+
+            List<HexSpaceEntity> EndSpaces_HillsOfGoldPath = new ArrayList<>();
+            String[] EndSpacesId_HillsOfGoldPath = {"EJ","EJ","EJ"};
+            for (String id : EndSpacesId_HillsOfGoldPath) {
+                EndSpaces_HillsOfGoldPath.add(hexSpaceRepository.findByHexID(id));
+            }
+
+            List<Integer> EndSpacesX_HillsOfGoldPath = new ArrayList<>();
+            int [] EndSpaceX_HillsOfGoldPath = {29,30,30};
+            for (int posX : EndSpaceX_HillsOfGoldPath) {
+                EndSpacesX_HillsOfGoldPath.add(posX);
+            }
+            List<Integer> EndSpacesY_HillsOfGoldPath = new ArrayList<>();
+            int [] EndSpaceY_HillsOfGoldPath = {1,2,3};
+            for (int posY : EndSpaceY_HillsOfGoldPath) {
+                EndSpacesY_HillsOfGoldPath.add(posY);
+            }
+
+            List<HexSpaceEntity> EldoradoSpaces_HillsOfGoldPath = new ArrayList<>();
+            String[] EldoradoSpacesId_HillsOfGoldPath = {"ED","ED","ED"};
+            for (String id : EldoradoSpacesId_HillsOfGoldPath) {
+                EldoradoSpaces_HillsOfGoldPath.add(hexSpaceRepository.findByHexID(id));
+            }
+
+            List<Integer> EldoradoSpacesX_HillsOfGoldPath = new ArrayList<>();
+            int [] EldoradoSpaceX_HillsOfGoldPath = {30,31,31};
+            for (int posX : EldoradoSpaceX_HillsOfGoldPath) {
+                EldoradoSpacesX_HillsOfGoldPath.add(posX);
+            }
+            List<Integer> EldoradoSpacesY_HillsOfGoldPath = new ArrayList<>();
+            int [] EldoradoSpaceY_HillsOfGoldPath = {1,1,2};
+            for (int posY : EldoradoSpaceY_HillsOfGoldPath) {
+                EldoradoSpacesY_HillsOfGoldPath.add(posY);
+            }
+
+            boardRepository.save(new BoardEntity(1, tiles_HillsOfGoldPath, tileRotation_HillsOfGoldPath, tilePositionsX_HillsOfGoldPath,
+                    tilePositionsY_HillsOfGoldPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                    blockadeIDs_HillsOfGoldPath, blockadeX_HillsOfGoldPath, blockadeY_HillsOfGoldPath,
+                    EndSpaces_HillsOfGoldPath, EndSpacesX_HillsOfGoldPath, EndSpacesY_HillsOfGoldPath,
+                    EldoradoSpaces_HillsOfGoldPath, EldoradoSpacesX_HillsOfGoldPath, EldoradoSpacesY_HillsOfGoldPath));
 
 
+            //----------------------HOMESTRETCH PATH----------------------
+
+            List<TileEntity> tiles_HomeStretchPath = new ArrayList<>();
+            char [] tile_HomeStretchPath = {'B','J','K','M','C'};
+            for (char id : tile_HomeStretchPath) {
+                tiles_HillsOfGoldPath.add(tileRepository.findByTileID(id));
+            }
+
+            List<Integer> tileRotation_HomeStretchPath = new ArrayList<>();
+            int [] tileRot_HomeStretchPath = {3,1,0,2,0,2};
+            for (int rot : tileRot_HomeStretchPath) {
+                tileRotation_HomeStretchPath.add(rot);
+            }
+
+            List<Integer> tilePositionsX_HomeStretchPath = new ArrayList<>();
+            int [] tilePosX_HomeStretchPath = {4,9,20,18,36};
+            for (int pos : tilePosX_HomeStretchPath) {
+                tilePositionsX_HomeStretchPath.add(pos);
+            }
+
+            List<Integer> tilePositionsY_HomeStretchPath = new ArrayList<>();
+            int [] tilePosY_HomeStretchPath = {4,10,10,11,10};
+            for (int id : tilePosY_HomeStretchPath) {
+                tilePositionsY_HomeStretchPath.add(id);
+            }
+
+            List<StripEntity> strip_HomeStretchPath = new ArrayList<>();
+            char [] strips_HomeStretchPath = {'Q'};
+            for (char id : strips_HomeStretchPath) {
+                strip_HomeStretchPath.add(stripRepository.findByStripID(id));
+            }
+
+            List<Integer> stripRotation_HomeStretchPath = new ArrayList<>();
+            int [] stripRot_HomeStretchPath = {0};
+            for (int rot : stripRot_HomeStretchPath) {
+                stripRotation_HomeStretchPath.add(rot);
+            }
+
+            List<Integer> stripPositionsX_HomeStretchPath = new ArrayList<>();
+            int [] stripPosX_HomeStretchPath = {14};
+            for (int pos : stripPosX_HomeStretchPath) {
+                stripPositionsX_HomeStretchPath.add(pos);
+            }
+
+            List<Integer> stripPositionsY_HomeStretchPath = new ArrayList<>();
+            int [] stripPosY_HomeStretchPath = {8};
+            for (int id : stripPosY_HomeStretchPath) {
+                stripPositionsY_HomeStretchPath.add(id);
+            }
+
+            List<Integer> blockadeX_HomeStretchPath = new ArrayList<>();
+            int [] blockadesX_HomeStretchPath = {4,5,6,7,12,12,12,12,16,16,16,16,24,24,24,24,32,32,32,32};
+            for (int posX : blockadesX_HomeStretchPath) {
+                blockadeX_HomeStretchPath.add(posX);
+            }
+
+            List<Integer> blockadeIDs_HomeStretchPath = new ArrayList<>();
+            int [] blockadeId_HomeStretchPath = {0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4};
+            for (int id : blockadeId_HomeStretchPath) {
+                blockadeIDs_HomeStretchPath.add(id);
+            }
+
+            List<Integer> blockadeY_HomeStretchPath = new ArrayList<>();
+            int [] blockadesY_HomeStretchPath = {8,7,7,6,8,9,10,11,8,9,10,11,9,10,11,12,9,10,11,12};
+            for (int posY : blockadesY_HomeStretchPath) {
+                blockadeY_HomeStretchPath.add(posY);
+            }
+
+            List<HexSpaceEntity> EndSpaces_HomeStretchPath = new ArrayList<>();
+            String[] EndSpacesId_HomeStretchPath = {"EJ","EJ","EJ"};
+            for (String id : EndSpacesId_HomeStretchPath) {
+                EndSpaces_HomeStretchPath.add(hexSpaceRepository.findByHexID(id));
+            }
+
+            List<Integer> EndSpacesX_HomeStretchPath = new ArrayList<>();
+            int [] EndSpaceX_HomeStretchPath = {39,40,40};
+            for (int posX : EndSpaceX_HomeStretchPath) {
+                EndSpacesX_HomeStretchPath.add(posX);
+            }
+            List<Integer> EndSpacesY_HomeStretchPath = new ArrayList<>();
+            int [] EndSpaceY_HomeStretchPath = {12,12,11};
+            for (int posY : EndSpaceY_HomeStretchPath) {
+                EndSpacesY_HomeStretchPath.add(posY);
+            }
+
+            List<HexSpaceEntity> EldoradoSpaces_HomeStretchPath = new ArrayList<>();
+            String[] EldoradoSpacesId_HomeStretchPath = {"ED","ED","ED"};
+            for (String id : EldoradoSpacesId_HomeStretchPath) {
+                EldoradoSpaces_HomeStretchPath.add(hexSpaceRepository.findByHexID(id));
+            }
+
+            List<Integer> EldoradoSpacesX_HomeStretchPath = new ArrayList<>();
+            int [] EldoradoSpaceX_HomeStretchPath = {40,41,41};
+            for (int posX : EldoradoSpaceX_HomeStretchPath) {
+                EldoradoSpacesX_HomeStretchPath.add(posX);
+            }
+            List<Integer> EldoradoSpacesY_HomeStretchPath = new ArrayList<>();
+            int [] EldoradoSpaceY_HomeStretchPath = {13,13,11};
+            for (int posY : EldoradoSpaceY_HomeStretchPath) {
+                EldoradoSpacesY_HomeStretchPath.add(posY);
+            }
+
+            boardRepository.save(new BoardEntity(2, tiles_HomeStretchPath, tileRotation_HomeStretchPath, tilePositionsX_HomeStretchPath,
+                    tilePositionsY_HomeStretchPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+                    blockadeIDs_HomeStretchPath, blockadeX_HomeStretchPath, blockadeY_HomeStretchPath,
+                    EndSpaces_HomeStretchPath, EndSpacesX_HomeStretchPath, EndSpacesY_HomeStretchPath,
+                    EldoradoSpaces_HomeStretchPath, EldoradoSpacesX_HomeStretchPath, EldoradoSpacesY_HomeStretchPath));
 
             //----------------------TEST PATH----------------------------------------
             List<Integer> tileRotation_testPath = new ArrayList<>();
@@ -422,8 +610,9 @@ public class Application {
             }
 
 
-            boardRepository.save(new BoardEntity(1, tiles_defaultPath, tileRotation_testPath, tilePositionsX_defaultPath,
-                    tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
+            boardRepository.save(new BoardEntity(98, tiles_defaultPath, tileRotation_testPath, tilePositionsX_defaultPath,
+                    tilePositionsY_defaultPath, strip_HomeStretchPath, stripRotation_HomeStretchPath,
+                    stripPositionsX_HomeStretchPath, stripPositionsY_HomeStretchPath,
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
                     EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));
