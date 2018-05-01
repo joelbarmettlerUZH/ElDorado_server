@@ -152,9 +152,10 @@ public class Game implements Serializable {
         this.pathMatrix = new Matrix(assembler.assembleBoard(this.boardId));
         this.startingSpaces.addAll(assembler.getStartingFields(this.boardId));
         this.blockades = assembler.getBlockades(this);
+
         for(Blockade blockade: blockades){
             for(BlockadeSpace blockadeSpace: blockade.getSpaces()){
-                blockadeSpace.setParentBlockade(blockade.getBLOCKADE_ID());
+                blockadeSpace.setParentBlockade(blockade.getBlockade_ID());
             }
         }
         System.out.println("post ghettos blockados");

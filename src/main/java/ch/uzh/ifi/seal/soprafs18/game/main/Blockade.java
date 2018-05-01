@@ -18,7 +18,7 @@ public class Blockade  implements Serializable {
 
     @Id
     @GeneratedValue
-    private int BLOCKADE_ID;
+    private int blockade_ID;
 
     public Blockade(List<BlockadeSpace> blockadeSpaces){
         System.out.println("Constructorioalo si callodos magnificos "+blockadeSpaces.size());

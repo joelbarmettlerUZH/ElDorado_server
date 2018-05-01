@@ -255,7 +255,7 @@ public class Player implements Serializable {
             Set<Integer> blockadeIds = new HashSet<>();
             for(HexSpace hexSpace: moveTo.getPrevious()){
                 if(hexSpace.getClass() == BlockadeSpace.class){
-                    this.removeBlockades.add(((BlockadeSpace) hexSpace).getParentBlockade());
+                    // this.removeBlockades.add(((BlockadeSpace) hexSpace).getParentBlockade());
                     removeBlockadeId(((BlockadeSpace) hexSpace).getParentBlockade());
                 }
             }
