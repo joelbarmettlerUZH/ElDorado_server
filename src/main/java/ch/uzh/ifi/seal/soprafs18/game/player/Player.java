@@ -280,7 +280,7 @@ public class Player implements Serializable {
             this.removeBlockades = new ArrayList<Integer>(blockadeIds);
             for(int id:blockadeIds){
                 for(Blockade blockade: board.getBlockades()){
-                    if(blockade.getBLOCKADE_ID() == id){
+                    if(blockade.getBlockade_ID() == id){
                         removable.add(blockade);
                     }
                 }
@@ -297,17 +297,17 @@ public class Player implements Serializable {
         if(!myTurn()){
             return;
         }
-        if(this.removeBlockades.contains(blockade.getBLOCKADE_ID()) && board.getBlockades().contains(blockade)){
+        if(this.removeBlockades.contains(blockade.getBlockade_ID()) && board.getBlockades().contains(blockade)){
             board.getBlockades().remove(blockade);
             this.blockades.add(blockade.getCost());
-            this.removeBlockades.remove(blockade.getBLOCKADE_ID());
+            this.removeBlockades.remove(blockade.getBlockade_ID());
         }
     }
 
     public void removeBlockadeId(int blockadeId){
         this.removeBlockades.add(blockadeId);
         for(Blockade blockade: board.getBlockades()) {
-            if (blockade.getBLOCKADE_ID() == blockadeId) {
+            if (blockade.getBlockade_ID() == blockadeId) {
                 removeBlockade(blockade);
             }
         }
