@@ -5,10 +5,16 @@ import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.*;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.*;
 import ch.uzh.ifi.seal.soprafs18.game.board.service.BlockadeSpaceService;
+import ch.uzh.ifi.seal.soprafs18.game.board.service.TileService;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
 import ch.uzh.ifi.seal.soprafs18.repository.RoomRepository;
 import ch.uzh.ifi.seal.soprafs18.repository.UserRepository;
+import com.fasterxml.jackson.core.json.JsonReadContext;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,10 +23,12 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,12 +102,68 @@ public class Application {
     }
 
 
+    @Bean
+    CommandLineRunner savePathElementsToDB(TileService tileService){
+        return args -> {
+            // read files and write to db
+            ClassLoader classLoader = getClass().getClassLoader();
+            //-----SAVE-HEXSPACES-----
+            try {
+                File f = new File(classLoader.getResource("json/hexspaces.txt").getFile());
+                BufferedReader b = new BufferedReader(new FileReader(f));
+                String readLine = "";
+                while ((readLine = b.readLine()) != null) {
+                    System.out.println(readLine);
+                    ObjectMapper HexSpacemapper = new ObjectMapper();
+                    JsonNode hexSpace = HexSpacemapper.readTree(readLine);
+                    hexSpaceRepository.save(new HexSpaceEntity(hexSpace.get("id").asText(),
+                            hexSpace.get("color").asText(),hexSpace.get("strength").asInt()));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //-----SAVE-BLOCKADESPACES-----
+            try {
+                File f = new File(classLoader.getResource("json/blockadespaces.txt").getFile());
+                BufferedReader b = new BufferedReader(new FileReader(f));
+                String readLine = "";
+                while ((readLine = b.readLine()) != null) {
+                    System.out.println(readLine);
+                    ObjectMapper BlockadeSpacemapper = new ObjectMapper();
+                    JsonNode blockadeSpace = BlockadeSpacemapper.readTree(readLine);
+                    blockadeSpaceRepository.save(new BlockadeSpaceEntity(blockadeSpace.get("id").asText(),
+                            blockadeSpace.get("color").asText(),blockadeSpace.get("strength").asInt(),
+                            blockadeSpace.get("blockadeId").asInt()));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //-----SAVE-TILES-----
+            try {
+                File f = new File(classLoader.getResource("json/tiles.txt").getFile());
+                BufferedReader b = new BufferedReader(new FileReader(f));
+                String readLine = "";
+                System.out.println("Reading file using Buffered Reader");
+                while ((readLine = b.readLine()) != null) {
+                    System.out.println(readLine);
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode tile = mapper.readTree(readLine);
+                    System.out.println(tile.get("id"));
+                    List<HexSpaceEntity> HexSpaces_Tile = new ArrayList<>();
+                    System.out.println(tile.get("hexspaces"));
+                    tile.get("hexspaces").forEach(
+                            hexId -> HexSpaces_Tile.add(hexSpaceRepository.findByHexID(hexId.asText()))
+                    );
+                    tileRepository.save(new TileEntity(tile.get("id").asText().charAt(0), HexSpaces_Tile));
+                    //
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
-
-    @Bean CommandLineRunner enterBoardDataToDB() {
-        return (args) -> {
             //enter HexSpaces
+            /*
             hexSpaceRepository.save(new HexSpaceEntity("J1", "JUNGLE", 1));
             hexSpaceRepository.save(new HexSpaceEntity("J2", "JUNGLE", 2));
             hexSpaceRepository.save(new HexSpaceEntity("J3", "JUNGLE", 3));
@@ -287,7 +351,7 @@ public class Application {
             for (String id : HexSpaceIds_TileN) {
                 HexSpaces_TileN.add(hexSpaceRepository.findByHexID(id));
             }
-            tileRepository.save(new TileEntity('N', HexSpaces_TileN));
+            tileRepository.save(new TileEntity('N', HexSpaces_TileN));*/
 
             //-------------------------------------
             //Strip O
@@ -639,6 +703,8 @@ public class Application {
 
         };
     }
+
+
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {

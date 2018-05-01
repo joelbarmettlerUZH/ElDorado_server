@@ -60,6 +60,7 @@ dependencies {
     runtime('com.h2database:h2')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     compileOnly 'org.projectlombok:lombok:1.16.20'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
     //apt "org.projectlombok:lombok:1.16.20"
 }
 
