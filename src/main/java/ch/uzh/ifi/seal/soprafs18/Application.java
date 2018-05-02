@@ -107,15 +107,12 @@ public class Application {
         return args -> {
             // read files and write to db
             ClassLoader classLoader = getClass().getClassLoader();
+            String readLine = "";
             //-----SAVE-HEXSPACES-----
             try {
-                File f = new File(classLoader.getResource("json/hexspaces.txt").getFile());
-                BufferedReader b = new BufferedReader(new FileReader(f));
-                String readLine = "";
+                BufferedReader b = getBufferedReader(classLoader, "json/hexspaces.txt");
                 while ((readLine = b.readLine()) != null) {
-                    System.out.println(readLine);
-                    ObjectMapper HexSpacemapper = new ObjectMapper();
-                    JsonNode hexSpace = HexSpacemapper.readTree(readLine);
+                    JsonNode hexSpace = getJsonNode(readLine);
                     hexSpaceRepository.save(new HexSpaceEntity(hexSpace.get("id").asText(),
                             hexSpace.get("color").asText(),hexSpace.get("strength").asInt()));
                 }
@@ -124,13 +121,9 @@ public class Application {
             }
             //-----SAVE-BLOCKADESPACES-----
             try {
-                File f = new File(classLoader.getResource("json/blockadespaces.txt").getFile());
-                BufferedReader b = new BufferedReader(new FileReader(f));
-                String readLine = "";
+                BufferedReader b = getBufferedReader(classLoader, "json/blockadespaces.txt");
                 while ((readLine = b.readLine()) != null) {
-                    System.out.println(readLine);
-                    ObjectMapper BlockadeSpacemapper = new ObjectMapper();
-                    JsonNode blockadeSpace = BlockadeSpacemapper.readTree(readLine);
+                    JsonNode blockadeSpace = getJsonNode(readLine);
                     blockadeSpaceRepository.save(new BlockadeSpaceEntity(blockadeSpace.get("id").asText(),
                             blockadeSpace.get("color").asText(),blockadeSpace.get("strength").asInt(),
                             blockadeSpace.get("blockadeId").asInt()));
@@ -140,14 +133,9 @@ public class Application {
             }
             //-----SAVE-TILES-----
             try {
-                File f = new File(classLoader.getResource("json/tiles.txt").getFile());
-                BufferedReader b = new BufferedReader(new FileReader(f));
-                String readLine = "";
-                System.out.println("Reading file using Buffered Reader");
+                BufferedReader b = getBufferedReader(classLoader, "json/tiles.txt");
                 while ((readLine = b.readLine()) != null) {
-                    System.out.println(readLine);
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode tile = mapper.readTree(readLine);
+                    JsonNode tile = getJsonNode(readLine);
                     System.out.println(tile.get("id"));
                     List<HexSpaceEntity> HexSpaces_Tile = new ArrayList<>();
                     System.out.println(tile.get("hexspaces"));
@@ -704,6 +692,15 @@ public class Application {
         };
     }
 
+    private JsonNode getJsonNode(String readLine) throws IOException {
+        ObjectMapper HexSpacemapper = new ObjectMapper();
+        return HexSpacemapper.readTree(readLine);
+    }
+
+    private BufferedReader getBufferedReader(ClassLoader classLoader, String s) throws FileNotFoundException {
+        File f = new File(classLoader.getResource(s).getFile());
+        return new BufferedReader(new FileReader(f));
+    }
 
 
     @Bean
