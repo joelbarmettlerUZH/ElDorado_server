@@ -252,7 +252,7 @@ public class PlayerService  implements Serializable {
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
             LOGGER.info("Player "+player.getPlayerId()+" Removes blockade number " + blockade.getBlockadeId());
-            player.removeBlockade(blockade);
+            player.autoRemoveBlockade(blockade.getBlockadeId());
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             return player;

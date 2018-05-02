@@ -282,7 +282,7 @@ public class Player implements Serializable {
                     }
                 }
             }
-            this.removableBlockades = new ArrayList<Integer>(setOfRemovableBlockades); //convert set to list
+            this.removableBlockades = new ArrayList<>(setOfRemovableBlockades); //convert set to list
         }
         if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
                 playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDRIVER ){
