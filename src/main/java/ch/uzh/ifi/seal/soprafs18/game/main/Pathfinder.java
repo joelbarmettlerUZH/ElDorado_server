@@ -120,7 +120,11 @@ public class Pathfinder  implements Serializable {
                     System.out.println("validito");
                     if((!reachables.contains(neighbour) || neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength())){
                         neighbour.setMinimalCost(current.getMinimalCost() + neighbour.getStrength());
-                        neighbour.setMinimalDepth(current.getMinimalDepth()+1);
+                        int depthToSubstract = 1;
+                        if (neighbour.getClass() == BlockadeSpace.class){
+                            depthToSubstract = 0;
+                        }
+                        neighbour.setMinimalDepth(current.getMinimalDepth()+depthToSubstract);
                         ArrayList<HexSpace> previous = new ArrayList<>(current.getPrevious());
                         previous.add(current);
                         neighbour.setPrevious(previous);
