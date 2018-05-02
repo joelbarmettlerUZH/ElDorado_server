@@ -17,13 +17,16 @@ import java.util.List;
 public class Blockade  implements Serializable {
 
     @Id
-    @GeneratedValue
-    private int blockade_ID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int hibernateBlockadeId;
+
+    private int blockadeId;
 
     public Blockade(List<BlockadeSpace> blockadeSpaces){
         System.out.println("Constructorioalo si callodos magnificos "+blockadeSpaces.size());
         this.spaces = blockadeSpaces;
         this.cost = blockadeSpaces.get(0).getStrength();
+        this.blockadeId = blockadeSpaces.get(0).getParentBlockade();
     }
 
 

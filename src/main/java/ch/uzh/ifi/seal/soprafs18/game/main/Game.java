@@ -153,9 +153,12 @@ public class Game implements Serializable {
         this.startingSpaces.addAll(assembler.getStartingFields(this.boardId));
         this.blockades = assembler.getBlockades(this);
 
+        //
+        this.blockades.forEach(x -> System.out.println("blockades returned by Assemble" + x.toString()));
+
         for(Blockade blockade: blockades){
             for(BlockadeSpace blockadeSpace: blockade.getSpaces()){
-                blockadeSpace.setParentBlockade(blockade.getBlockade_ID());
+                blockadeSpace.setParentBlockade(blockade.getBlockadeId());
             }
         }
         System.out.println("post ghettos blockados");
