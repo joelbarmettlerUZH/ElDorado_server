@@ -308,7 +308,7 @@ public class Player implements Serializable {
             return;
         }
         if(this.removableBlockades.contains(blockade.getBlockadeId()) && board.getBlockades().contains(blockade)){
-            board.getBlockades().remove(blockade);
+            blockade.deactivate();
             this.collectedBlockades.add(blockade.getCost());
             this.removableBlockades.remove(new Integer(blockade.getBlockadeId()));
         }
