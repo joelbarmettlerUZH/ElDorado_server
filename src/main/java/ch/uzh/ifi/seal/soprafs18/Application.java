@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.json.JsonReadContext;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @ComponentScan
@@ -148,7 +150,76 @@ public class Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //-----SAVE-STRIPS-----
+            try {
+                BufferedReader b = getBufferedReader(classLoader, "json/strips.txt");
+                while ((readLine = b.readLine()) != null) {
+                    JsonNode strip = getJsonNode(readLine);
+                    System.out.println(strip.get("id"));
+                    List<HexSpaceEntity> HexSpaces_Strip = new ArrayList<>();
+                    System.out.println(strip.get("hexspaces"));
+                    strip.get("hexspaces").forEach(
+                            hexId -> HexSpaces_Strip.add(hexSpaceRepository.findByHexID(hexId.asText()))
+                    );
+                    stripRepository.save(new StripEntity(strip.get("id").asText().charAt(0), HexSpaces_Strip));
+                    //
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //-----SAVE-PATHS-----
+            try {
+                BufferedReader b = getBufferedReader(classLoader, "json/paths.txt");
+                while ((readLine = b.readLine()) != null) {
+                    JsonNode path = getJsonNode(readLine);
+                    System.out.println(path.get("id"));
+                    List<TileEntity> tiles = new ArrayList<>();
+                    path.get("tiles").forEach(
+                            tile -> tiles.add(tileRepository.findByTileID(tile.asText().charAt(0)))
+                    );
+                    List<StripEntity> strips = new ArrayList<>();
+                    path.get("strips").forEach(
+                            strip -> strips.add(stripRepository.findByStripID(strip.asText().charAt(0)))
+                    );
+                    List<HexSpaceEntity> ending = new ArrayList<>();
+                    path.get("endSpaces").forEach(
+                            end -> ending.add(hexSpaceRepository.findByHexID(end.asText()))
+                    );
+                    List<HexSpaceEntity> elDorado = new ArrayList<>();
+                    path.get("elDoradoSpaces").forEach(
+                            elDor -> elDorado.add(hexSpaceRepository.findByHexID(elDor.asText()))
+                    );
 
+                    ObjectMapper mapper = new ObjectMapper();
+                    ObjectReader reader = mapper.readerFor(new TypeReference<List<Integer>>() {});
+                    List<Integer> list = reader.readValue(path.get("tileRot"));
+                    System.out.println(list);
+                    boardRepository.save(
+                            new BoardEntity(
+                                    path.get("id").asInt(),
+                                    path.get("name").asText(),
+                                    tiles,
+                                    reader.readValue(path.get("tileRot")),
+                                    reader.readValue(path.get("tileX")),
+                                    reader.readValue(path.get("tileY")),
+                                    strips,
+                                    reader.readValue(path.get("stripRot")),
+                                    reader.readValue(path.get("stripX")),
+                                    reader.readValue(path.get("stripY")),
+                                    reader.readValue(path.get("bloackeIds")),
+                                    reader.readValue(path.get("blockadeX")),
+                                    reader.readValue(path.get("blockadeY")),
+                                    ending,
+                                    reader.readValue(path.get("endSpacesX")),
+                                    reader.readValue(path.get("endSpacesY")),
+                                    elDorado,
+                                    reader.readValue(path.get("elDoradoSpacesX")),
+                                    reader.readValue(path.get("elDoradoSpacesY"))
+                    ));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             //enter HexSpaces
             /*
@@ -339,7 +410,7 @@ public class Application {
             for (String id : HexSpaceIds_TileN) {
                 HexSpaces_TileN.add(hexSpaceRepository.findByHexID(id));
             }
-            tileRepository.save(new TileEntity('N', HexSpaces_TileN));*/
+            tileRepository.save(new TileEntity('N', HexSpaces_TileN));
 
             //-------------------------------------
             //Strip O
@@ -353,7 +424,7 @@ public class Application {
 
             //Strip P
             List<HexSpaceEntity> HexSpaces_StripP = new ArrayList<>();
-            String[] HexSpaceIds_StripP = {"J2","R1","S1","S1","W1","J3","J2","W2","J1","J1","R3","J1",
+            String[] HexSpaceIds_StripP = {"R1","W4","S1","S1","W1","J3","J2","W2","J1","J1","R3","J1",
                     "R1","J2","S3","W1"};
             for (String id : HexSpaceIds_StripP) {
                 HexSpaces_StripP.add(hexSpaceRepository.findByHexID(id));
@@ -459,7 +530,7 @@ public class Application {
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
-                    EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));
+                    EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));*/
 
             //----------------------HILLSOFGOLD PATH----------------------
 
@@ -653,7 +724,7 @@ public class Application {
                     blockadeIDs_HomeStretchPath, blockadeX_HomeStretchPath, blockadeY_HomeStretchPath,
                     EndSpaces_HomeStretchPath, EndSpacesX_HomeStretchPath, EndSpacesY_HomeStretchPath,
                     EldoradoSpaces_HomeStretchPath, EldoradoSpacesX_HomeStretchPath, EldoradoSpacesY_HomeStretchPath));
-
+            /*
             //----------------------TEST PATH----------------------------------------
             List<Integer> tileRotation_testPath = new ArrayList<>();
             int [] tileRot_test = {5,0,3,3,5};
@@ -687,7 +758,7 @@ public class Application {
                     tilePositionsY_defaultPath, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     blockadeIDs_defaultPath, blockadeX_defaultPath, blockadeY_defaultPath,
                     EndSpaces_defaultPath, EndSpacesX_defaultPath, EndSpacesY_defaultPath,
-                    EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));
+                    EldoradoSpaces_defaultPath, EldoradoSpacesX_defaultPath, EldoradoSpacesY_defaultPath));*/
 
         };
     }
