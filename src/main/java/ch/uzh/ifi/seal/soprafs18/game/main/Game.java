@@ -188,7 +188,7 @@ public class Game implements Serializable {
         for(Player potentialWinner: winners){
             boolean wins = true;
             for(Player player: winners){
-                wins = wins & potentialWinner.getBlockades().size() > player.getBlockades().size();
+                wins = wins & potentialWinner.getCollectedBlockades().size() > player.getCollectedBlockades().size();
             }
             if(wins){
                 return potentialWinner;
@@ -197,8 +197,8 @@ public class Game implements Serializable {
         for(Player potentialWinner: winners){
             boolean wins = true;
             for(Player player: winners){
-                int sumPotentialWinner = potentialWinner.getBlockades().stream().mapToInt(Integer::intValue).sum();
-                int sumPlayer = player.getBlockades().stream().mapToInt(Integer::intValue).sum();
+                int sumPotentialWinner = potentialWinner.getCollectedBlockades().stream().mapToInt(Integer::intValue).sum();
+                int sumPlayer = player.getCollectedBlockades().stream().mapToInt(Integer::intValue).sum();
                 wins = wins & sumPotentialWinner > sumPlayer;
             }
             if(wins){
