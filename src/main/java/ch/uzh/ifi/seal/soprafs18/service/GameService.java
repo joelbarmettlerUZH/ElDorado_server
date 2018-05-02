@@ -98,7 +98,11 @@ public class GameService implements Serializable{
 
     public Game getGame(int gameID) {
         LOGGER.info("Returning game with ID " + gameID);
-        return gameRepository.findByGameId(gameID).get(0);
+        try {
+            return gameRepository.findByGameId(gameID).get(0);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<Player> getPlayers(int id) {
