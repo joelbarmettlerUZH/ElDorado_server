@@ -316,11 +316,13 @@ public class Player implements Serializable {
 
     public void autoRemoveBlockade(int blockadeId){
         this.removableBlockades.add(blockadeId); // adds to removable so the removeBlockade can remove it
+        Blockade foundBlockade = null;
         for(Blockade blockade: board.getBlockades()) {
             if (blockade.getBlockadeId() == blockadeId) {
-                removeBlockade(blockade);
+                foundBlockade = blockade;
             }
         }
+        removeBlockade(foundBlockade);
     }
 
     /*
