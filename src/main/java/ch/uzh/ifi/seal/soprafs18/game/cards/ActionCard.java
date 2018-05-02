@@ -37,7 +37,7 @@ public class ActionCard extends Card {
      */
     public SpecialActions performAction(Player player){
         player.discard(this);
-        return actions;
+        return new SpecialActions(actions.getDraw(),actions.getRemove(),actions.getSteal());
     }
 
 
