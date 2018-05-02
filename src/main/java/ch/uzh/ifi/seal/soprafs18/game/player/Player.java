@@ -85,8 +85,8 @@ public class Player implements Serializable {
         // discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
         this.bought = false;
         this.token = "TESTTOKEN";
-        this.removeBlockades = new ArrayList<>();
-        this.blockades = new ArrayList<>();
+        this.removableBlockades = new ArrayList<>();
+        this.collectedBlockades = new ArrayList<>();
         this.draw(4);
     }
 
@@ -116,13 +116,13 @@ public class Player implements Serializable {
     Blockades that can be removes
      */
     @ElementCollection
-    private List<Integer> removeBlockades;
+    private List<Integer> removableBlockades;
 
     /*
     Blockades the user has removed already
      */
     @ElementCollection
-    private List<Integer> blockades;
+    private List<Integer> collectedBlockades;
 
     /*
     Global unique token that identifies a User to its player.
@@ -228,20 +228,23 @@ public class Player implements Serializable {
     If this is the case, he adds himself to the Games winning Player array.
      */
     public List<Blockade> move(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo) {
+        // is it the players turn
         if(!myTurn()){
             return new ArrayList<>();
         }
+        // are the cards in the hand
         for(Card card: cards){
             if(!this.handPile.contains(card)){
                 return new ArrayList<>();
             }
         }
+        // does the player own this playingpiece
         if(!this.playingPieces.contains(playingPiece)){
             return new ArrayList<>();
         }
-        this.removeBlockades = new ArrayList<>();
-        Set<Blockade> removable = new HashSet<>();
+        this.removableBlockades = new ArrayList<>(); // parentblockadesID the player can remove in this turn
         Memento memento = board.getMemento();
+        // validates if cards and playingpieces are the same for wich the pathfinder was exectued, if not redo pathfinder
         if (!(playingPiece == memento.getPlayingPiece() && cards.equals(memento.getSelectedCards()))) {
            Pathfinder.getWay(board,cards,playingPiece);
         }
@@ -250,62 +253,69 @@ public class Player implements Serializable {
             HexSpace oldPosition = playingPiece.getStandsOn();
             playingPiece.setStandsOn(moveTo);
             for(Card card: cards){
-                card.moveAction(this, moveTo);
+                card.moveAction(this, moveTo); // for history
             }
-            Set<Integer> blockadeIds = new HashSet<>();
+            Set<Integer> setOfRemovableBlockades = new HashSet<>(); // used to make sure that we don't remove the same blockade twice. (thanks hibernate!!!)
             for(HexSpace hexSpace: moveTo.getPrevious()){
                 if(hexSpace.getClass() == BlockadeSpace.class){
-                    // this.removeBlockades.add(((BlockadeSpace) hexSpace).getParentBlockade());
-                    removeBlockadeId(((BlockadeSpace) hexSpace).getParentBlockade());
+                    // if you directly move over blockade
+                    autoRemoveBlockade(((BlockadeSpace) hexSpace).getParentBlockade());
                 }
             }
-            for(HexSpace hexSpace: playingPiece.getStandsOn().getAllNeighbour(board)){
-                if(hexSpace.getClass() == BlockadeSpace.class){
+            for(HexSpace neighbour: playingPiece.getStandsOn().getAllNeighbour(board)){
+                // if the playingpiece ends up next to a blockade after a move
+                if(neighbour.getClass() == BlockadeSpace.class){
                     Card card = cards.get(0);
-                    if(cards.size()==1 && card.getClass() == MovingCard.class){
-                        if(((MovingCard) card).getColors().contains(hexSpace.getColor())
-                                && ((MovingCard) card).getStrength()-moveTo.getMinimalCost() >= hexSpace.getStrength()
-                                && ((MovingCard) card).getDepth()-moveTo.getMinimalDepth() > 0){
-                            if(!(((MovingCard) card).getColors().size()>1) || (hexSpace.getColor() == moveTo.getColor())){
-                                blockadeIds.add(((BlockadeSpace) hexSpace).getParentBlockade());
+                    if(cards.size()==1 && card.getClass() == MovingCard.class){ //single card case
+                        if(((MovingCard) card).getColors().contains(neighbour.getColor())
+                                && ((MovingCard) card).getStrength() - moveTo.getMinimalCost() >= neighbour.getStrength()
+                                && ((MovingCard) card).getDepth() - moveTo.getMinimalDepth() > 0){
+                            if(!(((MovingCard) card).getColors().size() > 1) || (neighbour.getColor() == moveTo.getColor()) || oldPosition == moveTo){
+                                // Not multicolord card, or blockade same color as color used for moving or moved on itself
+                                setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
                             }
                         }
-                    }else if(cards.size()>1 && oldPosition == playingPiece.getStandsOn()){
-                        if(hexSpace.getColor() == COLOR.RUBBLE && hexSpace.getStrength() <= cards.size()){
-                            blockadeIds.add(((BlockadeSpace) hexSpace).getParentBlockade());
+                    }else if(oldPosition == playingPiece.getStandsOn()){ //multicard case
+                        if(neighbour.getColor() == COLOR.RUBBLE && neighbour.getStrength() <= cards.size()){
+                            setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
                         }
                     }
                 }
             }
-            this.removeBlockades = new ArrayList<Integer>(blockadeIds);
-            for(int id:blockadeIds){
-                for(Blockade blockade: board.getBlockades()){
-                    if(blockade.getBlockadeId() == id){
-                        removable.add(blockade);
-                    }
-                }
-            }
+            this.removableBlockades = new ArrayList<Integer>(setOfRemovableBlockades); //convert set to list
         }
         if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
                 playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDRIVER ){
             this.board.getWinners().add(this);
         }
-        return new ArrayList<>(removable);
+        return new ArrayList<>(blockadeIdsToBlockades(this.removableBlockades));
+    }
+
+    private List<Blockade> blockadeIdsToBlockades(List<Integer> removableBlockadeIds) {
+        List<Blockade> removableBlockades = new ArrayList<>();
+        for(int parentId : removableBlockadeIds){
+            for(Blockade blockade : board.getBlockades()){
+                if(blockade.getBlockadeId() == parentId){
+                    removableBlockades.add(blockade);
+                }
+            }
+        }
+        return removableBlockades;
     }
 
     public void removeBlockade(Blockade blockade){
         if(!myTurn()){
             return;
         }
-        if(this.removeBlockades.contains(blockade.getBlockadeId()) && board.getBlockades().contains(blockade)){
+        if(this.removableBlockades.contains(blockade.getBlockadeId()) && board.getBlockades().contains(blockade)){
             board.getBlockades().remove(blockade);
-            this.blockades.add(blockade.getCost());
-            this.removeBlockades.remove(blockade.getBlockadeId());
+            this.collectedBlockades.add(blockade.getCost());
+            this.removableBlockades.remove(new Integer(blockade.getBlockadeId()));
         }
     }
 
-    public void removeBlockadeId(int blockadeId){
-        this.removeBlockades.add(blockadeId);
+    public void autoRemoveBlockade(int blockadeId){
+        this.removableBlockades.add(blockadeId); // adds to removable so the removeBlockade can remove it
         for(Blockade blockade: board.getBlockades()) {
             if (blockade.getBlockadeId() == blockadeId) {
                 removeBlockade(blockade);
@@ -481,7 +491,7 @@ public class Player implements Serializable {
         // currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
         // current = players.get(currentPlayerNumber);
         draw();
-        this.removeBlockades = new ArrayList<>();
+        this.removableBlockades = new ArrayList<>();
         coins = (float) 0;
         bought = false;
         specialAction.setDraw(0);
