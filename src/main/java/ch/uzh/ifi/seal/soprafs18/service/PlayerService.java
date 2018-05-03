@@ -118,8 +118,8 @@ public class PlayerService  implements Serializable {
         Player player = playerRepository.findByPlayerId(id).get(0);
         Slot slot = slotRepository.findBySlotId(s.getSlotId()).get(0);
         if (validate(player, token)) {
-            player.buy(slot);
             LOGGER.info("Player " + player.getPlayerId() + " buys " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
+            player.buy(slot);
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             return player;
