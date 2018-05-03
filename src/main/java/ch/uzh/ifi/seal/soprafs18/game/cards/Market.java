@@ -97,6 +97,7 @@ public class Market implements Serializable {
     /*
     Slot with the active cards. These are always purchasable by the user.
      */
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<Slot> active;
 

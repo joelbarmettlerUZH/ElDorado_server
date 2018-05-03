@@ -50,6 +50,7 @@ public class BlockadeSpace extends HexSpace implements Serializable {
 
     @Override
     public List<HexSpace> getNeighbour(Game game){
+        /*
         List<HexSpace> neighbours = getAllNeighbour(game);
         //System.out.println("bb " + neighbours);
         //now handle blockades
@@ -59,6 +60,17 @@ public class BlockadeSpace extends HexSpace implements Serializable {
                 neighbours.remove(i);
 
             }
+        }
+        */
+        List<HexSpace> neighbours = new ArrayList<>();
+        if(this.point.x%2==0){
+            //even x
+            neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y)));
+        } else {
+            //odd x
+            neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
         }
         return neighbours;
     }
