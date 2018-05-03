@@ -142,7 +142,7 @@ public class PlayerTest {
         testPlayer.buy(testMarket.getActive().get(1));
         assertEquals(5,testPlayer.getDiscardPile().size());
 
-        /*
+
         System.out.println("---------------------------DEBOGO---------------------------------------");
         testPlayer.addCoins((float) 100);
         testPlayer.setBought(FALSE);
@@ -180,7 +180,7 @@ public class PlayerTest {
         testMarket.getPurchasable();
         System.out.println("Market size active: " + testMarket.getActive().size());
         System.out.println(testMarket.getActive().get(1));
-        */
+
 
     }
 

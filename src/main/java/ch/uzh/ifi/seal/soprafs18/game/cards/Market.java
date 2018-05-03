@@ -97,14 +97,14 @@ public class Market implements Serializable {
     /*
     Slot with the active cards. These are always purchasable by the user.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Slot> active;
 
     /*
     Slot of passive cards. These cards are only purchasable if the active ArrayList has less than 6 Slots.
     Otherwise, these cards are not purchasable.
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Slot> passive;
 
     /*
