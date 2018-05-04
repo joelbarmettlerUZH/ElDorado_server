@@ -114,7 +114,7 @@ public class Pathfinder  implements Serializable {
                 System.out.println("Neighbour: "+neighbour.toString());
                 if((neighbour.getColor() == color || neighbour.getStrength()==0)
                         &&
-                        (strength - current.getMinimalCost() - neighbour.getStrength() >= 0)
+                        (strength - current.getMinimalCost() - neighbour.getStrength() >= 0 || neighbour.getStrength()==0)
                         &&
                         (depth - current.getMinimalDepth() - 1 >= 0 || neighbour.getStrength()==0 )){
                     System.out.println("validito");
