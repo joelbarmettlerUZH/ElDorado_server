@@ -119,7 +119,7 @@ public class HexSpace implements Serializable{
     /**
      Function to calculata all six neighbors of a hexspace without any postprocessing
      */
-    @Transient
+    //@Transient
     @JsonIgnore
     public List<HexSpace> getNeighbour(Game game){
         List<HexSpace> neighbours = new ArrayList<>();
