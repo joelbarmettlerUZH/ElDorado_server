@@ -53,7 +53,7 @@ public class Blockade  implements Serializable {
     Deactivates a blockade by settings its BlockadeSpace strength to 0.
      */
     public void deactivate(){
-        this.cost = 0;
+        this.spaces.forEach(space -> space.setStrength(0));
     }
 
 
