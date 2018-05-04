@@ -16,7 +16,7 @@ public class TileService implements Serializable {
     @Autowired
     public TileRepository tileRepository;
 
-    public TileEntity getTile(char tileId){
+    public TileEntity getTile(Character tileId){
         return tileRepository.findByTileID(tileId);
     }
 

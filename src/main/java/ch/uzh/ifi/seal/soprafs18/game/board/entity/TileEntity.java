@@ -21,7 +21,7 @@ public class TileEntity implements Serializable {
     //@OrderColumn
     private List<HexSpaceEntity> hexSpaceEntities;
 
-    public TileEntity(char tileID, List<HexSpaceEntity> hexSpaceEntities){
+    public TileEntity(Character tileID, List<HexSpaceEntity> hexSpaceEntities){
         this.tileID = tileID;
         this.hexSpaceEntities=hexSpaceEntities;
     }
@@ -30,11 +30,11 @@ public class TileEntity implements Serializable {
 
     }
 
-    public int getTileID() {
+    public Character getTileID() {
         return tileID;
     }
 
-    public void setTileID(char tileID) {
+    public void setTileID(Character tileID) {
         this.tileID = tileID;
     }
 
