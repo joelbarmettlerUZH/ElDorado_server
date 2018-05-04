@@ -93,11 +93,14 @@ public class Pathfinder  implements Serializable {
         Card card = cards.iterator().next();
         if(card instanceof MovingCard){
             for(COLOR color: ((MovingCard) card).getColors()){
+                hexSpace.setMinimalDepth(0);
+                hexSpace.setMinimalCost(0);
                 reachables.addAll(findReachables(game, color, ((MovingCard) card).getStrength(), ((MovingCard) card).getDepth(), hexSpace));
+                // Added this to reset everything before trying with different color
                 for(HexSpace hexSpaceToReset: reachables){
                     hexSpaceToReset.setMinimalCost(1000);
                     hexSpaceToReset.setMinimalDepth(1000);
-                    hexSpaceToReset.setPrevious(new ArrayList<>());
+                    hexSpace.setPrevious(new ArrayList<>());
                 }
             }
         }
