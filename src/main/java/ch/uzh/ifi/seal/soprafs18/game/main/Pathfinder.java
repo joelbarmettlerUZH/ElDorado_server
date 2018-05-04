@@ -102,6 +102,13 @@ public class Pathfinder  implements Serializable {
                     hexSpaceToReset.setMinimalDepth(1000);
                     hexSpace.setPrevious(new ArrayList<>());
                 }
+                for (Blockade blockade: game.getBlockades()){
+                    for (HexSpace hexSpaceReset: blockade.getSpaces()){
+                        hexSpaceReset.setMinimalCost(1000);
+                        hexSpaceReset.setMinimalDepth(1000);
+                        hexSpaceReset.setPrevious(new ArrayList<>());
+                    }
+                }
             }
         }
 
