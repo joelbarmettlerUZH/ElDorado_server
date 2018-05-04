@@ -530,7 +530,7 @@ public class Application {
 
             //----------------------HILLSOFGOLD PATH----------------------
 
-            List<TileEntity> tiles_HillsOfGoldPath = new ArrayList<>();
+            /*List<TileEntity> tiles_HillsOfGoldPath = new ArrayList<>();
             char [] tile_HillsOfGoldPath = {'B','C','G','K','J','N'};
             for (char id : tile_HillsOfGoldPath) {
                 tiles_HillsOfGoldPath.add(tileRepository.findByTileID(id));
@@ -720,7 +720,7 @@ public class Application {
                     blockadeIDs_HomeStretchPath, blockadeX_HomeStretchPath, blockadeY_HomeStretchPath,
                     EndSpaces_HomeStretchPath, EndSpacesX_HomeStretchPath, EndSpacesY_HomeStretchPath,
                     EldoradoSpaces_HomeStretchPath, EldoradoSpacesX_HomeStretchPath, EldoradoSpacesY_HomeStretchPath));
-            /*
+
             //----------------------TEST PATH----------------------------------------
             List<Integer> tileRotation_testPath = new ArrayList<>();
             int [] tileRot_test = {5,0,3,3,5};
