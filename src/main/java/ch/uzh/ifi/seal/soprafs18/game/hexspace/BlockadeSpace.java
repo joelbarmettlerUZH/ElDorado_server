@@ -50,18 +50,6 @@ public class BlockadeSpace extends HexSpace implements Serializable {
 
     @Override
     public List<HexSpace> getNeighbour(Game game){
-        /*
-        List<HexSpace> neighbours = getAllNeighbour(game);
-        //System.out.println("bb " + neighbours);
-        //now handle blockades
-        for (int i = neighbours.size()-1; i>=0 ;i--) {
-            if (neighbours.get(i).getClass()==BlockadeSpace.class) {
-                //current is BlockadeSpace, thus remove it.
-                neighbours.remove(i);
-
-            }
-        }
-        */
         List<HexSpace> neighbours = new ArrayList<>();
         // if the tiles are below another
         if (game.getHexSpace(new Point(this.point.x,this.point.y - 1)).getClass() == BlockadeSpace.class ||
@@ -72,6 +60,7 @@ public class BlockadeSpace extends HexSpace implements Serializable {
                 neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y - 1)));
                 neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y)));
             } else {
+                System.out.println("*********************************HORIZONTAL-BLOCKADE*************************************");
                 //odd x
                 neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y)));
                 neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y + 1)));

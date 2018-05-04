@@ -121,7 +121,7 @@ public class HexSpace implements Serializable{
      */
     @Transient
     @JsonIgnore
-    public List<HexSpace> getAllNeighbour(Game game){
+    public List<HexSpace> getNeighbour(Game game){
         List<HexSpace> neighbours = new ArrayList<>();
         //int x = this.point.x;
         neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y)));
@@ -163,38 +163,7 @@ public class HexSpace implements Serializable{
     the method asks it again for its neighbours by calling blockadeSpace.getNeighbours(this) and provides itself as the
     previous. This way the blockade can handle the neighbours with taking the previous direction into account.
      */
-    @JsonIgnore
-    @Transient
-    public List<HexSpace> getNeighbour(Game game){
-        Set<HexSpace> neighboursOfBlockade = new HashSet<>(); // stores neighbors of neighboring blockades
-        Set<HexSpace> neighbours = new HashSet<>(getAllNeighbour(game));
-        neighbours.forEach(x -> System.out.println("intitial"+x.toString()));
-        //now handle blockades
-        for (HexSpace current:neighbours){
-            if (current.getClass() == BlockadeSpace.class){
-                //current is BlockadeSpace
-                BlockadeSpace currentBlockadeSpace = (BlockadeSpace) current;
-                int blockade = currentBlockadeSpace.getParentBlockade();  //not used yet (Why do we need to only keep one blockade in the neighbors? - makes it complicated)
-                // if (currentBlockadeSpace.getStrength() == 0){
-                    //blockade is inactive
-                // neighboursOfBlockade.addAll(currentBlockadeSpace.getNeighbour(game));
-                // System.out.println(neighboursOfBlockade);
-                /*
-                for (HexSpace hex: neighboursOfBlockade) {
-                    System.out.println("hex"+hex.toString());
-                    if (!neighbours.contains(hex) && hex.getClass() == BlockadeSpace.class) {
-                        System.out.println("test333");
-                        neighboursOfBlockade.remove(hex);
-                    }
-                }*/
 
-                // }
-            }
-        }
-        // neighbours.addAll(neighboursOfBlockade);
-        List<HexSpace> filteredNeighbors = new ArrayList<>(neighbours);
-        return filteredNeighbors;
-    }
 
     @Override
     public String toString(){

@@ -260,7 +260,7 @@ public class Player implements Serializable {
                     autoRemoveBlockade(((BlockadeSpace) hexSpace).getParentBlockade());
                 }
             }
-            for(HexSpace neighbour: playingPiece.getStandsOn().getAllNeighbour(board)){
+            for(HexSpace neighbour: playingPiece.getStandsOn().getNeighbour(board)){
                 // if the playingpiece ends up next to a blockade after a move
                 if(neighbour.getClass() == BlockadeSpace.class && neighbour.getStrength() != 0){
                     Card card = cards.get(0);

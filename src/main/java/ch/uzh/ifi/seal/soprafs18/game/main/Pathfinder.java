@@ -149,7 +149,7 @@ public class Pathfinder  implements Serializable {
         If multiple cards were selected or just one card of type actionCard, PathFinder checks whether one of the neighbours
         is of color “rubble” and only allows the move if a rubble with strenght less than the number of cards selected is in the set of neighbours.
          */
-        Set<HexSpace> neighbours = new HashSet<>(hexSpace.getAllNeighbour(game));
+        Set<HexSpace> neighbours = new HashSet<>(hexSpace.getNeighbour(game));
         Set<HexSpace> reachables = new HashSet<>();
         reachables.add(hexSpace);
         for(HexSpace neighbour: neighbours){
