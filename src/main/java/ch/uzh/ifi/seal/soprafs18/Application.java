@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -112,7 +113,7 @@ public class Application {
             String readLine = "";
             //-----SAVE-HEXSPACES-----
             try {
-                BufferedReader b = getBufferedReader(classLoader, "json/hexspaces.txt");
+                BufferedReader b = getBufferedReader("json/hexspaces.txt");
                 while ((readLine = b.readLine()) != null) {
                     JsonNode hexSpace = getJsonNode(readLine);
                     hexSpaceRepository.save(new HexSpaceEntity(hexSpace.get("id").asText(),
@@ -123,7 +124,7 @@ public class Application {
             }
             //-----SAVE-BLOCKADESPACES-----
             try {
-                BufferedReader b = getBufferedReader(classLoader, "json/blockadespaces.txt");
+                BufferedReader b = getBufferedReader("json/blockadespaces.txt");
                 while ((readLine = b.readLine()) != null) {
                     JsonNode blockadeSpace = getJsonNode(readLine);
                     blockadeSpaceRepository.save(new BlockadeSpaceEntity(blockadeSpace.get("id").asText(),
@@ -135,7 +136,7 @@ public class Application {
             }
             //-----SAVE-TILES-----
             try {
-                BufferedReader b = getBufferedReader(classLoader, "json/tiles.txt");
+                BufferedReader b = getBufferedReader("json/tiles.txt");
                 while ((readLine = b.readLine()) != null) {
                     JsonNode tile = getJsonNode(readLine);
                     List<HexSpaceEntity> HexSpaces_Tile = new ArrayList<>();
@@ -150,7 +151,7 @@ public class Application {
             }
             //-----SAVE-STRIPS-----
             try {
-                BufferedReader b = getBufferedReader(classLoader, "json/strips.txt");
+                BufferedReader b = getBufferedReader("json/strips.txt");
                 while ((readLine = b.readLine()) != null) {
                     JsonNode strip = getJsonNode(readLine);
                     List<HexSpaceEntity> HexSpaces_Strip = new ArrayList<>();
@@ -165,7 +166,7 @@ public class Application {
             }
             //-----SAVE-PATHS-----
             try {
-                BufferedReader b = getBufferedReader(classLoader, "json/paths.txt");
+                BufferedReader b = getBufferedReader("json/paths.txt");
                 while ((readLine = b.readLine()) != null) {
                     JsonNode path = getJsonNode(readLine);
                     System.out.println(path.get("id"));
@@ -771,9 +772,19 @@ public class Application {
         return HexSpacemapper.readTree(readLine);
     }
 
-    private BufferedReader getBufferedReader(ClassLoader classLoader, String s) throws FileNotFoundException {
-        File f = new File(classLoader.getResource(s).getFile());
+    private BufferedReader getBufferedReader(String s) throws FileNotFoundException {
+        ClassPathResource resource = new ClassPathResource(s);
+        File f = new File(s);
+        try {
+            f = resource.getFile();
+            return new BufferedReader(new FileReader(f));
+
+        } catch (Exception e){
+            System.out.println("Could not find file");
+        }
+        //File f = new File(classLoader.getResource(s).getFile());
         return new BufferedReader(new FileReader(f));
+
     }
 
 
