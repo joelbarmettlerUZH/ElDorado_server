@@ -60,13 +60,20 @@ public class Memento  implements Serializable {
     /*
     Refill Memento with new information from the PathFinder.
      */
-    public void reset(){
+    public void reset(Game game){
         for(HexSpace hexSpace: reachables){
             hexSpace.setMinimalCost(1000);
             hexSpace.setMinimalDepth(1000);
             hexSpace.setPrevious(new ArrayList<>());
-            this.playingPiece = null;
-            this.selectedCards = new HashSet<>();
         }
+        for (Blockade blockade: game.getBlockades()){
+            for (HexSpace hexSpace: blockade.getSpaces()){
+                hexSpace.setMinimalCost(1000);
+                hexSpace.setMinimalDepth(1000);
+                hexSpace.setPrevious(new ArrayList<>());
+            }
+        }
+        this.playingPiece = null;
+        this.selectedCards = new HashSet<>();
     }
 }

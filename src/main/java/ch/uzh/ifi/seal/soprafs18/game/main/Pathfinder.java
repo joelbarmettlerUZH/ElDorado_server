@@ -58,7 +58,7 @@ public class Pathfinder  implements Serializable {
         leftover information from the previous call.
          */
         Set<Card> cards = new HashSet<>(inputCards);
-        game.getMemento().reset();
+        game.getMemento().reset(game);
         Set<HexSpace> reachables;
         HexSpace hexSpace = playingPiece.getStandsOn();
         hexSpace.setMinimalDepth(0);
