@@ -25,6 +25,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -33,6 +35,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.List;
 
 @ComponentScan
@@ -64,6 +67,9 @@ public class Application {
 
     @Autowired
     RoomRepository roomRepository;
+
+    private ResourceLoader resourceLoader;
+
 
 
     /*
@@ -773,18 +779,16 @@ public class Application {
     }
 
     private BufferedReader getBufferedReader(String s) throws FileNotFoundException {
-        ClassPathResource resource = new ClassPathResource(s);
-        File f = new File(s);
+        Resource resource = new ClassPathResource(s);
         try {
-            f = resource.getFile();
-            return new BufferedReader(new FileReader(f));
+            InputStream dbAsStream = resource.getInputStream();
+            return new BufferedReader(new InputStreamReader(dbAsStream, "UTF-8"));
 
         } catch (Exception e){
             System.out.println("Could not find file");
+            return null;
         }
         //File f = new File(classLoader.getResource(s).getFile());
-        return new BufferedReader(new FileReader(f));
-
     }
 
 
