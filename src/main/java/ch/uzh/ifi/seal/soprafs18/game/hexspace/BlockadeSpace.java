@@ -77,8 +77,8 @@ public class BlockadeSpace extends HexSpace implements Serializable {
             }
         } else {
             // tiles are diagonally arranged
-            neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y)));
-            neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x, this.point.y - 1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x, this.point.y + 1)));
         }
         return neighbours;
     }
