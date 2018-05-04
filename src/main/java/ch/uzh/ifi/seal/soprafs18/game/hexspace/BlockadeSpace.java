@@ -67,6 +67,7 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         if (game.getHexSpace(new Point(this.point.x,this.point.y - 1)).getClass() == BlockadeSpace.class ||
                 game.getHexSpace(new Point(this.point.x,this.point.y + 1)).getClass() == BlockadeSpace.class) {
             if (this.point.x % 2 == 0) {
+                System.out.println("*********************************HORIZONTAL-BLOCKADE*************************************");
                 //even x
                 neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y - 1)));
                 neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y)));

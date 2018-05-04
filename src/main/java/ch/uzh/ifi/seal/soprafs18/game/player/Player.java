@@ -176,9 +176,7 @@ public class Player implements Serializable {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CardAction> history;
 
     /*
@@ -500,6 +498,7 @@ public class Player implements Serializable {
         specialAction.setRemove(0);
         specialAction.setSteal(0);
         board.endRound();
+        history = new ArrayList<>();
     }
 
     public void addCoins(Float amount) {
