@@ -211,6 +211,13 @@ public class Application {
                                     elDorado,
                                     reader.readValue(path.get("elDoradoSpacesX")),
                                     reader.readValue(path.get("elDoradoSpacesY"))
+
+                                    /*BoardEntity(int boardID, String name, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,
+                       List<Integer> tilesPositionY,List<StripEntity> strip, List<Integer> stripRotation,
+                       List<Integer> stripPositionX,List<Integer> stripPositionY,List<Integer> blockadeId,
+                       List<Integer> blockadePositionX, List<Integer> blockadePositionY,List<HexSpaceEntity> endingSpaces,
+                       List<Integer> endingSpacePositionX, List<Integer> endingSpacePositionY, List<HexSpaceEntity> eldoradoSpace,
+                       List<Integer> eldoradoSpacePositionX, List<Integer> eldoradoSpacePositionY)*/
                     ));
                 }
             } catch (IOException e) {
