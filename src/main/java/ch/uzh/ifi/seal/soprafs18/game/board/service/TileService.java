@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Service
 public class TileService implements Serializable {
@@ -21,6 +22,10 @@ public class TileService implements Serializable {
 
     public void saveTile(TileEntity tileEntity){
         tileRepository.save(tileEntity);
+    }
+
+    public Iterable<TileEntity> save(List<TileEntity> tiles){
+        return tileRepository.saveAll(tiles);
     }
 
 }
