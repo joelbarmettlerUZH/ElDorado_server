@@ -58,23 +58,23 @@ public class BoardEntity implements Serializable {
     @Embedded
     @ManyToMany
     @JoinColumn(name = "tileID")
-    @Column(name = "TILES")
+    @Column(name = "TILES",nullable = true)
     //@OneToMany(targetEntity = TileEntity.class, fetch = FetchType.EAGER)
     //@JoinTable(name="TILES",joinColumns = @JoinColumn(name="BOARD_BOARDID"),inverseJoinColumns = @JoinColumn(name="TILE_ID"))
     private List<TileEntity> tiles;
 
     @JsonIgnore
-    @Column(name = "TILESROTATION")
+    @Column(name = "TILESROTATION",nullable = true)
     @ElementCollection
     private List<Integer> tilesRotation;
 
     @JsonIgnore
-    @Column(name = "TILESPOSITIONX")
+    @Column(name = "TILESPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> tilesPositionX;
 
     @JsonIgnore
-    @Column(name = "TILESPOSITIONY")
+    @Column(name = "TILESPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> tilesPositionY;
 
