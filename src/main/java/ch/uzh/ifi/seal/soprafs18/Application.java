@@ -65,7 +65,7 @@ public class Application {
     RoomRepository roomRepository;
 
 
-
+    /*
     @Bean
     public CommandLineRunner loadDUsers() {
         return (args) -> {
@@ -103,7 +103,7 @@ public class Application {
 
     }
 
-
+    */
     @Bean
     CommandLineRunner savePathElementsToDB(TileService tileService){
         return args -> {
@@ -138,9 +138,7 @@ public class Application {
                 BufferedReader b = getBufferedReader(classLoader, "json/tiles.txt");
                 while ((readLine = b.readLine()) != null) {
                     JsonNode tile = getJsonNode(readLine);
-                    System.out.println(tile.get("id"));
                     List<HexSpaceEntity> HexSpaces_Tile = new ArrayList<>();
-                    System.out.println(tile.get("hexspaces"));
                     tile.get("hexspaces").forEach(
                             hexId -> HexSpaces_Tile.add(hexSpaceRepository.findByHexID(hexId.asText()))
                     );
@@ -155,9 +153,7 @@ public class Application {
                 BufferedReader b = getBufferedReader(classLoader, "json/strips.txt");
                 while ((readLine = b.readLine()) != null) {
                     JsonNode strip = getJsonNode(readLine);
-                    System.out.println(strip.get("id"));
                     List<HexSpaceEntity> HexSpaces_Strip = new ArrayList<>();
-                    System.out.println(strip.get("hexspaces"));
                     strip.get("hexspaces").forEach(
                             hexId -> HexSpaces_Strip.add(hexSpaceRepository.findByHexID(hexId.asText()))
                     );
@@ -206,7 +202,7 @@ public class Application {
                                     reader.readValue(path.get("stripRot")),
                                     reader.readValue(path.get("stripX")),
                                     reader.readValue(path.get("stripY")),
-                                    reader.readValue(path.get("bloackeIds")),
+                                    reader.readValue(path.get("blockadeIds")),
                                     reader.readValue(path.get("blockadeX")),
                                     reader.readValue(path.get("blockadeY")),
                                     ending,
