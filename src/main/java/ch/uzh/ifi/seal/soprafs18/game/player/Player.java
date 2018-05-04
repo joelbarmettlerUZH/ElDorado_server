@@ -264,7 +264,7 @@ public class Player implements Serializable {
             }
             for(HexSpace neighbour: playingPiece.getStandsOn().getAllNeighbour(board)){
                 // if the playingpiece ends up next to a blockade after a move
-                if(neighbour.getClass() == BlockadeSpace.class){
+                if(neighbour.getClass() == BlockadeSpace.class && neighbour.getStrength() != 0){
                     Card card = cards.get(0);
                     if(cards.size()==1 && card.getClass() == MovingCard.class){ //single card case
                         if(((MovingCard) card).getColors().contains(neighbour.getColor())

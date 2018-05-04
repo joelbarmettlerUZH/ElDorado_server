@@ -112,11 +112,11 @@ public class Pathfinder  implements Serializable {
             List<HexSpace> potentialNeighbours = reachables.get(currentPosition).getNeighbour(game);
             for(HexSpace neighbour: potentialNeighbours){
                 System.out.println("Neighbour: "+neighbour.toString());
-                if((neighbour.getColor() == color)
+                if((neighbour.getColor() == color || neighbour.getStrength()==0)
                         &&
                         (strength - current.getMinimalCost() - neighbour.getStrength() >= 0)
                         &&
-                        (depth - current.getMinimalDepth() - 1 >= 0)){
+                        (depth - current.getMinimalDepth() - 1 >= 0 || neighbour.getStrength()==0 )){
                     System.out.println("validito");
                     if((!reachables.contains(neighbour) || neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength())){
                         neighbour.setMinimalCost(current.getMinimalCost() + neighbour.getStrength());
