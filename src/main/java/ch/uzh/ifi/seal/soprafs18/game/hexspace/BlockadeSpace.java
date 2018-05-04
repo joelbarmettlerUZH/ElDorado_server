@@ -63,14 +63,22 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         }
         */
         List<HexSpace> neighbours = new ArrayList<>();
-        if(this.point.x%2==0){
-            //even x
-            neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y-1)));
-            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y)));
+        // if the tiles are below another
+        if (game.getHexSpace(new Point(this.point.x,this.point.y - 1)).getClass() == BlockadeSpace.class ||
+                game.getHexSpace(new Point(this.point.x,this.point.y + 1)).getClass() == BlockadeSpace.class) {
+            if (this.point.x % 2 == 0) {
+                //even x
+                neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y - 1)));
+                neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y)));
+            } else {
+                //odd x
+                neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y)));
+                neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y + 1)));
+            }
         } else {
-            //odd x
-            neighbours.add(game.getHexSpace(new Point(this.point.x-1,this.point.y)));
-            neighbours.add(game.getHexSpace(new Point(this.point.x+1,this.point.y+1)));
+            // tiles are diagonally arranged
+            neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y)));
         }
         return neighbours;
     }
