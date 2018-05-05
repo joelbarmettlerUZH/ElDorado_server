@@ -146,6 +146,8 @@ public class Pathfinder  implements Serializable {
                         if(reachables.contains(neighbour)){
                             if(reachables.indexOf(neighbour) < currentPosition){
                                 currentPosition--;
+                                System.out.println("reducing current Position to "+currentPosition);
+                                System.out.println("rechables Size is "+reachables.size());
                             }
                             reachables.remove(neighbour);
                         }
@@ -153,6 +155,7 @@ public class Pathfinder  implements Serializable {
                     }
                 }
             }
+            reachables.forEach(x-> System.out.println("current reachables (before moving position: "+x.toString()));
             currentPosition++;
         }while(currentPosition<reachables.size());
         System.out.println("dijkstrato finitototo");

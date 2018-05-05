@@ -74,4 +74,10 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         }
         return neighbours;*/
     }
+
+    @Override
+    public String toString(){
+        return color.toString()+"-BlockSpace at Point ("+point.x+","+point.y+"), Strength: "+strength+", minimalCost: "+
+                minimalCost+", minimalDepth: "+ minimalDepth+", previoussize: " +previous.size();
+    }
 }
