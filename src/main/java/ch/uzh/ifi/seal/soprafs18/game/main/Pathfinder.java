@@ -153,12 +153,12 @@ public class Pathfinder  implements Serializable {
                                 System.out.println("reducing current Position to "+currentPosition);
                                 System.out.println("rechables Size is "+reachables.size());
                             }
-                            reachables.remove(neighbour);
+                            reachables.remove((HexSpace) neighbour);
                         }
+                        reachables.add((HexSpace) neighbour);
                         System.out.println("added to reachables");
                         System.out.println("current Position to "+currentPosition);
                         System.out.println("rechables Size is "+reachables.size());
-                        reachables.add(neighbour);
                     }
                 }
             }
