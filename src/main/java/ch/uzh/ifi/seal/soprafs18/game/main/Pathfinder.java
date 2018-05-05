@@ -135,6 +135,8 @@ public class Pathfinder  implements Serializable {
                         &&
                         (depth - current.getMinimalDepth() - 1 >= 0 || neighbour.getStrength()==0 )){
                     System.out.println("validito");
+                    System.out.println("!reachables.contains(neighbour): "+!reachables.contains(neighbour));
+                    System.out.println("neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength(): "+ (neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength()));
                     if((!reachables.contains(neighbour) || neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength())){
                         neighbour.setMinimalCost(current.getMinimalCost() + neighbour.getStrength());
                         int depthToSubstract = 1;
@@ -153,6 +155,9 @@ public class Pathfinder  implements Serializable {
                             }
                             reachables.remove(neighbour);
                         }
+                        System.out.println("added to reachables");
+                        System.out.println("current Position to "+currentPosition);
+                        System.out.println("rechables Size is "+reachables.size());
                         reachables.add(neighbour);
                     }
                 }
