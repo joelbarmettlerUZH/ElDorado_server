@@ -147,13 +147,15 @@ public class Pathfinder  implements Serializable {
                         ArrayList<HexSpace> previous = new ArrayList<>(current.getPrevious());
                         previous.add(current);
                         neighbour.setPrevious(previous);
-                        if(reachables.contains(neighbour)){
+                        if((reachables.contains(neighbour))&&
+                                reachables.get(reachables.indexOf(neighbour)).getPoint()==neighbour.getPoint()){ //double check
                             if(reachables.indexOf(neighbour) < currentPosition){
                                 currentPosition--;
                                 System.out.println("reducing current Position to "+currentPosition);
                                 System.out.println("rechables Size is "+reachables.size());
                             }
                             reachables.remove((HexSpace) neighbour);
+                            System.out.println("removed from reachables");
                         }
                         reachables.add((HexSpace) neighbour);
                         System.out.println("added to reachables");
