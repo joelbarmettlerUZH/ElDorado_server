@@ -274,7 +274,7 @@ public class Player implements Serializable {
                             }
                         }
                     }else if(oldPosition == playingPiece.getStandsOn()){ //multicard case
-                        if(neighbour.getColor() == COLOR.RUBBLE && neighbour.getStrength() <= cards.size()){
+                        if(neighbour.getColor() == COLOR.RUBBLE && neighbour.getStrength() == cards.size()){
                             setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
                         }
                     }
