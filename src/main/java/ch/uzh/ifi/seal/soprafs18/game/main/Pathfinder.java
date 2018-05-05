@@ -181,10 +181,10 @@ public class Pathfinder  implements Serializable {
         Set<HexSpace> reachables = new HashSet<>();
         reachables.add(hexSpace);
         for(HexSpace neighbour: neighbours){
-            if(neighbour.getColor().equals(COLOR.RUBBLE) && neighbour.getStrength() >= cards.size()){
+            if(neighbour.getColor().equals(COLOR.RUBBLE) && neighbour.getStrength() <= cards.size()){
                 reachables.add(neighbour);
             }
-            if(neighbour.getColor().equals(COLOR.BASECAMP) && neighbour.getStrength() >= cards.size()){
+            if(neighbour.getColor().equals(COLOR.BASECAMP) && neighbour.getStrength() <= cards.size()){
                 reachables.add(neighbour);
             }
         }
