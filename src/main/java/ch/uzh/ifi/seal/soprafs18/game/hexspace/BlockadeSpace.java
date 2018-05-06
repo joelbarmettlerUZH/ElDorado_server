@@ -26,6 +26,12 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         //this.parentBlockade = -1;
     }
 
+    public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY, int parentBlockade){
+        super(blockadeSpaceEntity,posX,posY);
+        this.parentBlockade = parentBlockade;
+        //this.parentBlockade = -1;
+    }
+
     public BlockadeSpace(COLOR color, int strength, int minimalCost, int minimalDepth, Point point, int parentBlockade){
         super(color, strength, minimalCost, minimalDepth, point);
         this.parentBlockade = parentBlockade;

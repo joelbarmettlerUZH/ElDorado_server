@@ -121,7 +121,13 @@ public class Assembler implements Serializable {
                 }else{
                     HexSpaceEntity hexSpaceEntity = entityMarix[i][j];
                     if (hexSpaceEntity instanceof BlockadeSpaceEntity){
-                        hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity)entityMarix[i][j],i,j);
+                        if (entityMarix[i][j-1] instanceof BlockadeSpaceEntity || entityMarix[i][j+1] instanceof BlockadeSpaceEntity) {
+                            // add 1000 to parentblockadeId for horizontal blockade to identify them in the front-end
+                            BlockadeSpaceEntity blockade = (BlockadeSpaceEntity) entityMarix[i][j];
+                            hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity) entityMarix[i][j], i, j,blockade.getBlockadeId()+1000);
+                        } else {
+                            hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity) entityMarix[i][j], i, j);
+                        }
                     } else {
                         hexSpaceMatrix[i][j] = new HexSpace(entityMarix[i][j], i, j);
                     }
