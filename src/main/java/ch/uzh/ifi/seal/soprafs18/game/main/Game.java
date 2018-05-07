@@ -6,6 +6,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.Matrix;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
@@ -45,6 +46,8 @@ public class Game implements Serializable {
         this.winners = new ArrayList<>();
         this.marketPlace = new Market();
         this.memento = new Memento();
+        this.elDoradoSpaces = new ArrayList<>();
+
     }
 
 
@@ -64,6 +67,11 @@ public class Game implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
     private List<HexSpace> startingSpaces;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    private List<HexSpace> elDoradoSpaces;
 
     /*
     Serves as an identifier for the current player for hibernate
@@ -151,6 +159,9 @@ public class Game implements Serializable {
         System.out.println(this.getGameId());
         this.pathMatrix = new Matrix(assembler.assembleBoard(this.boardId));
         this.startingSpaces.addAll(assembler.getStartingFields(this.boardId));
+        System.out.println("test");
+        assembler.getElDoradoFields(this.boardId).forEach(x -> System.out.println(x.toString()));
+        this.elDoradoSpaces.addAll(assembler.getElDoradoFields(this.boardId));
         this.blockades = assembler.getBlockades(this);
 
         //

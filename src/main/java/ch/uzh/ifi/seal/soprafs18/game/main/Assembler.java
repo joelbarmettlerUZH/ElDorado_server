@@ -457,6 +457,20 @@ public class Assembler implements Serializable {
         return EndingSpaces;
     }
 
+    /**
+     Used by the GameBorad and returns an Arrays with the HexSpaces of the ending-fields.
+     The GameEntity needs these information to place the playing Pieces. We rather request these
+     informations from the Assembler than parsing the matrix.
+     **/
+    public List<HexSpace> getElDoradoFields(int boardId) {
+        BoardEntity board = boardService.getBoard(boardId);
+        List<HexSpace> ElDoradoSpaces = new ArrayList<>();
+        for (int i = 0; i <board.getEldoradoSpace().size(); i++)
+            ElDoradoSpaces.add(new HexSpace(board.getEldoradoSpace().get(i), board.getEldoradoSpacePositionX().get(i),
+                    board.getEldoradoSpacePositionY().get(i)));
+        return ElDoradoSpaces;
+    }
+
     public BoardEntity getBoard(int boardId) {
         return boardService.getBoard(boardId);
     }

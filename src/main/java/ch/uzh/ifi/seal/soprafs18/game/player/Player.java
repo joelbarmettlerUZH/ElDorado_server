@@ -284,6 +284,9 @@ public class Player implements Serializable {
         }
         if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
                 playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDRIVER ){
+            playingPiece.move(board.getElDoradoSpaces().get(0));
+            List<HexSpace> newEldoradoSpaces = board.getElDoradoSpaces().subList(0,board.getElDoradoSpaces().size()-2);
+            board.setElDoradoSpaces(newEldoradoSpaces);
             this.board.getWinners().add(this);
         }
         return new ArrayList<>(blockadeIdsToBlockades(this.removableBlockades));
@@ -396,13 +399,11 @@ public class Player implements Serializable {
         } else {
             return;
         }
-
     }
 
     /*
     Calls draw(amount) with the amount being 4 - length of HandPile.
      */
-
     public void draw() {
         if(!myTurn()){
             return;
