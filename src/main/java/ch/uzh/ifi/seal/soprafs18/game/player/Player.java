@@ -285,7 +285,7 @@ public class Player implements Serializable {
         if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
                 playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDRIVER ){
             playingPiece.move(board.getElDoradoSpaces().get(0));
-            List<HexSpace> newEldoradoSpaces = board.getElDoradoSpaces().subList(0,board.getElDoradoSpaces().size()-2);
+            List<HexSpace> newEldoradoSpaces = board.getElDoradoSpaces().subList(0,Math.max(board.getElDoradoSpaces().size()-2,0));
             board.setElDoradoSpaces(newEldoradoSpaces);
             this.board.getWinners().add(this);
         }
