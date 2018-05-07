@@ -28,7 +28,7 @@ public class Player implements Serializable {
     //TODO: Set correct  initial cardAction budget
     public Player(int PlayerID, String name, Game game, String token) {
         this();
-        //this.token = token;
+        this.token = token;
         this.name = name;
         this.playerId = PlayerID;
         this.board = game;
@@ -84,7 +84,7 @@ public class Player implements Serializable {
         // Why is this?
         // discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
         this.bought = false;
-        this.token = "TESTTOKEN";
+        //this.token = "TESTTOKEN";
         this.removableBlockades = new ArrayList<>();
         this.collectedBlockades = new ArrayList<>();
         this.draw(4);
