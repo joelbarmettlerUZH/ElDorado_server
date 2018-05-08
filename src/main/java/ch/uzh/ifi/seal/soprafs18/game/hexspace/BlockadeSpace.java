@@ -8,6 +8,8 @@ import java.io.Serializable;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.BlockadeSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 import lombok.Data;
 
 import javax.persistence.Embeddable;
@@ -77,6 +79,8 @@ public class BlockadeSpace extends HexSpace implements Serializable {
             neighbours.add(game.getHexSpace(new Point(this.point.x, this.point.y - 1)));
             neighbours.add(game.getHexSpace(new Point(this.point.x, this.point.y + 1)));
         }
+        List<HexSpace> occupied = removeOccupied(game, neighbours);
+        neighbours.removeAll(occupied);
         return neighbours;
     }
 

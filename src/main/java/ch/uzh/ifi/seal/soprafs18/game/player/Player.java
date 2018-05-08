@@ -265,7 +265,7 @@ public class Player implements Serializable {
                 if(neighbour.getClass() == BlockadeSpace.class && neighbour.getStrength() != 0){
                     Card card = cards.get(0);
                     if(cards.size()==1 && card.getClass() == MovingCard.class &&
-                            neighbour.getColor()!=COLOR.RUBBLE&& neighbour.getColor()!=COLOR.BASECAMP){ //single card case
+                            neighbour.getColor() != COLOR.RUBBLE&& neighbour.getColor() != COLOR.BASECAMP){ //single card case
                         if(((MovingCard) card).getColors().contains(neighbour.getColor())
                                 && ((MovingCard) card).getStrength() - moveTo.getMinimalCost() >= neighbour.getStrength()
                                 && ((MovingCard) card).getDepth() - moveTo.getMinimalDepth() > 0){

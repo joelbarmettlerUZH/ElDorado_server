@@ -139,6 +139,12 @@ public class HexSpace implements Serializable{
         }
         //System.out.println("neighbours of "+this.point.x+"/"+this.point.y+" = " + neighbours);
 
+        List<HexSpace> occupied = removeOccupied(game, neighbours);
+        neighbours.removeAll(occupied);
+        return neighbours;
+    }
+
+    protected List<HexSpace> removeOccupied(Game game, List<HexSpace> neighbours) {
         List<HexSpace> occupied = new ArrayList<>();
         for(HexSpace neighbor: neighbours){
             for(Player player: game.getPlayers()){
@@ -151,8 +157,7 @@ public class HexSpace implements Serializable{
                 }
             }
         }
-        neighbours.removeAll(occupied);
-        return neighbours;
+        return occupied;
     }
 
     /*
