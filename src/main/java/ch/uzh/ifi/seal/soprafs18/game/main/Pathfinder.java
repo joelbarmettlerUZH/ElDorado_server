@@ -91,7 +91,7 @@ public class Pathfinder  implements Serializable {
     private static Set<HexSpace> singlecardCase(Game game, Set<Card> cards, HexSpace hexSpace){
         Set<HexSpace> reachables = new HashSet<>();
         Card card = cards.iterator().next();
-        if(card instanceof MovingCard){
+        if(card instanceof MovingCard && cards.size()==1){
             for(COLOR color: ((MovingCard) card).getColors()){
                 hexSpace.setMinimalDepth(0);
                 hexSpace.setMinimalCost(0);
