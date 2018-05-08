@@ -289,7 +289,13 @@ public class Player implements Serializable {
             playingPiece.setStandsOn(board.getElDoradoSpaces().get(board.getElDoradoSpaces().size()-1));
             List<HexSpace> newEldoradoSpaces = board.getElDoradoSpaces().subList(0,Math.max(board.getElDoradoSpaces().size()-2,0));
             board.setElDoradoSpaces(newEldoradoSpaces);
-            this.board.getWinners().add(this);
+            boolean won = true;
+            for(PlayingPiece piece: this.playingPieces){
+                won = won && piece.getStandsOn().getColor() == COLOR.ELDORADO;
+            }
+            if(won){
+                this.board.getWinners().add(this);
+            }
         }
         return new ArrayList<>(blockadeIdsToBlockades(this.removableBlockades));
     }
@@ -488,7 +494,7 @@ public class Player implements Serializable {
         if(!myTurn()){
             return;
         }
-        if(this.board.getWinners().contains(this.board.getPlayers().get(((this.board.getCurrentPlayerNumber()+1)%this.board.getPlayers().size())))){
+        if(this.board.getWinners().size() > 0 && this.playerId == board.getPlayers().get(board.getPlayers().size() - 1).playerId){
             this.board.setRunning(false);
         }
         // currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
