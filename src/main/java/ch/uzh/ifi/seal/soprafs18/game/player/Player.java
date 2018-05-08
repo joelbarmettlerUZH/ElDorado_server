@@ -280,6 +280,7 @@ public class Player implements Serializable {
                     }
                 }
             }
+            this.board.getMemento().reset(this.board); // reset memento after moving
             this.removableBlockades = new ArrayList<>(setOfRemovableBlockades); //convert set to list
         }
         if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
@@ -341,8 +342,8 @@ public class Player implements Serializable {
                 this.draw(1);
                 specialAction.reduceDraw();
             }
-            CardAction cardAct = new CardAction(card, "Play: " + card.getName());
-            history.add(cardAct);
+            // CardAction cardAct = new CardAction(card, "Play: " + card.getName());
+            // history.add(cardAct);
         }
     }
 
@@ -354,8 +355,8 @@ public class Player implements Serializable {
         if(!myTurn()){
             return;
         }
-        CardAction cardAct = new CardAction(card, "Discard: " + card.getName());
-        history.add(cardAct);
+        // CardAction cardAct = new CardAction(card, "Discard: " + card.getName());
+        // history.add(cardAct);
 
         if (handPile.contains(card)) {
             discardPile.add(card);
@@ -373,7 +374,7 @@ public class Player implements Serializable {
             return;
         }
         if (handPile.contains(card)) {
-            history.add(new CardAction(card, "Sell: " + card.getName()));
+            //history.add(new CardAction(card, "Sell: " + card.getName()));
             card.sellAction(this);
         }
     }
@@ -388,7 +389,7 @@ public class Player implements Serializable {
                 return;
             }
 
-            history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
+            // history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
 
             if (slot.getCard().getCoinCost() <= coins && !bought) {
                 Card card = slot.buy();
@@ -418,14 +419,14 @@ public class Player implements Serializable {
      */
     public void draw(Integer amount) {
         int amountTmp = amount;
-        CardAction cardAct = new CardAction("Draw " + amountTmp + " cards.");
+        //CardAction cardAct = new CardAction("Draw " + amountTmp + " cards.");
         while (drawPile.size() > 0 && amount > 0) {
-            cardAct.addCard(this.drawPile.get(0));
+            //cardAct.addCard(this.drawPile.get(0));
             handPile.add(drawPile.remove(0));
             amount--;
         }
 
-        history.add(cardAct);
+        //history.add(cardAct);
         Random rand = new Random();
         if (drawPile.size() < 1 && amount != 0) {
             for (int i = discardPile.size(); i > 0; i--) {
@@ -453,7 +454,7 @@ public class Player implements Serializable {
             return;
         }
         if (specialAction.getSteal() > 0) {
-            history.add(new CardAction(slot.getCard(), "Steal: " + slot.getCard().getName()));
+            //history.add(new CardAction(slot.getCard(), "Steal: " + slot.getCard().getName()));
             discardPile.add(slot.buy());
             specialAction.reduceSteal();
         }
@@ -474,7 +475,7 @@ public class Player implements Serializable {
             return;
         }
         if (handPile.contains(card)) {
-            history.add(new CardAction(card, "Remove: " + card.getName()));
+            //history.add(new CardAction(card, "Remove: " + card.getName()));
             handPile.remove(card);
         }
     }
@@ -500,6 +501,10 @@ public class Player implements Serializable {
         specialAction.setSteal(0);
         board.endRound();
         history = new ArrayList<>();
+    }
+
+    public void addToHistory(CardAction cardAction){
+        history.add(cardAction);
     }
 
     public void addCoins(Float amount) {
