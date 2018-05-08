@@ -16,6 +16,7 @@ import javax.persistence.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -147,9 +148,9 @@ public class Game implements Serializable {
     }
 
     public void setPlayers(List<Player> players) {
-        int index = (int) (Math.random()*players.size());
-        this.current = players.get(index);
-        this.currentPlayerNumber = index;
+        Collections.shuffle(this.players);
+        this.current = players.get(0);
+        this.currentPlayerNumber = 0;
         this.players = players;
         System.out.println("***set current***");
     }
@@ -216,7 +217,7 @@ public class Game implements Serializable {
                 return potentialWinner;
             }
         }
-        return winners.get((new Random()).nextInt(winners.size()));
+        return winners.get(0);
     }
 
 }
