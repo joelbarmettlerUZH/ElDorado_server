@@ -176,8 +176,7 @@ public class Player implements Serializable {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CardAction> history;
 
     /*
