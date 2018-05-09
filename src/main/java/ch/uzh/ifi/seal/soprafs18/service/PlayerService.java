@@ -121,9 +121,10 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             LOGGER.info("Player " + player.getPlayerId() + " buys " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
             player.buy(slot);
+            //Add to History
+            player.addToHistory(new CardAction(slot.getCard(), "Buy"));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
-            player.addToHistory(new CardAction(slot.getCard(), "Buy"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -136,11 +137,10 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.discard(card);
             LOGGER.info("Player " + player.getPlayerId() + " Discards card " + card.getName());
-            playerRepository.save(player);
             //Add to History
             player.addToHistory(new CardAction(card, "Discard"));
-
-
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -153,8 +153,10 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.removeAction(card);
             LOGGER.info("Player " + player.getPlayerId() + " removes card " + card.getName());
-            playerRepository.save(player);
+            //Add to History
             player.addToHistory(new CardAction(card, "Remove"));
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -167,9 +169,10 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.sell(card);
             LOGGER.info("Player " + player.getPlayerId() + " sells card " + card.getName());
-            playerRepository.save(player);
             //Add to History
             player.addToHistory(new CardAction(card, "Sell"));
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -182,10 +185,10 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             player.stealAction(slot);
             LOGGER.info("Player " + player.getPlayerId() + " steals " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
-            playerRepository.save(player);
-            gameRepository.save(player.getBoard());
             //Add to History
             player.addToHistory(new CardAction(slot.getCard(), "Steal"));
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -202,10 +205,10 @@ public class PlayerService  implements Serializable {
                 cards.add(persistCard);
                 LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. "); }
             List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(hexSpace.getPoint()));
-            playerRepository.save(player);
-            gameRepository.save(player.getBoard());
             //Add to History
             player.addToHistory(new CardAction(cards, "Move"));
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return removables;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -219,10 +222,10 @@ public class PlayerService  implements Serializable {
             Card card = cardRepository.findById(c.getId()).get(0);
             player.action((ActionCard) card);
             LOGGER.info("Player "+player.getPlayerId()+" performs action with "+card.getName());
-            playerRepository.save(player);
-            gameRepository.save(player.getBoard());
             //Add to History
             player.addToHistory(new CardAction(card, "Play"));
+            playerRepository.save(player);
+            gameRepository.save(player.getBoard());
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
