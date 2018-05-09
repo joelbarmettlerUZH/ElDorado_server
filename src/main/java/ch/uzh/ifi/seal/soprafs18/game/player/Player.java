@@ -389,8 +389,8 @@ public class Player implements Serializable {
 
             history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
 
-            if (slot.getCard().getCoinCost() <= coins && !bought) {
-                Card card = slot.buy();
+            if (slot.getCard().getCoinCost() <= coins) {
+                Card card = this.board.getMarketPlace().buy(slot);
                 this.discard(card);
                 this.coins = 0.0f;
                 bought = true;
@@ -398,7 +398,6 @@ public class Player implements Serializable {
         } else {
             return;
         }
-
     }
 
     /*

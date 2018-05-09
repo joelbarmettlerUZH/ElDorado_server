@@ -34,8 +34,6 @@ public class RemoveMoveSellCardTest {
         handpile.add(testCard);
         handpile.add(testCard);
         handpile.add(testCard);
-        handpile.add(testCard);
-        handpile.add(testCard);
         testPlayer.setHandPile(handpile);
         testPlayer.sell(testCard);
         assertEquals(4, testPlayer.getDrawPile().size());
