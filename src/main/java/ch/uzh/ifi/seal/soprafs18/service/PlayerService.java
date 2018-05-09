@@ -169,7 +169,7 @@ public class PlayerService  implements Serializable {
             LOGGER.info("Player " + player.getPlayerId() + " sells card " + card.getName());
             playerRepository.save(player);
             //Add to History
-            player.addToHistory(new CardAction(card, "Sell" + card.getName()));
+            player.addToHistory(new CardAction(card, "Sell"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
