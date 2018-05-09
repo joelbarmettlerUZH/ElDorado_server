@@ -213,13 +213,13 @@ public class PlayerTest {
 
     }
 
-    @Test
+    /*@Test
     public void action() {
         testPlayer.setBoard(testGame);
         testPlayer.action(testCard);
         assertEquals(1,testPlayer.getHistory().size());
 
-    }
+    }*/
 
     @Test
     public void discard() {
