@@ -123,7 +123,7 @@ public class PlayerService  implements Serializable {
             player.buy(slot);
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
-            player.addToHistory(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
+            player.addToHistory(new CardAction(slot.getCard(), "Buy"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -138,7 +138,7 @@ public class PlayerService  implements Serializable {
             LOGGER.info("Player " + player.getPlayerId() + " Discards card " + card.getName());
             playerRepository.save(player);
             //Add to History
-            player.addToHistory(new CardAction(card, "Discard: " + card.getName()));
+            player.addToHistory(new CardAction(card, "Discard"));
 
 
             return player;
@@ -154,7 +154,7 @@ public class PlayerService  implements Serializable {
             player.removeAction(card);
             LOGGER.info("Player " + player.getPlayerId() + " removes card " + card.getName());
             playerRepository.save(player);
-            player.addToHistory(new CardAction(card, "Remove: " + card.getName()));
+            player.addToHistory(new CardAction(card, "Remove"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -169,7 +169,7 @@ public class PlayerService  implements Serializable {
             LOGGER.info("Player " + player.getPlayerId() + " sells card " + card.getName());
             playerRepository.save(player);
             //Add to History
-            player.addToHistory(new CardAction(card, "Sell: " + card.getName()));
+            player.addToHistory(new CardAction(card, "Sell" + card.getName()));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -185,7 +185,7 @@ public class PlayerService  implements Serializable {
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             //Add to History
-            player.addToHistory(new CardAction(slot.getCard(), "Steal: " + slot.getCard().getName()));
+            player.addToHistory(new CardAction(slot.getCard(), "Steal"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -200,13 +200,12 @@ public class PlayerService  implements Serializable {
             for(Card card:c){
                 Card persistCard = cardRepository.findById(card.getId()).get(0);
                 cards.add(persistCard);
-                LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. ");
-                //Add to History
-                player.addToHistory(new CardAction(persistCard, "Moves to " + hexSpace.getColor() + ": " + persistCard.getName()));
-            }
+                LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. "); }
             List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(hexSpace.getPoint()));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
+            //Add to History
+            player.addToHistory(new CardAction(cards, "Move"));
             return removables;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -223,7 +222,7 @@ public class PlayerService  implements Serializable {
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             //Add to History
-            player.addToHistory(new CardAction(card, "Play: " + card.getName()));
+            player.addToHistory(new CardAction(card, "Play"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
