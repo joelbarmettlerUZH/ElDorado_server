@@ -1,12 +1,10 @@
 package ch.uzh.ifi.seal.soprafs18.game.player;
 
-import ch.uzh.ifi.seal.soprafs18.game.cards.ActionCard;
-import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
-import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
-import ch.uzh.ifi.seal.soprafs18.game.cards.SpecialActions;
+import ch.uzh.ifi.seal.soprafs18.game.cards.*;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,21 +28,30 @@ public class PlayerTest {
     Game testGame;
     HexSpace testHex = new HexSpace(COLOR.JUNGLE, 10, 100, 1000, new Point(4, 4));
     PlayingPiece testPiece = new PlayingPiece(testHex, 1);
-    //HexSpace testJungle = new HexSpace(COLOR.JUNGLE, 1, 1, 1, new Point(-1, -2));
+    HexSpace testJungle = new HexSpace(COLOR.JUNGLE, 1, 1, 1, new Point(-1, -2));
     SpecialActions testActions = new SpecialActions(0,0,0);
     ActionCard testCard = new ActionCard("test", 4, 3, testActions);
     Player testPlayer = new Player(1, "testPlayer", testGame,"TESTTOKEN");
+    //PlayingPiece playerTestPiece = testPlayer.getPlayingPieces().get(0);
+
+
 
     @Before
     public void setUp() {
 
         System.out.println("Testing Hexspace Setup");
         this.testGame = new Game();
+        System.out.println(testGame.getPlayers());
         List<Player> players = new ArrayList<>();
         players.add(new Player(1, "Testplayer1", testGame, "TESTTOKEN"));
         //players.add(new Player(2, "Testplayer2", game, "TESTTOKEN"));
         testGame.setPlayers(players);
         testGame.assemble();
+        testGame.setCurrent(testPlayer);
+        List<PlayingPiece> pp = new ArrayList<>();
+        pp.add(testPiece);
+        testPlayer.setPlayingPieces(pp);
+        //this.testPiece = testPlayer.getPlayingPieces().get(0);
 
         //List<Player> testPlayers = new ArrayList<>();
         //testPlayers.add(testPlayer);
@@ -55,14 +62,87 @@ public class PlayerTest {
     // TODO: Write move and action test
     @Test
     public void move() {
-
-        List<Card> movingCards = new ArrayList<>();
         testPlayer.setBoard(testGame);
-        movingCards.add(testPlayer.getHandPile().get(1));
-        testPlayer.move(testPiece, movingCards, testHex);
 
-        testPlayer.addPlayingPiece(testPiece);
-        testPlayer.move(testPiece, movingCards, testHex);
+        // JUNGLE to JUNGLE
+        testPiece.setStandsOn(testGame.getHexSpace(new Point(4,4)));
+        List<Card> handCards = new ArrayList<>();
+        handCards.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+        testPlayer.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(testPlayer.getHandPile().get(0));
+
+        Pathfinder.getWay(testGame, movingCards, testPiece);
+        testPlayer.move(testPiece, movingCards, testGame.getHexSpace(new Point(3,3)));
+        assertEquals("playing piece moved",testGame.getHexSpace(new Point(3,3)), testPiece.getStandsOn());
+
+    }
+
+    @Test
+    public void moveOverBlockade() {
+        testPlayer.setBoard(testGame);
+
+        //MOVE OVER BLOCKADE
+        HexSpace blockadespace = testGame.getHexSpace(new Point(5,7));
+        blockadespace.setColor(COLOR.JUNGLE);
+        testPiece.setStandsOn(testGame.getHexSpace(new Point(5,6)));
+        List<Card> handCards = new ArrayList<>();
+
+        handCards.add(new MovingCard("Forscher", (float) 0.5, 0, 3, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+        testPlayer.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(testPlayer.getHandPile().get(0));
+
+        Pathfinder.getWay(testGame, movingCards, testPiece);
+
+        testPlayer.move(testPiece, movingCards, testGame.getHexSpace(new Point(5,8)));
+        assertEquals("playing piece moved",testGame.getHexSpace(new Point(5,8)), testPiece.getStandsOn());
+        assertEquals("blockade collected",1, testPlayer.getCollectedBlockades().size());
+    }
+
+    @Test
+    public void moveNextToBlockade() {
+        testPlayer.setBoard(testGame);
+
+        //MOVE NEXT TO BLOCKADE
+        HexSpace blockadespace = testGame.getHexSpace(new Point(5,7));
+        blockadespace.setColor(COLOR.JUNGLE);
+        testPiece.setStandsOn(testGame.getHexSpace(new Point(5,5)));
+        List<Card> handCards = new ArrayList<>();
+
+        handCards.add(new MovingCard("Forscher", (float) 0.5, 0, 3, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+        testPlayer.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(testPlayer.getHandPile().get(0));
+
+        Pathfinder.getWay(testGame, movingCards, testPiece);
+
+        testPlayer.move(testPiece, movingCards, testGame.getHexSpace(new Point(5,6)));
+        assertEquals("playing piece moved",testGame.getHexSpace(new Point(5,6)), testPiece.getStandsOn());
+        assertEquals("blockade removable",1, testPlayer.getRemovableBlockades().size());
+    }
+
+    @Test
+    public void moveToEndfield() {
+        testPlayer.setBoard(testGame);
+
+        //MOVE TO ENDFIELD
+        testPiece.setStandsOn(testGame.getHexSpace(new Point(27,20)));
+        List<Card> handCards = new ArrayList<>();
+
+        handCards.add(new MovingCard("test", (float) 0.5, 0, 3, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
+
+        testPlayer.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(testPlayer.getHandPile().get(0));
+
+        Pathfinder.getWay(testGame, movingCards, testPiece);
+
+        testPlayer.move(testPiece, movingCards, testGame.getHexSpace(new Point(27,21)));
+        assertEquals("playing piece moved",COLOR.ELDORADO, testPiece.getStandsOn().getColor());
     }
 
     @Test

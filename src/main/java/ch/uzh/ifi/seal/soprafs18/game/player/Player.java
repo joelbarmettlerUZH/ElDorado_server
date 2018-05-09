@@ -226,6 +226,9 @@ public class Player implements Serializable {
     If this is the case, he adds himself to the Games winning Player array.
      */
     public List<Blockade> move(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo) {
+        System.out.println("Executing move");
+        System.out.println(myTurn());
+
         // is it the players turn
         if(!myTurn()){
             return new ArrayList<>();
@@ -248,6 +251,7 @@ public class Player implements Serializable {
         }
         Set<HexSpace> reachables = new HashSet<>(memento.getReachables());
         if (reachables.contains(moveTo)){
+            System.out.println("reachables Contains moveto");
             HexSpace oldPosition = playingPiece.getStandsOn();
             playingPiece.setStandsOn(moveTo);
             for(Card card: cards){
