@@ -235,6 +235,7 @@ public class Player implements Serializable {
         // are the cards in the hand
         for(Card card: cards){
             if(!this.handPile.contains(card)){
+                System.out.println("hand wrong");
                 return new ArrayList<>();
             }
         }
@@ -249,6 +250,7 @@ public class Player implements Serializable {
            Pathfinder.getWay(board,cards,playingPiece);
         }
         Set<HexSpace> reachables = new HashSet<>(memento.getReachables());
+        System.out.println(reachables);
         if (reachables.contains(moveTo)){
             System.out.println("reachables Contains moveto");
             HexSpace oldPosition = playingPiece.getStandsOn();
