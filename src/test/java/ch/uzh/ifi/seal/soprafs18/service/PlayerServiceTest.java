@@ -2,9 +2,13 @@ package ch.uzh.ifi.seal.soprafs18.service;
 
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
+import ch.uzh.ifi.seal.soprafs18.game.cards.MovingCard;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
+import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 import ch.uzh.ifi.seal.soprafs18.repository.CardRepository;
@@ -25,6 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +66,8 @@ public class PlayerServiceTest {
 
     @Before
     public void setUp() {
-        Game testGame = new Game(1, 1);
+        Game testGame = new Game(0, 1);
+        testGame.assemble();
         Market testMarket = testGame.getMarketPlace();
 
         Player testPlayer = new Player(99, "TestPlayer", testGame, "TESTTOKEN");
@@ -72,6 +78,8 @@ public class PlayerServiceTest {
         List<Player> playerList2 = new ArrayList<>();
         playerList2.add(testPlayer);
         testGame.setPlayers(playerList);
+
+
 
         Mockito.when(playerRepository.findAll()).thenReturn(playerList);
         Mockito.when(playerRepository.findByPlayerId(99)).thenReturn(playerList);
@@ -169,6 +177,28 @@ public class PlayerServiceTest {
 
     @Test
     public void movePlayer() {
+        Game testGame = playerService.getGame(99, "TESTTOKEN");
+        Player found = playerService.getPlayer(99);
+        System.out.println(found.getPlayingPieces());
+        List<Card> oldcards = found.getHandPile();
+        List<Card> handCards = new ArrayList<>();
+        handCards.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+        found.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(found.getHandPile().get(0));
+        HexSpace testHex = new HexSpace(COLOR.JUNGLE, 10, 100, 1000, new Point(4, 4));
+        PlayingPiece testPiece = new PlayingPiece(testHex, 0);
+        testPiece.setStandsOn(testGame.getHexSpace(new Point(4,4)));
+        List<PlayingPiece> pp = new ArrayList<>();
+        pp.add(testPiece);
+        found.setPlayingPieces(pp);
+        Player found2 = playerService.getPlayer(99);
+        System.out.println(found.getPlayingPieces().get(0).getStandsOn());
+        playerService.findPath(99, movingCards, 0, "TESTTOKEN");
+        System.out.println(playerService.getGame(99, "TESTTOKEN").getMemento().getReachables());
+        playerService.movePlayer(99,movingCards,0, testGame.getHexSpace(new Point(3,3)),"TESTTOKEN");
+        assertEquals("playing piece moved",testGame.getHexSpace(new Point(3,3)), testPiece.getStandsOn());
+        found.setHandPile(oldcards);
     }
 
     @Test

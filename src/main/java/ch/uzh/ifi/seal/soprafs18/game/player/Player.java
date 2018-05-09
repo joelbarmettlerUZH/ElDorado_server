@@ -47,7 +47,6 @@ public class Player implements Serializable {
         this.playingPieces = new ArrayList<PlayingPiece>();
         this.specialAction = new SpecialActions(0, 0, 0);
         this.history = new ArrayList<CardAction>();
-        history.add(new CardAction(new ActionCard("ActionCard_in_History", -11, -11, new SpecialActions(3, 3, 3)), "Testaction"));
 
         this.drawPile = new ArrayList<Card>();
 
