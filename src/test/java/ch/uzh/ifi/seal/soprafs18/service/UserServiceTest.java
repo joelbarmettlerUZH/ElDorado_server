@@ -74,7 +74,9 @@ public class UserServiceTest {
     public void createUser() {
         UserEntity testUser = new UserEntity();
         List<String> users = userService.createUser(testUser);
-        assertEquals("TESTTOKEN", users.get(0));
+        assertEquals("0", users.get(1));
+        assertEquals(10, users.get(0).length());
+
     }
 
     @Test public void getAll() {

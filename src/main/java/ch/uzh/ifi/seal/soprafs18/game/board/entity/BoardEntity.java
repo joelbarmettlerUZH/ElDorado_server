@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "BOARD_ENTITY")
 public class BoardEntity implements Serializable {
 
@@ -56,23 +58,23 @@ public class BoardEntity implements Serializable {
     @Embedded
     @ManyToMany
     @JoinColumn(name = "tileID")
-    @Column(name = "TILES")
+    @Column(name = "TILES",nullable = true)
     //@OneToMany(targetEntity = TileEntity.class, fetch = FetchType.EAGER)
     //@JoinTable(name="TILES",joinColumns = @JoinColumn(name="BOARD_BOARDID"),inverseJoinColumns = @JoinColumn(name="TILE_ID"))
     private List<TileEntity> tiles;
 
     @JsonIgnore
-    @Column(name = "TILESROTATION")
+    @Column(name = "TILESROTATION",nullable = true)
     @ElementCollection
     private List<Integer> tilesRotation;
 
     @JsonIgnore
-    @Column(name = "TILESPOSITIONX")
+    @Column(name = "TILESPOSITIONX",nullable = true)
     @ElementCollection
     private List<Integer> tilesPositionX;
 
     @JsonIgnore
-    @Column(name = "TILESPOSITIONY")
+    @Column(name = "TILESPOSITIONY",nullable = true)
     @ElementCollection
     private List<Integer> tilesPositionY;
 
@@ -150,155 +152,4 @@ public class BoardEntity implements Serializable {
     @ElementCollection
     private List<Integer> eldoradoSpacePositionY;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getBoardID() {
-        return boardID;
-    }
-
-    public void setBoardID(int boardID) {
-        this.boardID = boardID;
-    }
-
-    public List<TileEntity> getTiles() {
-        return tiles;
-    }
-
-    public void setTiles(List<TileEntity> tiles) {
-        this.tiles = tiles;
-    }
-
-    public List<Integer> getTilesRotation() {
-        return tilesRotation;
-    }
-
-    public void setTilesRotation(List<Integer> tilesRotation) {
-        this.tilesRotation = tilesRotation;
-    }
-
-    public List<Integer> getTilesPositionX() {
-        return tilesPositionX;
-    }
-
-    public void setTilesPositionX(List<Integer> tilesPositionX) {
-        this.tilesPositionX = tilesPositionX;
-    }
-
-    public List<Integer> getTilesPositionY() {
-        return tilesPositionY;
-    }
-
-    public void setTilesPositionY(List<Integer> tilesPositionY) {
-        this.tilesPositionY = tilesPositionY;
-    }
-
-    public List<StripEntity> getStrip() {
-        return strip;
-    }
-
-    public void setStrip(List<StripEntity> strip) {
-        this.strip = strip;
-    }
-
-    public List<Integer> getStripRotation() {
-        return stripRotation;
-    }
-
-    public void setStripRotation(List<Integer> stripRotation) {
-        this.stripRotation = stripRotation;
-    }
-
-    public List<Integer> getStripPositionX() {
-        return stripPositionX;
-    }
-
-    public void setStripPositionX(List<Integer> stripPositionX) {
-        this.stripPositionX = stripPositionX;
-    }
-
-    public List<Integer> getStripPositionY() {
-        return stripPositionY;
-    }
-
-    public void setStripPositionY(List<Integer> stripPositionY) {
-        this.stripPositionY = stripPositionY;
-    }
-
-    public  List<Integer> getBlockadeId(){
-        return blockadeId;
-    }
-
-    public void setBlockadeId(List<Integer> blockadeId){
-        this.blockadeId = blockadeId;
-    }
-
-    public List<Integer> getBlockadePositionX(){
-        return blockadePositionX;
-    }
-
-    public void setBlockadePositionX(List<Integer> blockadePositionX){
-        this.blockadePositionX = blockadePositionX;
-    }
-
-    public List<Integer> getBlockadePositionY(){
-        return blockadePositionY;
-    }
-
-    public void setBlockadePositionY(List<Integer> blockadePositionY){
-        this.blockadePositionY = blockadePositionY;
-    }
-
-    public List<HexSpaceEntity> getEndingSpaces() {
-        return endingSpaces;
-    }
-
-    public void setEndingSpaces(List<HexSpaceEntity> endingSpaces) {
-        this.endingSpaces = endingSpaces;
-    }
-
-    public List<Integer> getEndingSpacePositionX() {
-        return endingSpacePositionX;
-    }
-
-    public void setEndingSpacePositionX(List<Integer> endingSpacePositionX) {
-        this.endingSpacePositionX = endingSpacePositionX;
-    }
-
-    public List<Integer> getEndingSpacePositionY() {
-        return endingSpacePositionY;
-    }
-
-    public void setEndingSpacePositionY(List<Integer> endingSpacePositionY) {
-        this.endingSpacePositionY = endingSpacePositionY;
-    }
-
-    public List<HexSpaceEntity> getEldoradoSpace() {
-        return eldoradoSpace;
-    }
-
-    public void setEldoradoSpace(List<HexSpaceEntity> eldoradoSpace) {
-        this.eldoradoSpace = eldoradoSpace;
-    }
-
-    public List<Integer> getEldoradoSpacePositionX() {
-        return eldoradoSpacePositionX;
-    }
-
-    public void setEldoradoSpacePositionX(List<Integer> eldoradoSpacePositionX) {
-        this.eldoradoSpacePositionX = eldoradoSpacePositionX;
-    }
-
-    public List<Integer> getEldoradoSpacePositionY() {
-        return eldoradoSpacePositionY;
-    }
-
-    public void setEldoradoSpacePositionY(List<Integer> eldoradoSpacePositionY) {
-        this.eldoradoSpacePositionY = eldoradoSpacePositionY;
-    }
 }

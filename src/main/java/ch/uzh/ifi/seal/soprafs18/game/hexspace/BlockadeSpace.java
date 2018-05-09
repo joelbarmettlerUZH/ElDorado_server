@@ -8,6 +8,8 @@ import java.io.Serializable;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.BlockadeSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
+import ch.uzh.ifi.seal.soprafs18.game.player.Player;
+import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 import lombok.Data;
 
 import javax.persistence.Embeddable;
@@ -23,6 +25,12 @@ public class BlockadeSpace extends HexSpace implements Serializable {
     public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY){
         super(blockadeSpaceEntity,posX,posY);
         this.parentBlockade = blockadeSpaceEntity.getBlockadeId();
+        //this.parentBlockade = -1;
+    }
+
+    public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY, int parentBlockade){
+        super(blockadeSpaceEntity,posX,posY);
+        this.parentBlockade = parentBlockade;
         //this.parentBlockade = -1;
     }
 
@@ -50,16 +58,35 @@ public class BlockadeSpace extends HexSpace implements Serializable {
 
     @Override
     public List<HexSpace> getNeighbour(Game game){
-        List<HexSpace> neighbours = getAllNeighbour(game);
-        //System.out.println("bb " + neighbours);
-        //now handle blockades
-        for (int i = neighbours.size()-1; i>=0 ;i--) {
-            if (neighbours.get(i).getClass()==BlockadeSpace.class) {
-                //current is BlockadeSpace, thus remove it.
-                neighbours.remove(i);
 
+        List<HexSpace> neighbours = new ArrayList<>();
+        // if the tiles are below another
+        if (game.getHexSpace(new Point(this.point.x,this.point.y - 1)).getClass() == BlockadeSpace.class ||
+                game.getHexSpace(new Point(this.point.x,this.point.y + 1)).getClass() == BlockadeSpace.class) {
+            if (this.point.x % 2 == 0) {
+                System.out.println("*********************************HORIZONTAL-BLOCKADE*************************************");
+                //even x
+                neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y - 1)));
+                neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y)));
+            } else {
+                System.out.println("*********************************HORIZONTAL-BLOCKADE*************************************");
+                //odd x
+                neighbours.add(game.getHexSpace(new Point(this.point.x - 1, this.point.y)));
+                neighbours.add(game.getHexSpace(new Point(this.point.x + 1, this.point.y + 1)));
             }
+        } else {
+            // tiles are diagonally arranged
+            neighbours.add(game.getHexSpace(new Point(this.point.x, this.point.y - 1)));
+            neighbours.add(game.getHexSpace(new Point(this.point.x, this.point.y + 1)));
         }
+        List<HexSpace> occupied = removeOccupied(game, neighbours);
+        neighbours.removeAll(occupied);
         return neighbours;
+    }
+
+    @Override
+    public String toString(){
+        return color.toString()+"-BlockSpace at Point ("+point.x+","+point.y+"), Strength: "+strength+", minimalCost: "+
+                minimalCost+", minimalDepth: "+ minimalDepth+", previoussize: " +previous.size();
     }
 }

@@ -14,7 +14,7 @@ public class StripService implements Serializable {
     @Autowired
     public StripRepository stripRepository;
 
-    public StripEntity getStrip(char stripId){
+    public StripEntity getStrip(Character stripId){
             return stripRepository.findByStripID(stripId);
         }
 

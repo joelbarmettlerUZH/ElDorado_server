@@ -24,6 +24,11 @@ public class CardAction  implements Serializable {
         this.actionName = actionName;
     }
 
+    public CardAction(List<Card> cards, String actionName){
+        this.cards = cards;
+        this.actionName = actionName;
+    }
+
     public CardAction(String actionName){
         this();
         this.actionName = actionName;

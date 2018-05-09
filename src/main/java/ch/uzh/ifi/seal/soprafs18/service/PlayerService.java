@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
+import ch.uzh.ifi.seal.soprafs18.game.player.CardAction;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
 import ch.uzh.ifi.seal.soprafs18.repository.CardRepository;
@@ -122,6 +123,7 @@ public class PlayerService  implements Serializable {
             player.buy(slot);
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
+            player.addToHistory(new CardAction(slot.getCard(), "Buy"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -135,6 +137,10 @@ public class PlayerService  implements Serializable {
             player.discard(card);
             LOGGER.info("Player " + player.getPlayerId() + " Discards card " + card.getName());
             playerRepository.save(player);
+            //Add to History
+            player.addToHistory(new CardAction(card, "Discard"));
+
+
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -148,6 +154,7 @@ public class PlayerService  implements Serializable {
             player.removeAction(card);
             LOGGER.info("Player " + player.getPlayerId() + " removes card " + card.getName());
             playerRepository.save(player);
+            player.addToHistory(new CardAction(card, "Remove"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -161,6 +168,8 @@ public class PlayerService  implements Serializable {
             player.sell(card);
             LOGGER.info("Player " + player.getPlayerId() + " sells card " + card.getName());
             playerRepository.save(player);
+            //Add to History
+            player.addToHistory(new CardAction(card, "Sell" + card.getName()));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -175,6 +184,8 @@ public class PlayerService  implements Serializable {
             LOGGER.info("Player " + player.getPlayerId() + " steals " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
+            //Add to History
+            player.addToHistory(new CardAction(slot.getCard(), "Steal"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -187,12 +198,14 @@ public class PlayerService  implements Serializable {
             LOGGER.info("Player " + player.getPlayerId() + " is moving to Field at position ( "+hexSpace.getPoint().getX()+" / "+hexSpace.getPoint().getY()+" ).");
             List<Card> cards = new ArrayList<>();
             for(Card card:c){
-                cards.add(cardRepository.findById(card.getId()).get(0));
-                LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. ");
-            }
+                Card persistCard = cardRepository.findById(card.getId()).get(0);
+                cards.add(persistCard);
+                LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. "); }
             List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(hexSpace.getPoint()));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
+            //Add to History
+            player.addToHistory(new CardAction(cards, "Move"));
             return removables;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -208,6 +221,8 @@ public class PlayerService  implements Serializable {
             LOGGER.info("Player "+player.getPlayerId()+" performs action with "+card.getName());
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
+            //Add to History
+            player.addToHistory(new CardAction(card, "Play"));
             return player;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -228,7 +243,7 @@ public class PlayerService  implements Serializable {
         }
         LOGGER.info("Player "+player.getPlayerId()+" requested pathfinding.");
         Game game = player.getBoard();
-        game.getMemento().reset();
+        // game.getMemento().reset(game);
         gameRepository.save(player.getBoard());
         List<HexSpace> reachables = Pathfinder.getWay(game, cards, playingPiece);
         gameRepository.save(player.getBoard());

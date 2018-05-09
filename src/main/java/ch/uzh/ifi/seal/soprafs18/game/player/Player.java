@@ -28,7 +28,7 @@ public class Player implements Serializable {
     //TODO: Set correct  initial cardAction budget
     public Player(int PlayerID, String name, Game game, String token) {
         this();
-        //this.token = token;
+        this.token = token;
         this.name = name;
         this.playerId = PlayerID;
         this.board = game;
@@ -84,7 +84,7 @@ public class Player implements Serializable {
         // Why is this?
         // discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
         this.bought = false;
-        this.token = "TESTTOKEN";
+        //this.token = "TESTTOKEN";
         this.removableBlockades = new ArrayList<>();
         this.collectedBlockades = new ArrayList<>();
         this.draw(4);
@@ -176,9 +176,7 @@ public class Player implements Serializable {
     /*
     Each time the user plays a Card of any type, its history is appended with the corresponding CardAction.
      */
-    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-    @Transient
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CardAction> history;
 
     /*
@@ -262,11 +260,12 @@ public class Player implements Serializable {
                     autoRemoveBlockade(((BlockadeSpace) hexSpace).getParentBlockade());
                 }
             }
-            for(HexSpace neighbour: playingPiece.getStandsOn().getAllNeighbour(board)){
+            for(HexSpace neighbour: playingPiece.getStandsOn().getNeighbour(board)){
                 // if the playingpiece ends up next to a blockade after a move
-                if(neighbour.getClass() == BlockadeSpace.class){
+                if(neighbour.getClass() == BlockadeSpace.class && neighbour.getStrength() != 0){
                     Card card = cards.get(0);
-                    if(cards.size()==1 && card.getClass() == MovingCard.class){ //single card case
+                    if(cards.size()==1 && card.getClass() == MovingCard.class &&
+                            neighbour.getColor() != COLOR.RUBBLE&& neighbour.getColor() != COLOR.BASECAMP){ //single card case
                         if(((MovingCard) card).getColors().contains(neighbour.getColor())
                                 && ((MovingCard) card).getStrength() - moveTo.getMinimalCost() >= neighbour.getStrength()
                                 && ((MovingCard) card).getDepth() - moveTo.getMinimalDepth() > 0){
@@ -276,17 +275,30 @@ public class Player implements Serializable {
                             }
                         }
                     }else if(oldPosition == playingPiece.getStandsOn()){ //multicard case
-                        if(neighbour.getColor() == COLOR.RUBBLE && neighbour.getStrength() <= cards.size()){
+                        if(neighbour.getColor() == COLOR.RUBBLE && neighbour.getStrength() == cards.size()){
                             setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
                         }
                     }
                 }
             }
+            this.board.getMemento().reset(this.board); // reset memento after moving
             this.removableBlockades = new ArrayList<>(setOfRemovableBlockades); //convert set to list
         }
         if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
                 playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDRIVER ){
-            this.board.getWinners().add(this);
+            if (board.getElDoradoSpaces().size() > 0) {
+                playingPiece.setStandsOn(board.getElDoradoSpaces().get(0));
+                board.getElDoradoSpaces().remove(board.getElDoradoSpaces().get(0));
+                //List<HexSpace> newEldoradoSpaces = board.getElDoradoSpaces().subList(0,Math.max(board.getElDoradoSpaces().size()-2,0));
+                //board.setElDoradoSpaces(newEldoradoSpaces);
+            }
+            boolean won = true;
+            for(PlayingPiece piece: this.playingPieces){
+                won = won && piece.getStandsOn().getColor() == COLOR.ELDORADO;
+            }
+            if(won){
+                this.board.getWinners().add(this);
+            }
         }
         return new ArrayList<>(blockadeIdsToBlockades(this.removableBlockades));
     }
@@ -340,8 +352,8 @@ public class Player implements Serializable {
                 this.draw(1);
                 specialAction.reduceDraw();
             }
-            CardAction cardAct = new CardAction(card, "Play: " + card.getName());
-            history.add(cardAct);
+            // CardAction cardAct = new CardAction(card, "Play: " + card.getName());
+            // history.add(cardAct);
         }
     }
 
@@ -353,8 +365,8 @@ public class Player implements Serializable {
         if(!myTurn()){
             return;
         }
-        CardAction cardAct = new CardAction(card, "Discard: " + card.getName());
-        history.add(cardAct);
+        // CardAction cardAct = new CardAction(card, "Discard: " + card.getName());
+        // history.add(cardAct);
 
         if (handPile.contains(card)) {
             discardPile.add(card);
@@ -372,7 +384,7 @@ public class Player implements Serializable {
             return;
         }
         if (handPile.contains(card)) {
-            history.add(new CardAction(card, "Sell: " + card.getName()));
+            //history.add(new CardAction(card, "Sell: " + card.getName()));
             card.sellAction(this);
         }
     }
@@ -387,7 +399,7 @@ public class Player implements Serializable {
                 return;
             }
 
-            history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
+            // history.add(new CardAction(slot.getCard(), "Sell: " + slot.getCard().getName()));
 
             if (slot.getCard().getCoinCost() <= coins) {
                 Card card = this.board.getMarketPlace().buy(slot);
@@ -403,7 +415,6 @@ public class Player implements Serializable {
     /*
     Calls draw(amount) with the amount being 4 - length of HandPile.
      */
-
     public void draw() {
         if(!myTurn()){
             return;
@@ -418,14 +429,14 @@ public class Player implements Serializable {
      */
     public void draw(Integer amount) {
         int amountTmp = amount;
-        CardAction cardAct = new CardAction("Draw " + amountTmp + " cards.");
+        //CardAction cardAct = new CardAction("Draw " + amountTmp + " cards.");
         while (drawPile.size() > 0 && amount > 0) {
-            cardAct.addCard(this.drawPile.get(0));
+            //cardAct.addCard(this.drawPile.get(0));
             handPile.add(drawPile.remove(0));
             amount--;
         }
 
-        history.add(cardAct);
+        //history.add(cardAct);
         Random rand = new Random();
         if (drawPile.size() < 1 && amount != 0) {
             for (int i = discardPile.size(); i > 0; i--) {
@@ -453,7 +464,7 @@ public class Player implements Serializable {
             return;
         }
         if (specialAction.getSteal() > 0) {
-            history.add(new CardAction(slot.getCard(), "Steal: " + slot.getCard().getName()));
+            //history.add(new CardAction(slot.getCard(), "Steal: " + slot.getCard().getName()));
             discardPile.add(slot.buy());
             specialAction.reduceSteal();
         }
@@ -474,7 +485,7 @@ public class Player implements Serializable {
             return;
         }
         if (handPile.contains(card)) {
-            history.add(new CardAction(card, "Remove: " + card.getName()));
+            //history.add(new CardAction(card, "Remove: " + card.getName()));
             handPile.remove(card);
         }
     }
@@ -486,7 +497,7 @@ public class Player implements Serializable {
         if(!myTurn()){
             return;
         }
-        if(this.board.getWinners().contains(this.board.getPlayers().get(((this.board.getCurrentPlayerNumber()+1)%this.board.getPlayers().size())))){
+        if(this.board.getWinners().size() > 0 && this.playerId == board.getPlayers().get(board.getPlayers().size() - 1).playerId){
             this.board.setRunning(false);
         }
         // currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
@@ -499,6 +510,11 @@ public class Player implements Serializable {
         specialAction.setRemove(0);
         specialAction.setSteal(0);
         board.endRound();
+        history = new ArrayList<>();
+    }
+
+    public void addToHistory(CardAction cardAction){
+        history.add(cardAction);
     }
 
     public void addCoins(Float amount) {

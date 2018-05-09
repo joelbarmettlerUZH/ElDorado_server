@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface StripRepository extends CrudRepository<StripEntity, Character> {
-    StripEntity findByStripID(char id);
+    StripEntity findByStripID(Character id);
 }

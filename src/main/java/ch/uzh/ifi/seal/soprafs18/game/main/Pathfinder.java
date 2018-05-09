@@ -58,7 +58,7 @@ public class Pathfinder  implements Serializable {
         leftover information from the previous call.
          */
         Set<Card> cards = new HashSet<>(inputCards);
-        game.getMemento().reset();
+        game.getMemento().reset(game);
         Set<HexSpace> reachables;
         HexSpace hexSpace = playingPiece.getStandsOn();
         hexSpace.setMinimalDepth(0);
@@ -91,9 +91,25 @@ public class Pathfinder  implements Serializable {
     private static Set<HexSpace> singlecardCase(Game game, Set<Card> cards, HexSpace hexSpace){
         Set<HexSpace> reachables = new HashSet<>();
         Card card = cards.iterator().next();
-        if(card instanceof MovingCard){
+        if(card instanceof MovingCard && cards.size()==1){
             for(COLOR color: ((MovingCard) card).getColors()){
+                hexSpace.setMinimalDepth(0);
+                hexSpace.setMinimalCost(0);
                 reachables.addAll(findReachables(game, color, ((MovingCard) card).getStrength(), ((MovingCard) card).getDepth(), hexSpace));
+                // Added this to reset everything before trying with different color
+                /*
+                for(HexSpace hexSpaceToReset: reachables){
+                    hexSpaceToReset.setMinimalCost(1000);
+                    hexSpaceToReset.setMinimalDepth(1000);
+                    hexSpace.setPrevious(new ArrayList<>());
+                }
+                for (Blockade blockade: game.getBlockades()){
+                    for (HexSpace hexSpaceReset: blockade.getSpaces()){
+                        hexSpaceReset.setMinimalCost(1000);
+                        hexSpaceReset.setMinimalDepth(1000);
+                        hexSpaceReset.setPrevious(new ArrayList<>());
+                    }
+                }*/
             }
         }
 
@@ -110,14 +126,18 @@ public class Pathfinder  implements Serializable {
             HexSpace current = reachables.get(currentPosition);
             System.out.println("Current: "+current.toString());
             List<HexSpace> potentialNeighbours = reachables.get(currentPosition).getNeighbour(game);
-            for(HexSpace neighbour: potentialNeighbours){
+            for(HexSpace tempneighbour: potentialNeighbours){
+                HexSpace neighbour = (HexSpace) tempneighbour;
                 System.out.println("Neighbour: "+neighbour.toString());
-                if((neighbour.getColor() == color)
+                System.out.println("Neighbour strength: "+neighbour.getStrength());
+                if((neighbour.getColor() == color || neighbour.getStrength()==0)
                         &&
-                        (strength - current.getMinimalCost() - neighbour.getStrength() >= 0)
+                        (strength - current.getMinimalCost() - neighbour.getStrength() >= 0 || neighbour.getStrength()==0)
                         &&
-                        (depth - current.getMinimalDepth() - 1 >= 0)){
+                        (depth - current.getMinimalDepth() - 1 >= 0 || neighbour.getStrength()==0 )){
                     System.out.println("validito");
+                    System.out.println("!reachables.contains(neighbour): "+!reachables.contains(neighbour));
+                    System.out.println("neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength(): "+ (neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength()));
                     if((!reachables.contains(neighbour) || neighbour.getMinimalCost() > current.getMinimalCost() + neighbour.getStrength())){
                         neighbour.setMinimalCost(current.getMinimalCost() + neighbour.getStrength());
                         int depthToSubstract = 1;
@@ -128,16 +148,24 @@ public class Pathfinder  implements Serializable {
                         ArrayList<HexSpace> previous = new ArrayList<>(current.getPrevious());
                         previous.add(current);
                         neighbour.setPrevious(previous);
-                        if(reachables.contains(neighbour)){
+                        if((reachables.contains(neighbour))&&
+                                reachables.get(reachables.indexOf(neighbour)).getPoint()==neighbour.getPoint()){ //double check
                             if(reachables.indexOf(neighbour) < currentPosition){
                                 currentPosition--;
+                                System.out.println("reducing current Position to "+currentPosition);
+                                System.out.println("rechables Size is "+reachables.size());
                             }
-                            reachables.remove(neighbour);
+                            reachables.remove((HexSpace) neighbour);
+                            System.out.println("removed from reachables");
                         }
-                        reachables.add(neighbour);
+                        reachables.add((HexSpace) neighbour);
+                        System.out.println("added to reachables");
+                        System.out.println("current Position to "+currentPosition);
+                        System.out.println("rechables Size is "+reachables.size());
                     }
                 }
             }
+            reachables.forEach(x-> System.out.println("current reachables (before moving position: "+x.toString()));
             currentPosition++;
         }while(currentPosition<reachables.size());
         System.out.println("dijkstrato finitototo");
@@ -149,14 +177,14 @@ public class Pathfinder  implements Serializable {
         If multiple cards were selected or just one card of type actionCard, PathFinder checks whether one of the neighbours
         is of color “rubble” and only allows the move if a rubble with strenght less than the number of cards selected is in the set of neighbours.
          */
-        Set<HexSpace> neighbours = new HashSet<>(hexSpace.getAllNeighbour(game));
+        Set<HexSpace> neighbours = new HashSet<>(hexSpace.getNeighbour(game));
         Set<HexSpace> reachables = new HashSet<>();
         reachables.add(hexSpace);
         for(HexSpace neighbour: neighbours){
-            if(neighbour.getColor().equals(COLOR.RUBBLE) && neighbour.getStrength() >= cards.size()){
+            if(neighbour.getColor().equals(COLOR.RUBBLE) && neighbour.getStrength() == cards.size()){
                 reachables.add(neighbour);
             }
-            if(neighbour.getColor().equals(COLOR.BASECAMP) && neighbour.getStrength() >= cards.size()){
+            if(neighbour.getColor().equals(COLOR.BASECAMP) && neighbour.getStrength() == cards.size()){
                 reachables.add(neighbour);
             }
         }

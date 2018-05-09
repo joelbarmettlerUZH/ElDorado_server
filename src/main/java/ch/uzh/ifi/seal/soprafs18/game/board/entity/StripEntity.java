@@ -18,7 +18,7 @@ public class StripEntity implements Serializable {
     @Column(name="HEXSPACES")
     private List<HexSpaceEntity> hexSpaceEntities;
 
-    public StripEntity(char stripID, List<HexSpaceEntity> hexSpaceEntities){
+    public StripEntity(Character stripID, List<HexSpaceEntity> hexSpaceEntities){
         this.stripID = stripID;
         this.hexSpaceEntities=hexSpaceEntities;
     }
@@ -27,11 +27,11 @@ public class StripEntity implements Serializable {
 
     }
 
-    public char getStripID() {
+    public Character getStripID() {
         return stripID;
     }
 
-    public void setStripID(char stripID) {
+    public void setStripID(Character stripID) {
         this.stripID = stripID;
     }
 

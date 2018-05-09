@@ -1,0 +1,6 @@
+{"id":"BJ1","color":"JUNGLE","strength":1,"blockadeId":1}
+{"id":"BJ2","color":"JUNGLE","strength":2,"blockadeId":2}
+{"id":"BW1","color":"RIVER","strength":1,"blockadeId":3}
+{"id":"BS1","color":"SAND","strength":1,"blockadeId":4}
+{"id":"BR1","color":"RUBBLE","strength":1,"blockadeId":5}
+{"id":"BR2","color":"RUBBLE","strength":2,"blockadeId":6}

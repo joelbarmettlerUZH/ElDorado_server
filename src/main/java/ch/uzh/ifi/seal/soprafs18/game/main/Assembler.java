@@ -121,7 +121,13 @@ public class Assembler implements Serializable {
                 }else{
                     HexSpaceEntity hexSpaceEntity = entityMarix[i][j];
                     if (hexSpaceEntity instanceof BlockadeSpaceEntity){
-                        hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity)entityMarix[i][j],i,j);
+                        if (entityMarix[i][j-1] instanceof BlockadeSpaceEntity || entityMarix[i][j+1] instanceof BlockadeSpaceEntity) {
+                            // add 1000 to parentblockadeId for horizontal blockade to identify them in the front-end
+                            BlockadeSpaceEntity blockade = (BlockadeSpaceEntity) entityMarix[i][j];
+                            hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity) entityMarix[i][j], i, j,blockade.getBlockadeId()+1000);
+                        } else {
+                            hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity) entityMarix[i][j], i, j);
+                        }
                     } else {
                         hexSpaceMatrix[i][j] = new HexSpace(entityMarix[i][j], i, j);
                     }
@@ -138,13 +144,15 @@ public class Assembler implements Serializable {
     public HexSpace[][] assembleBoard (int boardId){
         HexSpaceEntity[][] boardMatrix = this.createEmptyMatrix();
         BoardEntity board = boardService.getBoard(boardId);
+        System.out.println(board.toString());
+        System.out.println(board.getBlockadeId());
+        boardMatrix = this.assembleBlockades(boardMatrix,board.getBlockadeId(),board.getBlockadePositionX(),
+                board.getBlockadePositionY(),
+                getRandomBlockades(this.getBlockadesCount()));
         boardMatrix = this.assembleTiles(boardMatrix,board.getTiles(),board.getTilesPositionX(),
                                                 board.getTilesPositionY(),board.getTilesRotation());
         boardMatrix = this.assembleStrips(boardMatrix,board.getStrip(),board.getStripPositionX(),
                                                 board.getStripPositionY(),board.getStripRotation());
-        boardMatrix = this.assembleBlockades(boardMatrix,board.getBlockadeId(),board.getBlockadePositionX(),
-                                                board.getBlockadePositionY(),
-                                                getRandomBlockades(this.getBlockadesCount()));
         boardMatrix = this.assembleEndingSpaces(boardMatrix,board.getEndingSpaces(),
                                                     board.getEndingSpacePositionX(),
                                                     board.getEndingSpacePositionY());
@@ -447,6 +455,20 @@ public class Assembler implements Serializable {
             EndingSpaces.add(new HexSpace(board.getEndingSpaces().get(i), board.getEndingSpacePositionX().get(i),
                             board.getEndingSpacePositionX().get(i)));
         return EndingSpaces;
+    }
+
+    /**
+     Used by the GameBorad and returns an Arrays with the HexSpaces of the ending-fields.
+     The GameEntity needs these information to place the playing Pieces. We rather request these
+     informations from the Assembler than parsing the matrix.
+     **/
+    public List<HexSpace> getElDoradoFields(int boardId) {
+        BoardEntity board = boardService.getBoard(boardId);
+        List<HexSpace> ElDoradoSpaces = new ArrayList<>();
+        for (int i = 0; i <board.getEldoradoSpace().size(); i++)
+            ElDoradoSpaces.add(new HexSpace(board.getEldoradoSpace().get(i), board.getEldoradoSpacePositionX().get(i),
+                    board.getEldoradoSpacePositionY().get(i)));
+        return ElDoradoSpaces;
     }
 
     public BoardEntity getBoard(int boardId) {
