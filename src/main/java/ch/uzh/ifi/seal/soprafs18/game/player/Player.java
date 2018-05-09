@@ -34,8 +34,8 @@ public class Player implements Serializable {
         this.board = game;
 
         //Already in this()
-        this.history = new ArrayList<CardAction>();
-        history.add(new CardAction("Testaction"));
+        //this.history = new ArrayList<CardAction>();
+        //history.add(new CardAction("Testaction"));
     }
 
     public Player() {
@@ -518,7 +518,7 @@ public class Player implements Serializable {
     }
 
     public void addToHistory(CardAction cardAction){
-        history.add(cardAction);
+        this.history.add(cardAction);
     }
 
     public void addCoins(Float amount) {
