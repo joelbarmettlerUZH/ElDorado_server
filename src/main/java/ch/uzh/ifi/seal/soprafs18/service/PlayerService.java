@@ -246,8 +246,9 @@ public class PlayerService  implements Serializable {
         }
         LOGGER.info("Player "+player.getPlayerId()+" requested pathfinding.");
         Game game = player.getBoard();
-        // game.getMemento().reset(game);
-        // gameRepository.save(player.getBoard());
+        game.getMemento().reset(game);
+        gameRepository.save(player.getBoard());
+        gameRepository.save(player.getBoard());
         List<HexSpace> reachables = Pathfinder.getWay(game, cards, playingPiece);
         gameRepository.save(player.getBoard());
         return reachables;
