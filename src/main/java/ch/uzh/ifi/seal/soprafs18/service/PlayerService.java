@@ -166,11 +166,13 @@ public class PlayerService  implements Serializable {
     public Player sellCard(int id, Card c, String token) {
         Player player = playerRepository.findByPlayerId(id).get(0);
         Card card = cardRepository.findById(c.getId()).get(0);
+        List<Card> cardsHistory = new ArrayList<>();
         if (validate(player, token)) {
             player.sell(card);
+            cardsHistory.add(card);
             LOGGER.info("Player " + player.getPlayerId() + " sells card " + card.getName());
             //Add to History
-            player.addToHistory(new CardAction(card, "Sell"));
+            player.addToHistory(new CardAction(cardsHistory, "Sell"));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             return player;
@@ -182,9 +184,11 @@ public class PlayerService  implements Serializable {
     public Player stealCard(int id, Slot s, String token) {
         Player player = playerRepository.findByPlayerId(id).get(0);
         Slot slot = slotRepository.findBySlotId(s.getSlotId()).get(0);
+        List<Card> cardsHistory = new ArrayList<>();
         if (validate(player, token)) {
             //Add to History
-            player.addToHistory(new CardAction(slot.getCard(), "Steal"));
+            cardsHistory.add(slot.getCard());
+            player.addToHistory(new CardAction(cardsHistory, "Steal"));
             LOGGER.info("Player " + player.getPlayerId() + " steals " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
             player.stealAction(slot);
             playerRepository.save(player);
@@ -200,11 +204,13 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             LOGGER.info("Player " + player.getPlayerId() + " is moving to Field at position ( "+hexSpace.getPoint().getX()+" / "+hexSpace.getPoint().getY()+" ).");
             List<Card> Movecards = new ArrayList<>();
+            List<Card> MovecardsHistory = new ArrayList<>();
             for(Card card:c){
                 Movecards.add(cardRepository.findById(card.getId()).get(0));
+                MovecardsHistory.add(cardRepository.findById(card.getId()).get(0));
                 LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. "); }
             //Add to History
-            // player.addToHistory(new CardAction(Movecards, "Move"));
+            // player.addToHistory(new CardAction(MovecardsHistory, "Move"));
             List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), Movecards, player.getBoard().getHexSpace(hexSpace.getPoint()));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
