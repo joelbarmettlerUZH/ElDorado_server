@@ -204,7 +204,7 @@ public class PlayerService  implements Serializable {
                 Movecards.add(cardRepository.findById(card.getId()).get(0));
                 LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. "); }
             //Add to History
-            player.addToHistory(new CardAction(Movecards, "Move"));
+            // player.addToHistory(new CardAction(Movecards, "Move"));
             List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), Movecards, player.getBoard().getHexSpace(hexSpace.getPoint()));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
@@ -219,10 +219,11 @@ public class PlayerService  implements Serializable {
         if (validate(player, token)) {
             LOGGER.info("Player " + player.getPlayerId() + " is performing action.");
             Card card = cardRepository.findById(c.getId()).get(0);
-            player.action((ActionCard) card);
-            LOGGER.info("Player "+player.getPlayerId()+" performs action with "+card.getName());
             //Add to History
             player.addToHistory(new CardAction(card, "Play"));
+            player.action((ActionCard) card);
+            LOGGER.info("Player "+player.getPlayerId()+" performs action with "+card.getName());
+
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             return player;
