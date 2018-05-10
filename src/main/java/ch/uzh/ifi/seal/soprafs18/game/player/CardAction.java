@@ -44,7 +44,7 @@ public class CardAction  implements Serializable {
     List of Cards that were used to perform a certain action.
      */
 
-    @OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Card> cards;
 
     //public void addCard(Card card){
