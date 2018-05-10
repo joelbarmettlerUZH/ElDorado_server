@@ -28,7 +28,7 @@ public class Memento  implements Serializable {
 
     public Memento(Set<HexSpace> reachables, Set<Card> selectedCards, PlayingPiece playingPiece){
         this.reachables = new ArrayList<>(reachables);
-        this.selectedCards = selectedCards;
+        this.selectedCards = new HashSet<>(selectedCards);
         this.playingPiece = playingPiece;
     }
 
