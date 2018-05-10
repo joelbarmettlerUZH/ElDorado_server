@@ -18,7 +18,7 @@ public class CardAction  implements Serializable {
     @JsonIgnore
     private int cardActionId;
 
-    /public CardAction(Card card, String actionName){
+    public CardAction(Card card, String actionName){
         List<Card> cards= new ArrayList<>();
         cards.add(card);
         this.cards = cards;
