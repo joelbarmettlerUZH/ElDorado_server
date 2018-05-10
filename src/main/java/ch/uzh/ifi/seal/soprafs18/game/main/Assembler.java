@@ -75,7 +75,7 @@ public class Assembler implements Serializable {
     private int[] Rot0OddDislocY = {0, 0, 0, 1, 1, 2, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2};
 
     private int[] Rot1DislocX = {0, -1, -1,-1, -1, -1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0};
-    private int[] Rot1EvenDislocY = {0, 1, 2, 3, 4, 5, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
+    private int[] Rot1EvenDislocY = {0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
     private int[] Rot1OddDislocY = {0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4};
 
     private int[] Rot2DislocX = {0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 1, 2, 3, 4};
