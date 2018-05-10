@@ -18,11 +18,11 @@ public class CardAction  implements Serializable {
     @JsonIgnore
     private int cardActionId;
 
-    public CardAction(Card card, String actionName){
+    /*public CardAction(Card card, String actionName){
         this();
         addCard(card);
         this.actionName = actionName;
-    }
+    }*/
 
     public CardAction(List<Card> cards, String actionName){
         this.cards = cards;
