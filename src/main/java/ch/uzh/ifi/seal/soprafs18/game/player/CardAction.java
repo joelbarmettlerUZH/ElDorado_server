@@ -6,6 +6,8 @@ import java.util.List;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 
@@ -44,6 +46,7 @@ public class CardAction  implements Serializable {
      */
 
     @OneToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     private List<Card> cards;
 
     //public void addCard(Card card){

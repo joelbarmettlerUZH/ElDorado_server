@@ -206,6 +206,9 @@ public class PlayerService  implements Serializable {
             //Add to History
             player.addToHistory(new CardAction(Movecards, "Move"));
             List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), Movecards, player.getBoard().getHexSpace(hexSpace.getPoint()));
+            //reset memento
+            Game game = player.getBoard();
+            game.getMemento().reset(game);
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             return removables;
@@ -247,7 +250,7 @@ public class PlayerService  implements Serializable {
         LOGGER.info("Player "+player.getPlayerId()+" requested pathfinding.");
         Game game = player.getBoard();
         game.getMemento().reset(game);
-        gameRepository.save(player.getBoard());
+        //gameRepository.save(player.getBoard());
         gameRepository.save(player.getBoard());
         List<HexSpace> reachables = Pathfinder.getWay(game, cards, playingPiece);
         gameRepository.save(player.getBoard());
