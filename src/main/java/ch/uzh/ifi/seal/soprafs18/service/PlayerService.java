@@ -199,14 +199,14 @@ public class PlayerService  implements Serializable {
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {
             LOGGER.info("Player " + player.getPlayerId() + " is moving to Field at position ( "+hexSpace.getPoint().getX()+" / "+hexSpace.getPoint().getY()+" ).");
-            List<Card> cards = new ArrayList<>();
+            List<Card> Movecards = new ArrayList<>();
             for(Card card:c){
                 Card persistCard = cardRepository.findById(card.getId()).get(0);
-                cards.add(persistCard);
+                Movecards.add(persistCard);
                 LOGGER.info("Player " + player.getPlayerId() + " uses card '" + card.getName() + "' for his move. "); }
             //Add to History
-            player.addToHistory(new CardAction(cards, "Move"));
-            List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), cards, player.getBoard().getHexSpace(hexSpace.getPoint()));
+            player.addToHistory(new CardAction(Movecards, "Move"));
+            List<Blockade> removables = player.move(player.getPlayingPieces().get(playingPiece), Movecards, player.getBoard().getHexSpace(hexSpace.getPoint()));
             playerRepository.save(player);
             gameRepository.save(player.getBoard());
             return removables;
