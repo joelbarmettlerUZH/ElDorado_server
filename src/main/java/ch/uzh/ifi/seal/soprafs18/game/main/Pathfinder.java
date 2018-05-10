@@ -97,19 +97,9 @@ public class Pathfinder  implements Serializable {
                 hexSpace.setMinimalCost(0);
                 reachables.addAll(findReachables(game, color, ((MovingCard) card).getStrength(), ((MovingCard) card).getDepth(), hexSpace));
                 // Added this to reset everything before trying with different color
-                /*
-                for(HexSpace hexSpaceToReset: reachables){
-                    hexSpaceToReset.setMinimalCost(1000);
-                    hexSpaceToReset.setMinimalDepth(1000);
-                    hexSpace.setPrevious(new ArrayList<>());
-                }
-                for (Blockade blockade: game.getBlockades()){
-                    for (HexSpace hexSpaceReset: blockade.getSpaces()){
-                        hexSpaceReset.setMinimalCost(1000);
-                        hexSpaceReset.setMinimalDepth(1000);
-                        hexSpaceReset.setPrevious(new ArrayList<>());
-                    }
-                }*/
+
+                game.getMemento().reset(game);
+
             }
         }
 
