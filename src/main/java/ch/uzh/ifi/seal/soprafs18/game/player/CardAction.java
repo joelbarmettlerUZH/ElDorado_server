@@ -19,24 +19,20 @@ public class CardAction  implements Serializable {
     private int cardActionId;
 
     public CardAction(Card card, String actionName){
-        List<Card> cards= new ArrayList<>();
-        cards.add(card);
-        this.cards = cards;
+        this.cards = new ArrayList<>();
+        List<Card> mycards = new ArrayList<>();
+        mycards.add(card);
+        this.cards = mycards;
         this.actionName = actionName;
     }
 
     public CardAction(List<Card> cards, String actionName){
+        this.cards = new ArrayList<>();
         this.cards = cards;
         this.actionName = actionName;
     }
 
-    public CardAction(String actionName){
-        this();
-        this.actionName = actionName;
-    }
-
     public CardAction(){
-        cards = new ArrayList<>();
     }
 
     /*
@@ -51,8 +47,8 @@ public class CardAction  implements Serializable {
     @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Card> cards;
 
-    public void addCard(Card card){
-        cards.add(card);
-    }
+    //public void addCard(Card card){
+    //    cards.add(card);
+    //}
 
 }
