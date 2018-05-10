@@ -210,7 +210,7 @@ public class PlayerService  implements Serializable {
             Game game = player.getBoard();
             game.getMemento().reset(game);
             playerRepository.save(player);
-            gameRepository.save(player.getBoard());
+            gameRepository.save(game);
             return removables;
         }
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
@@ -223,7 +223,7 @@ public class PlayerService  implements Serializable {
             LOGGER.info("Player " + player.getPlayerId() + " is performing action.");
             Card card = cardRepository.findById(c.getId()).get(0);
             //Add to History
-            player.addToHistory(new CardAction(c, "Play"));
+            player.addToHistory(new CardAction(card, "Play"));
             player.action((ActionCard) card);
             LOGGER.info("Player "+player.getPlayerId()+" performs action with "+card.getName());
 
