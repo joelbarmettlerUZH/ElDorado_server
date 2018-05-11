@@ -297,7 +297,7 @@ public class Player implements Serializable {
                     if(((MovingCard) card).getColors().contains(neighbour.getColor())
                             && ((MovingCard) card).getStrength() - moveTo.getMinimalCost() >= neighbour.getStrength()
                             && ((MovingCard) card).getDepth() - moveTo.getMinimalDepth() > 0){
-                        if(!(((MovingCard) card).getColors().size() > 1) || (neighbour.getColor() == moveTo.getColor()) || oldPosition == moveTo){
+                        if(!(((MovingCard) card).getColors().size() > 2) || (neighbour.getColor() == moveTo.getColor()) || oldPosition == moveTo){
                             // Not multicolord card, or blockade same color as color used for moving or moved on itself
                             setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
                         }

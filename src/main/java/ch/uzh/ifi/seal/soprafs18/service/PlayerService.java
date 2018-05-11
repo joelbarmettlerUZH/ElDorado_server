@@ -249,7 +249,7 @@ public class PlayerService  implements Serializable {
         }
         LOGGER.info("Player "+player.getPlayerId()+" requested pathfinding.");
         Game game = player.getBoard();
-        player.searchForRemovableBlockades(playingPiece,c,playingPiece.getStandsOn(),playingPiece.getStandsOn());
+        player.searchForRemovableBlockades(playingPiece,cards,playingPiece.getStandsOn(),playingPiece.getStandsOn());
         //gameRepository.save(player.getBoard());
         game.getMemento().reset(game);
         gameRepository.save(player.getBoard());
