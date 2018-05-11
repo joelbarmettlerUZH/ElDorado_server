@@ -343,6 +343,13 @@ public class Player implements Serializable {
                 foundBlockade = blockade;
             }
         }
+        for (Card card: board.getMemento().getSelectedCards()){
+            try {
+                this.discard(card);
+            } catch (Exception e) {
+                System.out.println("No card to discard");
+            }
+        }
         removeBlockade(foundBlockade);
     }
 
