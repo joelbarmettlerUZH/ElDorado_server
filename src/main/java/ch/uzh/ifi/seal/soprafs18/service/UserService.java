@@ -20,7 +20,7 @@ import java.util.logging.SimpleFormatter;
 
 
 @Service
-public class UserService  implements Serializable {
+public class UserService implements Serializable {
     @Autowired
     private UserRepository userRepository;
 
@@ -31,19 +31,9 @@ public class UserService  implements Serializable {
     private RoomRepository roomRepository;
 
     private final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
-    private FileHandler filehandler;
 
     public UserService() {
-        try {
-            filehandler = new FileHandler("Serverlog.log", 1024 * 8, 1, true);
-            LOGGER.addHandler(filehandler);
-            SimpleFormatter formatter = new SimpleFormatter();
-            filehandler.setFormatter(formatter);
-            LOGGER.setLevel(Level.FINE);
-            filehandler.setLevel(Level.INFO);
-        } catch (IOException io) {
-            System.out.println("ERROR: Could not set logging handler to file");
-        }
+        LOGGER.setLevel(Level.WARNING);
     }
 
     public boolean valid(String token, UserEntity user) {
@@ -99,22 +89,22 @@ public class UserService  implements Serializable {
         }
         UserEntity user = userRepository.findByUserID(userEntity.getUserID()).get(0);
         RoomEntity room = user.getRoomEntity();
-        for(UserEntity u: room.getUsers()){
-            if(u.getUserID() != userEntity.getUserID()){
-                if(u.getCharacter() == userEntity.getCharacter()){
+        for (UserEntity u : room.getUsers()) {
+            if (u.getUserID() != userEntity.getUserID()) {
+                if (u.getCharacter() == userEntity.getCharacter()) {
                     LOGGER.warning("Modification not possible since there is an interference with another Player in Room " + room.getRoomID()
-                    + " that has the same character chosen.");
+                            + " that has the same character chosen.");
                     return user;
                 }
-                if(u.getName().toLowerCase().equals(userEntity.getName().toLowerCase())){
+                if (u.getName().toLowerCase().equals(userEntity.getName().toLowerCase())) {
                     LOGGER.warning("Modification not possible since there is an interference with another Player in Room " + room.getRoomID()
                             + " that has the same Username.");
                     return user;
                 }
             }
         }
-        if(userEntity.getCharacter() < 0 || userEntity.getCharacter()>3){
-            LOGGER.warning("Invalid character number "+userEntity.getCharacter()+" for user "+user.getUserID());
+        if (userEntity.getCharacter() < 0 || userEntity.getCharacter() > 3) {
+            LOGGER.warning("Invalid character number " + userEntity.getCharacter() + " for user " + user.getUserID());
             return user;
         }
         user.setCharacter(userEntity.getCharacter());

@@ -39,19 +39,10 @@ public class GameService implements Serializable{
     private RoomRepository roomRepository;
 
     private final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
-    private FileHandler filehandler;
 
     public GameService() {
-        try {
-            filehandler = new FileHandler("Serverlog.log", 1024 * 8, 1, true);
-            LOGGER.addHandler(filehandler);
-            SimpleFormatter formatter = new SimpleFormatter();
-            filehandler.setFormatter(formatter);
-            LOGGER.setLevel(Level.ALL);
-            filehandler.setLevel(Level.ALL);
-        } catch (IOException io) {
-            System.out.println("ERROR: Could not set logging handler to file");
-        }
+        LOGGER.setLevel(Level.WARNING);
+
     }
 
     public List<Game> getAll() {
