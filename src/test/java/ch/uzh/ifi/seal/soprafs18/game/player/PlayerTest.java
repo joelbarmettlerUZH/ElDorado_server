@@ -175,7 +175,8 @@ public class PlayerTest {
         testPlayer.stealAction(testMarket.getActive().get(0));
         assertEquals(1,testPlayer.getDiscardPile().size());
 
-        /*
+/*
+        System.out.println("---------------------------DEBOGO---------------------------------------");
         testMarket.getPurchasable();
         System.out.println("Market size active: " + testMarket.getActive().size());
         System.out.println(testMarket.getActive().get(1));
@@ -194,7 +195,8 @@ public class PlayerTest {
         testMarket.getPurchasable();
         System.out.println("Market size active: " + testMarket.getActive().size());
         System.out.println(testMarket.getActive().get(1));
-        testPlayer.stealAction(testMarket.getActive().get(1));*/
+        testPlayer.stealAction(testMarket.getActive().get(1));
+        */
     }
 
     @Test
@@ -228,6 +230,7 @@ public class PlayerTest {
         assertEquals(0, testPlayer.getDiscardPile().size());
         testPlayer.discard(testPlayer.getHandPile().get(0));
         assertEquals(3,testPlayer.getHandPile().size());
+        testPlayer.endRound();
         assertEquals(1, testPlayer.getDiscardPile().size());
     }
 
@@ -249,12 +252,20 @@ public class PlayerTest {
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
+        //testPlayer.endRound();
         assertEquals(0,testPlayer.getHandPile().size());
-        assertEquals(4,testPlayer.getDiscardPile().size());
+        assertEquals(4,testPlayer.getTmpDiscardPile().size());
+        testPlayer.endRound();
+        assertEquals(0,testPlayer.getTmpDiscardPile().size());
+        testPlayer.addCoins((float) 10);
+        testPlayer.setBought(FALSE);
         testPlayer.buy(testPlayer.getBoard().getMarketPlace().getActive().get(1));
-        assertEquals(5,testPlayer.getDiscardPile().size());
+        assertEquals(1,testPlayer.getTmpDiscardPile().size());
 
+
+        /*
         System.out.println("---------------------------DEBOGO---------------------------------------");
+
         testPlayer.addCoins((float) 10);
         testPlayer.setBought(FALSE);
 
@@ -313,7 +324,7 @@ public class PlayerTest {
         testPlayer.getBoard().getMarketPlace().getPurchasable();
         System.out.println("Market size active: " + testPlayer.getBoard().getMarketPlace().getActive().size());
         System.out.println(testPlayer.getBoard().getMarketPlace().getActive().get(1));
-
+*/
 
     }
 
@@ -326,6 +337,31 @@ public class PlayerTest {
         assertEquals(4,testPlayer.getHandPile().size());
         testPlayer.draw(1);
         assertEquals(5,testPlayer.getHandPile().size());
+
+        System.out.println("---------------------------DEBOGO---------------------------------------");
+        System.out.println("SizeHand: " + testPlayer.getHandPile().size());
+        testPlayer.draw(1);
+        System.out.println("SizeHand:" + testPlayer.getHandPile().size());
+        System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
+
+        testPlayer.draw(1);
+        System.out.println("SizeHand:" + testPlayer.getHandPile().size());
+        System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
+
+        testPlayer.draw(1);
+        System.out.println("SizeHand:" + testPlayer.getHandPile().size());
+        System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
+        System.out.println("SizeDiscard: " + testPlayer.getDiscardPile().size());
+
+        testPlayer.draw(1);
+        System.out.println("SizeHand:" + testPlayer.getHandPile().size());
+        System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
+        System.out.println("SizeDiscard: " + testPlayer.getDiscardPile().size());
+
+        testPlayer.draw(1);
+        System.out.println("SizeHand:" + testPlayer.getHandPile().size());
+        System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
+        System.out.println("SizeDiscard: " + testPlayer.getDiscardPile().size());
     }
 
     @Test
@@ -338,6 +374,7 @@ public class PlayerTest {
         assertEquals(0,testPlayer.getHandPile().size());
         testPlayer.draw();
         assertEquals(4,testPlayer.getHandPile().size());
+
     }
 
     @Test

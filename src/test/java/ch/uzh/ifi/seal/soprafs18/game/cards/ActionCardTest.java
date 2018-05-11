@@ -42,10 +42,9 @@ public class ActionCardTest {
 
     @Test
     public void moveAction() {
-
         testPlayer.draw();
         assertEquals(0, testPlayer.getDiscardPile().size());
         testPlayer.getHandPile().get(0).moveAction(testPlayer, testJungle);
-        assertEquals(1, testPlayer.getDiscardPile().size());
+        assertEquals(1, testPlayer.getTmpDiscardPile().size());
     }
 }
