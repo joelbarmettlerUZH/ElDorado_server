@@ -1,6 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
+@Data
 @Table(name = "BLOCKADE_ENTITY")
 @Embeddable
 public class BlockadeSpaceEntity extends HexSpaceEntity {
@@ -23,12 +25,4 @@ public class BlockadeSpaceEntity extends HexSpaceEntity {
 
     @Column(name="BLOCKADEID")
     private int blockadeID;
-
-    public int getBlockadeId() {
-        return blockadeID;
-    }
-
-    public void setBlockadeId(int id) {
-        this.blockadeID = id;
-    }
 }

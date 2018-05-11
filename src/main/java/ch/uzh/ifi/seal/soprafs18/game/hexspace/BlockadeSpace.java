@@ -22,24 +22,27 @@ public class BlockadeSpace extends HexSpace implements Serializable {
     /*
     CONSTRUCTOR
     */
-    public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY){
+    public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY, int blockadeOrientation){
         super(blockadeSpaceEntity,posX,posY);
-        this.parentBlockade = blockadeSpaceEntity.getBlockadeId();
+        this.parentBlockade = blockadeSpaceEntity.getBlockadeID();
+        this.orientation = blockadeOrientation;
         //this.parentBlockade = -1;
     }
 
-    public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY, int parentBlockade){
+    public BlockadeSpace(BlockadeSpaceEntity blockadeSpaceEntity, int posX, int posY, int parentBlockade, int blockadeOrientation){
         super(blockadeSpaceEntity,posX,posY);
         this.parentBlockade = parentBlockade;
+        this.orientation = blockadeOrientation;
         //this.parentBlockade = -1;
     }
-
+    /*
     public BlockadeSpace(COLOR color, int strength, int minimalCost, int minimalDepth, Point point, int parentBlockade){
         super(color, strength, minimalCost, minimalDepth, point);
         this.parentBlockade = parentBlockade;
         //this.parentBlockade = -1;
-
     }
+    */
+
 
     public BlockadeSpace(){
         super();
@@ -55,6 +58,8 @@ public class BlockadeSpace extends HexSpace implements Serializable {
     since other BlockadeSpaces shall not count as its neighbours. The overwritten method considers where the player was
     coming from and therefore computes the neighbours ignoring inactive barricades.
      */
+
+    private int orientation;
 
     @Override
     public List<HexSpace> getNeighbour(Game game){

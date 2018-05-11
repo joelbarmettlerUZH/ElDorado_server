@@ -17,7 +17,7 @@ public class BoardEntity implements Serializable {
 
     public BoardEntity(int boardID, String name, List<TileEntity> tiles, List<Integer> tilesRotation, List<Integer> tilesPositionX,
                        List<Integer> tilesPositionY,List<StripEntity> strip, List<Integer> stripRotation,
-                       List<Integer> stripPositionX,List<Integer> stripPositionY,List<Integer> blockadeId,
+                       List<Integer> stripPositionX,List<Integer> stripPositionY,List<Integer> blockadeId, List<Integer> blockadeOrientation,
                        List<Integer> blockadePositionX, List<Integer> blockadePositionY,List<HexSpaceEntity> endingSpaces,
                        List<Integer> endingSpacePositionX, List<Integer> endingSpacePositionY, List<HexSpaceEntity> eldoradoSpace,
                        List<Integer> eldoradoSpacePositionX, List<Integer> eldoradoSpacePositionY)  {
@@ -33,6 +33,7 @@ public class BoardEntity implements Serializable {
         this.stripPositionX = stripPositionX;
         this.stripPositionY = stripPositionY;
         this.blockadeId = blockadeId;
+        this.blockadeOrientation = blockadeOrientation;
         this.blockadePositionX = blockadePositionX;
         this.blockadePositionY = blockadePositionY;
         this.endingSpaces = endingSpaces;
@@ -105,6 +106,11 @@ public class BoardEntity implements Serializable {
     @Column(name = "BLOCKADEID",nullable = true)
     @ElementCollection
     private List<Integer> blockadeId;
+
+    @JsonIgnore
+    @Column(name = "BLOCKADEORIENTATION",nullable = true)
+    @ElementCollection
+    private List<Integer> blockadeOrientation;
 
     @JsonIgnore
     @Column(name = "BLOCKADEPOSITIONX",nullable = true)
