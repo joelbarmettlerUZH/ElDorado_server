@@ -340,6 +340,10 @@ public class PlayerTest {
 
         System.out.println("---------------------------DEBOGO---------------------------------------");
         System.out.println("SizeHand: " + testPlayer.getHandPile().size());
+        testPlayer.sell(testPlayer.getHandPile().get(0));
+        testPlayer.sell(testPlayer.getHandPile().get(0));
+        testPlayer.sell(testPlayer.getHandPile().get(0));
+        testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.draw(1);
         System.out.println("SizeHand:" + testPlayer.getHandPile().size());
         System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
