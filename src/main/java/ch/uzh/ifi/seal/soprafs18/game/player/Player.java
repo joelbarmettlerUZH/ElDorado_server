@@ -264,9 +264,8 @@ public class Player implements Serializable {
                     autoRemoveBlockade(((BlockadeSpace) hexSpace).getParentBlockade());
                 }
             }
-            Set<Integer> setOfRemovableBlockades = searchForRemovableBlockades(playingPiece, cards, moveTo, oldPosition);
+            searchForRemovableBlockades(playingPiece, cards, moveTo, oldPosition);
             this.board.getMemento().reset(this.board); // reset memento after moving
-            this.removableBlockades = new ArrayList<>(setOfRemovableBlockades); //convert set to list
         }
         if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
                 playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDRIVER ){
@@ -287,7 +286,7 @@ public class Player implements Serializable {
         return new ArrayList<>(blockadeIdsToBlockades(this.removableBlockades));
     }
 
-    public Set<Integer> searchForRemovableBlockades(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo, HexSpace oldPosition) {
+    public void searchForRemovableBlockades(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo, HexSpace oldPosition) {
         Set<Integer> setOfRemovableBlockades = new HashSet<>(); // used to make sure that we don't remove the same blockade twice. (thanks hibernate!!!)
         for(HexSpace neighbour: playingPiece.getStandsOn().getNeighbour(board)){
             // if the playingpiece ends up next to a blockade after a move
@@ -310,7 +309,7 @@ public class Player implements Serializable {
                 }
             }
         }
-        return setOfRemovableBlockades;
+        this.removableBlockades = new ArrayList<>(setOfRemovableBlockades); //convert set to list
     }
 
     private List<Blockade> blockadeIdsToBlockades(List<Integer> removableBlockadeIds) {
