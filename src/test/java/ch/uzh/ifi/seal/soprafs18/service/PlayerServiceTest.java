@@ -173,6 +173,9 @@ public class PlayerServiceTest {
         Player found = playerService.stealCard(99, testGame.getMarketPlace().getActive().get(0), "TESTTOKEN");
         assertEquals(0, found.getDiscardPile().size());
 
+
+
+
     }
 
     @Test

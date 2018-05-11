@@ -80,6 +80,7 @@ public class Player implements Serializable {
         // Why adding a card? Had to comment it for testing purposes.
         // handPile.add(new RemoveMoveSellCard("MovingCard", -4, -5, -6, -7, new COLOR[]{COLOR.RIVER}));
         this.discardPile = new ArrayList<Card>();
+        this.tmpDiscardPile = new ArrayList<Card>();
         // Why is this?
         // discardPile.add(new ActionCard("ActionCard", -12, -12, new SpecialActions(-4, -2, -0)));
         this.bought = false;
@@ -197,6 +198,10 @@ public class Player implements Serializable {
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Card> discardPile;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Card> tmpDiscardPile;
 
     /*
     Indicates whether the user has already bought a Card in the current round.
@@ -374,10 +379,10 @@ public class Player implements Serializable {
         // history.add(cardAct);
 
         if (handPile.contains(card)) {
-            discardPile.add(card);
+            tmpDiscardPile.add(card);
             handPile.remove(card);
         } else {
-            discardPile.add(card);
+            tmpDiscardPile.add(card);
         }
     }
 
@@ -435,21 +440,25 @@ public class Player implements Serializable {
     public void draw(Integer amount) {
         int amountTmp = amount;
         //CardAction cardAct = new CardAction("Draw " + amountTmp + " cards.");
-        while (drawPile.size() > 0 && amount > 0) {
-            //cardAct.addCard(this.drawPile.get(0));
-            handPile.add(drawPile.remove(0));
-            amount--;
-        }
+        if (drawPile.size() >= 0) {
 
-        //history.add(cardAct);
-        Random rand = new Random();
-        if (drawPile.size() < 1 && amount != 0) {
-            for (int i = discardPile.size(); i > 0; i--) {
-                int rnd = rand.nextInt(discardPile.size());
-                drawPile.add(discardPile.remove(rnd));
-                System.out.println("balbab");
+            while (drawPile.size() > 0 && amount > 0) {
+                //cardAct.addCard(this.drawPile.get(0));
+                handPile.add(drawPile.remove(0));
+                amount--;
             }
-            draw(amount);
+        } else {
+
+            //history.add(cardAct);
+            Random rand = new Random();
+            if (drawPile.size() < 1 && amount != 0) {
+                for (int i = discardPile.size(); i > 0; i--) {
+                    int rnd = rand.nextInt(discardPile.size());
+                    drawPile.add(discardPile.remove(rnd));
+                    System.out.println("balbab");
+                }
+                draw(amount);
+            }
         }
     }
 
@@ -516,6 +525,10 @@ public class Player implements Serializable {
         specialAction.setSteal(0);
         board.endRound();
         history = new ArrayList<>();
+        for (int i = tmpDiscardPile.size(); i > 0; i--){
+            discardPile.add(tmpDiscardPile.remove(0));
+        }
+
     }
 
     public void addToHistory(CardAction cardAction){

@@ -35,6 +35,7 @@ public class MovingCardTest {
         testPlayer.draw();
         assertEquals(0, testPlayer.getDiscardPile().size());
         testPlayer.getHandPile().get(0).moveAction(testPlayer, testJungle);
+        testPlayer.endRound();
         assertEquals(1, testPlayer.getDiscardPile().size());
     }
 }
