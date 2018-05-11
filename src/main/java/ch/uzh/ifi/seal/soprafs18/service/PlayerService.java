@@ -249,8 +249,9 @@ public class PlayerService  implements Serializable {
         }
         LOGGER.info("Player "+player.getPlayerId()+" requested pathfinding.");
         Game game = player.getBoard();
-        game.getMemento().reset(game);
+        player.searchForRemovableBlockades(playingPiece,c,playingPiece.getStandsOn(),playingPiece.getStandsOn());
         //gameRepository.save(player.getBoard());
+        game.getMemento().reset(game);
         gameRepository.save(player.getBoard());
         List<HexSpace> reachables = Pathfinder.getWay(game, cards, playingPiece);
         gameRepository.save(player.getBoard());
@@ -306,4 +307,5 @@ public class PlayerService  implements Serializable {
         LOGGER.warning("Player "+player.getPlayerId()+" provided wrong token "+token);
         return;
     }
+
 }

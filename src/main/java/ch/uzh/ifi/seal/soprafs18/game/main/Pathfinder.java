@@ -80,7 +80,7 @@ public class Pathfinder  implements Serializable {
             System.out.println("Reachable: " + reach.toString());
         }
         Set<HexSpace> reachable = new HashSet<>(filterBlockades(reachables,game));
-        reachable.add(hexSpace);
+        // reachable.add(hexSpace); comment out since player should not be able to move on self anymore
         setMemento(game, reachable, cards, playingPiece);
         for (HexSpace reach: reachable){
             System.out.println("Reachable: " + reach.toString());

@@ -263,36 +263,14 @@ public class Player implements Serializable {
             for(Card card: cards){
                 card.moveAction(this, moveTo); // for history
             }
-            Set<Integer> setOfRemovableBlockades = new HashSet<>(); // used to make sure that we don't remove the same blockade twice. (thanks hibernate!!!)
             for(HexSpace hexSpace: moveTo.getPrevious()){
                 if(hexSpace.getClass() == BlockadeSpace.class){
                     // if you directly move over blockade
                     autoRemoveBlockade(((BlockadeSpace) hexSpace).getParentBlockade());
                 }
             }
-            for(HexSpace neighbour: playingPiece.getStandsOn().getNeighbour(board)){
-                // if the playingpiece ends up next to a blockade after a move
-                if(neighbour.getClass() == BlockadeSpace.class && neighbour.getStrength() != 0){
-                    Card card = cards.get(0);
-                    if(cards.size()==1 && card.getClass() == MovingCard.class &&
-                            neighbour.getColor() != COLOR.RUBBLE&& neighbour.getColor() != COLOR.BASECAMP){ //single card case
-                        if(((MovingCard) card).getColors().contains(neighbour.getColor())
-                                && ((MovingCard) card).getStrength() - moveTo.getMinimalCost() >= neighbour.getStrength()
-                                && ((MovingCard) card).getDepth() - moveTo.getMinimalDepth() > 0){
-                            if(!(((MovingCard) card).getColors().size() > 1) || (neighbour.getColor() == moveTo.getColor()) || oldPosition == moveTo){
-                                // Not multicolord card, or blockade same color as color used for moving or moved on itself
-                                setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
-                            }
-                        }
-                    }else if(oldPosition == playingPiece.getStandsOn()){ //multicard case
-                        if(neighbour.getColor() == COLOR.RUBBLE && neighbour.getStrength() == cards.size()){
-                            setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
-                        }
-                    }
-                }
-            }
+            searchForRemovableBlockades(playingPiece, cards, moveTo, oldPosition);
             this.board.getMemento().reset(this.board); // reset memento after moving
-            this.removableBlockades = new ArrayList<>(setOfRemovableBlockades); //convert set to list
         }
         if(playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDJUNGLE ||
                 playingPiece.getStandsOn().getColor() == COLOR.ENDFIELDRIVER ){
@@ -311,6 +289,32 @@ public class Player implements Serializable {
             }
         }
         return new ArrayList<>(blockadeIdsToBlockades(this.removableBlockades));
+    }
+
+    public void searchForRemovableBlockades(PlayingPiece playingPiece, List<Card> cards, HexSpace moveTo, HexSpace oldPosition) {
+        Set<Integer> setOfRemovableBlockades = new HashSet<>(); // used to make sure that we don't remove the same blockade twice. (thanks hibernate!!!)
+        for(HexSpace neighbour: playingPiece.getStandsOn().getNeighbour(board)){
+            // if the playingpiece ends up next to a blockade after a move
+            if(neighbour.getClass() == BlockadeSpace.class && neighbour.getStrength() != 0){
+                Card card = cards.get(0);
+                if(cards.size()==1 && card.getClass() == MovingCard.class &&
+                        neighbour.getColor() != COLOR.RUBBLE&& neighbour.getColor() != COLOR.BASECAMP){ //single card case
+                    if(((MovingCard) card).getColors().contains(neighbour.getColor())
+                            && ((MovingCard) card).getStrength() - moveTo.getMinimalCost() >= neighbour.getStrength()
+                            && ((MovingCard) card).getDepth() - moveTo.getMinimalDepth() > 0){
+                        if(!(((MovingCard) card).getColors().size() > 1) || (neighbour.getColor() == moveTo.getColor()) || oldPosition == moveTo){
+                            // Not multicolord card, or blockade same color as color used for moving or moved on itself
+                            setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
+                        }
+                    }
+                }else if(oldPosition == playingPiece.getStandsOn()){ //multicard case
+                    if(neighbour.getColor() == COLOR.RUBBLE && neighbour.getStrength() == cards.size()){
+                        setOfRemovableBlockades.add(((BlockadeSpace) neighbour).getParentBlockade());
+                    }
+                }
+            }
+        }
+        this.removableBlockades = new ArrayList<>(setOfRemovableBlockades); //convert set to list
     }
 
     private List<Blockade> blockadeIdsToBlockades(List<Integer> removableBlockadeIds) {
@@ -342,6 +346,13 @@ public class Player implements Serializable {
         for(Blockade blockade: board.getBlockades()) {
             if (blockade.getBlockadeId() == blockadeId) {
                 foundBlockade = blockade;
+            }
+        }
+        for (Card card: board.getMemento().getSelectedCards()){
+            try {
+                this.discard(card);
+            } catch (Exception e) {
+                System.out.println("No card to discard");
             }
         }
         removeBlockade(foundBlockade);
