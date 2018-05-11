@@ -30,7 +30,7 @@ public class Game implements Serializable {
     private int gameId;
 
     //Constructor
-    public Game(int boardNumber, int gameID, String gameName){
+    public Game(int boardNumber, int gameID, String gameName) {
         //assembler uses boardNumber
         this();
         this.boardId = boardNumber;
@@ -39,9 +39,10 @@ public class Game implements Serializable {
         System.out.println("****created game*******");
     }
 
-    public Game(){
+    public Game() {
         this.boardId = 0;
-        this.players = new ArrayList<>();;
+        this.players = new ArrayList<>();
+        ;
         this.running = true;
         this.gameId = -1;
         this.startingSpaces = new ArrayList<>();
@@ -100,7 +101,7 @@ public class Game implements Serializable {
     /*
     List of all players participating in the GameEntity.
      */
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Player> players;
@@ -110,7 +111,7 @@ public class Game implements Serializable {
     Is used to calculate the final winner and to determine when the game is ended.
     Winners are not directly returned in the gameEntity but only on request via the GameService.
      */
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Player> winners;
@@ -123,7 +124,7 @@ public class Game implements Serializable {
     @Fetch(value = FetchMode.SUBSELECT)
     */
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name="BLOCKADES",joinColumns = @JoinColumn(name="gameId"),inverseJoinColumns = @JoinColumn(name="waduhek"))
+    @JoinTable(name = "BLOCKADES", joinColumns = @JoinColumn(name = "gameId"), inverseJoinColumns = @JoinColumn(name = "waduhek"))
     private List<Blockade> blockades;
 
 
@@ -146,8 +147,8 @@ public class Game implements Serializable {
     Gets a point with X/Y coordinates and returns a reference to the instance
     of HexSpaceEntity that is located at that position in the pathMatrix.
      */
-    public HexSpace getHexSpace(Point point){
-        return pathMatrix.get(point.x,point.y);
+    public HexSpace getHexSpace(Point point) {
+        return pathMatrix.get(point.x, point.y);
     }
 
     public void setPlayers(List<Player> players) {
@@ -159,7 +160,7 @@ public class Game implements Serializable {
         System.out.println("***set current***");
     }
 
-    public void assemble(){
+    public void assemble() {
         Assembler assembler = new Assembler();
         System.out.println(this.getGameId());
         this.pathMatrix = new Matrix(assembler.assembleBoard(this.boardId));
@@ -172,52 +173,55 @@ public class Game implements Serializable {
         //
         this.blockades.forEach(x -> System.out.println("blockades returned by Assemble" + x.toString()));
 
-        for(Blockade blockade: blockades){
-            for(BlockadeSpace blockadeSpace: blockade.getSpaces()){
+        for (Blockade blockade : blockades) {
+            for (BlockadeSpace blockadeSpace : blockade.getSpaces()) {
                 blockadeSpace.setParentBlockade(blockade.getBlockadeId());
             }
         }
         System.out.println("post ghettos blockados");
         int i = 3;
-        for(Player player:players){
-            player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i), 0));
-            if(players.size() == 2){
+        int j = 0;
+        do {
+            for (Player player : players) {
+                player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i), j));
                 i--;
-                player.addPlayingPiece(new PlayingPiece(startingSpaces.get(i), 1));
             }
-            i--;
+            j++;
         }
+        while (players.size() - j == 1);
+
+
     }
 
-    public void endRound(){
+    public void endRound() {
         currentPlayerNumber = (currentPlayerNumber + 1) % players.size();
         current = players.get(currentPlayerNumber);
     }
 
-    public Player getWinner(){
-        if(winners.size() == 0){
+    public Player getWinner() {
+        if (winners.size() == 0) {
             return null;
         }
-        if(this.winners.size() < 2){
+        if (this.winners.size() < 2) {
             return this.winners.get(0);
         }
-        for(Player potentialWinner: winners){
+        for (Player potentialWinner : winners) {
             boolean wins = true;
-            for(Player player: winners){
+            for (Player player : winners) {
                 wins = wins & potentialWinner.getCollectedBlockades().size() > player.getCollectedBlockades().size();
             }
-            if(wins){
+            if (wins) {
                 return potentialWinner;
             }
         }
-        for(Player potentialWinner: winners){
+        for (Player potentialWinner : winners) {
             boolean wins = true;
-            for(Player player: winners){
+            for (Player player : winners) {
                 int sumPotentialWinner = potentialWinner.getCollectedBlockades().stream().mapToInt(Integer::intValue).sum();
                 int sumPlayer = player.getCollectedBlockades().stream().mapToInt(Integer::intValue).sum();
                 wins = wins & sumPotentialWinner > sumPlayer;
             }
-            if(wins){
+            if (wins) {
                 return potentialWinner;
             }
         }
