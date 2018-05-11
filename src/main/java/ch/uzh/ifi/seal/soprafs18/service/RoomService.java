@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 @Service
-public class RoomService  implements Serializable {
+public class RoomService implements Serializable {
 
     @Autowired
     private RoomRepository roomRepository;
@@ -56,10 +56,10 @@ public class RoomService  implements Serializable {
             return room;
         }
         int character = user.getCharacter();
-        for(UserEntity u: room.getUsers()){
-            if(u.getCharacter() == user.getCharacter() || u.getName().toLowerCase().equals(user.getName().toLowerCase())){
-                LOGGER.info("Unable to join room " + roomID + " Since chosen character "+user.getCharacter()
-                        +"or chosen Name " + user.getName() + " is already existent:");
+        for (UserEntity u : room.getUsers()) {
+            if (u.getCharacter() == user.getCharacter() || u.getName().toLowerCase().equals(user.getName().toLowerCase())) {
+                LOGGER.info("Unable to join room " + roomID + " Since chosen character " + user.getCharacter()
+                        + "or chosen Name " + user.getName() + " is already existent:");
                 return room;
             }
         }
@@ -78,37 +78,52 @@ public class RoomService  implements Serializable {
     }
 
     public RoomEntity newRoom(RoomEntity roomEntity) {
+
         roomRepository.save(roomEntity);
         LOGGER.info("Created new room " + roomEntity.getRoomID());
         return roomEntity;
-
     }
 
     public RoomEntity getRoom(int RoomID) {
-        LOGGER.info("Returning requested room " + RoomID);
-        return roomRepository.findByRoomID(RoomID).get(0);
+        try {
+            LOGGER.info("Returning requested room " + RoomID);
+            return roomRepository.findByRoomID(RoomID).get(0);
+        } catch (Exception e) {
+            System.out.println("ERROR: Could not get Room");
+            return null;
+        }
     }
 
     public List<RoomEntity> getRooms() {
-        List<RoomEntity> roomEntities = new ArrayList<>();
-        roomRepository.findAll().forEach(roomEntities::add);
-        LOGGER.info("Returning all rooms");
-        return roomEntities;
+        try {
+            List<RoomEntity> roomEntities = new ArrayList<>();
+            roomRepository.findAll().forEach(roomEntities::add);
+            LOGGER.info("Returning all rooms");
+            return roomEntities;
+        } catch (Exception e) {
+            System.out.println("ERROR: Could not get Room");
+            return null;
+        }
     }
 
     public List<RoomEntity> getRooms(int fromIndex, int toIndex) {
-        toIndex = toIndex + 1;
-        List<RoomEntity> rooms = getRooms();
-        if (fromIndex > toIndex) {
-            LOGGER.warning("Requested fromIndex is smaller than given toIndex");
-            return new ArrayList<>();
+        try {
+            toIndex = toIndex + 1;
+            List<RoomEntity> rooms = getRooms();
+            if (fromIndex > toIndex) {
+                LOGGER.warning("Requested fromIndex is smaller than given toIndex");
+                return new ArrayList<>();
+            }
+            if (toIndex > rooms.size()) {
+                LOGGER.warning("Setting toIndex to max index");
+                toIndex = rooms.size();
+            }
+            LOGGER.info("Returning rooms from " + fromIndex + " to " + toIndex);
+            return rooms.subList(fromIndex, toIndex);
+        } catch (Exception e) {
+            System.out.println("ERROR: Could not get Room");
+            return null;
         }
-        if (toIndex > rooms.size()) {
-            LOGGER.warning("Setting toIndex to max index");
-            toIndex = rooms.size();
-        }
-        LOGGER.info("Returning rooms from " + fromIndex + " to " + toIndex);
-        return rooms.subList(fromIndex, toIndex);
     }
 
     public void startGame(RoomEntity roomEntity) {
