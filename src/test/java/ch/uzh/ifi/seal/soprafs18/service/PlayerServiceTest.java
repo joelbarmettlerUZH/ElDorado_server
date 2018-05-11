@@ -89,54 +89,6 @@ public class PlayerServiceTest {
         Mockito.when(gameRepository.save(testPlayer.getBoard())).thenReturn(testPlayer.getBoard());
     }
 
-
-    @Test
-    public void getPlayers() {
-
-        List<Player> found = playerService.getPlayers();
-
-        assertEquals("Playernames found (Player 1)", "TestPlayer", found.get(0).getName());
-        assertEquals("Playernames found (Player 2)", "TestPlayer", found.get(1).getName());
-        assertEquals("PlayerIds found (Player 1)", 99, found.get(0).getPlayerId());
-        assertEquals("PlayerIds found (Player 2)", 99, found.get(1).getPlayerId());
-    }
-
-    @Test
-    public void getPlayer() {
-        Player found = playerService.getPlayer(99);
-        assertEquals("Playername found (Player 1)", "TestPlayer", found.getName());
-        assertEquals("PlayerId found (Player 1)", 99, found.getPlayerId());
-    }
-
-    @Test
-    public void getGame() {
-        Game found = playerService.getGame(99, "TESTTOKEN");
-        assertEquals(1, found.getGameId());
-        ArrayList arl = new ArrayList();
-        assertEquals(arl, found.getWinners());
-        assertEquals(2, found.getPlayers().size());
-    }
-
-    @Test
-    public void getPlayingPieces() {
-        List<PlayingPiece> found = playerService.getPlayingPieces(99);
-        assertEquals(0, found.size());
-    }
-
-    @Test
-    public void getBlockades() {
-        List<Blockade> found = playerService.getBlockades(99);
-        assertEquals(null, found);
-    }
-
-    @Test
-    public void getHandPile() {
-        //TOKEN gets overwritten currently
-        List<Card> found = playerService.getHandPile(99, "TESTTOKEN");
-        assertEquals("Handpile found (Player 1)", 4, found.size());
-
-    }
-
     @Test
     public void buyCard() {
 

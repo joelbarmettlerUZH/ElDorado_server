@@ -100,38 +100,6 @@ public class GameServiceTest {
         assertEquals(1,found.getGameId());
     }
 
-
-    @Test
-    public void getPlayers() {
-        List<Player> players = new ArrayList<Player>();
-        assertEquals(players, gameService.getPlayers(1));
-    }
-
-    @Test
-    public void getWinners() {
-        assertEquals(null, gameService.getWinner(1));
-    }
-
-    @Test
-    public void getCurrentPlayer() {
-        assertEquals(null, gameService.getCurrentPlayer(1));
-    }
-
-    @Test
-    public void getBoard() {
-        assertEquals(null, gameService.getBoard(1));
-    }
-
-    @Test
-    public void getBlockades() {
-        assertEquals(null, gameService.getBlockades(1));
-    }
-
-    @Test
-    public void getMarket() {
-        assertEquals(null, gameService.getBlockades(1));
-    }
-
     @Test
     public void stop() {
         Game found = gameService.getGame(1);

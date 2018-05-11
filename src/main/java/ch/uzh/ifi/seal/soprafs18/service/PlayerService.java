@@ -58,13 +58,13 @@ public class PlayerService  implements Serializable {
         LOGGER.info("Validating user");
         return player.getToken().equals(token) && player.getBoard().isRunning();
     }
-
+    /*
     public List<Player> getPlayers(){
         List<Player> players = new ArrayList<>();
         playerRepository.findAll().forEach(players::add);
         LOGGER.info("Returning all Players");
         return players;
-    }
+    }*/
 
     public Player getPlayer(int playerID) {
         return playerRepository.findByPlayerId(playerID).get(0);
@@ -81,7 +81,7 @@ public class PlayerService  implements Serializable {
         System.out.println("*************"+game.getGameId());
         return game;
     }
-
+    /*
     public List<PlayingPiece> getPlayingPieces(int id) {
         LOGGER.info("Returning playing pieces of Player " + id);
         Player player = playerRepository.findByPlayerId(id).get(0);
@@ -95,7 +95,7 @@ public class PlayerService  implements Serializable {
         //return player.getBlockades();
         return null;
     }
-
+    */
     public List<Card> getHandPile(int id, String token){
         Player player = playerRepository.findByPlayerId(id).get(0);
         if (validate(player, token)) {

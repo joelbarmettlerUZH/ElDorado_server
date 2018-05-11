@@ -95,7 +95,7 @@ public class GameService implements Serializable{
             return null;
         }
     }
-
+    /*
     public List<Player> getPlayers(int id) {
         LOGGER.info("Returning Players of game " + id);
         Game g = gameRepository.findByGameId(id).get(0);
@@ -126,7 +126,7 @@ public class GameService implements Serializable{
         LOGGER.info("Returning board of game " + id);
         return gameRepository.findByGameId(id).get(0).getMarketPlace();
     }
-
+    */
     public void stop(int id) {
         LOGGER.info("Stoppping game " + id);
         Game game = gameRepository.findByGameId(id).get(0);

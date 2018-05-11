@@ -23,21 +23,21 @@ public class GameController implements Serializable {
 
     @Autowired
     private PlayerService playerService;
-
+    /*
     //gets all games
     @GetMapping(value = context)
     @ResponseStatus(HttpStatus.OK)
     private List<Game> getGames(){
         return gameService.getAll();
     }
-
+    */
     //gets game id
     @GetMapping(value = context+"/{id}")
     @ResponseStatus(HttpStatus.OK)
     private Game getGame(@PathVariable int id){
         return gameService.getGame(id);
     }
-
+    /*
     //Gets current player
     @GetMapping(value = context+"/{id}/Current")
     @ResponseStatus(HttpStatus.OK)
@@ -78,5 +78,5 @@ public class GameController implements Serializable {
     @ResponseStatus(HttpStatus.OK)
     private Player getWinner(@PathVariable int id){
         return gameService.getWinner(id);
-    }
+    }*/
 }

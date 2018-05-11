@@ -24,7 +24,7 @@ public class PlayerController  implements Serializable {
 
     @Autowired
     private PlayerService playerService;
-
+    /*
     //Gets all players
     @GetMapping(value = context)
     @ResponseStatus(HttpStatus.OK)
@@ -52,7 +52,7 @@ public class PlayerController  implements Serializable {
     public List<Card> getHandPile(@PathVariable int id, @RequestParam("token") String token){
         return playerService.getHandPile(id, token);
     }
-
+    */
     //Sells a Card
     @PutMapping(value = context+"/{id}/Sell")
     @ResponseStatus(HttpStatus.OK)
