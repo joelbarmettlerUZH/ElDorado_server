@@ -69,7 +69,7 @@ public class GameService implements Serializable{
         LOGGER.info("Creating empty list of players");
         List<Player> players = new ArrayList<>();
         LOGGER.info("Create game with board " + board + " with no players.");
-        Game game = new Game(board, room.getRoomID());
+        Game game = new Game(board, room.getRoomID(), room.getName());
         int i = 0;
         for (UserEntity user : users) {
             LOGGER.info("Creating new player "+user.getUserID()+" with name "+user.getName()+" and position "+i);

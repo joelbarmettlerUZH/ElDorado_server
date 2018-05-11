@@ -30,11 +30,12 @@ public class Game implements Serializable {
     private int gameId;
 
     //Constructor
-    public Game(int boardNumber, int gameID){
+    public Game(int boardNumber, int gameID, String gameName){
         //assembler uses boardNumber
         this();
         this.boardId = boardNumber;
         this.gameId = gameID;
+        this.gameName = gameName;
         System.out.println("****created game*******");
     }
 
@@ -53,6 +54,8 @@ public class Game implements Serializable {
 
 
     //private Assembler assembler;
+
+    private String gameName;
 
     private int boardId;
 
