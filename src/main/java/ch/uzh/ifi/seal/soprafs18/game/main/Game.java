@@ -151,10 +151,11 @@ public class Game implements Serializable {
     }
 
     public void setPlayers(List<Player> players) {
-        Collections.shuffle(this.players);
-        this.current = players.get(0);
-        this.currentPlayerNumber = 0;
+        Collections.shuffle(players);
         this.players = players;
+        this.currentPlayerNumber = 0;
+        this.current = players.get(this.currentPlayerNumber);
+
         System.out.println("***set current***");
     }
 

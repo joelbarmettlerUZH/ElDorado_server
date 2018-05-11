@@ -529,7 +529,6 @@ public class Player implements Serializable {
         specialAction.setDraw(0);
         specialAction.setRemove(0);
         specialAction.setSteal(0);
-        board.endRound();
         history = new ArrayList<>();
         //for (int i = tmpDiscardPile.size(); i > 0; i--){
         //    discardPile.add(tmpDiscardPile.remove(0));
@@ -537,6 +536,7 @@ public class Player implements Serializable {
         discardPile.addAll(tmpDiscardPile);
         tmpDiscardPile = new ArrayList<Card>();
         draw();
+        board.endRound();
     }
 
     public void addToHistory(CardAction cardAction) {
