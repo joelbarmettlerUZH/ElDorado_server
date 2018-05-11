@@ -66,7 +66,7 @@ public class PlayerServiceTest {
 
     @Before
     public void setUp() {
-        Game testGame = new Game(0, 1);
+        Game testGame = new Game(0, 1, "testgame");
         testGame.assemble();
         Market testMarket = testGame.getMarketPlace();
 

@@ -61,7 +61,7 @@ public class GameServiceTest {
 
     @Before
     public void setUp() {
-        Game testGame = new Game(1, 1);
+        Game testGame = new Game(1, 1, "testgame");
         List<Game> games = new ArrayList<Game>();
         games.add(testGame);
 
