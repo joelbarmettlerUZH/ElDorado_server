@@ -113,7 +113,7 @@ public class Assembler implements Serializable {
      * For the correct mapping of the blockade orienation (/,\ or _) mapping the orientation
      * fom the path definition over the blockade id.
      **/
-    protected HexSpace[][] convertMatrix(HexSpaceEntity[][] entityMarix, List<Integer> blockadeOrientation, List<Integer> blockadeId) {
+    protected HexSpace[][] convertMatrix(HexSpaceEntity[][] entityMarix) {
         HexSpace[][] hexSpaceMatrix = new HexSpace[entityMarix.length][entityMarix[0].length];
         for (int i = 0; i < entityMarix.length; i++) {
             for (int j = 0; j < entityMarix[0].length; j++) {
@@ -123,11 +123,8 @@ public class Assembler implements Serializable {
                 } else {
                     HexSpaceEntity hexSpaceEntity = entityMarix[i][j];
                     if (hexSpaceEntity instanceof BlockadeSpaceEntity) {
-                        // getting the blockade Id og this hexspace
-                        BlockadeSpaceEntity blockade = (BlockadeSpaceEntity) entityMarix[i][j];
-                        int index = blockade.getBlockadeID();
-                        // get the orientation of the corresponding blockade using the blockadeid
-                        hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity) entityMarix[i][j], i, j, blockadeOrientation.get(index));
+                        // setting temporarely blockadeorientation to 0
+                        hexSpaceMatrix[i][j] = new BlockadeSpace((BlockadeSpaceEntity) entityMarix[i][j], i, j, 0);
                     } else {
                         hexSpaceMatrix[i][j] = new HexSpace(entityMarix[i][j], i, j);
                     }
@@ -159,7 +156,7 @@ public class Assembler implements Serializable {
         boardMatrix = this.assembleElDorado(boardMatrix, board.getEldoradoSpace(),
                 board.getEldoradoSpacePositionX(),
                 board.getEldoradoSpacePositionY());
-        return convertMatrix(cropMatrix(boardMatrix),board.getBlockadeId(),board.getBlockadeOrientation());
+        return convertMatrix(cropMatrix(boardMatrix));
     }
 
     /**
@@ -391,6 +388,7 @@ public class Assembler implements Serializable {
         List<Integer> blockadeX = board.getBlockadePositionX(); //all x Positions of the blockadeSpaces
         List<Integer> blockadeY = board.getBlockadePositionY(); //all y Positions of the blockadeSpaces
         List<Integer> blockadeIds = board.getBlockadeId(); //all blockade ids to match with the positions to groups for each blockade
+        List<Integer> orientations = board.getBlockadeOrientation();
         List<Blockade> allBlockades = new ArrayList<>();
         List<Integer> alreadyDone = new ArrayList<>(); //stores which blockade id has been put together already
         for (int i = 0; i < blockadeIds.size(); i++) {
@@ -400,7 +398,11 @@ public class Assembler implements Serializable {
                 List<BlockadeSpace> blockadeSpace = new ArrayList<>(); //create new list of Hexspaces which stores all spaces belonging to same blockade
                 for (int j = 0; j < blockadeIds.size(); j++) { //loop over all ids again
                     if (blockadeIds.get(j).equals(blockadeIds.get(i))) {
+                        BlockadeSpace tempBlockadeSpace = (BlockadeSpace) hexSpaceMatrix.get(blockadeX.get(j), blockadeY.get(j));
+                        //assign the blockade orientation
+                        tempBlockadeSpace.setOrientation(orientations.get(blockadeIds.get(j)));
                         blockadeSpace.add((BlockadeSpace) hexSpaceMatrix.get(blockadeX.get(j), blockadeY.get(j)));//if they match the first one store the according Spaces in the list
+
                     }
                 }
                 allBlockades.add(new Blockade(blockadeSpace));
