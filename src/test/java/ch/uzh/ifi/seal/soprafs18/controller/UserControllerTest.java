@@ -39,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Test;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 

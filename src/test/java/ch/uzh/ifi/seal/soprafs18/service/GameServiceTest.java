@@ -30,6 +30,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@Transactional
 public class GameServiceTest {
 
     @TestConfiguration
