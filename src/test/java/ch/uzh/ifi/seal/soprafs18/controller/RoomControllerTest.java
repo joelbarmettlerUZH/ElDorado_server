@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
@@ -27,6 +28,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+@WebAppConfiguration
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = RoomController.class)
 public class RoomControllerTest {
@@ -43,6 +45,7 @@ public class RoomControllerTest {
     private UserService userService;
 
     // I don't know ehy the following Beans are needen but without them it won't work
+
     @MockBean
     private BlockadeSpaceRepository blockadeSpaceRepository;
     @MockBean
@@ -68,6 +71,7 @@ public class RoomControllerTest {
 
     @Test
     public void getRooms() throws Exception {
+
         RoomEntity testRoom = new RoomEntity("testRoom");
 
         List<RoomEntity> allRooms = Arrays.asList(testRoom);
@@ -81,6 +85,7 @@ public class RoomControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(1)))
                 .andExpect(jsonPath("$[0].name", is(testRoom.getName())));
+
     }
 
     @Test
@@ -124,12 +129,4 @@ public class RoomControllerTest {
                 .param("token","TESTTOKEN"))
                 .andExpect(status().isCreated());
     }
-
-
-
-
-
-
-
-
 }

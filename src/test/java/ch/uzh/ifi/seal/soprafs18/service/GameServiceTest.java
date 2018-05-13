@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 import java.awt.*;
@@ -29,6 +30,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
+@WebAppConfiguration
 public class GameServiceTest {
 
     @TestConfiguration
@@ -126,12 +128,14 @@ public class GameServiceTest {
 
     @Test
     public void newGame() {
+
         gameService.newGame(roomService.getRoom(1000));
         Game newGameTest = gameService.getGame(99);
         System.out.println(newGameTest);
         assertEquals("2 players in game",2, newGameTest.getPlayers().size());
         assertEquals("user1 in players",true, newGameTest.getPlayers().get(0).getName()=="user1"
                 || newGameTest.getPlayers().get(1).getName()=="user1");
+
     }
 
     @Test

@@ -17,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
+@WebAppConfiguration
 public class UserServiceTest {
 
     @TestConfiguration

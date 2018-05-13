@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 import java.awt.*;
@@ -34,6 +35,8 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
+@WebAppConfiguration
+
 public class AssemblerTest {
 
     //private Assembler assembler = new Assembler();
@@ -266,6 +269,5 @@ public class AssemblerTest {
     public void getBoard() {
         Assembler assembler = new Assembler();
         assertEquals("correct board Id", 0, assembler.getBoard(0).getBoardID());
-
     }
 }
