@@ -6,62 +6,40 @@ import ch.uzh.ifi.seal.soprafs18.game.board.repository.*;
 import ch.uzh.ifi.seal.soprafs18.repository.*;
 import ch.uzh.ifi.seal.soprafs18.service.RoomService;
 import ch.uzh.ifi.seal.soprafs18.service.UserService;
-import ch.uzh.ifi.seal.soprafs18.utils.SpringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.jmx.export.annotation.ManagedOperation;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-
-
-import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-//@WebMvcTest(UserController.class)
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@WebAppConfiguration
-//@RunWith(MockitoJUnitRunner.class)
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = UserController.class)
-public class UserControllerTest {
+@WebMvcTest(controllers = RoomController.class)
+public class RoomControllerTest {
 
-    private final String context = CONSTANTS.APICONTEXT + "/User";
+    private final String context = CONSTANTS.APICONTEXT + "/Room";
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private UserService userService;
+    private RoomService roomService;
 
     @MockBean
-    private RoomService roomService;
+    private UserService userService;
 
     // I don't know ehy the following Beans are needen but without them it won't work
     @MockBean
@@ -88,79 +66,69 @@ public class UserControllerTest {
     private SlotRepository slotRepository;
 
     @Test
-    public void getUsers() throws Exception {
+    public void getRooms() throws Exception {
         RoomEntity testRoom = new RoomEntity("testRoom");
-        UserEntity testUser = new UserEntity("testUser", 1, testRoom);
 
-        List<UserEntity> allUser = Arrays.asList(testUser);
+        List<RoomEntity> allRooms = Arrays.asList(testRoom);
 
-        given(userService.getAll()).willReturn(allUser);
+        given(roomService.getRooms(0,1)).willReturn(allRooms);
 
         mvc.perform(get(context)
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$",hasSize(1)))
-        .andExpect(jsonPath("$[0].name", is(testUser.getName())));
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("from","0")
+                .param("to","1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",hasSize(1)))
+                .andExpect(jsonPath("$[0].name", is(testRoom.getName())));
     }
 
     @Test
-    public void createUser() throws Exception {
+    public void createRoom() throws Exception {
         RoomEntity testRoom = new RoomEntity("testRoom");
-        UserEntity testUser2 = new UserEntity("testUser2", 2, testRoom);
         ObjectMapper mapper = new ObjectMapper();
 
         mvc.perform(post(context)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsBytes(testUser2)))
+                .content(mapper.writeValueAsBytes(testRoom)))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    public void deleteUser() throws Exception {
+    public void getRoom() throws Exception {
         RoomEntity testRoom = new RoomEntity("testRoom");
-        UserEntity testUser2 = new UserEntity("testUser2", 2, testRoom);
-        ObjectMapper mapper = new ObjectMapper();
 
-        testUser2.setToken("TESTTOKEN");
-        testUser2.setUserID(99);
-        userService.createUser(testUser2);
-
-
-        mvc.perform(delete(context+"/99")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("token","TESTTOKEN"))
-                .andExpect(status().isAccepted());
-    }
-
-    @Test
-    public void getUser() throws Exception {
-        RoomEntity testRoom = new RoomEntity("testRoom");
-        UserEntity testUser = new UserEntity("testUser", 1, testRoom);
-
-        given(userService.getByID(99)).willReturn(testUser);
+        testRoom.setRoomID(99);
 
         mvc.perform(get(context+"/99")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(testUser.getName())));
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void changeUser() throws Exception {
+    public void joinUser() throws Exception {
         RoomEntity testRoom = new RoomEntity("testRoom");
         UserEntity testUser2 = new UserEntity("testUser2", 2, testRoom);
         ObjectMapper mapper = new ObjectMapper();
 
+        RoomEntity testRoom2 = new RoomEntity("testRoom2");
+
+        testRoom2.setRoomID(99);
         testUser2.setToken("TESTTOKEN");
         testUser2.setUserID(98);
         userService.createUser(testUser2);
 
-        testUser2.setName("changedName");
-
-        mvc.perform(put(context)
+        mvc.perform(put(context+"/99")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(testUser2))
                 .param("token","TESTTOKEN"))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
+
+
+
+
+
+
+
+
 }
