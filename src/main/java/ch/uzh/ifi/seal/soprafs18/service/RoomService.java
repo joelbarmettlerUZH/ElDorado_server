@@ -69,7 +69,6 @@ public class RoomService implements Serializable {
     }
 
     public RoomEntity newRoom(RoomEntity roomEntity) {
-
         roomRepository.save(roomEntity);
         LOGGER.info("Created new room " + roomEntity.getRoomID());
         return roomEntity;

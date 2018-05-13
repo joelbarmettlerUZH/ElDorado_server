@@ -20,6 +20,14 @@ public class UserEntity  implements Serializable {
         this.token = "TESTTOKEN";
     }
 
+    public UserEntity(String name, int character){
+        this.name = name;
+        this.character = character;
+        this.roomEntity = null;
+        this.ready = false;
+        this.token = "TESTTOKEN";
+    }
+
     public UserEntity(){
     }
 
