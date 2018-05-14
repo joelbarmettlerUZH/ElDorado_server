@@ -263,7 +263,7 @@ public class PlayerTest {
         assertEquals(1,testPlayer.getTmpDiscardPile().size());
 
 
-        /*
+        ///*
         System.out.println("---------------------------DEBOGO---------------------------------------");
 
         testPlayer.addCoins((float) 10);
@@ -324,7 +324,7 @@ public class PlayerTest {
         testPlayer.getBoard().getMarketPlace().getPurchasable();
         System.out.println("Market size active: " + testPlayer.getBoard().getMarketPlace().getActive().size());
         System.out.println(testPlayer.getBoard().getMarketPlace().getActive().get(1));
-*/
+//*/
 
     }
 
@@ -344,7 +344,8 @@ public class PlayerTest {
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
         testPlayer.sell(testPlayer.getHandPile().get(0));
-        testPlayer.draw(1);
+        testPlayer.draw();
+        testPlayer.endRound();
         System.out.println("SizeHand:" + testPlayer.getHandPile().size());
         System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
 
@@ -366,6 +367,12 @@ public class PlayerTest {
         System.out.println("SizeHand:" + testPlayer.getHandPile().size());
         System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
         System.out.println("SizeDiscard: " + testPlayer.getDiscardPile().size());
+
+        testPlayer.draw();
+        System.out.println("SizeHand:" + testPlayer.getHandPile().size());
+        System.out.println("SizeDraw:" + testPlayer.getDrawPile().size());
+        System.out.println("SizeDiscard: " + testPlayer.getDiscardPile().size());
+
     }
 
     @Test

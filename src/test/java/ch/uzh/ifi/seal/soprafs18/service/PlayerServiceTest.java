@@ -1,9 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.service;
 
-import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
-import ch.uzh.ifi.seal.soprafs18.game.cards.Market;
-import ch.uzh.ifi.seal.soprafs18.game.cards.MovingCard;
-import ch.uzh.ifi.seal.soprafs18.game.cards.Slot;
+import ch.uzh.ifi.seal.soprafs18.game.cards.*;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
@@ -103,6 +100,7 @@ public class PlayerServiceTest {
     public void discardCard() {
         Player testPlayer = playerService.getPlayer(99);
         Player found = playerService.discardCard(99, testPlayer.getHandPile().get(0), "TESTTOKEN");
+        Player found2 = playerService.discardCard(99, testPlayer.getHandPile().get(0), "WRONGTOKEN");
         assertEquals(3, found.getHandPile().size());
     }
 
@@ -110,14 +108,25 @@ public class PlayerServiceTest {
     public void removeCard() {
         Player testPlayer = playerService.getPlayer(99);
         Player found = playerService.removeCard(99, testPlayer.getHandPile().get(0), "TESTTOKEN");
+        Player found2 = playerService.removeCard(99, testPlayer.getHandPile().get(0), "WRONGTOKEN");
         assertEquals(4, found.getHandPile().size());
 
+    }
+
+    @Test
+    public void drawCard() {
+        Player testPlayer = playerService.getPlayer(99);
+        Player found = playerService.removeCard(99, testPlayer.getHandPile().get(0), "TESTTOKEN");
+        playerService.drawCard(99,"WRONGTOKEN");
+        playerService.drawCard(99, "TESTTOKEN");
+        assertEquals(4, found.getHandPile().size());
     }
 
     @Test
     public void sellCard() {
         Player testPlayer = playerService.getPlayer(99);
         Player found = playerService.sellCard(99, testPlayer.getHandPile().get(0), "TESTTOKEN");
+        Player found2 = playerService.sellCard(99, testPlayer.getHandPile().get(0), "WRONGTOKEN");
         assertEquals(3, found.getHandPile().size());
     }
 
@@ -135,6 +144,7 @@ public class PlayerServiceTest {
     @Test
     public void movePlayer() {
         Game testGame = playerService.getGame(99, "TESTTOKEN");
+        Game testGame2 = playerService.getGame(99, "WRONGTOKEN");
         Player found = playerService.getPlayer(99);
         testGame.setCurrent(found);
         System.out.println(found.getPlayingPieces());
@@ -152,10 +162,13 @@ public class PlayerServiceTest {
         found.setPlayingPieces(pp);
         Player found2 = playerService.getPlayer(99);
         playerService.findPath(99, movingCards, 0, "TESTTOKEN");
+        playerService.findPath(99, movingCards, 0, "WRONGTOKEN");
         List<HexSpace> reachable = new ArrayList<>();
         reachable.add(testGame.getHexSpace(new Point(3,3)));
         playerService.getGame(99, "TESTTOKEN").getMemento().setReachables(reachable);
+//        playerService.getGame(99, "WRONGTOKEN").getMemento().setReachables(reachable);
         playerService.movePlayer(99,playerService.getPlayer(99).getHandPile(),0, playerService.getGame(99, "TESTTOKEN").getHexSpace(new Point(3,3)),"TESTTOKEN");
+        playerService.movePlayer(99,playerService.getPlayer(99).getHandPile(),0, playerService.getGame(99, "TESTTOKEN").getHexSpace(new Point(3,3)),"WRONGTOKEN");
         assertEquals("playing piece moved",testGame.getHexSpace(new Point(3,3)), testPiece.getStandsOn());
         found.setHandPile(oldcards);
         found.getPlayingPieces().get(0).setStandsOn(testGame.getHexSpace(new Point(4,4)));
@@ -163,6 +176,27 @@ public class PlayerServiceTest {
 
     @Test
     public void performAction() {
+        Game testGame = playerService.getGame(99, "TESTTOKEN");
+        Player found = playerService.getPlayer(99);
+        testGame.setCurrent(found);
+        System.out.println(found.getPlayingPieces());
+        List<Card> cards = new ArrayList<Card>();
+        cards.add(new ActionCard("Wissenschaftlerin", (float) 0.5, 4, new SpecialActions(1, 1, 0)));
+        found.setHandPile(cards);
+        Mockito.when(cardRepository.findById(cards.get(0).getId())).thenReturn(cards);
+        playerService.performAction(99, cards.get(0), "WRONGTOKEN");
+        playerService.performAction(99, cards.get(0), "TESTTOKEN");
+        int histSize = found.getHistory().size();
+        assertEquals(histSize, found.getHistory().size());
+    }
+
+    @Test
+    public void resetSpecialActions(){
+        Game testGame = playerService.getGame(99, "TESTTOKEN");
+        Player found = playerService.getPlayer(99);
+        testGame.setCurrent(found);
+        playerService.resetSpacialActions(99,"WRONGTOKEN");
+        playerService.resetSpacialActions(99,"TESTTOKEN");
     }
 
     @Test
@@ -171,9 +205,42 @@ public class PlayerServiceTest {
     }
 
     @Test
+    public void getHandPile(){
+
+        List<Card> allCards = new ArrayList<Card>();
+
+        allCards.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
+        allCards.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
+        allCards.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+        allCards.add(new ActionCard("Wissenschaftlerin", (float) 0.5, 4, new SpecialActions(1, 1, 0)));
+        allCards.add(new MovingCard("Entdecker", (float) 0.5, 3, 3, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+        allCards.add(new MovingCard("Tausendsassa", 1, 2, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER, COLOR.ENDFIELDJUNGLE, COLOR.ENDFIELDRIVER}));
+        allCards.add(new RemoveActionCard("Fernsprechgerät", (float) 0.5, 4, new SpecialActions(0, 0, 1)));
+
+        allCards.add(new MovingCard("Millionärin", 4, 5, 4, 99, new COLOR[]{COLOR.SAND}));
+
+        Game testGame = playerService.getGame(99, "TESTTOKEN");
+        Player found = playerService.getPlayer(99);
+        List<Card> cards = playerService.getHandPile(99, "TESTTOKEN");
+        List<Card> cards2 = playerService.getHandPile(99, "WRONGTOKEN");
+
+        int counter = 0;
+
+        for (int i = 0; i < 4; i++){
+            if (allCards.contains(cards.get(i))) {
+                counter++;
+            }
+
+        }
+        assertEquals(4,counter);
+    }
+
+    @Test
     public void endRound() {
 
         Game found = playerService.endRound(99, "TESTTOKEN");
+        Game found2 = playerService.endRound(99, "WRONGTOKEN");
         assertEquals(found.getGameId(), 1);
     }
 
