@@ -37,6 +37,9 @@ public class PlayerTest {
     ActionCard testCard = new ActionCard("test", 4, 3, testActions);
     Player testPlayer = new Player(1, "testPlayer", testGame,"TESTTOKEN");
     //PlayingPiece playerTestPiece = testPlayer.getPlayingPieces().get(0);
+    Game twoPlayerGame;
+    Player startingPlayer = new Player(2, "Testplayer2", twoPlayerGame, "TESTTOKEN");
+    Player notStartingPlayer = new Player(3, "Testplayer3", twoPlayerGame, "TESTTOKEN");
 
 
 
@@ -55,17 +58,36 @@ public class PlayerTest {
         List<PlayingPiece> pp = new ArrayList<>();
         pp.add(testPiece);
         testPlayer.setPlayingPieces(pp);
-        //this.testPiece = testPlayer.getPlayingPieces().get(0);
 
-        //List<Player> testPlayers = new ArrayList<>();
-        //testPlayers.add(testPlayer);
-        //testGame.setPlayers(testPlayers);
-        //testGame.assemble();
+        this.twoPlayerGame = new Game();
+        List<Player> players2 = new ArrayList<>();
+        players2.add(startingPlayer);
+        players2.add(notStartingPlayer);
+        twoPlayerGame.setPlayers(players2);
+        twoPlayerGame.assemble();
+        twoPlayerGame.setCurrent(startingPlayer);
     }
 
-    // TODO: Write move and action test
     @Test
     public void move() {
+        notStartingPlayer.setBoard(twoPlayerGame);
+
+        // JUNGLE to JUNGLE
+
+        List<Card> handCards = new ArrayList<>();
+        handCards.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+        notStartingPlayer.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(notStartingPlayer.getHandPile().get(0));
+
+        //Pathfinder.getWay(twoPlayerGame, movingCards, testPiece);
+        notStartingPlayer.move(testPiece, movingCards, twoPlayerGame.getHexSpace(new Point(3,3)));
+        //assertEquals("playing piece moved",testGame.getHexSpace(new Point(3,3)), testPiece.getStandsOn());
+    }
+
+    @Test
+    public void moveNotOnTurn() {
         testPlayer.setBoard(testGame);
 
         // JUNGLE to JUNGLE
@@ -80,7 +102,6 @@ public class PlayerTest {
         Pathfinder.getWay(testGame, movingCards, testPiece);
         testPlayer.move(testPiece, movingCards, testGame.getHexSpace(new Point(3,3)));
         assertEquals("playing piece moved",testGame.getHexSpace(new Point(3,3)), testPiece.getStandsOn());
-
     }
 
     @Test
