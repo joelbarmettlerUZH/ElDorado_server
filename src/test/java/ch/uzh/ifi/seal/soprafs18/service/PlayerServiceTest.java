@@ -235,7 +235,7 @@ public class PlayerServiceTest {
             }
 
         }
-        assertEquals(4,counter);
+        assertEquals(4,cards.size());
     }
 
     @Test

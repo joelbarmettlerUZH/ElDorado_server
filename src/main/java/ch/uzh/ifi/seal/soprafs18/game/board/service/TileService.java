@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class TileService implements Serializable {
-
+    /*
     @Autowired
     public TileRepository tileRepository;
 
@@ -22,10 +22,5 @@ public class TileService implements Serializable {
 
     public void saveTile(TileEntity tileEntity){
         tileRepository.save(tileEntity);
-    }
-
-    public Iterable<TileEntity> save(List<TileEntity> tiles){
-        return tileRepository.saveAll(tiles);
-    }
-
+    }*/
 }

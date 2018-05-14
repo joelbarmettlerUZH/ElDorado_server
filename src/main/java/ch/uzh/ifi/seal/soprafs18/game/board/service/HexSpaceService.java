@@ -19,17 +19,9 @@ import java.util.List;
 @Service
 @Inheritance
 public class HexSpaceService implements Serializable {
-
+    /*
     @Autowired
     private HexSpaceRepository hexSpaceRepository;
-
-
-
-    public List<HexSpaceEntity> getAllHexSpaceEntity(){
-        List<HexSpaceEntity> hexSpaceEntities = new ArrayList<>();
-        hexSpaceRepository.findAll().forEach(hexSpaceEntities::add);
-        return hexSpaceEntities;
-    }
 
     public HexSpaceEntity getHexSpaceEntity(String id){
         return hexSpaceRepository.findByHexID(id);
@@ -37,6 +29,6 @@ public class HexSpaceService implements Serializable {
 
     public void saveHexspace(HexSpaceEntity hexSpaceEntity){
         hexSpaceRepository.save(hexSpaceEntity);
-    }
+    }*/
 
 }

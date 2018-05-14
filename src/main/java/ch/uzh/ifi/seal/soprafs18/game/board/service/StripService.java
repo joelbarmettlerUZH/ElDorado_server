@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Service
 public class StripService implements Serializable {
-
+    /*
     @Autowired
     public StripRepository stripRepository;
 
@@ -20,6 +20,6 @@ public class StripService implements Serializable {
 
     public void saveStrip(StripEntity stripEntity){
         stripRepository.save(stripEntity);
-    }
+    }*/
 }
 

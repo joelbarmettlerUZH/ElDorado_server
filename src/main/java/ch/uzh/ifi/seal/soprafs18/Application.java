@@ -5,6 +5,7 @@ import ch.uzh.ifi.seal.soprafs18.entity.UserEntity;
 import ch.uzh.ifi.seal.soprafs18.game.board.entity.*;
 import ch.uzh.ifi.seal.soprafs18.game.board.repository.*;
 import ch.uzh.ifi.seal.soprafs18.game.board.service.BlockadeSpaceService;
+import ch.uzh.ifi.seal.soprafs18.game.board.service.HexSpaceService;
 import ch.uzh.ifi.seal.soprafs18.game.board.service.TileService;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.repository.GameRepository;
