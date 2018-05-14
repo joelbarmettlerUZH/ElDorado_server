@@ -265,7 +265,7 @@ public class Player implements Serializable {
                 card.moveAction(this, moveTo); // for history
             }
             for (HexSpace hexSpace : moveTo.getPrevious()) {
-                if (hexSpace.getClass() == BlockadeSpace.class) {
+                if (hexSpace.getClass() == BlockadeSpace.class && hexSpace.getStrength() != 0) {
                     // if you directly move over blockade
                     autoRemoveBlockade(((BlockadeSpace) hexSpace).getParentBlockade());
                 }
