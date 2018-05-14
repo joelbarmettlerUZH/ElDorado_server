@@ -38,11 +38,12 @@ public class RoomService implements Serializable {
     public RoomEntity joinUser(int roomID, UserEntity userEntity, String token) {
         UserEntity user = userRepository.findByUserID(userEntity.getUserID()).get(0);
         RoomEntity room = roomRepository.findByRoomID(roomID).get(0);
+
         if (!UserService.valid(token, userEntity, userRepository)) {
             LOGGER.warning("User " + userEntity.getUserID() + " was trying to join with wrong or missing token");
             return room;
         }
-        if (room.getUsers().size() == 4) {
+        if (room.getUsers() != null && room.getUsers().size() == 4) {
             LOGGER.info("Unable to join room " + roomID + " due to a usernumber of 4");
             return room;
         }
@@ -61,11 +62,6 @@ public class RoomService implements Serializable {
         LOGGER.info("User " + user.getUserID() + " joined room " + roomID + " successfully. Updating room now");
         updateRoom(room);
         return room;
-    }
-
-    public List<UserEntity> getUsers(RoomEntity roomEntity) {
-        LOGGER.info("Requested users of room " + roomEntity.getRoomID());
-        return roomEntity.getUsers();
     }
 
     public RoomEntity newRoom(RoomEntity roomEntity) {
