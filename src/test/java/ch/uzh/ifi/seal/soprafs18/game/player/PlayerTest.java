@@ -40,6 +40,8 @@ public class PlayerTest {
     Game twoPlayerGame;
     Player startingPlayer = new Player(2, "Testplayer2", twoPlayerGame, "TESTTOKEN");
     Player notStartingPlayer = new Player(3, "Testplayer3", twoPlayerGame, "TESTTOKEN");
+    PlayingPiece testPiece2 = new PlayingPiece(testHex, 1);
+
 
 
 
@@ -91,7 +93,7 @@ public class PlayerTest {
         testPlayer.setBoard(testGame);
 
         // JUNGLE to JUNGLE
-        testPiece.setStandsOn(testGame.getHexSpace(new Point(4,4)));
+        testPiece.move(testGame.getHexSpace(new Point(4,4)));
         List<Card> handCards = new ArrayList<>();
         handCards.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
 
@@ -101,7 +103,50 @@ public class PlayerTest {
 
         Pathfinder.getWay(testGame, movingCards, testPiece);
         testPlayer.move(testPiece, movingCards, testGame.getHexSpace(new Point(3,3)));
-        assertEquals("playing piece moved",testGame.getHexSpace(new Point(3,3)), testPiece.getStandsOn());
+        assertEquals("playing piece moved",testGame.getHexSpace(new Point(3,3)).getPoint(), testPiece.getPosition());
+    }
+
+    @Test
+    public void moveWithWrongCard() {
+        testPlayer.setBoard(testGame);
+
+        // JUNGLE to JUNGLE
+        testPiece.setStandsOn(testGame.getHexSpace(new Point(4,4)));
+        List<Card> handCards = new ArrayList<>();
+        handCards.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+        List<Card> wrongCards = new ArrayList<>();
+        wrongCards.add(new MovingCard("FakeForscher", (float) 0.5, 0, 2, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+
+        testPlayer.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(testPlayer.getHandPile().get(0));
+
+        Pathfinder.getWay(testGame, movingCards, testPiece);
+        testPlayer.move(testPiece, wrongCards, testGame.getHexSpace(new Point(3,3)));
+        assertEquals("playing piece moved",testGame.getHexSpace(new Point(4,4)), testPiece.getStandsOn());
+    }
+
+
+    @Test
+    public void moveWithWrongPiece() {
+        testPlayer.setBoard(testGame);
+
+        // JUNGLE to JUNGLE
+        testPiece.setStandsOn(testGame.getHexSpace(new Point(4,4)));
+        testPiece2.setStandsOn(testGame.getHexSpace(new Point(4,4)));
+
+        List<Card> handCards = new ArrayList<>();
+        handCards.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
+
+        testPlayer.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(testPlayer.getHandPile().get(0));
+
+        Pathfinder.getWay(testGame, movingCards, testPiece);
+        testPlayer.move(testPiece2, movingCards, testGame.getHexSpace(new Point(3,3)));
+        assertEquals("playing piece moved",testGame.getHexSpace(new Point(4,4)), testPiece.getStandsOn());
     }
 
     @Test
