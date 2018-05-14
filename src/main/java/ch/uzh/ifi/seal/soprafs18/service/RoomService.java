@@ -43,7 +43,7 @@ public class RoomService implements Serializable {
             LOGGER.warning("User " + userEntity.getUserID() + " was trying to join with wrong or missing token");
             return room;
         }
-        if (room.getUsers() != null && room.getUsers().size() == 4) {
+        if (room.getUsers().size() == 4) {
             LOGGER.info("Unable to join room " + roomID + " due to a usernumber of 4");
             return room;
         }

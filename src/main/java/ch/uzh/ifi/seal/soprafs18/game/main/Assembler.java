@@ -141,8 +141,8 @@ public class Assembler implements Serializable {
     public HexSpace[][] assembleBoard(int boardId) {
         HexSpaceEntity[][] boardMatrix = this.createEmptyMatrix();
         BoardEntity board = boardService.getBoard(boardId);
-        System.out.println(board.toString());
-        System.out.println(board.getBlockadeId());
+        //System.out.println(board.toString());
+        //System.out.println(board.getBlockadeId());
         boardMatrix = this.assembleBlockades(boardMatrix, board.getBlockadeId(), board.getBlockadePositionX(),
                 board.getBlockadePositionY(),
                 getRandomBlockades(this.getBlockadesCount()));

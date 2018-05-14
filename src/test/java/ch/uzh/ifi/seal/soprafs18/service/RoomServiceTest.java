@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -28,6 +29,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @Transactional
 @WebAppConfiguration
+@DirtiesContext
 public class RoomServiceTest implements Serializable {
 
     /*@TestConfiguration
@@ -131,7 +133,8 @@ public class RoomServiceTest implements Serializable {
     public void getRooms2() {
         RoomEntity roomEntity = new RoomEntity("TestRoom");
         roomService.newRoom(roomEntity);
-        assertEquals(0, roomService.getRooms(5,0).size());
+        List<RoomEntity> foundRooms = roomService.getRooms(5,0);
+        assertEquals(0, foundRooms.size());
     }
 
     @Test(expected = Exception.class)
@@ -150,7 +153,8 @@ public class RoomServiceTest implements Serializable {
 
     @Test
     public void startGame() {
-        RoomEntity roomEntity = new RoomEntity("TestRoom1");
+        RoomEntity roomEntity = new RoomEntity("TestRoom100");
+        roomEntity.setBoardnumber(2);
         RoomEntity rooom = roomService.newRoom(roomEntity);
 
         UserEntity user1 = new UserEntity("user11", 1, rooom);
