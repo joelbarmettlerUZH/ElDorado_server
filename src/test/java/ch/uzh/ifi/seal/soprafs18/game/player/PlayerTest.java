@@ -69,7 +69,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void move() {
+    public void moveNotOnTurn() {
         notStartingPlayer.setBoard(twoPlayerGame);
 
         // JUNGLE to JUNGLE
@@ -83,11 +83,11 @@ public class PlayerTest {
 
         //Pathfinder.getWay(twoPlayerGame, movingCards, testPiece);
         notStartingPlayer.move(testPiece, movingCards, twoPlayerGame.getHexSpace(new Point(3,3)));
-        //assertEquals("playing piece moved",testGame.getHexSpace(new Point(3,3)), testPiece.getStandsOn());
+        assertEquals(0,notStartingPlayer.move(testPiece, movingCards, twoPlayerGame.getHexSpace(new Point(3,3))).size());
     }
 
     @Test
-    public void moveNotOnTurn() {
+    public void move() {
         testPlayer.setBoard(testGame);
 
         // JUNGLE to JUNGLE
@@ -181,6 +181,16 @@ public class PlayerTest {
     }
 
     @Test
+    public void drawActionNotOnTurn(){
+        notStartingPlayer.setBoard(twoPlayerGame);
+        SpecialActions specAct = new SpecialActions(2,0,0);
+        notStartingPlayer.setSpecialAction(specAct);
+        assertEquals(4,notStartingPlayer.getHandPile().size());
+        notStartingPlayer.drawAction();
+        assertEquals(4,notStartingPlayer.getHandPile().size());
+    }
+
+    @Test
     public void drawAction(){
         testPlayer.setBoard(testGame);
         SpecialActions specAct = new SpecialActions(1,0,0);
@@ -194,46 +204,44 @@ public class PlayerTest {
     public void stealAction(){
         testPlayer.setBoard(testGame);
         Market testMarket = new Market();
-        SpecialActions specAct = new SpecialActions(0,0,6);
+        SpecialActions specAct = new SpecialActions(0,0,5);
         testPlayer.setSpecialAction(specAct);
         assertEquals(0,testPlayer.getDiscardPile().size());
         testPlayer.stealAction(testMarket.getActive().get(0));
         assertEquals(1,testPlayer.getDiscardPile().size());
+    }
 
-/*
-        System.out.println("---------------------------DEBOGO---------------------------------------");
-        testMarket.getPurchasable();
-        System.out.println("Market size active: " + testMarket.getActive().size());
-        System.out.println(testMarket.getActive().get(1));
-        testPlayer.stealAction(testMarket.getActive().get(1));
-
-        testMarket.getPurchasable();
-        System.out.println("Market size active: " + testMarket.getActive().size());
-        System.out.println(testMarket.getActive().get(1));
-        testPlayer.stealAction(testMarket.getActive().get(1));
-
-        testMarket.getPurchasable();
-        System.out.println("Market size active: " + testMarket.getActive().size());
-        System.out.println(testMarket.getActive().get(1));
-        testPlayer.stealAction(testMarket.getActive().get(1));
-
-        testMarket.getPurchasable();
-        System.out.println("Market size active: " + testMarket.getActive().size());
-        System.out.println(testMarket.getActive().get(1));
-        testPlayer.stealAction(testMarket.getActive().get(1));
-        */
+    @Test
+    public void stealActionNotOnTurn(){
+        notStartingPlayer.setBoard(twoPlayerGame);
+        Market testMarket = new Market();
+        SpecialActions specAct = new SpecialActions(0,0,6);
+        notStartingPlayer.setSpecialAction(specAct);
+        assertEquals(0,notStartingPlayer.getDiscardPile().size());
+        notStartingPlayer.stealAction(testMarket.getActive().get(0));
+        assertEquals(0,notStartingPlayer.getDiscardPile().size());
     }
 
     @Test
     public void removeAction(){
         testPlayer.setBoard(testGame);
-        SpecialActions specAct = new SpecialActions(0,1,0);
+        SpecialActions specAct = new SpecialActions(0,2,0);
         testPlayer.setSpecialAction(specAct);
         assertEquals(4,testPlayer.getHandPile().size());
         testPlayer.removeAction(testPlayer.getHandPile().get(0));
         assertEquals(3,testPlayer.getHandPile().size());
-
     }
+
+    @Test
+    public void removeActionNotOnTurn(){
+        notStartingPlayer.setBoard(twoPlayerGame);
+        SpecialActions specAct = new SpecialActions(0,1,0);
+        notStartingPlayer.setSpecialAction(specAct);
+        assertEquals(4,notStartingPlayer.getHandPile().size());
+        notStartingPlayer.removeAction(notStartingPlayer.getHandPile().get(0));
+        assertEquals(4,notStartingPlayer.getHandPile().size());
+    }
+
 
     @Test
     public void removeBlockadeId(){
@@ -260,11 +268,28 @@ public class PlayerTest {
     }
 
     @Test
+    public void discardNotOnTurn() {
+        notStartingPlayer.setBoard(twoPlayerGame);
+        assertEquals(4,notStartingPlayer.getHandPile().size());
+        assertEquals(0,notStartingPlayer.getDiscardPile().size());
+        notStartingPlayer.discard(notStartingPlayer.getHandPile().get(0));
+        assertEquals(4,notStartingPlayer.getHandPile().size());
+    }
+
+    @Test
     public void sell() {
         testPlayer.setBoard(testGame);
         assertEquals(4,testPlayer.getHandPile().size());
         testPlayer.sell(testPlayer.getHandPile().get(0));
         assertEquals(3,testPlayer.getHandPile().size());
+    }
+
+    @Test
+    public void sellNotOnTurn() {
+        notStartingPlayer.setBoard(twoPlayerGame);
+        assertEquals(4,notStartingPlayer.getHandPile().size());
+        notStartingPlayer.sell(notStartingPlayer.getHandPile().get(0));
+        assertEquals(4,notStartingPlayer.getHandPile().size());
     }
 
     @Test
@@ -353,9 +378,19 @@ public class PlayerTest {
 
     }
 
+
+    @Test
+    public void buyNotOnTurn() {
+        notStartingPlayer.setBoard(twoPlayerGame);
+        Market testMarket = new Market();
+        notStartingPlayer.addCoins((float) 10);
+        notStartingPlayer.setBought(FALSE);
+        notStartingPlayer.buy(notStartingPlayer.getBoard().getMarketPlace().getActive().get(1));
+        assertEquals(0, notStartingPlayer.getTmpDiscardPile().size());
+    }
+
     @Test
     public void draw() {
-
         testPlayer.setBoard(testGame);
         SpecialActions specAct = new SpecialActions(1,0,0);
         testPlayer.setSpecialAction(specAct);
@@ -401,6 +436,14 @@ public class PlayerTest {
     }
 
     @Test
+    public void drawNotOnTurn() {
+        notStartingPlayer.setBoard(twoPlayerGame);
+        assertEquals(4, notStartingPlayer.getHandPile().size());
+        notStartingPlayer.draw();
+        assertEquals(4, notStartingPlayer.getHandPile().size());
+    }
+
+    @Test
     public void draw1() {
         testPlayer.setBoard(testGame);
         testPlayer.sell(testPlayer.getHandPile().get(0));
@@ -416,11 +459,21 @@ public class PlayerTest {
     @Test
     public void remove() {
         testPlayer.setBoard(testGame);
-        SpecialActions specAct = new SpecialActions(0,1,0);
+        SpecialActions specAct = new SpecialActions(0,2,0);
         testPlayer.setSpecialAction(specAct);
         assertEquals(4,testPlayer.getHandPile().size());
         testPlayer.remove(testPlayer.getHandPile().get(0));
         assertEquals(3,testPlayer.getHandPile().size());
+    }
+
+    @Test
+    public void removeNotOnTurn() {
+        notStartingPlayer.setBoard(twoPlayerGame);
+        SpecialActions specAct = new SpecialActions(0,1,0);
+        notStartingPlayer.setSpecialAction(specAct);
+        assertEquals(4,notStartingPlayer.getHandPile().size());
+        notStartingPlayer.remove(notStartingPlayer.getHandPile().get(0));
+        assertEquals(4,notStartingPlayer.getHandPile().size());
     }
 
     @Test
@@ -433,5 +486,13 @@ public class PlayerTest {
         assertEquals(0,testPlayer.getHandPile().size());
         testPlayer.endRound();
         assertEquals(4,testPlayer.getHandPile().size());
+    }
+
+    @Test
+    public void endRoundNotOnTurn() {
+        notStartingPlayer.setBoard(twoPlayerGame);
+        assertEquals(true,twoPlayerGame.getCurrent()!=notStartingPlayer);
+        notStartingPlayer.endRound();
+        assertEquals(true,twoPlayerGame.getCurrent()!=notStartingPlayer);
     }
 }
