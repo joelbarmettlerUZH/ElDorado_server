@@ -434,12 +434,12 @@ public class Assembler implements Serializable {
                     System.out.println("startos fieldos J counteros" + j);
                     if (posX % 2 == 0) {
                         StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
-                                posX + outerRingDislocX[(j - (3 * rotation)) % 18],
-                                posY + outerRingDislocYEven[(j - (3 * rotation)) % 18]));
+                                posX + outerRingDislocX[(j - (3 * rotation) + 18) % 18],
+                                posY + outerRingDislocYEven[(j - (3 * rotation) + 18) % 18]));
                     } else {
                         StartingSpaces.add(new HexSpace(containedTiles.get(i).getHexSpaceEntities().get(j),
-                                posX + outerRingDislocX[(j - 3 * rotation) % 18],
-                                posY + outerRingDislocYOdd[(j - 3 * rotation) % 18]));
+                                posX + outerRingDislocX[(j - 3 * rotation + 18) % 18],
+                                posY + outerRingDislocYOdd[(j - 3 * rotation + 18) % 18]));
                     }
                 }
             }

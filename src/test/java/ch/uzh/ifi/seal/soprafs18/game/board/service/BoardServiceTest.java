@@ -47,6 +47,6 @@ public class BoardServiceTest {
 
     @Test
     public void getBoardsTooLessBoards() {
-        assertEquals(7, boardService.getBoards(0,12).size());
+        assertEquals(true, boardService.getBoards(0,50).size()<50);
     }
 }
