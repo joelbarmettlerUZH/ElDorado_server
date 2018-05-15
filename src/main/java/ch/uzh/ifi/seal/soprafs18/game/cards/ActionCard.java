@@ -9,7 +9,6 @@ import lombok.Data;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
-@Data
 @Entity
 public class ActionCard extends Card {
 
@@ -54,5 +53,13 @@ public class ActionCard extends Card {
                 player.discard(this);
             }
         }
+    }
+
+    public SpecialActions getActions() {
+        return actions;
+    }
+
+    public void setActions(SpecialActions actions) {
+        this.actions = actions;
     }
 }

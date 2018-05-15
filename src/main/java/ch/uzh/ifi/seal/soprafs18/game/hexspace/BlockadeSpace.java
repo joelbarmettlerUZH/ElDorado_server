@@ -102,6 +102,10 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         this.parentBlockade = parentBlockade;
     }
 
+    public int getOrientation() {
+        return orientation;
+    }
+
     public void setOrientation(int orientation) {
         this.orientation = orientation;
     }
