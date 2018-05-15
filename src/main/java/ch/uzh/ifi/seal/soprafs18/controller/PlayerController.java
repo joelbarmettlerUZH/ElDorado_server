@@ -119,7 +119,7 @@ public class PlayerController  implements Serializable {
     //End Round
     @PutMapping(value = context+"/{id}/End")
     @ResponseStatus(HttpStatus.OK)
-    public Game actionPlayer(@PathVariable int id, @RequestParam("token") String token){
+    public Game endRound(@PathVariable int id, @RequestParam("token") String token){
         return playerService.endRound(id, token);
     }
 

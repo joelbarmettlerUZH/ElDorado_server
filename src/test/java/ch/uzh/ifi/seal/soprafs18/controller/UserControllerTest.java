@@ -23,6 +23,7 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -52,6 +53,8 @@ import java.util.List;
 //@SpringBootTest
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = UserController.class)
+@DirtiesContext
+
 public class UserControllerTest {
 
     private final String context = CONSTANTS.APICONTEXT + "/User";

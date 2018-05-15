@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,6 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = RoomController.class)
+@DirtiesContext
+
 public class RoomControllerTest {
 
     private final String context = CONSTANTS.APICONTEXT + "/Room";
@@ -122,7 +125,6 @@ public class RoomControllerTest {
         testUser2.setToken("TESTTOKEN");
         testUser2.setUserID(98);
         userService.createUser(testUser2);
-
         mvc.perform(put(context+"/99")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(testUser2))

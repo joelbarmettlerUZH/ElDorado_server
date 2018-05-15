@@ -25,7 +25,6 @@ import static java.lang.Boolean.TRUE;
 @Table(name = "PLAYER_ENTITY")
 public class Player implements Serializable {
 
-    //TODO: Set correct  initial cardAction budget
     public Player(int PlayerID, String name, Game game, String token) {
         this();
         this.token = token;
