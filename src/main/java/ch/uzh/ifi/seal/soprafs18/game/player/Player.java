@@ -333,7 +333,8 @@ public class Player implements Serializable {
         if (!myTurn()) {
             return;
         }
-        if (this.removableBlockades.contains(blockade.getBlockadeId()) && board.getBlockades().contains(blockade)) {
+        if (this.removableBlockades.contains(blockade.getBlockadeId()) && board.getBlockades().contains(blockade)
+                && blockade.getSpaces().get(0).getStrength() != 0) {
             blockade.deactivate();
             this.collectedBlockades.add(blockade.getCost());
             this.removableBlockades.remove(new Integer(blockade.getBlockadeId()));
