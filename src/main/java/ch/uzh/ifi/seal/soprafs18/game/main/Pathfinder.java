@@ -174,7 +174,7 @@ public class Pathfinder  implements Serializable {
             if(neighbour.getColor().equals(COLOR.BASECAMP) && neighbour.getStrength() == cards.size()){
                 reachables.add(neighbour);
             }
-            if(neighbour.getClass() == BlockadeSpace.class){
+            if(neighbour.getClass() == BlockadeSpace.class && neighbour.getStrength() == 0){
                 reachables.addAll(multicardCase(game,cards,neighbour));
             }
         }

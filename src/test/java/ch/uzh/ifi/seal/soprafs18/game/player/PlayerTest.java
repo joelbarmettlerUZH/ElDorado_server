@@ -3,6 +3,7 @@ package ch.uzh.ifi.seal.soprafs18.game.player;
 import ch.uzh.ifi.seal.soprafs18.game.cards.*;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
+import ch.uzh.ifi.seal.soprafs18.game.main.Blockade;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 import org.junit.Before;
@@ -559,5 +560,50 @@ public class PlayerTest {
         assertEquals(true,twoPlayerGame.getCurrent()!=notStartingPlayer);
         notStartingPlayer.endRound();
         assertEquals(true,twoPlayerGame.getCurrent()!=notStartingPlayer);
+    }
+
+    public void SetterAndGetter() {
+        HexSpace testJungleSpace = new HexSpace(COLOR.JUNGLE, 1, 1, 1, new Point(-1, -2));
+        Player theTestPlayer = new Player(1, "testPlayer", testGame,"TESTTOKEN");
+        PlayingPiece pp = new PlayingPiece(testJungleSpace,0);
+        List<PlayingPiece> pps = new ArrayList<>();
+        pps.add(pp);
+        theTestPlayer.setPlayingPieces(pps);
+        assertEquals(pp,theTestPlayer.getPlayingPieces().get(0));
+        theTestPlayer.setCoins(10f);
+        assertEquals(10f,theTestPlayer.getCoins().floatValue());
+        theTestPlayer.setPlayerId(2);
+        assertEquals(2,theTestPlayer.getPlayerId());
+        List<Card> empty = new ArrayList<>();
+        theTestPlayer.setHandPile(empty);
+        assertEquals(0,theTestPlayer.getHandPile().size());
+        theTestPlayer.setDiscardPile(empty);
+        assertEquals(0,theTestPlayer.getDiscardPile().size());
+        theTestPlayer.setDrawPile(empty);
+        assertEquals(0,theTestPlayer.getDrawPile().size());
+        theTestPlayer.setTmpDiscardPile(empty);
+        assertEquals(0,theTestPlayer.getTmpDiscardPile().size());
+        Game game2 = new Game(10,10,"Game2");
+        theTestPlayer.setBoard(game2);
+        assertEquals("Game2",theTestPlayer.getBoard().getGameName());
+        theTestPlayer.setBought(false);
+        assertEquals(false,theTestPlayer.getBought());
+        theTestPlayer.setCharacterNumber(3);
+        assertEquals(3,theTestPlayer.getCharacterNumber());
+        List<Integer> emptyBlockades = new ArrayList<>();
+        theTestPlayer.setCollectedBlockades(emptyBlockades);
+        assertEquals(0,theTestPlayer.getCollectedBlockades().size());
+        List<CardAction> cardactions = new ArrayList<>();
+        theTestPlayer.setHistory(cardactions);
+        assertEquals(0,theTestPlayer.getHistory().size());
+        theTestPlayer.setName("nowDifferent");
+        assertEquals("nowDifferent",theTestPlayer.getName());
+        theTestPlayer.setRemovableBlockades(emptyBlockades);
+        assertEquals(0,theTestPlayer.getRemovableBlockades().size());
+        SpecialActions specialActions = new SpecialActions();
+        theTestPlayer.setSpecialAction(specialActions);
+        assertEquals(0,theTestPlayer.getSpecialAction().getDraw());
+        theTestPlayer.setToken("TESTTOKEN2");
+        assertEquals("TESTTOKEN2",theTestPlayer.getToken());
     }
 }
