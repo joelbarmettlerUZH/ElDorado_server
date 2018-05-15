@@ -17,8 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 public class Memento  implements Serializable {
 
@@ -76,5 +74,37 @@ public class Memento  implements Serializable {
         }
         this.playingPiece = null;
         this.selectedCards = new HashSet<>();
+    }
+
+    public int getMomentoId() {
+        return momentoId;
+    }
+
+    public void setMomentoId(int momentoId) {
+        this.momentoId = momentoId;
+    }
+
+    public List<HexSpace> getReachables() {
+        return reachables;
+    }
+
+    public void setReachables(List<HexSpace> reachables) {
+        this.reachables = reachables;
+    }
+
+    public Set<Card> getSelectedCards() {
+        return selectedCards;
+    }
+
+    public void setSelectedCards(Set<Card> selectedCards) {
+        this.selectedCards = selectedCards;
+    }
+
+    public PlayingPiece getPlayingPiece() {
+        return playingPiece;
+    }
+
+    public void setPlayingPiece(PlayingPiece playingPiece) {
+        this.playingPiece = playingPiece;
     }
 }

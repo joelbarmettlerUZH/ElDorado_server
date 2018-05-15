@@ -94,7 +94,7 @@ public class UserServiceTest {
         RoomEntity room = new RoomEntity();
         UserEntity testUser = new UserEntity("TestUser",1 , room);
         List<UserEntity> users = new ArrayList<UserEntity>();
-        assertEquals(testUser, userService.getByID(1));
+        assertEquals(testUser.getUserID(), userService.getByID(1).getUserID());
     }
 
     @Test

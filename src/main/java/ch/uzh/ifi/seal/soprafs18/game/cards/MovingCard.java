@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
-@Data
 public class MovingCard extends Card{
 
     @JsonCreator
@@ -80,5 +79,21 @@ public class MovingCard extends Card{
                 player.discard(this);
             }
         }
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public List<COLOR> getColors() {
+        return colors;
     }
 }

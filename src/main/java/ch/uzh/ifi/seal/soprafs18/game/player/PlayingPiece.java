@@ -10,7 +10,6 @@ import java.awt.*;
 import java.io.Serializable;
 
 @Embeddable
-@Data
 public class PlayingPiece  implements Serializable {
 
     public PlayingPiece(HexSpace hexSpace, int id){
@@ -38,4 +37,19 @@ public class PlayingPiece  implements Serializable {
      */
     public void move(HexSpace moveTo){}
 
+    public Integer getPlayingPieceId() {
+        return playingPieceId;
+    }
+
+    public void setPlayingPieceId(Integer playingPieceId) {
+        this.playingPieceId = playingPieceId;
+    }
+
+    public HexSpace getStandsOn() {
+        return standsOn;
+    }
+
+    public void setStandsOn(HexSpace standsOn) {
+        this.standsOn = standsOn;
+    }
 }

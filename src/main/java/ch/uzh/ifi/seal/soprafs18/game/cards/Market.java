@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Embeddable
-@Data
 public class Market implements Serializable {
 
     public Market() {
@@ -173,4 +172,13 @@ public class Market implements Serializable {
 
         return tmp;
     }
+
+    public List<Slot> getActive() {
+        return active;
+    }
+
+    public List<Slot> getPassive() {
+        return passive;
+    }
+
 }

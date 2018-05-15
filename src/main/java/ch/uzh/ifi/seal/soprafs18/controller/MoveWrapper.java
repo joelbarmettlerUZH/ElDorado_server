@@ -7,8 +7,23 @@ import lombok.Data;
 import java.awt.*;
 import java.util.List;
 
-@Data
 public class MoveWrapper {
     public List<Card> cards;
     public HexSpace hexSpace;
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public HexSpace getHexSpace() {
+        return hexSpace;
+    }
+
+    public void setHexSpace(HexSpace hexSpace) {
+        this.hexSpace = hexSpace;
+    }
 }

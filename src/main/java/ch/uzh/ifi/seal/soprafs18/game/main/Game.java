@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Random;
 
 @Entity
-@Data
 @Table(name = "GAME_ENTITY")
 public class Game implements Serializable {
 
@@ -228,4 +227,111 @@ public class Game implements Serializable {
         return winners.get(0);
     }
 
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public int getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(int boardId) {
+        this.boardId = boardId;
+    }
+
+    public Player getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Player current) {
+        this.current = current;
+    }
+
+    public List<HexSpace> getStartingSpaces() {
+        return startingSpaces;
+    }
+
+    public void setStartingSpaces(List<HexSpace> startingSpaces) {
+        this.startingSpaces = startingSpaces;
+    }
+
+    public List<HexSpace> getElDoradoSpaces() {
+        return elDoradoSpaces;
+    }
+
+    public void setElDoradoSpaces(List<HexSpace> elDoradoSpaces) {
+        this.elDoradoSpaces = elDoradoSpaces;
+    }
+
+    public int getCurrentPlayerNumber() {
+        return currentPlayerNumber;
+    }
+
+    public void setCurrentPlayerNumber(int currentPlayerNumber) {
+        this.currentPlayerNumber = currentPlayerNumber;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public Matrix getPathMatrix() {
+        return pathMatrix;
+    }
+
+    public void setPathMatrix(Matrix pathMatrix) {
+        this.pathMatrix = pathMatrix;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public List<Player> getWinners() {
+        return winners;
+    }
+
+    public void setWinners(List<Player> winners) {
+        this.winners = winners;
+    }
+
+    public List<Blockade> getBlockades() {
+        return blockades;
+    }
+
+    public void setBlockades(List<Blockade> blockades) {
+        this.blockades = blockades;
+    }
+
+    public Market getMarketPlace() {
+        return marketPlace;
+    }
+
+    public void setMarketPlace(Market marketPlace) {
+        this.marketPlace = marketPlace;
+    }
+
+    public Memento getMemento() {
+        return memento;
+    }
+
+    public void setMemento(Memento memento) {
+        this.memento = memento;
+    }
 }

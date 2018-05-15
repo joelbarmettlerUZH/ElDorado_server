@@ -14,12 +14,12 @@ public class SlotTest {
 
     @Test
     public void buy() {
-        assertEquals(card1, testSlot.buy());
+        assertEquals(card1.getName(), testSlot.buy().getName());
     }
 
     @Test
     public void getCard() {
-        assertEquals(card1, testSlot.getCard());
+        assertEquals(card1.getName(), testSlot.getCard().getName());
     }
 
     @Test

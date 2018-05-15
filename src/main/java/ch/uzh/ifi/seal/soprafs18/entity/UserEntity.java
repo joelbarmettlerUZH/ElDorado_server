@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Data
 @Table(name = "USER")
 public class UserEntity  implements Serializable {
 
@@ -54,4 +53,51 @@ public class UserEntity  implements Serializable {
     @JsonBackReference
     private RoomEntity roomEntity;
 
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getCharacter() {
+        return character;
+    }
+
+    public void setCharacter(int character) {
+        this.character = character;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    public RoomEntity getRoomEntity() {
+        return roomEntity;
+    }
+
+    public void setRoomEntity(RoomEntity roomEntity) {
+        this.roomEntity = roomEntity;
+    }
 }

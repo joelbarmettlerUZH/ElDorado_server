@@ -163,10 +163,6 @@ public class BoardEntity implements Serializable {
         return boardID;
     }
 
-    public void setBoardID(int boardID) {
-        this.boardID = boardID;
-    }
-
     public String getName() {
         return name;
     }
@@ -179,143 +175,72 @@ public class BoardEntity implements Serializable {
         return tiles;
     }
 
-    public void setTiles(List<TileEntity> tiles) {
-        this.tiles = tiles;
-    }
-
     public List<Integer> getTilesRotation() {
         return tilesRotation;
-    }
-
-    public void setTilesRotation(List<Integer> tilesRotation) {
-        this.tilesRotation = tilesRotation;
     }
 
     public List<Integer> getTilesPositionX() {
         return tilesPositionX;
     }
 
-    public void setTilesPositionX(List<Integer> tilesPositionX) {
-        this.tilesPositionX = tilesPositionX;
-    }
-
     public List<Integer> getTilesPositionY() {
         return tilesPositionY;
-    }
-
-    public void setTilesPositionY(List<Integer> tilesPositionY) {
-        this.tilesPositionY = tilesPositionY;
     }
 
     public List<StripEntity> getStrip() {
         return strip;
     }
 
-    public void setStrip(List<StripEntity> strip) {
-        this.strip = strip;
-    }
-
     public List<Integer> getStripRotation() {
         return stripRotation;
-    }
-
-    public void setStripRotation(List<Integer> stripRotation) {
-        this.stripRotation = stripRotation;
     }
 
     public List<Integer> getStripPositionX() {
         return stripPositionX;
     }
 
-    public void setStripPositionX(List<Integer> stripPositionX) {
-        this.stripPositionX = stripPositionX;
-    }
-
     public List<Integer> getStripPositionY() {
         return stripPositionY;
-    }
-
-    public void setStripPositionY(List<Integer> stripPositionY) {
-        this.stripPositionY = stripPositionY;
     }
 
     public List<Integer> getBlockadeId() {
         return blockadeId;
     }
 
-    public void setBlockadeId(List<Integer> blockadeId) {
-        this.blockadeId = blockadeId;
-    }
-
     public List<Integer> getBlockadeOrientation() {
         return blockadeOrientation;
-    }
-
-    public void setBlockadeOrientation(List<Integer> blockadeOrientation) {
-        this.blockadeOrientation = blockadeOrientation;
     }
 
     public List<Integer> getBlockadePositionX() {
         return blockadePositionX;
     }
 
-    public void setBlockadePositionX(List<Integer> blockadePositionX) {
-        this.blockadePositionX = blockadePositionX;
-    }
-
     public List<Integer> getBlockadePositionY() {
         return blockadePositionY;
-    }
-
-    public void setBlockadePositionY(List<Integer> blockadePositionY) {
-        this.blockadePositionY = blockadePositionY;
     }
 
     public List<HexSpaceEntity> getEndingSpaces() {
         return endingSpaces;
     }
 
-    public void setEndingSpaces(List<HexSpaceEntity> endingSpaces) {
-        this.endingSpaces = endingSpaces;
-    }
-
     public List<Integer> getEndingSpacePositionX() {
         return endingSpacePositionX;
-    }
-
-    public void setEndingSpacePositionX(List<Integer> endingSpacePositionX) {
-        this.endingSpacePositionX = endingSpacePositionX;
     }
 
     public List<Integer> getEndingSpacePositionY() {
         return endingSpacePositionY;
     }
 
-    public void setEndingSpacePositionY(List<Integer> endingSpacePositionY) {
-        this.endingSpacePositionY = endingSpacePositionY;
-    }
-
     public List<HexSpaceEntity> getEldoradoSpace() {
         return eldoradoSpace;
-    }
-
-    public void setEldoradoSpace(List<HexSpaceEntity> eldoradoSpace) {
-        this.eldoradoSpace = eldoradoSpace;
     }
 
     public List<Integer> getEldoradoSpacePositionX() {
         return eldoradoSpacePositionX;
     }
 
-    public void setEldoradoSpacePositionX(List<Integer> eldoradoSpacePositionX) {
-        this.eldoradoSpacePositionX = eldoradoSpacePositionX;
-    }
-
     public List<Integer> getEldoradoSpacePositionY() {
         return eldoradoSpacePositionY;
     }
 
-    public void setEldoradoSpacePositionY(List<Integer> eldoradoSpacePositionY) {
-        this.eldoradoSpacePositionY = eldoradoSpacePositionY;
-    }
 }

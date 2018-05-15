@@ -6,7 +6,6 @@ import lombok.Data;
 import javax.persistence.Entity;
 
 @Entity
-@Data
 public class RemoveActionCard extends ActionCard {
 
     public RemoveActionCard(String name, float value, int cost, SpecialActions actions){
@@ -30,4 +29,6 @@ public class RemoveActionCard extends ActionCard {
             return new SpecialActions();
         }
     }
+
+
 }

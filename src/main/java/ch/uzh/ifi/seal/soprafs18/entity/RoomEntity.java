@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Data
 @Table(name = "ROOM")
 public class RoomEntity  implements Serializable {
 
@@ -44,4 +43,35 @@ public class RoomEntity  implements Serializable {
         this.users.add(userEntity);
     }
 
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
+
+    public int getBoardnumber() {
+        return boardnumber;
+    }
+
+    public void setBoardnumber(int boardnumber) {
+        this.boardnumber = boardnumber;
+    }
 }

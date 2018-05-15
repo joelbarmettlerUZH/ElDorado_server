@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
 public class Slot implements Serializable{
     public Slot(){}
 
@@ -59,4 +58,13 @@ public class Slot implements Serializable{
             return false;
         }
     }
+
+    public int getSlotId() {
+        return slotId;
+    }
+
+    public List<Card> getPile() {
+        return pile;
+    }
+
 }

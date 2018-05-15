@@ -12,7 +12,6 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 
 @Entity
-@Data
 public class CardAction  implements Serializable {
 
     @Id
@@ -53,4 +52,28 @@ public class CardAction  implements Serializable {
     //    cards.add(card);
     //}
 
+
+    public int getCardActionId() {
+        return cardActionId;
+    }
+
+    public void setCardActionId(int cardActionId) {
+        this.cardActionId = cardActionId;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
 }

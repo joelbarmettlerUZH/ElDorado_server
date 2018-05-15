@@ -37,7 +37,7 @@ public class ActionCardTest {
     @Test
     public void performAction() {
 
-        assertEquals(testPlayer.getSpecialAction(), testCard.performAction(testPlayer));
+        assertEquals(testPlayer.getSpecialAction().getDraw(), testCard.performAction(testPlayer).getDraw());
     }
 
     @Test

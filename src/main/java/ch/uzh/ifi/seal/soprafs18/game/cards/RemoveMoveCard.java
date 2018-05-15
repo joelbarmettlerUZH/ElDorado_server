@@ -8,7 +8,6 @@ import lombok.Data;
 import javax.persistence.Entity;
 
 @Entity
-@Data
 public class RemoveMoveCard extends MovingCard {
 
     public RemoveMoveCard(String name, float coinValue, int coinCost, int strength, int depth, COLOR[] colors){
@@ -32,4 +31,6 @@ public class RemoveMoveCard extends MovingCard {
             }
         }
     }
+
+
 }

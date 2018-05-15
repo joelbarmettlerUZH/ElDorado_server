@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
-@Data
 public class Matrix implements Serializable{
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -67,5 +66,29 @@ public class Matrix implements Serializable{
 
     public HexSpace get(int x, int y){
         return matrixArray.get(x*yDim+y);
+    }
+
+    public List<HexSpace> getMatrixArray() {
+        return matrixArray;
+    }
+
+    public void setMatrixArray(List<HexSpace> matrixArray) {
+        this.matrixArray = matrixArray;
+    }
+
+    public int getXDim() {
+        return xDim;
+    }
+
+    public void setXDim(int xDim) {
+        this.xDim = xDim;
+    }
+
+    public int getYDim() {
+        return yDim;
+    }
+
+    public void setYDim(int yDim) {
+        this.yDim = yDim;
     }
 }

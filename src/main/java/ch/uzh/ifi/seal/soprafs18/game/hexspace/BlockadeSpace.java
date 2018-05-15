@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
 public class BlockadeSpace extends HexSpace implements Serializable {
     /*
     CONSTRUCTOR
@@ -93,5 +92,17 @@ public class BlockadeSpace extends HexSpace implements Serializable {
     public String toString(){
         return color.toString()+"-BlockSpace at Point ("+point.x+","+point.y+"), Strength: "+strength+", minimalCost: "+
                 minimalCost+", minimalDepth: "+ minimalDepth+", previoussize: " +previous.size();
+    }
+
+    public int getParentBlockade() {
+        return parentBlockade;
+    }
+
+    public void setParentBlockade(int parentBlockade) {
+        this.parentBlockade = parentBlockade;
+    }
+
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
     }
 }

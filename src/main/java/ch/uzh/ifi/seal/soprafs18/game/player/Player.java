@@ -21,7 +21,6 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @Entity
-@Data
 @Table(name = "PLAYER_ENTITY")
 public class Player implements Serializable {
 
@@ -553,5 +552,133 @@ public class Player implements Serializable {
 
     public void resetSpacialActions() {
         this.specialAction = new SpecialActions(0, 0, 0);
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
+    }
+
+    public int getCharacterNumber() {
+        return characterNumber;
+    }
+
+    public void setCharacterNumber(int characterNumber) {
+        this.characterNumber = characterNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public List<Integer> getRemovableBlockades() {
+        return removableBlockades;
+    }
+
+    public void setRemovableBlockades(List<Integer> removableBlockades) {
+        this.removableBlockades = removableBlockades;
+    }
+
+    public List<Integer> getCollectedBlockades() {
+        return collectedBlockades;
+    }
+
+    public void setCollectedBlockades(List<Integer> collectedBlockades) {
+        this.collectedBlockades = collectedBlockades;
+    }
+
+    public Float getCoins() {
+        return coins;
+    }
+
+    public void setCoins(Float coins) {
+        this.coins = coins;
+    }
+
+    public Game getBoard() {
+        return board;
+    }
+
+    public void setBoard(Game board) {
+        this.board = board;
+    }
+
+    public List<PlayingPiece> getPlayingPieces() {
+        return playingPieces;
+    }
+
+    public void setPlayingPieces(List<PlayingPiece> playingPieces) {
+        this.playingPieces = playingPieces;
+    }
+
+    public SpecialActions getSpecialAction() {
+        return specialAction;
+    }
+
+    public void setSpecialAction(SpecialActions specialAction) {
+        this.specialAction = specialAction;
+    }
+
+    public List<CardAction> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<CardAction> history) {
+        this.history = history;
+    }
+
+    public List<Card> getDrawPile() {
+        return drawPile;
+    }
+
+    public void setDrawPile(List<Card> drawPile) {
+        this.drawPile = drawPile;
+    }
+
+    public List<Card> getHandPile() {
+        return handPile;
+    }
+
+    public void setHandPile(List<Card> handPile) {
+        this.handPile = handPile;
+    }
+
+    public List<Card> getDiscardPile() {
+        return discardPile;
+    }
+
+    public void setDiscardPile(List<Card> discardPile) {
+        this.discardPile = discardPile;
+    }
+
+    public List<Card> getTmpDiscardPile() {
+        return tmpDiscardPile;
+    }
+
+    public void setTmpDiscardPile(List<Card> tmpDiscardPile) {
+        this.tmpDiscardPile = tmpDiscardPile;
+    }
+
+    public Boolean getBought() {
+        return bought;
+    }
+
+    public void setBought(Boolean bought) {
+        this.bought = bought;
     }
 }

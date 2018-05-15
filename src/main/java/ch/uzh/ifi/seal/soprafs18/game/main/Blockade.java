@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @Entity
 @Table(name = "BLOCKADE")
 public class Blockade  implements Serializable {
@@ -56,5 +55,35 @@ public class Blockade  implements Serializable {
         this.spaces.forEach(space -> space.setStrength(0));
     }
 
+    public int getHibernateBlockadeId() {
+        return hibernateBlockadeId;
+    }
 
+    public void setHibernateBlockadeId(int hibernateBlockadeId) {
+        this.hibernateBlockadeId = hibernateBlockadeId;
+    }
+
+    public int getBlockadeId() {
+        return blockadeId;
+    }
+
+    public void setBlockadeId(int blockadeId) {
+        this.blockadeId = blockadeId;
+    }
+
+    public List<BlockadeSpace> getSpaces() {
+        return spaces;
+    }
+
+    public void setSpaces(List<BlockadeSpace> spaces) {
+        this.spaces = spaces;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
 }

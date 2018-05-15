@@ -12,7 +12,6 @@ import javax.persistence.*;
 import javax.swing.*;
 import java.io.Serializable;
 
-@Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -83,4 +82,29 @@ public abstract class Card  implements Serializable, Cloneable {
             return null;
         }
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getCoinValue() {
+        return coinValue;
+    }
+
+    public int getCoinCost() {
+        return coinCost;
+    }
+
 }

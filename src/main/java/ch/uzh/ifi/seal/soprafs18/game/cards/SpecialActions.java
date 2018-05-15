@@ -6,7 +6,6 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-@Data
 public class SpecialActions implements Serializable{
 
     public SpecialActions(int draw, int remove, int steal){
@@ -45,4 +44,27 @@ public class SpecialActions implements Serializable{
         steal = steal - 1;
     }
 
+    public int getDraw() {
+        return draw;
+    }
+
+    public void setDraw(int draw) {
+        this.draw = draw;
+    }
+
+    public int getRemove() {
+        return remove;
+    }
+
+    public void setRemove(int remove) {
+        this.remove = remove;
+    }
+
+    public int getSteal() {
+        return steal;
+    }
+
+    public void setSteal(int steal) {
+        this.steal = steal;
+    }
 }

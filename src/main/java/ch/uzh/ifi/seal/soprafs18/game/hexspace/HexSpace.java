@@ -26,8 +26,6 @@ import java.util.Set;
 
 @Entity
 @Inheritance
-@Getter
-@Setter
 public class HexSpace implements Serializable{
 
     @Id
@@ -174,5 +172,61 @@ public class HexSpace implements Serializable{
     public String toString(){
         return color.toString()+"-Space at Point ("+point.x+","+point.y+"), Strength: "+strength+", minimalCost: "+
                 minimalCost+", minimalDepth: "+ minimalDepth+", previoussize: " +previous.size();
+    }
+
+    public int getHexSpaceId() {
+        return hexSpaceId;
+    }
+
+    public void setHexSpaceId(int hexSpaceId) {
+        this.hexSpaceId = hexSpaceId;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public int getMinimalCost() {
+        return minimalCost;
+    }
+
+    public void setMinimalCost(int minimalCost) {
+        this.minimalCost = minimalCost;
+    }
+
+    public int getMinimalDepth() {
+        return minimalDepth;
+    }
+
+    public void setMinimalDepth(int minimalDepth) {
+        this.minimalDepth = minimalDepth;
+    }
+
+    public COLOR getColor() {
+        return color;
+    }
+
+    public void setColor(COLOR color) {
+        this.color = color;
+    }
+
+    public Point getPoint() {
+        return point;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
+    }
+
+    public List<HexSpace> getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(List<HexSpace> previous) {
+        this.previous = previous;
     }
 }
