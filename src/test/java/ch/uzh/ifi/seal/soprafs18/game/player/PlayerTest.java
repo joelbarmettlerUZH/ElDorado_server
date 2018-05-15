@@ -203,7 +203,7 @@ public class PlayerTest {
         testPiece.setStandsOn(testGame.getHexSpace(new Point(27,20)));
         List<Card> handCards = new ArrayList<>();
 
-        handCards.add(new MovingCard("test", (float) 0.5, 0, 3, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
+        handCards.add(new MovingCard("test2", (float) 0.5, 0, 3, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
 
         testPlayer.setHandPile(handCards);
         List<Card> movingCards = new ArrayList<>();
@@ -213,6 +213,26 @@ public class PlayerTest {
 
         testPlayer.move(testPiece, movingCards, testGame.getHexSpace(new Point(27,21)));
         assertEquals("playing piece moved",COLOR.ELDORADO, testPiece.getStandsOn().getColor());
+    }
+
+    @Test
+    public void moveToNotReachable() {
+        testPlayer.setBoard(testGame);
+
+        //MOVE TO ENDFIELD
+        testPiece.setStandsOn(testGame.getHexSpace(new Point(27,20)));
+        List<Card> handCards = new ArrayList<>();
+
+        handCards.add(new MovingCard("test", (float) 0.5, 0, 3, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
+
+        testPlayer.setHandPile(handCards);
+        List<Card> movingCards = new ArrayList<>();
+        movingCards.add(testPlayer.getHandPile().get(0));
+
+        Pathfinder.getWay(testGame, movingCards, testPiece);
+
+        testPlayer.move(testPiece, movingCards, testGame.getHexSpace(new Point(30,30)));
+        assertEquals("playing piece moved not",new Point(27,20), testPiece.getStandsOn().getPoint());
     }
 
     @Test
