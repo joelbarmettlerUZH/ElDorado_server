@@ -400,8 +400,8 @@ public class Assembler implements Serializable {
                     if (blockadeIds.get(j).equals(blockadeIds.get(i))) {
                         BlockadeSpace tempBlockadeSpace = (BlockadeSpace) hexSpaceMatrix.get(blockadeX.get(j), blockadeY.get(j));
                         //assign the blockade orientation
-                        tempBlockadeSpace.setOrientation(orientations.get(blockadeIds.get(j)));
-                        ((BlockadeSpace) hexSpaceMatrix.get(blockadeX.get(j), blockadeY.get(j))).setOrientation(orientations.get(blockadeIds.get(j)));
+                        tempBlockadeSpace.specifyOrientation(orientations.get(blockadeIds.get(j)));
+                        ((BlockadeSpace) hexSpaceMatrix.get(blockadeX.get(j), blockadeY.get(j))).specifyOrientation(orientations.get(blockadeIds.get(j)));
                         blockadeSpace.add((BlockadeSpace) hexSpaceMatrix.get(blockadeX.get(j), blockadeY.get(j)));//if they match the first one store the according Spaces in the list
 
                     }

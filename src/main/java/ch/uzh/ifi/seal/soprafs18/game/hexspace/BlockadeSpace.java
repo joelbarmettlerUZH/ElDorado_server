@@ -106,7 +106,7 @@ public class BlockadeSpace extends HexSpace implements Serializable {
         return orientation;
     }
 
-    public void setOrientation(int orientation) {
+    public void specifyOrientation(int orientation) {
         this.orientation = orientation;
     }
 }
