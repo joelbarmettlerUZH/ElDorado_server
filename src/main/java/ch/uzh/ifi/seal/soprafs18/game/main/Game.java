@@ -207,7 +207,7 @@ public class Game implements Serializable {
         for (Player potentialWinner : winners) {
             boolean wins = true;
             for (Player player : winners) {
-                wins = wins & potentialWinner.getCollectedBlockades().size() > player.getCollectedBlockades().size();
+                wins = wins && potentialWinner.getCollectedBlockades().size() > player.getCollectedBlockades().size();
             }
             if (wins) {
                 return potentialWinner;
