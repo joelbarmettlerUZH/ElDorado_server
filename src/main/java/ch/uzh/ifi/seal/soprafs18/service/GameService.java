@@ -82,6 +82,10 @@ public class GameService implements Serializable{
         LOGGER.info("Save game " + game.getGameId() + " to the database");
         for(int n = 0; n<players.size(); n++){
             players.get(n).setBoard(game);
+            // Hac for the Presenation to give better cards in the case of the Cutoff Path
+            if (game.getBoardId() == 7){
+                players.get(n).fakeCards();
+            }
             playerRepository.save(players.get(n));
         }
         roomRepository.delete(room);
