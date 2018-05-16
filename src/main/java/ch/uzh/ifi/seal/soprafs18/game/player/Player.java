@@ -108,6 +108,7 @@ public class Player implements Serializable {
     /*
     Unique token to identify a Payer
      */
+    @JsonIgnore
     private String token;
 
     /*
@@ -424,6 +425,7 @@ public class Player implements Serializable {
 
             if (slot.getCard().getCoinCost() <= coins) {
                 Card card = this.board.getMarketPlace().buy(slot);
+                this.addToHistory(new CardAction(slot.getCard(), "Buy"));
                 this.discard(card);
                 this.coins = 0.0f;
                 bought = true;
@@ -484,7 +486,7 @@ public class Player implements Serializable {
             return;
         }
         if (specialAction.getSteal() > 0) {
-            //history.add(new CardAction(slot.getCard(), "Steal: " + slot.getCard().getName()));
+            this.addToHistory(new CardAction(slot.getCard(), "Steal"));
             discardPile.add(slot.buy());
             specialAction.reduceSteal();
         }

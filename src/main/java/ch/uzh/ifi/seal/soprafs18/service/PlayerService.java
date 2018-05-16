@@ -111,7 +111,6 @@ public class PlayerService  implements Serializable {
         Slot slot = slotRepository.findBySlotId(s.getSlotId()).get(0);
         if (validate(player, token)) {
             LOGGER.info("Player " + player.getPlayerId() + " buys " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
-            player.addToHistory(new CardAction(slot.getCard(), "Buy"));
             player.buy(slot);
             //Add to History
             playerRepository.save(player);
@@ -175,7 +174,6 @@ public class PlayerService  implements Serializable {
         Slot slot = slotRepository.findBySlotId(s.getSlotId()).get(0);
         if (validate(player, token)) {
             //Add to History
-            player.addToHistory(new CardAction(slot.getCard(), "Steal"));
             LOGGER.info("Player " + player.getPlayerId() + " steals " + slot.getCard().getName() + " from Slot "+slot.getSlotId());
             player.stealAction(slot);
             playerRepository.save(player);
