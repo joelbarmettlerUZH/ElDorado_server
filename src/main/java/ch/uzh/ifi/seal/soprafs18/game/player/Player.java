@@ -688,13 +688,14 @@ public class Player implements Serializable {
     // exchange cards with fakecards
     public void fakeCards(){
         this.drawPile = new ArrayList<>();
-        drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
-        drawPile.add(new MovingCard("Matrose", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.RIVER, COLOR.ENDFIELDRIVER}));
-        drawPile.add(new MovingCard("Forscher", (float) 0.5, 0, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
-        drawPile.add(new ActionCard("Wissenschaftlerin", (float) 0.5, 4, new SpecialActions(1, 1, 0)));
-        drawPile.add(new MovingCard("Entdecker", (float) 0.5, 3, 3, 99, new COLOR[]{COLOR.JUNGLE, COLOR.ENDFIELDJUNGLE}));
-        drawPile.add(new MovingCard("Tausendsassa", 1, 2, 1, 99, new COLOR[]{COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER, COLOR.ENDFIELDJUNGLE, COLOR.ENDFIELDRIVER}));
-        drawPile.add(new RemoveActionCard("Fernsprechgerät", (float) 0.5, 4, new SpecialActions(0, 0, 1)));
+        drawPile.add(new RemoveActionCard("Fernsprechgerät", (float) 0.5, 4, new SpecialActions(0,0,1) ));
         drawPile.add(new MovingCard("Millionärin", 4, 5, 4, 99, new COLOR[]{COLOR.SAND}));
+        drawPile.add(new RemoveMoveSellCard("Propellerflugzeug", 4, 4, 4, 99, new COLOR[]{COLOR.SAND, COLOR.RIVER, COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}));
+        drawPile.add(new MovingCard("Ureinwohner", (float) 0.5, 5, 99, 1, new COLOR[]{COLOR.BASECAMP, COLOR.RUBBLE, COLOR.JUNGLE, COLOR.SAND, COLOR.RIVER,COLOR.ENDFIELDJUNGLE,COLOR.ENDFIELDRIVER}));
+        drawPile.add(new ActionCard("Wissenschaftlerin", (float) 0.5, 4, new SpecialActions(1,1,0)));
+        drawPile.add(new MovingCard("Pionier", (float) 0.5, 5, 5, 99, new COLOR[]{COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}));
+        drawPile.add(new ActionCard("Kartograph", (float) 0.5, 4, new SpecialActions(2,0,0)));
+        drawPile.add(new ActionCard("Kartograph", (float) 0.5, 4, new SpecialActions(2,0,0)));
+        Collections.shuffle(drawPile);
     }
 }
