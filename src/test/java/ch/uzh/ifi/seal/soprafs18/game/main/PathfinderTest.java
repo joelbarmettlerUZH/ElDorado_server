@@ -33,7 +33,7 @@ public class PathfinderTest {
     @Before
     public void setUp() {
         System.out.println("Testing Hexspace Setup");
-        this.game = new Game(0,0,"testgame");
+        this.game = new Game(4,0,"testgame");
         List<Player> players = new ArrayList<>();
         players.add(new Player(1, "Testplayer1", game, "TESTTOKEN"));
         //players.add(new Player(2, "Testplayer2", game, "TESTTOKEN"));
