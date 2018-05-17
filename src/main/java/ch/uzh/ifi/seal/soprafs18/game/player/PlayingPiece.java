@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs18.game.player;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+
 
 import javax.persistence.*;
 import javax.swing.text.PlainDocument;

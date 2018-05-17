@@ -2,7 +2,7 @@ package ch.uzh.ifi.seal.soprafs18.game.cards;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+
 
 import javax.persistence.*;
 import java.io.Serializable;

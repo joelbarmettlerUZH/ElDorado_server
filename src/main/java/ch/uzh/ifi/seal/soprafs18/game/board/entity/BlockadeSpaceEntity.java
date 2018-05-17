@@ -1,7 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.board.entity;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
-import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

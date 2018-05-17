@@ -7,7 +7,7 @@ import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Data;
+
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;

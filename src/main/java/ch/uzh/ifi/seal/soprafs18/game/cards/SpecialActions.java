@@ -1,6 +1,6 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
-import lombok.Data;
+
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

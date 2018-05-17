@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import ch.uzh.ifi.seal.soprafs18.game.cards.Card;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 

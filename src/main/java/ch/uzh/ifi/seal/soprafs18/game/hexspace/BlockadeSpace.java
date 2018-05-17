@@ -10,7 +10,6 @@ import ch.uzh.ifi.seal.soprafs18.game.board.entity.HexSpaceEntity;
 import ch.uzh.ifi.seal.soprafs18.game.main.Game;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import ch.uzh.ifi.seal.soprafs18.game.player.PlayingPiece;
-import lombok.Data;
 
 import javax.persistence.Embeddable;
 import java.util.ArrayList;

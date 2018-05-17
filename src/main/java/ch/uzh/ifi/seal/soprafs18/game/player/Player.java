@@ -10,7 +10,7 @@ import ch.uzh.ifi.seal.soprafs18.game.main.Memento;
 import ch.uzh.ifi.seal.soprafs18.game.main.Pathfinder;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+
 
 import javax.persistence.*;
 import java.io.Serializable;

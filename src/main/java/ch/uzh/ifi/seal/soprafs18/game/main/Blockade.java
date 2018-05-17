@@ -4,7 +4,6 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.BlockadeSpace;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jdk.nashorn.internal.ir.Block;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;

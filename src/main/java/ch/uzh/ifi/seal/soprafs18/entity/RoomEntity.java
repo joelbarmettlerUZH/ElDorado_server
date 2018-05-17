@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Data;
+
 import org.apache.tomcat.util.digester.ArrayStack;
 import java.util.ArrayList;
 

@@ -4,7 +4,7 @@ import ch.uzh.ifi.seal.soprafs18.game.hexspace.COLOR;
 import ch.uzh.ifi.seal.soprafs18.game.hexspace.HexSpace;
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Data;
+
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;

@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+
 import org.hibernate.annotations.Cascade;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 

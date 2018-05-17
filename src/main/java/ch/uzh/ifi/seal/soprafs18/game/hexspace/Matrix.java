@@ -2,7 +2,6 @@ package ch.uzh.ifi.seal.soprafs18.game.hexspace;
 
 import ch.uzh.ifi.seal.soprafs18.game.main.Assembler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 

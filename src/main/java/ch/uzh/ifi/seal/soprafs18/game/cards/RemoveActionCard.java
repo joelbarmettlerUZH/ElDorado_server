@@ -1,7 +1,7 @@
 package ch.uzh.ifi.seal.soprafs18.game.cards;
 
 import ch.uzh.ifi.seal.soprafs18.game.player.Player;
-import lombok.Data;
+
 
 import javax.persistence.Entity;
 
