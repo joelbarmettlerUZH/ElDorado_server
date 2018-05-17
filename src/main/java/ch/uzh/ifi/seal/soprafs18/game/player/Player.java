@@ -283,7 +283,7 @@ public class Player implements Serializable {
             }
             boolean won = true;
             for (PlayingPiece piece : this.playingPieces) {
-                won = won && piece.getStandsOn().getColor() == COLOR.ELDORADO;
+                won = won && (piece.getStandsOn().getColor() == COLOR.ELDORADO || piece == playingPiece);
             }
             if (won) {
                 this.board.getWinners().add(this);
