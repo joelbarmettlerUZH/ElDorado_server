@@ -25,7 +25,7 @@ public class Market implements Serializable {
                 );
         active.add(
                 new Slot(
-                        new RemoveMoveCard("Schatztruhe", 4, 3, 4, 99, new COLOR[]{COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}))
+                        new RemoveMoveCard("Schatztruhe", 4, 3, 4, 99, new COLOR[]{COLOR.SAND}))
                 );
         active.add(
                 new Slot(
