@@ -52,7 +52,7 @@ public class Market implements Serializable {
         );
         passive.add(
                 new Slot(
-                        new RemoveMoveSellCard("Propellerflugzeug", 4, 4, 4, 99, new COLOR[]{COLOR.SAND, COLOR.RIVER, COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE}))
+                        new RemoveMoveSellCard("Propellerflugzeug", 4, 4, 4, 99, new COLOR[]{COLOR.SAND, COLOR.RIVER, COLOR.JUNGLE,COLOR.ENDFIELDJUNGLE,COLOR.ENDFIELDRIVER}))
         );
         passive.add(
                 new Slot(
