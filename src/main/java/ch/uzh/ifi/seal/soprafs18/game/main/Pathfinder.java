@@ -63,7 +63,10 @@ public class Pathfinder  implements Serializable {
         HexSpace hexSpace = playingPiece.getStandsOn();
         hexSpace.setMinimalDepth(0);
         hexSpace.setMinimalCost(0);
-
+        // prevent players from moving out of eldorado
+        if(playingPiece.getStandsOn().getColor()==COLOR.ELDORADO){
+            return new ArrayList<>();
+        }
         if(cards.size()==1){
             reachables = singlecardCase(game, cards, hexSpace);
         }
