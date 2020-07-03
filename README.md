@@ -51,3 +51,6 @@ More Information about [Gradle Wrapper](https://docs.gradle.org/current/userguid
 ### Postman
 
 * We highly recommend to use [Postman](https://www.getpostman.com) in order to test your API Endpoints. 
+
+
+Hire us: [Software Entwickler in Zürich](https://polygon-software.ch)!
